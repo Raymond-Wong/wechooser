@@ -7,4 +7,5 @@ import views
 
 urlpatterns = patterns('',
   url(r'^$', views.entrance, name='entrance'),
+  url(r'^/custom$', views.custom, name='custom'),
 )

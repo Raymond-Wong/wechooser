@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WechatApiDebug</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+</head>
+<body>
+  <form action="/wechat/custom" method="post">
+  	<p>
+	  <select name="msgType">
+	 	<option value="image" selected>图片</option>
+	  </select>
+  	</p>
+  	<p>
+  	  <textarea name="content" col="10" row="10">{{ template.content }}</textarea>
+  	</p>
+  	<p>
+  	  <input type="submit" val="提交" />
+  	</p>
+  </form>
+</body>
+</html>

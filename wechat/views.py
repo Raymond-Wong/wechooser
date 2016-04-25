@@ -18,6 +18,8 @@ from django.views.decorators.csrf import csrf_exempt
 from decorator import has_token, is_verified
 from utils import *
 
+from models import ReplyTemplate
+
 APPID = 'wxfd6b432a6e1e6d48'
 APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
 TOKEN = 'wechooser'
@@ -42,7 +44,31 @@ def parseXml(request):
 def message(dictionary):
   if dictionary['MsgType'] != 'image':
     return HttpResponse('')
-  return sendMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'收到一条图片信息')
+  template = u'收到一条图片信息'
+  try:
+    template = ReplyTemplate.objects.get(msgType='image').content
+  except Exception as e:
+    logger('ERROR', e)
+    pass
+  return sendMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', template)
+
+@csrf_exempt
+def custom(request):
+  if request.method == 'GET':
+    template = None
+    try:
+      template = ReplyTemplate.objects.get(msgType='image')
+    except:
+      pass
+    return render_to_response('custom.html', {'template' : template})
+  else:
+    try:
+      template = ReplyTemplate.objects.get(msgType=request.POST.get('msgType'))
+      template.content = request.POST.get('content')
+    except Exception:
+      template = ReplyTemplate(msgType=request.POST.get('msgType'), content=request.POST.get('content'))
+    template.save()
+    return HttpResponse('设置完成!')
 
 # @has_token
 # def getUserInfo(dictionary, token):
