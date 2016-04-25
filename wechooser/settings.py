@@ -47,6 +47,9 @@ DATABASES = {
     }
 }
 
+# 不需要每个url结尾都有一个反斜线
+# APPEND_SLASH=False
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['*']
