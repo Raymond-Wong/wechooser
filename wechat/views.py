@@ -24,6 +24,7 @@ TOKEN = 'wechooser'
 
 @csrf_exempt
 def entrance(request):
+  logger('DEBUG', 'entrance got a request')
   if request.method == 'GET':
     if verify(TOKEN, request.GET.get('timestamp', None), request.GET.get('nonce', None), request.GET.get('signature', None)):
       return HttpResponse(request.GET.get('echostr', None))
