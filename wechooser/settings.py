@@ -6,7 +6,7 @@ from os import environ
 REMOTE = not environ.get("APP_NAME", "")
 if REMOTE:
     # LOCAL 本地调试用，便于导出数据库,根据本地MYSQL数据库填写下面参数<----------------如果文件中出现中文，一定要在开始添加 #coding:utf-8
-    MYSQL_DB = 'WechatApi'
+    MYSQL_DB = 'wechooser'
     MYSQL_USER = 'root'
     MYSQL_PASS = '123852'
     MYSQL_HOST_M = '127.0.0.1'
@@ -46,6 +46,9 @@ DATABASES = {
         'PORT': MYSQL_PORT,                      # Set to empty string for default.
     }
 }
+
+# 不需要每个url结尾都有一个反斜线
+# APPEND_SLASH=False
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -137,6 +140,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(BASE_DIR, 'wechat/templates/wechat')
 )
 
 INSTALLED_APPS = (
