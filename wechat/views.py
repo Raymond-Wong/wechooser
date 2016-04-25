@@ -20,8 +20,6 @@ from utils import *
 
 from models import ReplyTemplate
 
-APPID = 'wxfd6b432a6e1e6d48'
-APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
 TOKEN = 'wechooser'
 
 @csrf_exempt
@@ -42,6 +40,8 @@ def parseXml(request):
   return message(dictionary)
 
 def message(dictionary):
+  if dictionary['MsgType'] == 'text':
+    return sendMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'服务器捕获消息: %s' % dictionary['Content'])
   if dictionary['MsgType'] != 'image':
     return HttpResponse('')
   template = u'收到一条图片信息'
