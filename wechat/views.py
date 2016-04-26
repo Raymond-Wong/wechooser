@@ -57,7 +57,6 @@ def message(dictionary, token):
   return replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', template)
 
 @csrf_exempt
-@is_verified
 @has_token
 def editMenu(request, token):
   if request.method == 'GET':
