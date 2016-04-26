@@ -60,13 +60,6 @@ def message(dictionary, token):
 @has_token
 def editMenu(request, token):
   if request.method == 'GET':
-    host = 'api.weixin.qq.com'
-    path = '/cgi-bin/menu/get'
-    method = 'GET'
-    params = {'access_token' : token.token}
-    res = send_request(host, path, method, port=80, params=params)
-    if res[0]:
-      return HttpResponse(res[1])
     return HttpResponse('forbidden from browser')
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/menu/create?access_token=' + token.token
