@@ -64,7 +64,7 @@ def editMenu(request, token):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/menu/create?access_token=' + token.token
   method = 'POST'
-  menu = json.loads(request.POST.get('menu'))
+  params = json.loads(request.POST.get('menu'))
   res = send_request(host, path, method, port=80, params=params)
   if res[0]:
     return HttpResponse(Response().toJson())
