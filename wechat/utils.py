@@ -83,10 +83,10 @@ def replyMsgTo(_from, _to, createTime, tp, content):
 
 def sendMsgTo(token, _to, msgType, content):
   params = {
-    'touser' : _to,
-    'msgtype' : msgType,
-    'text' : {
-      'content' : content
+    "touser" : _to,
+    "msgtype" : msgType,
+    "text" : {
+      "content" : content
     }
   }
   host = 'api.weixin.qq.com'
