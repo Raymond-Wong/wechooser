@@ -47,7 +47,7 @@ def parseXml(request, token):
 def message(dictionary, token):
   sendMsgTo(token, dictionary['FromUserName'], 'text', u'客服信息')
   if dictionary['MsgType'] == 'text':
-    return replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'1服务器捕获消息: %s' % dictionary['Content'])
+    return replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'服务器捕获消息: %s' % dictionary['Content'])
   if dictionary['MsgType'] != 'image':
     return HttpResponse('')
   template = u'收到一条图片信息'
