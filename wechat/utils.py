@@ -90,7 +90,7 @@ def sendMsgTo(token, _to, msgType, content):
     }
   }
   host = 'api.weixin.qq.com'
-  path = '/cgi-bin/message/custom/send?access_token=' + token
+  path = '/cgi-bin/message/custom/send?access_token=' + token.token
   method = 'POST'
   return send_request(host, path, method, params)
 
