@@ -68,5 +68,5 @@ def editMenu(request, token):
   # res = send_request(host, path, method, port=80, params=params)
   res = [True]
   if res[0]:
-    return HttpResponse(Response().toJson())
+    return HttpResponse(Response(m=params).toJson())
   return HttpResponse(Response(c=-1, m=res[1], s="failed"))
