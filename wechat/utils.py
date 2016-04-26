@@ -70,7 +70,7 @@ def send_request(host, path, method, port=443, params={}):
     path = '?'.join([path, urllib.urlencode(params)])
     client.request(method, path)
   else:
-    client.request(method, path, json.dumps(params, ensure_ascii=False))
+    client.request(method, path, json.dumps(params, ensure_ascii=False).encode('utf8'))
     # client.request(method, path, urllib.urlencode(params))
   res = client.getresponse()
   if not res.status == 200:

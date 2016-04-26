@@ -60,17 +60,16 @@ def message(dictionary, token):
   return replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', template)
 
 @csrf_exempt
-@has_token
+# @has_token
 def editMenu(request, token):
   if request.method == 'GET':
     return HttpResponse('forbidden from browser')
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/menu/create?access_token=' + token.token
   method = 'POST'
-  params = json.loads(request.POST.get('menu').decode('utf-8'))
+  params = json.loads(request.POST.get('menu'))
   # params = {'button' : []}
   # params['button'].append({"name" : "今日歌曲", "type" : "click", "key" : "asdf"})
-  logger('DEBUG', 'is unicode: %s' % (isinstance(json.dumps(params, ensure_ascii=False), unicode)))
   res = send_request(host, path, method, port=80, params=params)
   if res[0]:
     now = datetime.now()
