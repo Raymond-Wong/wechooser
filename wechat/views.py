@@ -67,7 +67,7 @@ def editMenu(request, token):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/menu/create?access_token=' + token.token
   method = 'POST'
-  logger('DEBUG', '自定义菜单创建: ' + request.POST.get('menu'))
+  logger('DEBUG', '自定义菜单创建: ' + request.POST.get('menu', 'post数据中没有menu'))
   params = json.loads(request.POST.get('menu'))
   res = send_request(host, path, method, port=80, params=params)
   if res[0]:
