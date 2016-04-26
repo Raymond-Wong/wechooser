@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $('#menuForm').submit(function() {
+  $('#btn').click(function() {
     var menu = $('#menu').html();
     console.log($('#menu'));
     console.log($('#menu').val());
