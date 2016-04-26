@@ -6,4 +6,5 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
   url(r'^wechat', include('wechat.urls')),
+  url(r'', include('customize.urls')),
 )

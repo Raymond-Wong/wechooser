@@ -18,8 +18,6 @@ from django.views.decorators.csrf import csrf_exempt
 from decorator import has_token, is_verified
 from utils import *
 
-from models import ReplyTemplate
-
 TOKEN = 'wechooser'
 APPID = 'wxfd6b432a6e1e6d48'
 APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
@@ -59,34 +57,16 @@ def message(dictionary, token):
   return replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', template)
 
 @csrf_exempt
-def custom(request):
+@is_verified
+@has_token
+def editMenu(request, token):
   if request.method == 'GET':
-    template = None
-    try:
-      template = ReplyTemplate.objects.get(msgType='image')
-    except:
-      pass
-    return render_to_response('custom.html', {'template' : template})
-  else:
-    try:
-      template = ReplyTemplate.objects.get(msgType=request.POST.get('msgType'))
-      template.content = request.POST.get('content')
-    except Exception:
-      template = ReplyTemplate(msgType=request.POST.get('msgType'), content=request.POST.get('content'))
-    template.save()
-    return HttpResponse('设置完成!')
-
-# @has_token
-# def getUserInfo(dictionary, token):
-#   host = 'api.weixin.qq.com'
-#   path = '/cgi-bin/user/info'
-#   method = 'GET'
-#   params = {
-#     'access_token' : token.token,
-#     'openid' : dictionary['FromUserName'],
-#     'lang' : 'zh_CN'
-#   }
-#   res = send_request(host, path, method, port=80, params=params)
-#   if res[0]:
-#     return res[1]
-#   return None
+    return HttpResponse('forbidden from browser')
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/menu/create?access_token=' + token.token
+  method = 'POST'
+  menu = json.loads(request.POST.get('menu'))
+  res = send_request(host, path, method, port=80, params=params)
+  if res[0]:
+    return HttpResponse(Response().toJson())
+  return HttpResponse(Response(c=-1, m=res[1], s="failed"))

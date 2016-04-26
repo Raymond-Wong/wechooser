@@ -17,10 +17,12 @@ from wechat.models import access_token
 APPID = 'wxfd6b432a6e1e6d48'
 APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
 
+# 日志
 def logger(tp, msg):
   now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
   print '[%s][%s]\t%s' % (tp, now, msg)
 
+# 获取数据库中access_token的接口
 def get_access_token():
   tokens = access_token.objects.order_by('-start_time')
   now = datetime.now()
@@ -31,6 +33,7 @@ def get_access_token():
     most_recent_token = tokens[0]
   return most_recent_token
 
+# 当数据库中access_token失效以后用于更新token的接口
 def update_token():
   params = {
     'grant_type': 'client_credential',
@@ -60,6 +63,7 @@ def update_token():
   token_record.save()
   return token_record
 
+# 发送请求
 def send_request(host, path, method, port=443, params={}):
   client = httplib.HTTPSConnection(host, port)
   if method == 'GET':
@@ -72,6 +76,7 @@ def send_request(host, path, method, port=443, params={}):
     return False, res.status
   return True, json.loads(res.read())
 
+# 回复文本信息
 def replyMsgTo(_from, _to, createTime, tp, content):
   resp = {}
   resp['FromUserName'] = _from
@@ -81,6 +86,7 @@ def replyMsgTo(_from, _to, createTime, tp, content):
   resp['Content'] = content
   return HttpResponse(ET.tostring(dict2xml(ET.Element('xml'), resp), 'utf-8'))
 
+# 发送文本信息
 def sendMsgTo(token, _to, msgType, content):
   params = {
     "touser" : _to,
@@ -96,6 +102,7 @@ def sendMsgTo(token, _to, msgType, content):
   # logger('DEBUG', u'发送一条客服消息：' + str(res) + "; " + json.dumps(params, ensure_ascii=False))
   return res
 
+# 将xml解析成字典
 def xml2dict(root):
   dictionary = {}
   for child in root:
@@ -105,6 +112,7 @@ def xml2dict(root):
       dictionary[child.tag] = xml2dict(child)
   return dictionary
 
+# 将字典解析成xml
 def dict2xml(root, d):
   if isinstance(d, dict):
     for key in d.keys():
@@ -114,9 +122,23 @@ def dict2xml(root, d):
     root.text = d
   return root
 
+# 验证信息是否从微信发送过来
 def verify(token, timestamp, nonce, signature):
   tmpList = [token, timestamp, nonce]
   tmpList.sort()
   tmpStr = '%s%s%s' % tuple(tmpList)
   tmpStr = hashlib.sha1(tmpStr).hexdigest()
   return tmpStr == signature
+
+class Response:
+  def __init__(self, c=0, m="", s="success"):
+    self.code = c
+    self.msg = m
+    self.status = s
+  def toJson(self):
+    tmp = {}
+    tmp["code"] = self.code
+    tmp["msg"] = self.msg
+    tmp["status"] = self.status
+    return json.dumps(tmp, ensure_ascii=False)
+
