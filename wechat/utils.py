@@ -76,7 +76,7 @@ def send_request(host, path, method, port=443, params={}):
   if not res.status == 200:
     return False, res.status
   resDict = json.loads(res.read())
-  if 'errcode' in resDict.keys():
+  if 'errcode' in resDict.keys() and resDict['errcode'] != 0:
     return False, resDict
   return True, resDict
 
