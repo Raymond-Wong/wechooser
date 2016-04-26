@@ -76,6 +76,8 @@ def send_request(host, path, method, port=443, params={}):
   if not res.status == 200:
     return False, res.status
   resDict = json.loads(res.read())
+  if 'errcode' in resDict.keys() and resDict['errcode'] == 40001:
+    raise PastDueException
   if 'errcode' in resDict.keys() and resDict['errcode'] != 0:
     return False, resDict
   return True, resDict
@@ -100,9 +102,13 @@ def sendMsgTo(token, _to, msgType, content):
     }
   }
   host = 'api.weixin.qq.com'
-  path = '/cgi-bin/message/custom/send?access_token=' + token.token
+  path = '/cgi-bin/message/custom/send?access_token='
   method = 'POST'
-  res = send_request(host=host, path=path, method=method, port=443, params=params)
+  try:
+    res = send_request(host=host, path=path + token.token, method=method, port=443, params=params)
+  except PastDueException:
+    token = update_token()
+    res = send_request(host=host, path=path + token.token, method=method, port=443, params=params)
   # logger('DEBUG', u'发送一条客服消息：' + str(res) + "; " + json.dumps(params, ensure_ascii=False))
   return res
 
@@ -145,4 +151,11 @@ class Response:
     tmp["msg"] = self.msg
     tmp["status"] = self.status
     return json.dumps(tmp, ensure_ascii=False)
+
+# token过期的异常
+class PastDueException(Exception):
+  def __init__(self, msg):
+    self.msg = msg
+  def __str__(self):
+    return repr(self.msg)
 

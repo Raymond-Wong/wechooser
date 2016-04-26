@@ -65,10 +65,14 @@ def editMenu(request, token):
   if request.method == 'GET':
     return HttpResponse('forbidden from browser')
   host = 'api.weixin.qq.com'
-  path = '/cgi-bin/menu/create?access_token=' + token.token
+  path = '/cgi-bin/menu/create?access_token='
   method = 'POST'
   params = json.loads(request.POST.get('menu'))
-  res = send_request(host, path, method, port=80, params=params)
+  try:
+    res = send_request(host, path + token.token, method, port=80, params=params)
+  except PastDueException:
+    token = update_token()
+    res = send_request(host, path + token.token, method, port=80, params=params)
   if res[0]:
     now = datetime.now()
     offset = timedelta(seconds=(5 * 60))
