@@ -68,7 +68,7 @@ def editMenu(request, token):
   path = '/cgi-bin/menu/create?access_token=' + token.token
   method = 'POST'
   params = json.loads(request.POST.get('menu'))
-  logger('DEBUG', '自定义菜单创建: ' + request.POST.get('menu', 'post数据中没有menu'))
+  logger('DEBUG', u'自定义菜单创建: ' + request.POST.get('menu', u'post数据中没有menu'))
   res = send_request(host, path, method, port=80, params=params)
   if res[0]:
     now = datetime.now()
