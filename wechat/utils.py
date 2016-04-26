@@ -12,10 +12,10 @@ from datetime import datetime, timedelta
 
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 
-# from wechat.models import access_token
+from wechat.models import access_token
 
-APPID = 'wxfd6b432a6e1e6d48'
-APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
+APPID = 'wxa9e7579ea96fd669'
+APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
 
 def logger(tp, msg):
   now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -25,7 +25,7 @@ def get_access_token():
   tokens = access_token.objects.order_by('-start_time')
   now = datetime.now()
   if len(tokens) <= 0 or now > tokens[0].end_time:
-    logger('DEBUG', '更新数据库中的access token')
+    logger('DEBUG', u'更新数据库中的access token')
     most_recent_token = update_token()
   else:
     most_recent_token = tokens[0]
@@ -76,6 +76,20 @@ def replyMsgTo(_from, _to, createTime, tp, content):
   resp['MsgType'] = tp
   resp['Content'] = content
   return HttpResponse(ET.tostring(dict2xml(ET.Element('xml'), resp), 'utf-8'))
+
+def sendMsgTo(token, _to, msgType, content):
+  params = {
+    'touser' : _to,
+    'msgtype' : msgType,
+    'text' : {
+      'content' : content
+    }
+  }
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/message/custom/send?access_token=' + token
+  method = 'POST'
+  return send_request(host, path, method, params)
+
 
 def xml2dict(root):
   dictionary = {}

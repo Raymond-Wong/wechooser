@@ -21,6 +21,8 @@ from utils import *
 from models import ReplyTemplate
 
 TOKEN = 'wechooser'
+APPID = 'wxa9e7579ea96fd669'
+APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
 
 @csrf_exempt
 def entrance(request):
@@ -34,14 +36,16 @@ def entrance(request):
   raise Http404
 
 @is_verified
-def parseXml(request):
+@has_token
+def parseXml(request, token):
   root = ET.fromstring(smart_str(request.body))
   dictionary = xml2dict(root)
-  return message(dictionary)
+  return message(dictionary, token)
 
-def message(dictionary):
+def message(dictionary, token):
+  sendMsgTo(token, dictionary['FromUserName'], 'text', u'客服信息')
   if dictionary['MsgType'] == 'text':
-    return replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'1服务器捕获消息: %s' % dictionary['Content'])
+    return replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'服务器捕获消息: %s' % dictionary['Content'])
   if dictionary['MsgType'] != 'image':
     return HttpResponse('')
   template = u'收到一条图片信息'
