@@ -66,7 +66,7 @@ def send_request(host, path, method, port=443, params={}):
     path = '?'.join([path, urllib.urlencode(params)])
     client.request(method, path)
   else:
-    client.request(method, path, str(params))
+    client.request(method, path, urllib.urlencode(params))
   res = client.getresponse()
   if not res.status == 200:
     return False, res.status
@@ -93,7 +93,7 @@ def sendMsgTo(token, _to, msgType, content):
   path = '/cgi-bin/message/custom/send?access_token=' + token.token
   method = 'POST'
   res = send_request(host=host, path=path, method=method, port=443, params=params)
-  logger('DEBUG', u'发送一条客服消息：' + str(res) + "; " + urllib.urlencode(params))
+  logger('DEBUG', u'发送一条客服消息：' + str(res) + "; " + urllib.urlencode(json.dumps(params)))
   return res
 
 def xml2dict(root):
