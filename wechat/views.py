@@ -24,7 +24,6 @@ TOKEN = 'wechooser'
 
 @csrf_exempt
 def entrance(request):
-  logger('DEBUG', 'entrance got a request')
   if request.method == 'GET':
     if verify(TOKEN, request.GET.get('timestamp', None), request.GET.get('nonce', None), request.GET.get('signature', None)):
       return HttpResponse(request.GET.get('echostr', None))
@@ -42,7 +41,7 @@ def parseXml(request):
 
 def message(dictionary):
   if dictionary['MsgType'] == 'text':
-    return sendMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'服务器捕获消息: %s' % dictionary['Content'])
+    return replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'服务器捕获消息: %s' % dictionary['Content'])
   if dictionary['MsgType'] != 'image':
     return HttpResponse('')
   template = u'收到一条图片信息'
@@ -51,7 +50,7 @@ def message(dictionary):
   except Exception as e:
     logger('ERROR', e)
     pass
-  return sendMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', template)
+  return replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', template)
 
 @csrf_exempt
 def custom(request):

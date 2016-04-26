@@ -68,7 +68,7 @@ def send_request(host, path, method, port=443, params={}):
     return False, res.status
   return True, json.loads(res.read())
 
-def sendMsgTo(_from, _to, createTime, tp, content):
+def replyMsgTo(_from, _to, createTime, tp, content):
   resp = {}
   resp['FromUserName'] = _from
   resp['ToUserName'] = _to
