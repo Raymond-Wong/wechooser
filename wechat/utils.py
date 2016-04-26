@@ -14,8 +14,8 @@ from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http
 
 from wechat.models import access_token
 
-APPID = 'wxa9e7579ea96fd669'
-APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
+APPID = 'wxfd6b432a6e1e6d48'
+APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
 
 def logger(tp, msg):
   now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
