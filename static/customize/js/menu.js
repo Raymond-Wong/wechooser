@@ -5,7 +5,7 @@ $(document).ready(function() {
   menu['button'].push({"name" : "菜单", "sub_button" : []});
   menu['button'][1]['sub_button'].push({'url' : 'http://www.baidu.com', 'type' : 'view', 'name' : '搜索'});
   var params = {"menu" : JSON.stringify(menu)};
-  alert(params);
+  console.log(params);
   $.post('/wechat/menu', params, function(res) {
   	console.log(res);
   });
