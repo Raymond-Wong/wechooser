@@ -68,7 +68,7 @@ def editMenu(request, token):
   res = send_request(host, path, method, port=80, params=params)
   if res[0]:
     now = datetime.now()
-    offset = datetime.timedelta(seconds=(5 * 60))
+    offset = timedelta(seconds=(5 * 60))
     end = now + offset
     end = end.strftime('%Y-%m-%d %H:%M:%S')
     return HttpResponse(Response(m="自定义菜单将在 %s 时生效" % end).toJson())
