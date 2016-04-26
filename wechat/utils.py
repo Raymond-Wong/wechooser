@@ -75,7 +75,10 @@ def send_request(host, path, method, port=443, params={}):
   res = client.getresponse()
   if not res.status == 200:
     return False, res.status
-  return True, json.loads(res.read())
+  resDict = json.loads(res.read())
+  if 'errcode' in resDict.keys():
+    return False, resDict
+  return True, resDict
 
 # 回复文本信息
 def replyMsgTo(_from, _to, createTime, tp, content):
