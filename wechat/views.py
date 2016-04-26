@@ -60,7 +60,7 @@ def message(dictionary, token):
   return replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', template)
 
 @csrf_exempt
-# @has_token
+@has_token
 def editMenu(request, token):
   if request.method == 'GET':
     return HttpResponse('forbidden from browser')
