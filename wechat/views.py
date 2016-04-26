@@ -67,7 +67,6 @@ def editMenu(request, token):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/menu/create?access_token=' + token.token
   method = 'POST'
-  logger('DEBUG', '获取到menu: ' + request.POST.get('menu', "没有获取到menu"))
   params = json.loads(request.POST.get('menu'))
   res = send_request(host, path, method, port=80, params=params)
   if res[0]:
@@ -76,4 +75,4 @@ def editMenu(request, token):
     end = now + offset
     end = end.strftime('%Y-%m-%d %H:%M:%S')
     return HttpResponse(Response(m=u"自定义菜单将在 %s 时生效; access_token: %s" % (end, token.token)).toJson())
-  return HttpResponse(Response(c=-1, m=(str(res[1]) + ', ' + json.dumps(json.loads(request.POST.get('menu')), ensure_ascii=False)), s="failed").toJson())
+  return HttpResponse(Response(c=-1, m=str(res[1]))
