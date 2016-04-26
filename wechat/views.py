@@ -68,7 +68,7 @@ def editMenu(request, token):
   path = '/cgi-bin/menu/create?access_token=' + token.token
   method = 'POST'
   params = json.loads(request.POST.get('menu'))
-  logger('DEBUG', '自定义菜单创建: ' + json.dumps(params, ensure_ascii=False))
+  logger('DEBUG', '自定义菜单创建: ' + request.POST.get('menu'))
   res = send_request(host, path, method, port=80, params=params)
   if res[0]:
     now = datetime.now()
@@ -76,4 +76,4 @@ def editMenu(request, token):
     end = now + offset
     end = end.strftime('%Y-%m-%d %H:%M:%S')
     return HttpResponse(Response(m=u"自定义菜单将在 %s 时生效; access_token: %s" % (end, token.token)).toJson())
-  return HttpResponse(Response(c=-1, m=(str(res[1]) + ', ' + str(request.POST.get('menu'))), s="failed").toJson())
+  return HttpResponse(Response(c=-1, m=(str(res[1]) + ', ' + request.POST.get('menu')), s="failed").toJson())
