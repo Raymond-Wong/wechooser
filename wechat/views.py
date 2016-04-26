@@ -75,4 +75,4 @@ def editMenu(request, token):
     end = now + offset
     end = end.strftime('%Y-%m-%d %H:%M:%S')
     return HttpResponse(Response(m=u"自定义菜单将在 %s 时生效; access_token: %s" % (end, token.token)).toJson())
-  return HttpResponse(Response(c=-1, m=str(res[1]))
+  return HttpResponse(Response(c=-1, m=str(res[1])))
