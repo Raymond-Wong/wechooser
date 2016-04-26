@@ -67,10 +67,10 @@ def editMenu(request, token):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/menu/create?access_token=' + token.token
   method = 'POST'
-  params = json.loads(request.POST.get('menu'))
-  # params = {'button' : []}
-  # params['button'].append({"name" : "今日歌曲", "type" : "click", "key" : "asdf"})
-  logger('DEBUG', u'自定义菜单创建: ' + request.POST.get('menu', u'post数据中没有menu'))
+  # params = json.loads(request.POST.get('menu'))
+  params = {'button' : []}
+  params['button'].append({"name" : "今日歌曲", "type" : "click", "key" : "asdf"})
+  logger('DEBUG', 'is unicode: %s' % (json.dumps(params, ensure_ascii=False))))
   res = send_request(host, path, method, port=80, params=params)
   if res[0]:
     now = datetime.now()
