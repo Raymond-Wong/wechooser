@@ -68,8 +68,8 @@ def editMenu(request, token):
   path = '/cgi-bin/menu/create?access_token=' + token.token
   method = 'POST'
   params = json.loads(request.POST.get('menu'))
-  params = {'button' : []}
-  params['button'].append({"name" : "今日歌曲", "type" : "click", "key" : "asdf"})
+  # params = {'button' : []}
+  # params['button'].append({"name" : "今日歌曲", "type" : "click", "key" : "asdf"})
   logger('DEBUG', u'自定义菜单创建: ' + request.POST.get('menu', u'post数据中没有menu'))
   res = send_request(host, path, method, port=80, params=params)
   if res[0]:
@@ -77,5 +77,5 @@ def editMenu(request, token):
     offset = timedelta(seconds=(5 * 60))
     end = now + offset
     end = end.strftime('%Y-%m-%d %H:%M:%S')
-    return HttpResponse(Response(m=u"自定义菜单将在 %s 时生效; access_token: %s, isunicode: %s" % (end, token.token, isinstance(json.dumps(json.loads(request.POST.get("menu")), ensure_ascii=False), unicode))).toJson())
+    return HttpResponse(Response(m=u"自定义菜单将在 %s 时生效; access_token: %s" % (end, token.token)).toJson())
   return HttpResponse(Response(c=-1, m=(str(res[1]) + ', ' + json.dumps(json.loads(request.POST.get('menu')), ensure_ascii=False)), s="failed").toJson())
