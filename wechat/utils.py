@@ -92,7 +92,7 @@ def sendMsgTo(token, _to, msgType, content):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/message/custom/send?access_token=' + token.token
   method = 'POST'
-  res = send_request(host=host, path=path, method=method, port=80, params=params)
+  res = send_request(host=host, path=path, method=method, port=443, params=params)
   logger('DEBUG', u'发送一条客服消息：' + str(res))
   return res
 
