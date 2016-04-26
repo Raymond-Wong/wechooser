@@ -93,7 +93,7 @@ def sendMsgTo(token, _to, msgType, content):
   path = '/cgi-bin/message/custom/send?access_token=' + token.token
   method = 'POST'
   res = send_request(host=host, path=path, method=method, port=443, params=params)
-  logger('DEBUG', u'发送一条客服消息：' + str(res) + "; " + json.dumps(params, ensure_ascii=False))
+  # logger('DEBUG', u'发送一条客服消息：' + str(res) + "; " + json.dumps(params, ensure_ascii=False))
   return res
 
 def xml2dict(root):
