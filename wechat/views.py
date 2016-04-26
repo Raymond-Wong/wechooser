@@ -65,8 +65,7 @@ def editMenu(request, token):
   path = '/cgi-bin/menu/create?access_token=' + token.token
   method = 'POST'
   params = json.loads(request.POST.get('menu'))
-  # res = send_request(host, path, method, port=80, params=params)
-  res = [True]
+  res = send_request(host, path, method, port=80, params=params)
   if res[0]:
-    return HttpResponse(Response(m=params).toJson())
+    return HttpResponse(Response().toJson())
   return HttpResponse(Response(c=-1, m=res[1], s="failed"))
