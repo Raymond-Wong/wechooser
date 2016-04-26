@@ -50,7 +50,11 @@ def update_token():
   starttime = datetime.now()
   expires_in = timedelta(seconds=int(res[1].get('expires_in')))
   endtime = starttime + expires_in
-  token_record = access_token.objects.order_by('-start_time')[0]
+  token_record = access_token.objects.order_by('-start_time')
+  if len(token_record) > 0:
+    token_record = token_record[0]
+  else:
+    token_record = access_token()
   token_record.token = token
   token_record.end_time = endtime
   token_record.save()
