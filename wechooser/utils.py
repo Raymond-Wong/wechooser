@@ -131,10 +131,9 @@ def getMaterialCount(token, tp):
     token = update_token()
     params['access_token'] = token.token
     res = send_request(host, path, method, port=443, params=params)
-  return res[1]
-  # if res[0]:
-  #   return res[1][tp]
-  # return -1
+  if res[0]:
+    return res[1][tp + '_count']
+  return -1
 
 # 将xml解析成字典
 def xml2dict(root):
