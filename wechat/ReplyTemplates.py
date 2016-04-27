@@ -45,7 +45,7 @@ class VideoTemplate(Template):
     self.Description = Description
 
 # 将template转换成使用客服接口发送的xml
-def toSend(template):
+def toReply(template):
   d = json.loads(json.dumps(template, default=utils.dumps))
   if d.has_key('__class__'):
     d.pop('__class__')
