@@ -25,11 +25,14 @@ import wechooser.utils as utils
 
 TOKEN = 'wechooser'
 # 测试平台
-APPID = 'wxfd6b432a6e1e6d48'
-APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
+# APPID = 'wxfd6b432a6e1e6d48'
+# APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
 # 公众号
 # APPID = 'wxa9e7579ea96fd669'
 # APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
+# 服务号
+APPID = 'wx466a0c7c6871bc8e'
+APPSECRET = 'aa06e2a00ce7dcae1d5e975e5217c478'
 
 @csrf_exempt
 def entrance(request):

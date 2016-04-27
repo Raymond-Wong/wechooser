@@ -15,11 +15,14 @@ from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http
 from wechat.models import access_token
 
 # 测试平台
-APPID = 'wxfd6b432a6e1e6d48'
-APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
-# 公众号
+# APPID = 'wxfd6b432a6e1e6d48'
+# APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
+# 订阅号
 # APPID = 'wxa9e7579ea96fd669'
 # APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
+# 服务号
+APPID = 'wx466a0c7c6871bc8e'
+APPSECRET = 'aa06e2a00ce7dcae1d5e975e5217c478'
 
 # 日志
 def logger(tp, msg):
@@ -118,16 +121,16 @@ def sendMsgTo(token, _to, msgType, content):
   return res
 
 def getMaterial(token, tp, offset, count):
-  host = 'api.weixin.qq.com'
-  path = '/cgi-bin/material/batchget_material?access_token='
-  method = 'POST'
-  params = {'type' : tp, 'offset' : offset, 'count' : count}
-  try:
-    res = send_request(host, path + token.token, method, port=443, params=params)
-  except PastDueException:
-    token = update_token()
-    res = send_request(host, path + token.token, method, port=443, params=params)
-  return res
+  # host = 'api.weixin.qq.com'
+  # path = '/cgi-bin/material/batchget_material?access_token='
+  # method = 'POST'
+  # params = {'type' : tp, 'offset' : offset, 'count' : count}
+  # try:
+  #   res = send_request(host, path + token.token, method, port=443, params=params)
+  # except PastDueException:
+  #   token = update_token()
+  #   res = send_request(host, path + token.token, method, port=443, params=params)
+  return getMaterialCount(token, tp)
 
 def getMaterialCount(token, tp):
   host = 'api.weixin.qq.com'
