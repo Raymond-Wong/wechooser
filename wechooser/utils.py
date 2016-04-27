@@ -113,6 +113,21 @@ def sendMsgTo(token, _to, msgType, content):
   # logger('DEBUG', u'发送一条客服消息：' + str(res) + "; " + json.dumps(params, ensure_ascii=False))
   return res
 
+def getMaterialCount(token, tp):
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/material/get_materialcount'
+  method = 'GET'
+  params = {'access_token' : token.token}
+  try:
+    res = send_request(host, path, method, port=443, params=params)
+  except PastDueException:
+    token = update_token()
+    params['access_token'] = token.token
+    res = send_request(host, path, method, port=443, params=params)
+  if res[0]:
+    return res[1][tp]
+  return {}
+
 # 将xml解析成字典
 def xml2dict(root):
   dictionary = {}

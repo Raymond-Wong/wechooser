@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+sys.path.append('..')
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -18,8 +19,8 @@ from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http
 from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 
-from decorator import has_token, is_verified
-from utils import *
+from wechooser.decorator import has_token, is_verified
+from wechooser.utils import *
 
 TOKEN = 'wechooser'
 APPID = 'wxfd6b432a6e1e6d48'

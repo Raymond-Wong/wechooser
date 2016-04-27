@@ -9,3 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 def editMenu(request):
   if request.method == 'GET':
     return render_to_response('editMenu.html')
+
+# def getMaterial(request):
+#   if request.method == 'GET':
+#     tp = request.GET.get('type')
+#     return HttpResponse({'material' : wechat.getMaterial(tp)})
