@@ -35,6 +35,7 @@ APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
 def entrance(request):
   if request.method == 'GET':
     if utils.verify(TOKEN, request.GET.get('timestamp', None), request.GET.get('nonce', None), request.GET.get('signature', None)):
+      utils.update_token()
       return HttpResponse(request.GET.get('echostr', None))
     else:
       return HttpResponse('forbiden from browswer')
