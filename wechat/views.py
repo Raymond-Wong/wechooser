@@ -20,7 +20,8 @@ from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from wechooser.decorator import has_token, is_verified
-from wechooser.utils import *
+from wechooser.utils import Response, PastDueException
+import wechooser.utils as utils
 
 TOKEN = 'wechooser'
 APPID = 'wxfd6b432a6e1e6d48'
@@ -31,7 +32,7 @@ APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
 @csrf_exempt
 def entrance(request):
   if request.method == 'GET':
-    if verify(TOKEN, request.GET.get('timestamp', None), request.GET.get('nonce', None), request.GET.get('signature', None)):
+    if utils.verify(TOKEN, request.GET.get('timestamp', None), request.GET.get('nonce', None), request.GET.get('signature', None)):
       return HttpResponse(request.GET.get('echostr', None))
     else:
       return HttpResponse('forbiden from browswer')
@@ -43,22 +44,22 @@ def entrance(request):
 @has_token
 def parseXml(request, token):
   root = ET.fromstring(smart_str(request.body))
-  dictionary = xml2dict(root)
+  dictionary = utils.xml2dict(root)
   return message(dictionary, token)
 
 def message(dictionary, token):
-  sendMsgTo(token, dictionary['FromUserName'], 'text', '客服信息')
+  utils.sendMsgTo(token, dictionary['FromUserName'], 'text', '客服信息')
   if dictionary['MsgType'] == 'text':
-    return replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'服务器捕获消息: %s' % dictionary['Content'])
+    return utils.replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'服务器捕获消息: %s' % dictionary['Content'])
   if dictionary['MsgType'] != 'image':
     return HttpResponse('')
   template = u'收到一条图片信息'
   try:
-    template = ReplyTemplate.objects.get(msgType='image').content
+    template = utils.ReplyTemplate.objects.get(msgType='image').content
   except Exception as e:
-    logger('ERROR', e)
+    utils.logger('ERROR', e)
     pass
-  return replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', template)
+  return utils.replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', template)
 
 @csrf_exempt
 @has_token
@@ -70,10 +71,10 @@ def editMenu(request, token):
   method = 'POST'
   params = json.loads(request.POST.get('menu'))
   try:
-    res = send_request(host, path + token.token, method, port=80, params=params)
+    res = utils.send_request(host, path + token.token, method, port=80, params=params)
   except PastDueException:
-    token = update_token()
-    res = send_request(host, path + token.token, method, port=80, params=params)
+    token = utils.update_token()
+    res = utils.send_request(host, path + token.token, method, port=80, params=params)
   if res[0]:
     now = datetime.now()
     offset = timedelta(seconds=(5 * 60))
@@ -81,3 +82,10 @@ def editMenu(request, token):
     end = end.strftime('%Y-%m-%d %H:%M:%S')
     return HttpResponse(Response(m=u"自定义菜单将在 %s 时生效; access_token: %s" % (end, token.token)).toJson())
   return HttpResponse(Response(c=-1, m=str(res[1])))
+
+# @csrf_exempt
+# @has_token
+# def getMaterial(request, token):
+#   if request.method == 'GET':
+#     return HttpResponse('forbidden from browser')
+
