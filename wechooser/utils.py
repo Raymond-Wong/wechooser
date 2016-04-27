@@ -18,8 +18,8 @@ from wechat.models import access_token
 APPID = 'wxfd6b432a6e1e6d48'
 APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
 # 公众号
-APPID = 'wxa9e7579ea96fd669'
-APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
+# APPID = 'wxa9e7579ea96fd669'
+# APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
 
 # 日志
 def logger(tp, msg):
