@@ -92,5 +92,7 @@ def getMaterial(request, token):
   if request.method == 'GET':
     return HttpResponse('forbidden from browser')
   tp = request.POST.get('type')
-  return HttpResponse(Response(m=utils.getMaterial(token, tp)).toJson())
+  offset = request.POST.get('offset', 0)
+  count = request.POST.get('count', 0)
+  return HttpResponse(Response(m=utils.getMaterial(token, tp, offset, count)).toJson())
 

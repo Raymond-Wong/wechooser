@@ -117,11 +117,11 @@ def sendMsgTo(token, _to, msgType, content):
   # logger('DEBUG', u'发送一条客服消息：' + str(res) + "; " + json.dumps(params, ensure_ascii=False))
   return res
 
-def getMaterial(token, tp):
+def getMaterial(token, tp, offset, count):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/material/batchget_material?access_token='
   method = 'POST'
-  params = {'type' : 'image', 'offset' : 0, 'count' : 1}
+  params = {'type' : tp, 'offset' : offset, 'count' : count}
   try:
     res = send_request(host, path + token.token, method, port=443, params=params)
   except PastDueException:
