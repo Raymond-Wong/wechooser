@@ -50,7 +50,7 @@ def parseXml(request, token):
   return message(dictionary, token)
 
 def message(dictionary, token):
-  utils.sendMsgTo(token, dictionary['FromUserName'], 'text', '客服信息')
+  utils.sendMsgTo(token, dictionary['FromUserName'], 'text', '客服信息1')
   if dictionary['MsgType'] == 'text':
     return utils.replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'服务器捕获消息: %s' % dictionary['Content'])
   if dictionary['MsgType'] != 'image':
@@ -83,7 +83,7 @@ def editMenu(request, token):
     end = now + offset
     end = end.strftime('%Y-%m-%d %H:%M:%S')
     return HttpResponse(Response(m=u"自定义菜单将在 %s 时生效; access_token: %s" % (end, token.token)).toJson())
-  return HttpResponse(Response(c=-1, m=str(res[1])))
+  return HttpResponse(Response(c=-1, m=str(res[1])).toJson())
 
 @csrf_exempt
 @has_token
