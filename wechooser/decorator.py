@@ -20,7 +20,6 @@ def has_token(view):
   tokens = access_token.objects.order_by('-start_time')
   now = datetime.now()
   if len(tokens) <= 0 or now > tokens[0].end_time:
-    logger('DEBUG', '更新数据库中的access token')
     most_recent_token = update_token()
   else:
     most_recent_token = tokens[0]
