@@ -131,7 +131,7 @@ def getMaterialCount(token, tp):
     token = update_token()
     params['access_token'] = token.token
     res = send_request(host, path, method, port=443, params=params)
-  logger('DEBUG', res)
+  return res[1]
   # if res[0]:
   #   return res[1][tp]
   # return -1
