@@ -21,7 +21,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from wechooser.decorator import has_token, is_verified
 from wechooser.utils import Response, PastDueException
-import wechooser.utils as utils
+import wechooser.utils
 
 TOKEN = 'wechooser'
 # 测试平台
@@ -37,8 +37,8 @@ APPSECRET = 'aa06e2a00ce7dcae1d5e975e5217c478'
 @csrf_exempt
 def entrance(request):
   if request.method == 'GET':
-    if utils.verify(TOKEN, request.GET.get('timestamp', None), request.GET.get('nonce', None), request.GET.get('signature', None)):
-      utils.update_token()
+    if wechooser.utils.verify(TOKEN, request.GET.get('timestamp', None), request.GET.get('nonce', None), request.GET.get('signature', None)):
+      wechooser.utils.update_token()
       return HttpResponse(request.GET.get('echostr', None))
     else:
       return HttpResponse('forbiden from browswer')
@@ -50,22 +50,22 @@ def entrance(request):
 @has_token
 def parseXml(request, token):
   root = ET.fromstring(smart_str(request.body))
-  dictionary = utils.xml2dict(root)
+  dictionary = wechooser.utils.xml2dict(root)
   return message(dictionary, token)
 
 def message(dictionary, token):
-  utils.sendMsgTo(token, dictionary['FromUserName'], 'text', '客服信息')
+  wechooser.utils.sendMsgTo(token, dictionary['FromUserName'], 'text', '客服信息')
   if dictionary['MsgType'] == 'text':
-    return utils.replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'服务器捕获消息: %s' % dictionary['Content'])
+    return wechooser.utils.replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'服务器捕获消息: %s' % dictionary['Content'])
   if dictionary['MsgType'] != 'image':
     return HttpResponse('')
   template = u'收到一条图片信息'
   try:
-    template = utils.ReplyTemplate.objects.get(msgType='image').content
+    template = wechooser.utils.ReplyTemplate.objects.get(msgType='image').content
   except Exception as e:
-    utils.logger('ERROR', e)
+    wechooser.utils.logger('ERROR', e)
     pass
-  return utils.replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', template)
+  return wechooser.utils.replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', template)
 
 @csrf_exempt
 @has_token
@@ -77,10 +77,10 @@ def editMenu(request, token):
   method = 'POST'
   params = json.loads(request.POST.get('menu'))
   try:
-    res = utils.send_request(host, path + token.token, method, port=80, params=params)
+    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
   except PastDueException:
-    token = utils.update_token()
-    res = utils.send_request(host, path + token.token, method, port=80, params=params)
+    token = wechooser.utils.update_token()
+    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
   if res[0]:
     now = datetime.now()
     offset = timedelta(seconds=(5 * 60))
@@ -97,5 +97,5 @@ def getMaterial(request, token):
   tp = request.POST.get('type')
   offset = request.POST.get('offset', 0)
   count = request.POST.get('count', 0)
-  return HttpResponse(Response(m=utils.getMaterial(token, tp, offset, count)).toJson())
+  return HttpResponse(Response(m=wechooser.utils.getMaterial(token, tp, offset, count)).toJson())
 
