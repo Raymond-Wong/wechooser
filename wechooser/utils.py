@@ -121,16 +121,18 @@ def sendMsgTo(token, _to, msgType, content):
   return res
 
 def getMaterial(token, tp, offset, count):
-  # host = 'api.weixin.qq.com'
-  # path = '/cgi-bin/material/batchget_material?access_token='
-  # method = 'POST'
-  # params = {'type' : tp, 'offset' : offset, 'count' : count}
-  # try:
-  #   res = send_request(host, path + token.token, method, port=443, params=params)
-  # except PastDueException:
-  #   token = update_token()
-  #   res = send_request(host, path + token.token, method, port=443, params=params)
-  return getMaterialCount(token, tp)
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/material/batchget_material?access_token='
+  method = 'POST'
+  params = {'type' : tp, 'offset' : offset, 'count' : count}
+  try:
+    res = send_request(host, path + token.token, method, port=443, params=params)
+  except PastDueException:
+    token = update_token()
+    res = send_request(host, path + token.token, method, port=443, params=params)
+  if res[0]:
+    return res[1]
+  return {}
 
 def getMaterialCount(token, tp):
   host = 'api.weixin.qq.com'
