@@ -7,4 +7,5 @@ import views
 
 urlpatterns = patterns('',
   url(r'^menu$', views.editMenu, name='editMenu'),
+  url(r'^material$', views.getMaterial, name='getMaterial'),
 )

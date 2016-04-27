@@ -15,6 +15,6 @@ def editMenu(request):
   if request.method == 'GET':
     return render_to_response('customize/editMenu.html')
 
-# def getMaterial(request):
-#   if request.method == 'GET':
-#     return HttpResponse('customize/getMaterial.html')
+def getMaterial(request):
+  if request.method == 'GET':
+    return render_to_response('customize/getMaterial.html')

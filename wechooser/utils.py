@@ -14,8 +14,12 @@ from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http
 
 from wechat.models import access_token
 
+# 测试平台
 APPID = 'wxfd6b432a6e1e6d48'
 APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
+# 公众号
+APPID = 'wxa9e7579ea96fd669'
+APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
 
 # 日志
 def logger(tp, msg):
@@ -78,7 +82,7 @@ def send_request(host, path, method, port=443, params={}):
     return False, res.status
   resDict = json.loads(res.read())
   if 'errcode' in resDict.keys() and resDict['errcode'] == 40001:
-    raise PastDueException
+    raise PastDueException('access token past due')
   if 'errcode' in resDict.keys() and resDict['errcode'] != 0:
     return False, resDict
   return True, resDict
@@ -113,6 +117,9 @@ def sendMsgTo(token, _to, msgType, content):
   # logger('DEBUG', u'发送一条客服消息：' + str(res) + "; " + json.dumps(params, ensure_ascii=False))
   return res
 
+def getMaterial(token, tp):
+  return getMaterialCount(token, tp)
+
 def getMaterialCount(token, tp):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/material/get_materialcount'
@@ -124,9 +131,10 @@ def getMaterialCount(token, tp):
     token = update_token()
     params['access_token'] = token.token
     res = send_request(host, path, method, port=443, params=params)
-  if res[0]:
-    return res[1][tp]
-  return {}
+  logger('DEBUG', res)
+  # if res[0]:
+  #   return res[1][tp]
+  # return -1
 
 # 将xml解析成字典
 def xml2dict(root):

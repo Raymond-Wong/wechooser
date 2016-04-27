@@ -24,10 +24,12 @@ from wechooser.utils import Response, PastDueException
 import wechooser.utils as utils
 
 TOKEN = 'wechooser'
-APPID = 'wxfd6b432a6e1e6d48'
-APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
-# APPID = 'wxa9e7579ea96fd669'
-# APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
+# 测试平台
+# APPID = 'wxfd6b432a6e1e6d48'
+# APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
+# 公众号
+APPID = 'wxa9e7579ea96fd669'
+APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
 
 @csrf_exempt
 def entrance(request):
@@ -83,9 +85,11 @@ def editMenu(request, token):
     return HttpResponse(Response(m=u"自定义菜单将在 %s 时生效; access_token: %s" % (end, token.token)).toJson())
   return HttpResponse(Response(c=-1, m=str(res[1])))
 
-# @csrf_exempt
-# @has_token
-# def getMaterial(request, token):
-#   if request.method == 'GET':
-#     return HttpResponse('forbidden from browser')
+@csrf_exempt
+@has_token
+def getMaterial(request, token):
+  if request.method == 'GET':
+    return HttpResponse('forbidden from browser')
+  tp = request.POST.get('type')
+  return HttpResponse(Response(m=utils.getMaterial(token, tp)).toJson())
 
