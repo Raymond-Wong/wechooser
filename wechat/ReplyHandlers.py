@@ -70,7 +70,8 @@ class TextReplyHandler(ReplyHandler):
     templates = json.loads(rule.templates, object_hook=wechooser.utils.loads)
     # 如果是从该规则中随机选择一个模板进行回复
     # 则直接返回用自动回复接口进行回复
-    if rule.is_reply_all:
+    wechooser.utils.logger('DEBUG', 'is_reply_all: %s' % rule.is_reply_all)
+    if not rule.is_reply_all:
       template = random.choice(templates)
       template.ToUserName = self.params['FromUserName']
       template.FromUserName = self.params['ToUserName']
