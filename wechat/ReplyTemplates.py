@@ -45,7 +45,7 @@ class VideoTemplate(Template):
     self.Description = Description
 
 # 将template转换成使用客服接口发送的xml
-def toReply(template):
+def toReply(_to, _from, template):
   if isinstance(template, ReplyTemplate):
     d = json.loads(json.dumps(template, default=utils.dumps))
   else:
@@ -54,4 +54,6 @@ def toReply(template):
     d.pop('__class__')
   if d.has_key('__module__'):
     d.pop('__module__')
+  d['FromUserName'] = _from
+  d['ToUserName'] = _to
   return ET.tostring(utils.dict2xml(ET.Element('xml'), d))

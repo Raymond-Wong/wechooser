@@ -38,10 +38,10 @@ class SubscribeReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
   def getReply(self):
-    reply = json.loads(Reply.objects.get(reply_type='subscribe').template, object_hook=wechooser.utils.loads)
-    reply.FromUserName = params['ToUserName']
-    reply.ToUserName = params['FromUserName']
-    xml = toReply(reply.update)
+    # reply = json.loads(Reply.objects.get(reply_type='subscribe').template, object_hook=wechooser.utils.loads)
+    # reply.FromUserName = params['ToUserName']
+    # reply.ToUserName = params['FromUserName']
+    xml = toReply(_to=params['FromUserName'], _from=params['fromUserName'], Reply.objects.get(reply_type='subscribe').template)
     logger('DEBUG', 'reply content: ' + ET.tostring(xml, 'utf-8'))
     return HttpResponse(ET.tostring(xml, 'utf-8'))
 
