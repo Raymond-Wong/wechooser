@@ -15,7 +15,7 @@ class ReplyHandler:
 
   @abstractmethod
   def getReply(self):
-    pass
+    return HttpResponse('')
 
 # 未处理类型自动回复
 class DefaultReplyHandler(ReplyHandler):
