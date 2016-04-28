@@ -88,6 +88,7 @@ def sendMsgTo(token, params):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/message/custom/send?access_token='
   method = 'POST'
+  wechooser.utils.logger('DEBUG', '发送一条客服消息')
   try:
     res = wechooser.utils.send_request(host=host, path=path + token.token, method=method, port=443, params=params)
   except PastDueException:
