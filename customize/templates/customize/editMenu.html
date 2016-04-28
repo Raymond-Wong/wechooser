@@ -8,6 +8,11 @@
 </head>
 <body>
   <div id="menuForm">
+    <p>
+      {% for button in menu %}
+      <p>name: {{ button.name }}, type: {{ button.type }}</p>
+      {% endfor %}
+    </p>
   	<p>
       <textarea style="width: 20em; height: 20em;" id="menu">{{ menu }}</textarea>
   	</p>
