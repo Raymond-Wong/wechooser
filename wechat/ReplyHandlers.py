@@ -78,5 +78,7 @@ class TextReplyHandler(ReplyHandler):
     # 如果要将该规则中所有信息都回复，则调用客服接口进行回复
     token = wechat.utils.get_access_token()
     for template in templates:
+      template.ToUserName = self.params['FromUserName']
+      template.FromUserName = self.params['ToUserName']
       wechat.utils.sendMsgTo(token, template.toSend())
     return ''
