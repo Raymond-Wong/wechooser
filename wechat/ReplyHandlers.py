@@ -8,6 +8,8 @@ from abc import ABCMeta, abstractmethod
 from models import Reply
 from ReplyTemplates import *
 
+import wechooser.utils
+
 class ReplyHandler:
   __metaclass__ = ABCMeta
   def __init__(self, params):
@@ -36,7 +38,7 @@ class SubscribeReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
   def getReply(self):
-    reply = json.loads(Reply.objects.get(reply_type='subscribe').template, object_hook=loads)
+    reply = json.loads(Reply.objects.get(reply_type='subscribe').template, object_hook=wechooser.utils.loads)
     reply.FromUserName = params['ToUserName']
     reply.ToUserName = params['FromUserName']
     xml = toReply(reply.update)

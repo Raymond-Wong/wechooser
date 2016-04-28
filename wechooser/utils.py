@@ -69,6 +69,30 @@ def dict2xml(root, d):
     root.text = d
   return root
 
+# 让自定义类能够被json dumps处理的函数
+def dumps(obj):
+  # 把obj转换成dict类型的对象
+  d = { '__class__':obj.__class__.__name__, 
+        '__module__':obj.__module__,
+  }
+  d.update(obj.__dict__)
+  return d
+
+# 让自定义类能够被json loads处理的函数
+def loads(d):
+  if '__class__' in d:
+    class_name = d.pop('__class__')
+    module_name = d.pop('__module__')
+    module = __import__(module_name)
+    class_ = getattr(module,class_name)
+    logger('DEBUG', 'module_name: %s, module: %s, class: %s' % (module_name, module, class))
+    args = dict((key.encode('utf8'),value) for key,value in d.items())
+
+    inst = class_(**args)
+  else:
+    inst = d
+  return inst
+
 class Response:
   def __init__(self, c=0, m="", s="success"):
     self.code = c
