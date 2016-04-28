@@ -80,7 +80,7 @@ def setKeywordReply(request):
       # 如果不存在则新建
       newrule = None
       try:
-        newrule = Rule.objects.get(id=rule['id'], None)
+        newrule = Rule.objects.get(id=rule['id'])
       except Exception:
         newrule = Rule()
       newrule.name = rule['name']
