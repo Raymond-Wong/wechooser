@@ -10,6 +10,7 @@ from models import Reply, KeywordReply
 from ReplyTemplates import *
 
 import wechooser.utils
+import wechat.utils
 
 class ReplyHandler:
   __metaclass__ = ABCMeta
@@ -75,7 +76,7 @@ class TextReplyHandler(ReplyHandler):
       template.FromUserName = self.params['ToUserName']
       return template.toReply()
     # 如果要将该规则中所有信息都回复，则调用客服接口进行回复
-    token = wechooser.utils.get_access_token()
+    token = wechat.utils.get_access_token()
     for template in templates:
       wechooser.utils.sendMsgTo(token, template.toSend())
     return ''
