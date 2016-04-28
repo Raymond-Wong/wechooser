@@ -46,7 +46,7 @@ class VideoTemplate(Template):
 
 # 将template转换成使用客服接口发送的xml
 def toReply(_to, _from, template):
-  if isinstance(template, ReplyTemplate):
+  if isinstance(template, Template):
     d = json.loads(json.dumps(template, default=utils.dumps))
   else:
     d = json.loads(template)
