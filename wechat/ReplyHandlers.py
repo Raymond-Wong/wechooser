@@ -60,7 +60,7 @@ class TextReplyHandler(ReplyHandler):
     rules = []
     for keywordReply in keywordReplys:
       if keywordReply.keyword in self.params['Content']:
-        rules.appendAll(keywordReply.rule_set.all())
+        rules += keywordReply.rule_set.all()
     # 如果没有匹配到任意关键词，则返回默认自动回复
     if len(rules) == 0:
       return DefaultReplyHandler(self.params).getReply()
