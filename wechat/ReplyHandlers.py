@@ -5,7 +5,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 from abc import ABCMeta, abstractmethod
 
-from models import Reply
+# from models import Reply
 from ReplyTemplates import *
 
 class ReplyHandler:
@@ -14,38 +14,37 @@ class ReplyHandler:
     self.params = params
 
   @abstractmethod
-  def getReply():
+  def getReply(self):
     pass
 
 class DefaultReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
-  def getReply():
+  def getReply(self):
     return HttpResponse('')
 
 class ImageReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
-
-  def getReply():
+  def getReply(self):
     return HttpResponse('')
 
 class EventReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
-  def getReply():
+  def getReply(self):
     if self.params['Event'] == 'subscribe':
       return SubscribeReplyHanlder(self.params).getReply()
 
 class TextReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
-  def getReply():
+  def getReply(self):
     return HttpResponse('')
 
 class SubscribeReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
-  def getReply():
+  def getReply(self):
     return HttpResponse(toReply(Reply.objects.get(reply_type='subscribe')))
 

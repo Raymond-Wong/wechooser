@@ -10,7 +10,7 @@ try:
 except ImportError: 
   import xml.etree.ElementTree as ET
 
-# import wechooser.utils as utils
+import wechooser.utils as utils
 
 class Template:
   def __init__(self, MsgType, ToUserName='', FromUserName='', CreateTime=time.time()):
