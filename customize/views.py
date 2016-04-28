@@ -21,7 +21,7 @@ from wechooser.decorator import *
 def editMenu(request, token):
   if request.method == 'GET':
     menu = wechat.utils.getMenu(token)
-    wechooser.utils.logger('DEBUG', menu)
+    wechooser.utils.logger('DEBUG', menu['button'][0]['name'])
     return render_to_response('customize/editMenu.html', {'menu' : menu})
 
 def getMaterial(request):
