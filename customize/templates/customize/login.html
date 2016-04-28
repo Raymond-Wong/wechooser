@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>选择自己</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <link type="text/css" rel="stylesheet" href="/static/customize/css/base.css">
+  <link type="text/css" rel="stylesheet" href="/static/customize/css/alert.css">
+  <link type="text/css" rel="stylesheet" href="/static/customize/css/login.css">
+</head>
+<body>
+  {% include "customize/widgets/topAlert.html" %}
+  <div id="loginContainer">
+    <div id="loginWrapper">
+      <h1 id="title">登录</h1>
+      <input type="text" name="account" class="textInputBox" placeholder="账号" />
+      <input type="password" name="password" class="textInputBox" placeholder="密码" />
+      <div id="btnBox">
+        <input type="submit" id="submitBtn" class="btn" value="登录" />
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="/static/common/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/static/common/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/customize/js/topAlert.js"></script>
+<script type="text/javascript" src="/static/customize/js/login.js"></script>
+</html>

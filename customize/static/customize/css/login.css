@@ -1,0 +1,55 @@
+#loginContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#loginWrapper {
+  width: 394px;
+  height: 320px;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border: 1px solid #09bb07;
+  padding: 53px 79px 0 60px;
+  background-color: white;
+}
+
+#loginWrapper #title {
+  margin: 0 0 14px 4px;
+  font-size: 16px;
+  color: #545454;
+  font-weight: normal;
+}
+
+#loginWrapper .textInputBox {
+  width: 352px;
+  height: 61px;
+  padding: 0 21px;
+  border: 1px solid #ededed;
+}
+
+#loginWrapper .textInputBox:nth-child(3) {
+  border-top: 0;
+}
+
+#loginWrapper .textInputBox:focus {
+  outline: none;
+  border: 1px solid #09bb07;
+}
+
+#btnBox {
+  width: 100%;
+  text-align: center;
+}
+
+#submitBtn {
+  width: 115px;
+  height: 42px;
+  border: 0px;
+  font-size: 14px;
+  margin-top: 43px;
+}
