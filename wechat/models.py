@@ -10,7 +10,7 @@ class access_token(models.Model):
 # 通用自动回复
 class Reply(models.Model):
   # 消息类型（image，text，other）
-  msg_type = models.CharField(max_length=10, blank=False)
+  reply_type = models.CharField(max_length=10, blank=False)
   # 回复内容（json字符串）
   template = models.TextField(blank=False)
 

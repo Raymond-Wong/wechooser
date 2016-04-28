@@ -10,12 +10,9 @@ try:
 except ImportError: 
   import xml.etree.ElementTree as ET
 
-from abc import ABCMeta, abstractmethod
-
-import wechooser.utils as utils
+# import wechooser.utils as utils
 
 class Template:
-  __metaclass__ = ABCMeta
   def __init__(self, MsgType, ToUserName='', FromUserName='', CreateTime=time.time()):
     self.ToUserName = ToUserName
     self.FromUserName = FromUserName
@@ -46,7 +43,10 @@ class VideoTemplate(Template):
 
 # 将template转换成使用客服接口发送的xml
 def toReply(template):
-  d = json.loads(json.dumps(template, default=utils.dumps))
+  if isinstance(template, ReplyTemplate):
+    d = json.loads(json.dumps(template, default=utils.dumps))
+  else:
+    d = json.loads(template)
   if d.has_key('__class__'):
     d.pop('__class__')
   if d.has_key('__module__'):

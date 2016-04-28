@@ -21,8 +21,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 from wechooser.decorator import has_token, is_verified
 from wechooser.utils import Response, PastDueException
+from ReplyHandlers import *
 import wechooser.utils
 import utils
+
+from models import Reply
 
 TOKEN = 'wechooser'
 # 测试平台
@@ -54,9 +57,18 @@ def parseXml(request, token):
   dictionary = wechooser.utils.xml2dict(root)
   return message(dictionary, token)
 
+# 所有信息类型的处理类
+HANDLERS = {
+  'text' : TextReplyHandler,
+  'image' : ImageReplyHandler,
+  'event' : EventReplyHandler,
+}
 def message(dictionary, token):
-  utils.sendMsgTo(token, dictionary['FromUserName'], 'text', '客服信息')
-  return utils.replyMsgTo(dictionary['ToUserName'], dictionary['FromUserName'], str(int(time.time())), 'text', u'服务器捕获消息: %s' % dictionary['Content'])
+  # 如果信息类型不是文字，图片或者事件的话，则用默认处理类进行处理
+  handler = DefaultReplyHandler
+  if dictionary['MsgType'] in HANDLERS.keys():
+    handler = HANDLERS[dictionary['MsgType']]
+  return handler(dictionary).getReply()
 
 @csrf_exempt
 @has_token
@@ -89,4 +101,9 @@ def getMaterial(request, token):
   offset = request.POST.get('offset', 0)
   count = request.POST.get('count', 0)
   return HttpResponse(Response(m=utils.getMaterial(token, tp, offset, count)).toJson())
+
+
+
+
+
 
