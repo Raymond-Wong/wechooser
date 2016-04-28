@@ -145,7 +145,7 @@ def getMenu(token):
     params['access_token'] = token.token
     res = wechooser.utils.send_request(host, path, method, port=443, params=params)
   if res[0]:
-    return res[1]
+    return res[1].encode('utf-8')
   return {}
 
 
