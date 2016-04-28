@@ -5,7 +5,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 from abc import ABCMeta, abstractmethod
 
-# from models import Reply
+from models import Reply
 from ReplyTemplates import *
 import wechooser.utils
 
