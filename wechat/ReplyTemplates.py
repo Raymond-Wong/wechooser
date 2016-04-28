@@ -18,6 +18,9 @@ class Template:
     self.FromUserName = FromUserName
     self.CreateTime = str(int(CreateTime))
     self.MsgType = MsgType
+  def update(self):
+    self.CreateTime = str(int(time.time()))
+    return self
 
 class TextTemplate(Template):
   def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='text', Content=''):

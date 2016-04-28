@@ -39,7 +39,6 @@ def setReply(request):
   msgType = request.POST.get('MsgType')
   if msgType == 'text':
     content = request.POST.get('Content')
-    wechooser.utils.logger('DEBUG', 'content: %s' % content)
     reply.template = json.dumps(TextTemplate(Content=content), default=wechooser.utils.dumps)
   elif msgType == 'image':
     mediaId = request.POST.get('MediaId')
