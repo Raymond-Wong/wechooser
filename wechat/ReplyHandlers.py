@@ -41,7 +41,7 @@ class SubscribeReplyHandler(ReplyHandler):
     # reply = json.loads(Reply.objects.get(reply_type='subscribe').template, object_hook=wechooser.utils.loads)
     # reply.FromUserName = params['ToUserName']
     # reply.ToUserName = params['FromUserName']
-    xml = toReply(_to=self.params['FromUserName'], _from=self.params['fromUserName'], template=Reply.objects.get(reply_type='subscribe').template)
+    xml = toReply(_to=self.params['FromUserName'], _from=self.params['ToUserName'], template=Reply.objects.get(reply_type='subscribe').template)
     logger('DEBUG', 'reply content: ' + xml)
     return HttpResponse(xml)
 
