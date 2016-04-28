@@ -84,8 +84,8 @@ def loads(d):
     class_name = d.pop('__class__')
     module_name = d.pop('__module__')
     module = __import__(module_name)
+    logger('DEBUG', 'module_name: %s, module: %s' % (module_name, module))
     class_ = getattr(module,class_name)
-    logger('DEBUG', 'module_name: %s, module: %s, class: %s' % (module_name, module, class_))
     args = dict((key.encode('utf8'),value) for key,value in d.items())
 
     inst = class_(**args)
