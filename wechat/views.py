@@ -68,7 +68,7 @@ def message(dictionary, token):
   handler = DefaultReplyHandler
   if dictionary['MsgType'] in HANDLERS.keys():
     handler = HANDLERS[dictionary['MsgType']]
-  return handler(dictionary).getReply()
+  return HttpResponse(handler(dictionary).getReply())
 
 @csrf_exempt
 @has_token

@@ -17,21 +17,21 @@ class ReplyHandler:
 
   @abstractmethod
   def getReply(self):
-    return HttpResponse('')
+    return ''
 
 # 未处理类型自动回复
 class DefaultReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
   def getReply(self):
-    return HttpResponse('')
+    return ''
 
 # 图片自动回复
 class ImageReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
   def getReply(self):
-    return HttpResponse('')
+    return ''
 
 # 关注自动回复
 class SubscribeReplyHandler(ReplyHandler):
@@ -43,7 +43,7 @@ class SubscribeReplyHandler(ReplyHandler):
     # reply.ToUserName = params['FromUserName']
     xml = toReply(_to=self.params['FromUserName'], _from=self.params['ToUserName'], template=Reply.objects.get(reply_type='subscribe').template)
     wechooser.utils.logger('DEBUG', 'reply content: ' + xml)
-    return HttpResponse(xml)
+    return xml
 
 # 事件自动回复
 class EventReplyHandler(ReplyHandler):
@@ -58,4 +58,4 @@ class TextReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
   def getReply(self):
-    return HttpResponse('')
+    return ''
