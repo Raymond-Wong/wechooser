@@ -3,9 +3,10 @@ import sys
 sys.path.append('..')
 reload(sys)
 sys.setdefaultencoding('utf-8')
+import random
 from abc import ABCMeta, abstractmethod
 
-from models import Reply
+from models import Reply, KeywordReply
 from ReplyTemplates import *
 
 import wechooser.utils
@@ -55,4 +56,26 @@ class TextReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
   def getReply(self):
+    keywordReplys = KeywordReply.objects.all()
+    rules = []
+    for keywordReply in keywordReplys:
+      if keywordReply.keyword in self.params['Content']:
+        rules.appendAll(keywordReply.rule_set.all())
+    # 如果没有匹配到任意关键词，则返回默认自动回复
+    if len(rules) == 0:
+      return DefaultReplyHandler(self.params).getReply()
+    # 如果匹配到关键词，则随机从所有匹配到的规则中挑选一个进行回复
+    rule = random.choice(rules)
+    templates = json.loads(rule.templates, object_hook=wechooser.utils.loads)
+    # 如果是从该规则中随机选择一个模板进行回复
+    # 则直接返回用自动回复接口进行回复
+    if rule.is_reply_all:
+      template = random.choice(templates)
+      template.ToUserName = self.params['FromUserName']
+      template.FromUserName = self.params['ToUserName']
+      return template.toReply()
+    # 如果要将该规则中所有信息都回复，则调用客服接口进行回复
+    token = wechooser.utils.get_access_token()
+    for template in templates:
+      wechooser.utils.sendMsgTo(token, template.toSend())
     return ''

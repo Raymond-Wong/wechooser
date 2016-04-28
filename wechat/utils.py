@@ -84,14 +84,7 @@ def replyMsgTo(_from, _to, createTime, tp, content):
   return HttpResponse(ET.tostring(wechooser.utils.dict2xml(ET.Element('xml'), resp), 'utf-8'))
 
 # 发送文本信息
-def sendMsgTo(token, _to, msgType, content):
-  params = {
-    "touser" : _to,
-    "msgtype" : msgType,
-    "text" : {
-      "content" : content
-    }
-  }
+def sendMsgTo(token, params):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/message/custom/send?access_token='
   method = 'POST'
@@ -100,7 +93,6 @@ def sendMsgTo(token, _to, msgType, content):
   except PastDueException:
     token = update_token()
     res = wechooser.utils.send_request(host=host, path=path + token.token, method=method, port=443, params=params)
-  # logger('DEBUG', u'发送一条客服消息：' + str(res) + "; " + json.dumps(params, ensure_ascii=False))
   return res
 
 def getMaterial(token, tp, offset, count):
