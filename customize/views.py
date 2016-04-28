@@ -15,7 +15,7 @@ import wechat.utils
 from wechooser.utils import Response
 from wechat.ReplyTemplates import *
 from wechat.models import *
-from wechooser.decorators import *
+from wechooser.decorator import *
 
 @has_token
 def editMenu(request, token):
