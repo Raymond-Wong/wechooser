@@ -42,8 +42,8 @@ class SubscribeReplyHandler(ReplyHandler):
     # reply.FromUserName = params['ToUserName']
     # reply.ToUserName = params['FromUserName']
     xml = toReply(_to=params['FromUserName'], _from=params['fromUserName'], Reply.objects.get(reply_type='subscribe').template)
-    logger('DEBUG', 'reply content: ' + ET.tostring(xml, 'utf-8'))
-    return HttpResponse(ET.tostring(xml, 'utf-8'))
+    logger('DEBUG', 'reply content: ' + xml)
+    return HttpResponse(xml)
 
 # 事件自动回复
 class EventReplyHandler(ReplyHandler):

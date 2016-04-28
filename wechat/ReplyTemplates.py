@@ -56,4 +56,4 @@ def toReply(_to, _from, template):
     d.pop('__module__')
   d['FromUserName'] = _from
   d['ToUserName'] = _to
-  return ET.tostring(utils.dict2xml(ET.Element('xml'), d))
+  return ET.tostring(utils.dict2xml(ET.Element('xml'), d), 'utf-8')
