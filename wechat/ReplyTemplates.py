@@ -70,10 +70,13 @@ def loads(d):
   if '__class__' in d:
     class_name = d.pop('__class__')
     module_name = d.pop('__module__')
+    module_name = 'ReplyTemplates'
     module = __import__(module_name)
     utils.logger('DEBUG', 'module: %s' % module)
+    print 'module_name: %s, module: %s' % (module_name, module)
     class_ = getattr(module,class_name)
     utils.logger('DEBUG', 'class: %s' % class_)
+    # print 'class: %s' % class_
     args = dict((key.encode('utf8'),value) for key,value in d.items())
 
     inst = class_(**args)
