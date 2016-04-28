@@ -38,9 +38,6 @@ class SubscribeReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
   def getReply(self):
-    # reply = json.loads(Reply.objects.get(reply_type='subscribe').template, object_hook=wechooser.utils.loads)
-    # reply.FromUserName = params['ToUserName']
-    # reply.ToUserName = params['FromUserName']
     xml = toReply(_to=self.params['FromUserName'], _from=self.params['ToUserName'], template=Reply.objects.get(reply_type='subscribe').template)
     wechooser.utils.logger('DEBUG', 'reply content: ' + xml)
     return xml

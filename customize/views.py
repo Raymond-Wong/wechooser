@@ -32,8 +32,9 @@ def setReply(request):
     return setKeywordReply(request)
   # 尝试从数据库中获取该类型的模板，如果不存在则新建
   try:
-    reply = json.loads(Reply.objects.get(reply_type=replyType), object_hook=loads)
-  except Exception:
+    reply = json.loads(Reply.objects.get(reply_type=replyType), object_hook=wechooser.utils.loads)
+  except Exception as e:
+    wechooser.utils.logger('ERROR', e)
     reply = Reply()
     reply.reply_type=replyType
   msgType = request.POST.get('MsgType')
