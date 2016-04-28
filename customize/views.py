@@ -39,7 +39,6 @@ def setReply(request):
   try:
     reply = Reply.objects.get(reply_type=replyType)
   except Exception as e:
-    wechooser.utils.logger('ERROR', e)
     reply = Reply()
     reply.reply_type=replyType
   msgType = request.POST.get('MsgType')
