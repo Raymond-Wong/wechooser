@@ -42,7 +42,7 @@ def send_request(host, path, method, port=443, params={}):
   res = client.getresponse()
   if not res.status == 200:
     return False, res.status
-  resDict = json.loads(res.read().decode('utf-8'))
+  resDict = json.loads(res.read())
   if 'errcode' in resDict.keys() and resDict['errcode'] == 40001:
     raise PastDueException('access token past due')
   if 'errcode' in resDict.keys() and resDict['errcode'] != 0:
