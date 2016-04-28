@@ -42,7 +42,7 @@ class SubscribeReplyHandler(ReplyHandler):
     # reply.FromUserName = params['ToUserName']
     # reply.ToUserName = params['FromUserName']
     xml = toReply(_to=self.params['FromUserName'], _from=self.params['ToUserName'], template=Reply.objects.get(reply_type='subscribe').template)
-    logger('DEBUG', 'reply content: ' + xml)
+    wechooser.utils.logger('DEBUG', 'reply content: ' + xml)
     return HttpResponse(xml)
 
 # 事件自动回复
