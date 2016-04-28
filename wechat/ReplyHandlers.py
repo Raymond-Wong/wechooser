@@ -15,30 +15,30 @@ class ReplyHandler:
   def __init__(self, params):
     self.params = params
 
-  @abstractmethod
   def getReply(self):
-    return ''
+    reply = Reply.objects.get(reply_type=self.reply_type).template
+    reply = json.loads(reply, object_hook=wechooser.utils.loads)
+    reply.FromUserName = self.params['ToUserName']
+    reply.ToUserName = self.params['FromUserName']
+    return reply.toReply()
 
 # 未处理类型自动回复
 class DefaultReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
-  def getReply(self):
-    return toReply(_to=self.params['FromUserName'], _from=self.params['ToUserName'], template=Reply.objects.get(reply_type='default').template)
+    self.reply_type = 'default'
 
 # 图片自动回复
 class ImageReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
-  def getReply(self):
-    return toReply(_to=self.params['FromUserName'], _from=self.params['ToUserName'], template=Reply.objects.get(reply_type='image').template)
+    self.reply_type = 'image'
 
 # 关注自动回复
 class SubscribeReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
-  def getReply(self):
-    return toReply(_to=self.params['FromUserName'], _from=self.params['ToUserName'], template=Reply.objects.get(reply_type='subscribe').template)
+    self.reply_type = 'subscribe'
 
 # 事件自动回复
 class EventReplyHandler(ReplyHandler):

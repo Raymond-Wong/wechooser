@@ -61,4 +61,42 @@ def setReply(request):
 
 @csrf_exempt
 def setKeywordReply(request):
-  pass
+  if request.method == 'GET':
+    raise Http404
+  # 获取关键词列表
+  params = request.POST.get('Content')
+  for kw in params.keys():
+    # 检查关键词是否已经存在数据库中
+    # 如果不存在则创建
+    keyword = None
+    try:
+      keyword = KeywordReply.objects.get(keyword=kw)
+    except Exception:
+      keyword = KeywordReply()
+    keyword.save()
+    # 遍历该关键词的所有规则
+    for rule in params[kw]:
+      # 如果该规则已经存在数据库中，则更新
+      # 如果不存在则新建
+      newrule = None
+      try:
+        newrule = Rule.objects.get(id=rule['id'], None)
+      except Exception:
+        newrule = Rule()
+      newrule.name = rule['name']
+      newrule.is_reply_all = rule['is_reply_all']
+      templates = []
+      # 遍历所有返回模板
+      for template in rule['templates']:
+        if template['MsgType'] == 'text':
+          templates.append(TextTemplate(Content=template['Content']))
+        elif template['MsgType'] == 'image':
+          templates.append(ImageTemplate(MediaId=template['MediaId']))
+        elif template['MsgType'] == 'voice':
+          templates.append(VoiceTemplate(MediaId=template['MediaId']))
+        elif template['MsgType'] == 'video':
+          templates.append(VideoTemplate(MediaId=template['MediaId'], Title=template['Title'], Description=template['Description']))
+      newrule.templates = json.dumps(templates, default=wechooser.utils.dumps)
+      newrule.reply = keyword
+      newrule.save()
+  return HttpResponse(Response().toJson())
