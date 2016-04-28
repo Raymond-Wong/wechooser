@@ -132,6 +132,23 @@ def getMaterialCount(token, tp):
     return res[1][tp + '_count']
   return -1
 
+# 获取菜单接口
+def getMenu(token):
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/menu/get'
+  method = 'GET'
+  params = {'access_token' : token.token}
+  try:
+    res = wechooser.utils.send_request(host, path, method, port=443, params=params)
+  except PastDueException:
+    token = update_token()
+    params['access_token'] = token.token
+    res = wechooser.utils.send_request(host, path, method, port=443, params=params)
+  if res[0]:
+    return res[1]
+  return {}
+
+
 # 验证信息是否从微信发送过来
 def verify(token, timestamp, nonce, signature):
   tmpList = [token, timestamp, nonce]

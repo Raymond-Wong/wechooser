@@ -10,14 +10,17 @@ from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 
 import wechooser.utils
+import wechat.utils
 
 from wechooser.utils import Response
 from wechat.ReplyTemplates import *
 from wechat.models import *
+from wechooser.decorators import *
 
-def editMenu(request):
+@has_token
+def editMenu(request, token):
   if request.method == 'GET':
-    return render_to_response('customize/editMenu.html')
+    return render_to_response('customize/editMenu.html', {'menu' : wechat.utils.getMenu(token)})
 
 def getMaterial(request):
   if request.method == 'GET':
