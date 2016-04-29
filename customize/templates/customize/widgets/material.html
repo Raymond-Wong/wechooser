@@ -1,0 +1,41 @@
+<div id="materialWrapper">
+  <ul id="materialNav">
+  	<li name="text" class="active left" target="materialTextWrapper">文字</li>
+  	<li name="image" class="left" target="materialImageWrapper">图片</li>
+  	<li name="voice" class="left" target="materialVoiceWrapper">语音</li>
+  	<li name="video" class="left" target="materialVideoWrapper">视频</li>
+  	<li name="news" class="left" target="materialNewsWrapper">图文</li>
+  </ul>
+  <!-- 自动回复为文本时的素材编辑框 -->
+  <div id="materialTextWrapper" class="materialPanel active">
+    <div id="materialText" contenteditable="true"></div>
+    <div id="materialFoot">
+  	  <div id="materialFace" class="left">
+  	    <img src="/static/customize/icon/face.png" />
+  	  </div>
+  	  <div id="materialRemain" class="right">
+  	    还可以输入<font>600</font>字
+  	  </div>
+    </div>
+	{% include 'customize/widgets/face.html' %}
+  </div>
+  <!-- 自动回复内容为图片时的素材编辑框 -->
+  <div id="materialImageWrapper" class="materialPanel">
+    <div id="chooseImageBtn" class="showMaterialBoxBtn" type="Image">
+      从素材库中选择图片
+    </div>
+    <div id="materialImage"></div>
+  </div>
+  <!-- 自动回复内容为语音时的素材编辑框 -->
+  <div id="materialVoiceWrapper" class="materialPanel">
+    <h1>语音信息</h1>
+  </div>
+  <!-- 自动回复内容为视频时的素材编辑框 -->
+  <div id="materialVideoWrapper" class="materialPanel">
+    <h1>视频信息</h1>
+  </div>
+  <!-- 自动回复内容为图文时的素材编辑框 -->
+  <div id="materialNewsWrapper" class="materialPanel">
+    <h1>图文信息</h1>
+  </div>
+</div>

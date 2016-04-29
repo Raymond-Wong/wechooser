@@ -1,0 +1,21 @@
+{% extends 'customize/widgets/base.html' %}
+
+{% block style %}
+<link type="text/css" rel="stylesheet" href="/static/customize/css/reply.css">
+<link type="text/css" rel="stylesheet" href="/static/customize/css/material.css">
+{% endblock %}
+
+{% block page %}
+<h1 id="replyHead">{% block replyHead %}{% endblock %}</h1>
+{% include 'customize/widgets/material.html' %}
+<div id="btnWrapper">
+  <div class="btn left" id="saveBtn">保存</div>
+  <div class="btn wait left" id="deleteBtn">删除回复</div>
+  <div class="clear"></div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="/static/customize/js/material.js"></script>
+<script type="text/javascript" src="/static/customize/js/reply.js"></script>
+{% endblock %}

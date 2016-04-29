@@ -1,0 +1,30 @@
+<div id="navBox">
+  <div id="navHead">功能</div>
+  <ul id="nav">
+  	{% ifequal active "subscribe" %}
+  	  <li class="active"><a href="#">被添加回复</a></li>
+  	{% else %}
+  	  <li><a href="/reply?type=subscribe">被添加回复</a></li>
+  	{% endifequal %}
+  	{% ifequal active "default" %}
+  	  <li class="active"><a href="#">消息自动回复</a></li>
+  	{% else %}
+  	  <li><a href="/reply?type=default">消息自动回复</a></li>
+  	{% endifequal %}
+  	{% ifequal active "image" %}
+  	  <li class="active"><a href="#">图片自动回复</a></li>
+  	{% else %}
+  	  <li><a href="/reply?type=image">图片自动回复</a></li>
+  	{% endifequal %}
+  	{% ifequal active "keyword" %}
+  	  <li class="active"><a href="#">关键词自动回复</a></li>
+  	{% else %}
+  	  <li><a href="/reply?type=keyword">关键词自动回复</a></li>
+  	{% endifequal %}
+  	{% ifequal active "menu" %}
+  	  <li class="active"><a href="#">自定义菜单</a></li>
+  	{% else %}
+  	  <li><a href="/menu">自定义菜单</a></li>
+  	{% endifequal %}
+  </ul>
+</div>

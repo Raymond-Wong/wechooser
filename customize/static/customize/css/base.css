@@ -3,8 +3,7 @@ html {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #b6b6b6;
-  font-size: 12px;
+  background-color: #d9d9d9;
 }
 
 html * {
@@ -16,6 +15,8 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  font-size: 12px;
+  background-color: inherit;
 }
 
 .vertical_outer {
@@ -45,4 +46,72 @@ body {
   border-radius: 5px;
   color: white;
   cursor: pointer;
+}
+
+.btn.wait {
+  background-color: white;
+  color: #5b5b5b;
+  border: 1px solid #d9d9d9;
+}
+
+.btn:hover {
+  font-weight: bold;
+  color: white;
+}
+
+.btn.wait:hover {
+  color: #5b5b5b;
+}
+
+#pageHeadWrapper {
+  width: 100%;
+  min-width: 1024px;
+  height: 64px;
+  font-size: 20px;
+  color: #5b5b5b;
+  background-color: white;
+}
+
+#pageHead {
+  width: 1024px;
+  height: 64px;
+  line-height: 20px;
+  margin: auto;
+  padding: 24px 98px 20px 95px;
+}
+
+#logoutBtn, #logoutBtn:hover, #logoutBtn:visited, #logoutBtn:active {
+  font-size: 14px;
+  color: #5b5b5b;
+  text-decoration: none;
+}
+
+#logoutBtn:hover {
+  text-decoration: underline;
+}
+
+#pageWrapper {
+  width: 1024px;
+  height: auto;
+  margin: auto;
+  padding: 48px 67px 48px 57px;
+}
+
+#pageBox {
+  width: 100%;
+  height: 621px;
+  background-color: white;
+  border: 1px solid #b6b6b6;
+}
+
+#navWrapper {
+  width: 213px;
+  height: 100%;
+  border-right: 1px solid #b6b6b6;
+}
+
+#contentWrapper {
+  width: 685px;
+  height: 100%;
+  padding: 0px 54px 0px 31px;
 }

@@ -3,13 +3,13 @@ $(document).ready(function() {
   	var url="/login";
   	var account = $('input[name="account"]').val();
   	if (account == '') {
-  	  topAlert("账号不能为空")
+  	  topAlert("账号不能为空", 'error')
   	  return;
   	}
   	console.log("account: " + account);
   	var password = $('input[name="password"]').val();
   	if (password == '') {
-  	  topAlert("密码不能为空")
+  	  topAlert("密码不能为空", 'error')
   	  return;
   	}
   	console.log("password: " + password);
@@ -19,7 +19,7 @@ $(document).ready(function() {
   	  if (res['code'] == '0') {
   	  	window.location.href=res['msg'];
   	  } else {
-  	  	topAlert(res['msg']);
+  	  	topAlert(res['msg'], 'error');
   	  }
   	});
   });

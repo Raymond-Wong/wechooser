@@ -43,9 +43,10 @@ def getMaterial(request):
 
 @csrf_exempt
 def setReply(request):
+  replyType = request.GET.get('type', 'subscribe')
   if request.method == 'GET':
-    return render_to_response('customize/setReply.html')
-  replyType = request.GET.get('type')
+    wechooser.utils.logger('DEBUG', '返回模板: %s.html' % replyType)
+    return render_to_response('customize/%s.html' % replyType, {'active' : replyType})
   if replyType == 'keyword':
     return setKeywordReply(request)
   # 尝试从数据库中获取该类型的模板，如果不存在则新建
@@ -71,7 +72,7 @@ def setReply(request):
     thumbMediaId = request.POST.get('ThumbMediaId')
     reply.template = json.dumps(VideoTemplate(MediaId=mediaId, Title=title, Description=description, ThumbMediaId=thumbMediaId), default=wechooser.utils.dumps)
   reply.save()
-  return HttpResponse(Response(m="replyType=%s, msgType=%s" % (replyType, msgType)).toJson())
+  return HttpResponse(Response(m="保存成功").toJson(), content_type='application/json')
 
 @csrf_exempt
 def setKeywordReply(request):
@@ -113,4 +114,4 @@ def setKeywordReply(request):
       newrule.templates = json.dumps(templates, default=wechooser.utils.dumps)
       newrule.reply = keyword
       newrule.save()
-  return HttpResponse(Response().toJson())
+  return HttpResponse(Response().toJson(), content_type='application/json')

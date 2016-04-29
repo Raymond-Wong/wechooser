@@ -8,7 +8,7 @@ import views
 urlpatterns = patterns('',
   url(r'^menu$', views.editMenu, name='editMenu'),
   url(r'^material$', views.getMaterial, name='getMaterial'),
-  url(r'^reply$', views.setReply, name='setReply'),
 
   url(r'^login$', views.login, name='login'),
+  url(r'^reply$', views.setReply, name='setReply'),
 )
