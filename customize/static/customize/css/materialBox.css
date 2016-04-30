@@ -77,7 +77,6 @@
 }
 
 .materialBoxInner {
-  width: 750px;
   height: 440px;
   color: #5b5b5b;
 }
@@ -94,8 +93,7 @@
 }
 
 .materialBoxContent {
-  /*width: 750px;*/
-  width: 100%;
+  width: 750px;
   height: 374px;
   overflow: hidden;
   background-color: yellow;
