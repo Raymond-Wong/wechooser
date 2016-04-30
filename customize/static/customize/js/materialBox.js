@@ -32,6 +32,7 @@ var toPageAction = function() {
     }
     if (type == 'materialImageBox') {
       $($(this).parents('.materialBox')[0]).attr('curPage', page);
+      $($(this).siblings('.toPage')[0]).val(page);
       updateMaterialImageBox(10 * (page - 1), 10);
     };
   });
