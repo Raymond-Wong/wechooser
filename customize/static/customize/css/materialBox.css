@@ -179,10 +179,6 @@
   color: #b5b5b5;
 }
 
-#materialVoiceBox .materialBoxInner, #materialVoiceBox .materialBoxContent #materialVoiceBox .materialBoxPageWrapper {
-  width: 100%;
-}
-
- {
+#materialVoiceBox .materialBoxInner, #materialVoiceBox .materialBoxContent, #materialVoiceBox .materialBoxPageWrapper {
   width: 100%;
 }
