@@ -116,7 +116,7 @@
 }
 
 .materialBoxPageWrapper .toPageBtn {
-  margin-left: 1em;
+  margin: 0 1em;
 }
 
 .materialBoxPageWrapper .toPageBtn:hover {
