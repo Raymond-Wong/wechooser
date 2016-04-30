@@ -16,9 +16,9 @@ var bindMaterialImageBoxAction = function() {
   deleteImageAction();
 }
 
+// 跳转页码
 var toPageAction = function() {
   $('.materialBoxPageWrapper .toPageBtn').click(function() {
-    console.log(page, type, totalPage, curPage);
     var page = parseInt($($(this).siblings('.toPage')[0]).val());
     var type = $($(this).parents('.materialBox')[0]).attr('id');
     var totalPage = parseInt($($(this).siblings('.totalPage')[0]).text());
@@ -40,6 +40,7 @@ var toPageAction = function() {
   });
 }
 
+// 更新图片素材框中的图片
 var updateMaterialImageBox = function(offset, count, callback) {
   var params = {'type' : 'image', 'count' : count, 'offset' : offset};
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
@@ -64,6 +65,7 @@ var updateMaterialImageBox = function(offset, count, callback) {
   }); 
 }
 
+// 显示素材框
 var showMaterialBoxAction = function() {
   var btns = $('.showMaterialBoxBtn');
   btns.click(function() {
@@ -74,12 +76,14 @@ var showMaterialBoxAction = function() {
   });
 }
 
+// 隐藏素材框
 var hideMaterialBoxAction = function() {
   $('.hideMaterialBoxBtn').click(function() {
   	$('#materialBoxWrapper').fadeOut();
   });
 }
 
+// 选择图片
 var chooseImageAction = function() {
   $(document).delegate('.imageItem', 'click', function() {
     var oldChoosenImage = $('.imageItem.choosen');
@@ -95,6 +99,7 @@ var chooseImageAction = function() {
   });
 }
 
+// 删除已选择的图片
 var deleteImageAction = function() {
   $(document).delegate('#materialImage a', 'click', function() {
     $('#materialImage').html('');
@@ -107,6 +112,7 @@ var deleteImageAction = function() {
   });
 }
 
+// 当素材框中是图片素材框时，将内容提取出来
 var saveImage = function() {
   var choosenImage = $('.imageItem.choosen');
   var imgUrl = $(choosenImage.find('img')[0]).attr('src');
@@ -119,6 +125,7 @@ var saveImage = function() {
   $('#materialBoxWrapper').fadeOut();
 }
 
+// 点击素材框中的保存按钮时，根据当前素材框显示的信息类别不同，选择不同的handler来提取素材狂内容并隐藏素材狂
 var saveAction = function() {
   var handlers = {
   	'materialImageBox' : saveImage,
