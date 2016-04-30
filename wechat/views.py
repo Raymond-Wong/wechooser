@@ -106,5 +106,4 @@ def getMaterial(request, token):
     materials = utils.imgUrl2base64(token, materials)
   if tp == 'voice':
     materials = utils.getVoiceLen(token, materials)
-    wechooser.utils.logger('DEBUG', materials)
   return HttpResponse(Response(m=materials).toJson(), content_type='application/json')
