@@ -28,6 +28,7 @@ var toPageAction = function() {
       page += 1
     }
     if (page > totalPage) {
+      topAlert('目标页数不合法', 'error');
       return false;
     }
     if (type == 'materialImageBox') {
