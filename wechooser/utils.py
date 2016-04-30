@@ -117,22 +117,22 @@ class PastDueException(Exception):
     return repr(self.msg)
 
 def prettyTime(sec):
-  ret = ''
-  if sec <= 60:
-    if sec >= 10:
-      return "00:" + str(sec)
-    else:
-      return "00:0" + str(sec)
-  sec = sec % 60
-  mini = int(sec / 60)
-  if mini <= 60:
-    if mini >= 10:
-      mini = str(mini)
-    else:
-      mini = "0" + str(mini)
-    if sec >= 10:
-      sec = str(sec)
-    else:
-      sec = "0" + str(sec)
-    return mini + ":" + sec
-  return None
+  # ret = ''
+  # if sec <= 60:
+  #   if sec >= 10:
+  #     return "00:" + str(sec)
+  #   else:
+  #     return "00:0" + str(sec)
+  # sec = sec % 60
+  # mini = int(sec / 60)
+  # if mini <= 60:
+  #   if mini >= 10:
+  #     mini = str(mini)
+  #   else:
+  #     mini = "0" + str(mini)
+  #   if sec >= 10:
+  #     sec = str(sec)
+  #   else:
+  #     sec = "0" + str(sec)
+  #   return mini + ":" + sec
+  return "00:60"
