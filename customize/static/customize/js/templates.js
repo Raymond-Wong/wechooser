@@ -4,3 +4,5 @@ var IMG_ITEM = '<div class="imageItem left" mediaId="">' +
   	  	       '  </div>' +
   	  	       '  <div class="imageName">图片1.jpg</div>' +
   	  	       '</div>';
+
+var LOADING_ELEMENT = '<div class="loadingElement">正在加载素材...<div>';

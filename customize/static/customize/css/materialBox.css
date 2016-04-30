@@ -171,3 +171,8 @@
   font-size: 50px;
   text-align: center;
 }
+
+.loadingElement {
+  padding: 2em;
+  font-size: 2em;
+}
