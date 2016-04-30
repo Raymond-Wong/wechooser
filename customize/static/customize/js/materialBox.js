@@ -42,7 +42,7 @@ var updateMaterialImageBox = function(offset, count, callback) {
   var params = {'type' : 'image', 'count' : count, 'offset' : offset};
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
   // 清空容器中的东西
-  box.html('');
+  box.html('<p>正在加载素材...</p>');
   $.post('/wechat/getMaterial', params, function(res) {
     var images = res['msg']['item'];
     var totalCount = res['msg']['total_count'];
