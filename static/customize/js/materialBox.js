@@ -21,7 +21,6 @@ var updateMaterialImageBox = function(offset, count) {
   // 清空容器中的东西
   box.html('');
   $.post('/wechat/getMaterial', params, function(res) {
-    console.log(res);
     var images = res['msg']['item'];
     for (var i = 0; i < images.length; i++) {
       var image = images[i];
@@ -74,7 +73,7 @@ var deleteImageAction = function() {
     $('#materialImage').hide();
     $('#chooseImageBtn').show();
     var choosenImage = $('.imageItem.choosen');
-    var choosenFlag = $(oldChoosenImage.find('.choosenFlag')[0]);
+    var choosenFlag = $(choosenImage.find('.choosenFlag')[0]);
     choosenImage.removeClass('.choosen');
     choosenFlag.remove();
   });
