@@ -20,7 +20,7 @@ var toPageAction = function() {
   $('.materialBoxPageWrapper .toPageBtn').click(function() {
     var page = $($(this).siblings('.toPage')[0]).val();
     var type = $($(this).parents('.materialBox')[0]).attr('id');
-    var totalPage = parseInt($($(this).sibilings('.totalPage')[0]).text());
+    var totalPage = parseInt($($(this).siblings('.totalPage')[0]).text());
     var curPage = parseInt($($(this).parents('.materialBox')[0]).attr('curPage'));
     curPage = curPage ? curPage : 1;
     console.log(page, type, totalPage, curPage);
