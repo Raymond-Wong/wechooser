@@ -84,13 +84,12 @@ var updateMaterialVoiceBox = function(offset, count, callback) {
     $($('#materialVoiceBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 5));
     for (var i = 0; i < voices.length; i++) {
       var voice = voices[i];
-      console.log(voice);
       var name = voice['name'];
       var mediaId = voice['media_id'];
       var len = voice['length'];
       newVoiceItem = $(VOICE_ITEM);
-      newVoiceItem.children('voiceName').text(name);
-      newVoiceItem.children('voiceLen').text(len);
+      newVoiceItem.children('.voiceName').text(name);
+      newVoiceItem.children('.voiceLen').text(len);
       newVoiceItem.attr('mediaId', mediaId);
       box.append(newVoiceItem);
     }
