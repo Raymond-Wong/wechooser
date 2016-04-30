@@ -31,7 +31,8 @@
 
 .materialBox {
   width: 903px;
-  height: 497px;
+  height: auto;
+  /*height: 497px;*/
   display: none;
 }
 
@@ -181,4 +182,14 @@
 
 #materialVoiceBox .materialBoxInner, #materialVoiceBox .materialBoxContent, #materialVoiceBox .materialBoxPageWrapper {
   width: 100%;
+}
+
+#materialVoiceBox .materialBoxInner {
+  height: 436px;
+}
+
+#materialVoiceBox .voiceItem {
+  width: 100%;
+  height: 20%;
+  border-top: 1px solid #d9d9d9;
 }
