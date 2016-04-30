@@ -44,6 +44,8 @@ var updateMaterialImageBox = function(offset, count, callback) {
   box.html('');
   $.post('/wechat/getMaterial', params, function(res) {
     var images = res['msg']['item'];
+    var totalCount = res['msg']['total_count'];
+    $($('#materialImageBox').find('.totalPage')[0]).text(parseInt(totalCount / 2));
     for (var i = 0; i < images.length; i++) {
       var image = images[i];
       var url = image['url'];
