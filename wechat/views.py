@@ -105,10 +105,4 @@ def getMaterial(request, token):
   if tp == 'image':
     materials = utils.imgUrl2base64(token, materials)
   wechooser.utils.logger('DEBUG', materials)
-  return HttpResponse(Response(m=materials.toJson(), content_type='application/json')
-
-
-
-
-
-
+  return HttpResponse(Response(m=materials.toJson(), content_type='application/json'))
