@@ -5,6 +5,7 @@ $(document).ready(function() {
 var bindMaterialBoxAction = function() {
   showMaterialBoxAction();
   hideMaterialBoxAction();
+  toPageAction();
   saveAction();
   bindMaterialImageBoxAction();
 }
@@ -15,7 +16,26 @@ var bindMaterialImageBoxAction = function() {
   deleteImageAction();
 }
 
-var updateMaterialImageBox = function(offset, count) {
+var toPageAction = function() {
+  $('.materialBoxPageWrapper .toPage').click(function() {
+    var page = $($(this).sibilings('.toPage')[0]).val();
+    var type = $($(this).parents('.materialBox')[0]).attr('id');
+    var totalPage = parseInt($($(this).sibilings('.totalPage')[0]).text());
+    var curPage = parseInt($($(this).parents('.materialBox')[0]).attr('curPage'));
+    if (page == curPage) {
+      page += 1
+    }
+    if (page > totalPage) {
+      return false;
+    }
+    if (type == 'materialImageBox') {
+      $($(this).parents('.materialBox')[0]).attr('curPage', page);
+      updateMaterialImageBox(10 * (page - 1), 10);
+    };
+  });
+}
+
+var updateMaterialImageBox = function(offset, count, callback) {
   var params = {'type' : 'image', 'count' : count, 'offset' : offset};
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
   // 清空容器中的东西
