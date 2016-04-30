@@ -182,3 +182,7 @@
 #materialVoiceBox .materialBoxInner {
   width: 100%;
 }
+
+#materialVoiceBox .materialBoxPageWrapper {
+  width: 100%;
+}
