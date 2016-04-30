@@ -1,0 +1,42 @@
+#navBox {
+  width: 100%;
+  height: auto;
+  font-size: 14px;
+}
+
+#navHead {
+  font-size: 16px;
+  color: #b6b6b6;
+  padding: 13px 0px 17px 73px;
+  border-bottom: 1px solid #9d9d9d;
+}
+
+#nav {
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  color: white;
+}
+
+#nav li {
+  height: 40px;
+  line-height: 40px;
+  padding-left: 71px;
+  background-color: white;
+  margin-bottom: 8px;
+}
+
+#nav li a, #nav li a:hover, #nav li a:active, #nav li a:visited {
+  text-decoration: none;
+  color: #5b5b5b;
+}
+
+#nav li.active, #nav li:hover {
+  background-color: #09bb07;
+}
+
+#nav li.active a, #nav li:hover a {
+  color: white;
+}

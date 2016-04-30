@@ -1,0 +1,14 @@
+#alertBox {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: -3em;
+  margin: auto;
+  background-color: #09bb07;
+  width: auto;
+  z-index: 1000;
+  text-align: center;
+  color: white;
+  height: 3em;
+  line-height: 3em;
+}

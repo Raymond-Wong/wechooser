@@ -100,7 +100,7 @@ def getMaterial(request, token):
   tp = request.POST.get('type')
   offset = request.POST.get('offset', 0)
   count = request.POST.get('count', 0)
-  return HttpResponse(Response(m=utils.getMaterial(token, tp, offset, count)).toJson())
+  return HttpResponse(Response(m=utils.getMaterial(token, tp, offset, count)).toJson(), content_type='application/json')
 
 
 
