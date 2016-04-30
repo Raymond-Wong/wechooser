@@ -15,7 +15,7 @@ var bindMaterialImageBoxAction = function() {
   deleteImageAction();
 }
 
-var initMaterialImageBox = function(offset, count) {
+var updateMaterialImageBox = function(offset, count) {
   var params = {'type' : 'image', 'count' : count, 'offset' : offset};
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
   // 清空容器中的东西
