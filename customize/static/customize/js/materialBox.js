@@ -27,7 +27,7 @@ var toPageAction = function() {
     if (page == curPage) {
       page += 1
     }
-    if (page > totalPage) {
+    if (page > totalPage || page <= 0) {
       topAlert('目标页数不合法', 'error');
       return false;
     }
