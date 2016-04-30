@@ -74,7 +74,7 @@ var deleteImageAction = function() {
     $('#chooseImageBtn').show();
     var choosenImage = $('.imageItem.choosen');
     var choosenFlag = $(choosenImage.find('.choosenFlag')[0]);
-    choosenImage.removeClass('.choosen');
+    choosenImage.removeClass('choosen');
     choosenFlag.remove();
   });
 }
