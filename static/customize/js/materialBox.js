@@ -21,6 +21,7 @@ var updateMaterialImageBox = function(offset, count) {
   // 清空容器中的东西
   box.html('');
   $.post('/wechat/getMaterial', params, function(res) {
+    console.log(res);
     var images = res['msg']['item'];
     for (var i = 0; i < images.length; i++) {
       var image = images[i];
@@ -28,7 +29,6 @@ var updateMaterialImageBox = function(offset, count) {
       var mediaId = image['media_id'];
       var name = image['name'];
       var newImgItem = $(IMG_ITEM);
-      console.log(name, url);
       newImgItem.attr('mediaId', mediaId);
       $(newImgItem.find('img')[0]).attr('src', url);
       newImgItem.children('.imageName').html(name);
