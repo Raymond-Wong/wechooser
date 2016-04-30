@@ -104,6 +104,7 @@ def getMaterial(request, token):
   # 如果是获取图片素材，则要将图片的url转换成base64
   if tp == 'image':
     materials = utils.imgUrl2base64(token, materials)
+  wechooser.utils.logger('DEBUG', materials)
   return HttpResponse(Response(m=materials.toJson(), content_type='application/json')
 
 
