@@ -93,6 +93,7 @@ var updateMaterialVoiceBox = function(offset, count, callback) {
       newVoiceItem.attr('mediaId', mediaId);
       box.append(newVoiceItem);
     }
+    box.children('.loadingElement').remove();
   });
 }
 
