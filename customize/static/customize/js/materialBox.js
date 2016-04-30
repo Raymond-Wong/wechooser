@@ -17,17 +17,29 @@ var bindMaterialImageBoxAction = function() {
 }
 
 var toPageAction = function() {
-  $('.materialBoxPageWrapper .toPageBtn').click(function() {
-    var page = parseInt($($(this).siblings('.toPage')[0]).val());
-    var type = $($(this).parents('.materialBox')[0]).attr('id');
-    var totalPage = parseInt($($(this).siblings('.totalPage')[0]).text());
-    var curPage = parseInt($($(this).parents('.materialBox')[0]).attr('curPage'));
-    curPage = curPage ? curPage : 1;
+  var page = parseInt($($(this).siblings('.toPage')[0]).val());
+  var type = $($(this).parents('.materialBox')[0]).attr('id');
+  var totalPage = parseInt($($(this).siblings('.totalPage')[0]).text());
+  var curPage = parseInt($($(this).parents('.materialBox')[0]).attr('curPage'));
+  curPage = curPage ? curPage : 1;
+  $('.materialBoxPageWrapper .nextPageBtn').click(function() {
     console.log(page, type, totalPage, curPage);
     if (page == curPage) {
       page += 1
     }
     if (page > totalPage || page <= 0) {
+      topAlert('目标页数不合法', 'error');
+      return false;
+    }
+    if (type == 'materialImageBox') {
+      $($(this).parents('.materialBox')[0]).attr('curPage', page);
+      $($(this).siblings('.toPage')[0]).val(page);
+      updateMaterialImageBox(10 * (page - 1), 10);
+    };
+  });
+  $('.materialBoxPageWrapper .prePageBtn').click(function() {
+    page = curPage - 1;
+    if (page <= 0) {
       topAlert('目标页数不合法', 'error');
       return false;
     }
