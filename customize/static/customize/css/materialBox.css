@@ -104,13 +104,16 @@
 .materialBoxPageWrapper {
   width: 750px;
   height: 66px;
+  line-height: 66px;
   background-color: lightpink;
+  padding-right: 30px;
+  text-align: right;
 }
 
 .imageItem {
   width: 120px;
   height: 155px;
-  margin: 16px 8px;
+  margin: 16px 9px;
   border: 1px solid #d9d9d9;
 }
 
