@@ -8,6 +8,7 @@ import urllib
 import json
 import hashlib
 import time
+import base64
 try: 
   import xml.etree.cElementTree as ET
 except ImportError: 
@@ -150,5 +151,27 @@ def verify(token, timestamp, nonce, signature):
   tmpStr = hashlib.sha1(tmpStr).hexdigest()
   return tmpStr == signature
 
+# 将素材中的图片url转换成base64编码
+def imgUrl2base64(token, materials):
+  for count, item in enumerate(materials['item']):
+    mediaId = item['media_id']
+    media = getMaterialContent(token, mediaId)
+    materials['item'][count]['url'] = base64.b64encode(media)
+  return materials
+
+# 获取永久素材
+def getMaterialContent(token, mediaId):
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/material/get_material?access_token='
+  method = 'POST'
+  params = {'media_id' : mediaId}
+  try:
+    res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=False)
+  except PastDueException:
+    token = update_token()
+    res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=False)
+  if res[0]:
+    return res[1]
+  return None
 
 

@@ -100,7 +100,11 @@ def getMaterial(request, token):
   tp = request.POST.get('type')
   offset = request.POST.get('offset', 0)
   count = request.POST.get('count', 0)
-  return HttpResponse(Response(m=utils.getMaterial(token, tp, offset, count)).toJson(), content_type='application/json')
+  materials = utils.getMaterial(token, tp, offset, count)
+  # 如果是获取图片素材，则要将图片的url转换成base64
+  if tp == 'image':
+    materials = utils.imgUrl2base64(token, materials)
+  return HttpResponse(Response(m=materials.toJson(), content_type='application/json')
 
 
 
