@@ -178,3 +178,7 @@
   font-size: 2em;
   color: #b5b5b5;
 }
+
+#materialVoiceBox .materialBoxInner {
+  width: 100%;
+}
