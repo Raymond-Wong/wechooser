@@ -8,12 +8,18 @@ var bindMaterialBoxAction = function() {
   toPageAction();
   saveAction();
   bindMaterialImageBoxAction();
+  bindMaterialVoiceBoxAction();
 }
 
 var bindMaterialImageBoxAction = function() {
   updateMaterialImageBox(0, 10);
   chooseImageAction();
   deleteImageAction();
+}
+
+var bindMaterialVoiceBoxAction = function() {
+  updateMaterialVoiceBox(0, 5);
+  deleteVoiceAction();
 }
 
 // 跳转页码
@@ -32,11 +38,13 @@ var toPageAction = function() {
       topAlert('目标页数不合法', 'error');
       return false;
     }
+    $($(this).parents('.materialBox')[0]).attr('curPage', page);
+    $($(this).siblings('.toPage')[0]).val(page);
     if (type == 'materialImageBox') {
-      $($(this).parents('.materialBox')[0]).attr('curPage', page);
-      $($(this).siblings('.toPage')[0]).val(page);
       updateMaterialImageBox(10 * (page - 1), 10);
-    };
+    } else if (type == 'materialVoiceBox') {
+      updateMaterialVoiceBox(5 * (page - 1), 5);
+    }
   });
 }
 
@@ -64,6 +72,30 @@ var updateMaterialImageBox = function(offset, count, callback) {
     }
     box.children('.loadingElement').remove();
   }); 
+}
+
+// 更新语音素材框中的语音
+var updateMaterialVoiceBox = function(offset, count, callback) {
+  return false;
+  var params = {'type' : 'voice', 'count' : count, 'offset' : offset};
+  var box = $('#materialVoiceBox .materialBoxContent');
+  box.html(LOADING_ELEMENT);
+  $.post('/wechat/getMaterial', params, function(res) {
+    var voices = res['msg']['item'];
+    var totalCount = res['msg']['total_count'];
+    $($('#materialVoiceBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 5));
+    for (var i = 0; i < voices.length; i++) {
+      var voice = voices[i];
+      var name = voice['name'];
+      var mediaId = voice['media_id'];
+      var len = voice['length'];
+      newVoiceItem = $(VOICE_ITEM);
+      newVoiceItem.children('voiceName').text(name);
+      newVoiceItem.children('voiceLen').text(len);
+      newVoiceItem.attr('mediaId', mediaId);
+      box.append(newVoiceItem);
+    }
+  });
 }
 
 // 显示素材框
@@ -113,12 +145,20 @@ var deleteImageAction = function() {
   });
 }
 
+// 删除已选语音
+var deleteVoiceAction = function() {
+  $('#deleteImageMaterialBtn').click(function() {
+    $('input[name="voiceSelect"]:checked').removeAttr('checked');
+    $('#materialVoice').hide();
+    $('#materialVoiceWrapper .showMaterialBoxBtn').show();
+  });
+}
+
 // 当素材框中是图片素材框时，将内容提取出来
 var saveImage = function() {
   var choosenImage = $('.imageItem.choosen');
   var imgUrl = $(choosenImage.find('img')[0]).attr('src');
   var mediaId = choosenImage.attr('mediaId');
-  $('#materialBoxWrapper').fadeOut();
   $('#materialImage').append('<img src="' + imgUrl + '" mediaId="' + mediaId + '" />');
   $('#materialImage').append('<a id="deleteImageMaterialBtn">删除</a>');
   $('#chooseImageBtn').hide();
@@ -126,10 +166,25 @@ var saveImage = function() {
   $('#materialBoxWrapper').fadeOut();
 }
 
+// 当素材框中是语音素材时，将内容提取出来
+var saveVoice = function() {
+  var choosenVoice = $($('input[name="voiceSelect"]:checked').parents('.voiceItem')[0]);
+  var mediaId = choosenVoice.attr('mediaId');
+  var name = choosenVoice.children('.voiceName').text();
+  var len = choosenVoice.children('.voiceLen').text();
+  $('#materialVoice').children('.voiceName').text(name);
+  $('#materialVoice').children('.voiceLen').text(len);
+  $('#materialVoice').attr('mediaId', mediaId);
+  $('#chooseVoiceBtn').hide();
+  $('#materialVoice').show();
+  $('#materialBoxWrapper').fadeOut();
+}
+
 // 点击素材框中的保存按钮时，根据当前素材框显示的信息类别不同，选择不同的handler来提取素材狂内容并隐藏素材狂
 var saveAction = function() {
   var handlers = {
   	'materialImageBox' : saveImage,
+    'materialVoiceBox' : saveVoice,
   }
   $('#choosenBtn').click(function() {
   	var type = $('.materialBox.active').attr('id');

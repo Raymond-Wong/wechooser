@@ -93,10 +93,16 @@ var imageHandler = function() {
   return params;
 }
 
+var voiceHandler = function() {
+  var mediaId = $('#materialVoice').attr('mediaId');
+  params = {'MsgType' : 'voice', 'MediaId' : mediaId};
+  return params;
+}
+
 var HANDLERS = {
   'text' : textHandler,
   'image' : imageHandler,
-  // 'voice' : voiceHandler,
+  'voice' : voiceHandler,
   // 'video' : videoHandler,
   // 'news' : newsHandler,
 };

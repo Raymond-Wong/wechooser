@@ -184,12 +184,17 @@
   width: 100%;
 }
 
-#materialVoiceBox .materialBoxInner {
-  height: 436px;
+#materialVoiceBox .materialBoxPageWrapper {
+  height: 70px;
 }
 
 #materialVoiceBox .voiceItem {
   width: 100%;
   height: 20%;
-  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+#materialVoiceBox .voiceItem .voiceSelect {
+  padding-left: 2em;
+  outline: none;
 }
