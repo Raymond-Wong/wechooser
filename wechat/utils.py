@@ -9,6 +9,8 @@ import json
 import hashlib
 import time
 import base64
+import eyed3
+import os
 try: 
   import xml.etree.cElementTree as ET
 except ImportError: 
@@ -157,6 +159,17 @@ def imgUrl2base64(token, materials):
     mediaId = item['media_id']
     media = getMaterialContent(token, mediaId)
     materials['item'][count]['url'] = 'data:image/jpeg;base64,' + base64.b64encode(media)
+  return materials
+
+def getVoiceLen(token, materials):
+  for count, item in enumerate(materials['item']):
+    voice = getMaterialContent(token, item['media_id'])
+    name = str(time.time()) + '.mp3';
+    tmpFile = open(name, 'w')
+    tmpFile.write(voice)
+    tmpFile.close()
+    materials['item'][count]['length'] = wechooser.utils.prettyTime(eyed3.load(name).info.time_secs)
+    os.remove(name)
   return materials
 
 # 获取永久素材
