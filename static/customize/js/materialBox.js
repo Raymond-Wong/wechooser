@@ -79,6 +79,7 @@ var updateMaterialVoiceBox = function(offset, count, callback) {
   var box = $('#materialVoiceBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
   $.post('/wechat/getMaterial', params, function(res) {
+    console.log(res['msg']);
     var voices = res['msg']['item'];
     var totalCount = res['msg']['total_count'];
     $($('#materialVoiceBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 5));
