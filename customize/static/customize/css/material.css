@@ -165,6 +165,16 @@
   padding-left: 72px;
 }
 
-#materialVoice a:hover {
+#materialVoice a:hover, #materialVideo a:hover {
   cursor: pointer;
+}
+
+#materialVideo {
+  border: 1px solid #d9d9d9;
+  padding: 1em;
+  display: none;
+}
+
+#materialVideo .videoName {
+  margin-right: 1em;
 }

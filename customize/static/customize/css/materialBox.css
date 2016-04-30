@@ -180,29 +180,33 @@
   color: #b5b5b5;
 }
 
-#materialVoiceBox .materialBoxInner, #materialVoiceBox .materialBoxContent, #materialVoiceBox .materialBoxPageWrapper {
+#materialVoiceBox .materialBoxInner, #materialVoiceBox .materialBoxContent, #materialVoiceBox .materialBoxPageWrapper,
+#materialVideoBox .materialBoxInner, #materialVideoBox .materialBoxContent, #materialVideoBox .materialBoxPageWrapper {
   width: 100%;
 }
 
-#materialVoiceBox .materialBoxPageWrapper {
+#materialVoiceBox .materialBoxPageWrapper,
+#materialVideoBox .materialBoxPageWrapper {
   height: 70px;
 }
 
-#materialVoiceBox .voiceItem {
+#materialVoiceBox .voiceItem, #materialVideoBox .videoItem {
   width: 100%;
   height: 74px;
   line-height: 74px;
   border-bottom: 1px solid #d9d9d9;
 }
 
-#materialVoiceBox .voiceItem .voiceSelect {
+#materialVoiceBox .voiceItem .voiceSelect,
+#materialVideoBox .videoItem .videoSelect {
   padding-left: 2em;
   outline: none;
   width: 9%;
   display: inline-block;
 }
 
-#materialVoiceBox .voiceItem .voiceName {
+#materialVoiceBox .voiceItem .voiceName,
+#materialVideoBox .videoItem .videoName {
   width: 80%;
   display: inline-block;
 }

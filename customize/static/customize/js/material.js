@@ -99,11 +99,17 @@ var voiceHandler = function() {
   return params;
 }
 
+var videoHandler = function() {
+  var mediaId =$('#materialVideo').attr('mediaId');
+  params = {'MsgType' : 'video', 'MediaId' : mediaId};
+  return params;
+}
+
 var HANDLERS = {
   'text' : textHandler,
   'image' : imageHandler,
   'voice' : voiceHandler,
-  // 'video' : videoHandler,
+  'video' : videoHandler,
   // 'news' : newsHandler,
 };
 var getMaterialContent = function() {

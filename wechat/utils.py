@@ -172,6 +172,12 @@ def getVoiceLen(token, materials):
     # os.remove(name)
   return materials
 
+def getVideoImg(token, materials):
+  for count, item in enumerate(materials['item']):
+    video = getMaterialContent(token, item['media_id'])
+    wechooser.utils.logger('DEBUG', video)
+  return materials
+
 # 获取永久素材
 def getMaterialContent(token, mediaId):
   host = 'api.weixin.qq.com'

@@ -9,6 +9,7 @@ var bindMaterialBoxAction = function() {
   saveAction();
   bindMaterialImageBoxAction();
   bindMaterialVoiceBoxAction();
+  bindMaterialVideoBoxAction();
 }
 
 var bindMaterialImageBoxAction = function() {
@@ -20,6 +21,11 @@ var bindMaterialImageBoxAction = function() {
 var bindMaterialVoiceBoxAction = function() {
   updateMaterialVoiceBox(0, 5);
   deleteVoiceAction();
+}
+
+var bindMaterialVideoBoxAction = function() {
+  updateMaterialVideoBox(0, 2);
+  deleteVideoAction();
 }
 
 // 跳转页码
@@ -50,6 +56,7 @@ var toPageAction = function() {
 
 // 更新图片素材框中的图片
 var updateMaterialImageBox = function(offset, count, callback) {
+  return false;
   var params = {'type' : 'image', 'count' : count, 'offset' : offset};
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
   // 清空容器中的东西
@@ -92,6 +99,28 @@ var updateMaterialVoiceBox = function(offset, count, callback) {
       newVoiceItem.children('.voiceLen').text(len);
       newVoiceItem.attr('mediaId', mediaId);
       box.append(newVoiceItem);
+    }
+    box.children('.loadingElement').remove();
+  });
+}
+
+// 更新视频素材库中的语音
+var updateMaterialVideoBox = function(offset, count, callback) {
+  var params = {'type' : 'video', 'count' : count, 'offet' : offset};
+  var box = $('#materialVideoBox .materialBoxContent');
+  box.html(LOADING_ELEMENT);
+  $.post('/wechat/getMaterial', params, function(res) {
+    var videos = res['msg']['item'];
+    var totalCount = res['msg']['total_count'];
+    $($('#materialVoiceBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 2));
+    for (var i = 0; i < videos.length; i++) {
+      var video = videos[i];
+      var name = video['name'];
+      var mediaId = video['media_id'];
+      newVideo = $(VIDEO_ITEM);
+      newVideo.children('.videoName').text(name);
+      newVideo.attr('mediaId', mediaId);
+      box.append(newVideo);
     }
     box.children('.loadingElement').remove();
   });
@@ -146,10 +175,19 @@ var deleteImageAction = function() {
 
 // 删除已选语音
 var deleteVoiceAction = function() {
-  $('#deleteImageMaterialBtn').click(function() {
+  $('#deleteVoiceMaterialBtn').click(function() {
     $('input[name="voiceSelect"]:checked').removeAttr('checked');
     $('#materialVoice').hide();
     $('#materialVoiceWrapper .showMaterialBoxBtn').show();
+  });
+}
+
+// 删除已选视频
+var deleteVideoAction = function() {
+  $('#deleteVideoMaterialBtn').click(function() {
+    $('input[name="videoSelect"]:checked').removeAttr('checked');
+    $('#materialVideo').hide();
+    $('#materialVideoWrapper .showMaterialBoxBtn').show();
   });
 }
 
@@ -179,11 +217,24 @@ var saveVoice = function() {
   $('#materialBoxWrapper').fadeOut();
 }
 
+// 当素材框中是视频素材时，将内容提取出来
+var saveVideo = function() {
+  var choosenVideo = $($('input[name="videoSelect"]:checked').parents('.videoItem')[0]);
+  var mediaId = choosenVideo.attr('mediaId');
+  var name = choosenVideo.children('.videoName').text();
+  $('#materialVideo').children('.videoName').text(name);
+  $('#materialVideo').attr('mediaId', mediaId);
+  $('#chooseVideoBtn').hide();
+  $('#materialVideo').show();
+  $('#materialBoxWrapper').fadeOut();
+}
+
 // 点击素材框中的保存按钮时，根据当前素材框显示的信息类别不同，选择不同的handler来提取素材狂内容并隐藏素材狂
 var saveAction = function() {
   var handlers = {
   	'materialImageBox' : saveImage,
     'materialVoiceBox' : saveVoice,
+    'materialVideoBox' : saveVideo,
   }
   $('#choosenBtn').click(function() {
   	var type = $('.materialBox.active').attr('id');
