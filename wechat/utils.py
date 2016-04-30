@@ -163,13 +163,13 @@ def imgUrl2base64(token, materials):
 
 def getVoiceLen(token, materials):
   for count, item in enumerate(materials['item']):
-    voice = getMaterialContent(token, item['media_id'])
-    name = str(time.time()) + '.mp3';
-    tmpFile = open(name, 'w')
-    tmpFile.write(voice)
-    tmpFile.close()
-    materials['item'][count]['length'] = wechooser.utils.prettyTime(eyed3.load(name).info.time_secs)
-    os.remove(name)
+    # voice = getMaterialContent(token, item['media_id'])
+    # name = str(time.time()) + '.mp3';
+    # tmpFile = open(name, 'w')
+    # tmpFile.write(voice)
+    # tmpFile.close()
+    materials['item'][count]['length'] = "00:60"
+    # os.remove(name)
   return materials
 
 # 获取永久素材
