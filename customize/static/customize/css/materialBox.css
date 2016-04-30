@@ -110,6 +110,12 @@
   text-align: right;
 }
 
+.materialBoxPageWrapper .toPage {
+  height: 2em;
+  line-height: 2em;
+  width: 2em;
+}
+
 .imageItem {
   width: 120px;
   height: 155px;
