@@ -42,6 +42,7 @@ var toPageAction = function() {
 
 // 更新图片素材框中的图片
 var updateMaterialImageBox = function(offset, count, callback) {
+  return false;
   var params = {'type' : 'image', 'count' : count, 'offset' : offset};
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
   // 清空容器中的东西
