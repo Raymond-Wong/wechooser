@@ -28,6 +28,7 @@ var updateMaterialImageBox = function(offset, count) {
       var mediaId = image['media_id'];
       var name = image['name'];
       var newImgItem = $(IMG_ITEM);
+      console.log(name, url);
       newImgItem.attr('mediaId', mediaId);
       $(newImgItem.find('img')[0]).attr('src', url);
       newImgItem.children('.imageName').html(name);
