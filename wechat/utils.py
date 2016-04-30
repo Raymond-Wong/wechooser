@@ -156,7 +156,7 @@ def imgUrl2base64(token, materials):
   for count, item in enumerate(materials['item']):
     mediaId = item['media_id']
     media = getMaterialContent(token, mediaId)
-    materials['item'][count]['url'] = base64.b64encode(media)
+    materials['item'][count]['url'] = 'data:image/jpeg;base64,' + base64.b64encode(media)
   return materials
 
 # 获取永久素材
