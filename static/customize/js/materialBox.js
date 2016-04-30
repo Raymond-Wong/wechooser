@@ -17,7 +17,7 @@ var bindMaterialImageBoxAction = function() {
 }
 
 var toPageAction = function() {
-  $('.materialBoxPageWrapper .toPage').click(function() {
+  $('.materialBoxPageWrapper .toPageBtn').click(function() {
     var page = $($(this).sibilings('.toPage')[0]).val();
     var type = $($(this).parents('.materialBox')[0]).attr('id');
     var totalPage = parseInt($($(this).sibilings('.totalPage')[0]).text());
