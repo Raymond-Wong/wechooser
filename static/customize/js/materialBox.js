@@ -68,6 +68,18 @@ var chooseImageAction = function() {
   });
 }
 
+var deleteImageAction = function() {
+  $(document).delegate('#materialImage a', 'click', function() {
+    $('#materialImage').html('');
+    $('#materialImage').hide();
+    $('#chooseImageBtn').show();
+    var choosenImage = $('.imageItem.choosen');
+    var choosenFlag = $(oldChoosenImage.find('.choosenFlag')[0]);
+    choosenImage.removeClass('.choosen');
+    choosenFlag.remove();
+  });
+}
+
 var saveImage = function() {
   var choosenImage = $('.imageItem.choosen');
   var imgUrl = $(choosenImage.find('img')[0]).attr('src');
@@ -87,13 +99,5 @@ var saveAction = function() {
   $('#choosenBtn').click(function() {
   	var type = $('.materialBox.active').attr('id');
   	return handlers[type]();
-  });
-}
-
-var deleteImageAction = function() {
-  $(document).delegate('#materialImage a', 'click', function() {
-  	$('#materialImage').html('');
-  	$('#materialImage').hide();
-  	$('#chooseImageBtn').show();
   });
 }
