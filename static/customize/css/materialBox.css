@@ -111,9 +111,18 @@
 }
 
 .materialBoxPageWrapper .toPage {
-  height: 2em;
-  line-height: 2em;
-  width: 2em;
+  height: 1em;
+  line-height: 1em;
+  width: 1em;
+}
+
+.materialBoxPageWrapper .toPageBtn {
+  margin-left: 1em;
+}
+
+.materialBoxPageWrapper .toPageBtn:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .imageItem {
