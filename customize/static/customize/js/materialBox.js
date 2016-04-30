@@ -28,8 +28,8 @@ var updateMaterialImageBox = function(offset, count) {
       var mediaId = image['media_id'];
       var name = image['name'];
       var newImgItem = $(IMG_ITEM);
-      newImgItem.attr('mediaId') = mediaId;
-      $(newImgItem.find('img')[0]).attr('src') = url;
+      newImgItem.attr('mediaId', mediaId);
+      $(newImgItem.find('img')[0]).attr('src', url);
       newImgItem.children('.imageName').html(name);
       box.append(newImgItem);
     }
