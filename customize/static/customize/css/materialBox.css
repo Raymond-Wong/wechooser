@@ -101,6 +101,12 @@
   padding: 0px 21px;
 }
 
+.materialBoxPageWrapper {
+  width: 750px;
+  height: 66px;
+  background-color: lightpink;
+}
+
 .imageItem {
   width: 120px;
   height: 155px;
