@@ -51,25 +51,35 @@
 		    <div class="left val"><input type="text" name="ruleName" placeholder="规则名最多60字" /></div>
 		    <div class="clear"></div>
   	  </div>
-  	  <div class="ruleRow">
+  	  <div class="ruleRow" role="addKeyword">
   	  	<div class="left point">·</div>
   	  	<div class="left key">关键字</div>
   	  	<div class="left val"></div>
-		    <div class="right hint"><a>添加关键字</a></div>
+		    <div class="right hint"><a class="showMaterialBoxBtn" type="Text">添加关键字</a></div>
 		    <div class="clear"></div>
   	  </div>
-  	  <div class="ruleRow small keyword">
-  	  	<div class="left point">&nbsp;</div>
-  	  	<div class="left val">关键词关键词关键词关键词关键词关键词关键词关键词关键词关键词</div>
-  	  	<div class="hint right"><a class="fullMatchBtn">未全匹配</a><a>编辑</a><a class="deleteRowBtn">删除</a></div>
-		    <div class="clear"></div>
-  	  </div>
-  	  <div class="ruleRow small keyword">
-  	  	<div class="left point">&nbsp;</div>
-  	  	<div class="left val">关键词</div>
-  	  	<div class="hint right"><a class="fullMatchBtn">未全匹配</a><a>编辑</a><a class="deleteRowBtn">删除</a></div>
-		    <div class="clear"></div>
-  	  </div>
+      <div class="keywordsWrapper">
+    	  <div class="ruleRow small keyword" role="editKeyword">
+    	  	<div class="left point">&nbsp;</div>
+    	  	<div class="left val">关键词关键词关键词关键词关键词关键词关键词关键词关键词关键词</div>
+    	  	<div class="hint right">
+            <a class="fullMatchBtn">未全匹配</a>
+            <a class="showMaterialBoxBtn" type="Text">编辑</a>
+            <a class="deleteRowBtn">删除</a>
+          </div>
+  		    <div class="clear"></div>
+    	  </div>
+    	  <div class="ruleRow small keyword">
+    	  	<div class="left point">&nbsp;</div>
+    	  	<div class="left val">关键词</div>
+    	  	<div class="hint right">
+            <a class="fullMatchBtn">未全匹配</a>
+            <a class="showMaterialBoxBtn" type="Text">编辑</a>
+            <a class="deleteRowBtn">删除</a>
+          </div>
+  		    <div class="clear"></div>
+    	  </div>
+      </div>
   	  <div class="ruleRow">
   	  	<div class="left point">·</div>
   	  	<div class="left key">回复</div>
@@ -94,7 +104,7 @@
   	  	  哈哈哈哈[微笑]
   	  	</div>
 		    <div class="right hint">
-          <a class="showMaterialBoxBtn" type="text">编辑</a>
+          <a class="showMaterialBoxBtn" type="Text">编辑</a>
           <a class="deleteRowBtn" type="msg">删除</a>
         </div>
 		    <div class="clear"></div>
@@ -110,11 +120,24 @@
         </div>
 		    <div class="clear"></div>
   	  </div>
+      <div class="ruleRow small" type="voice">
+        <div class="left point">&nbsp;</div>
+        <div class="left val">
+          <img class="left" src="/static/customize/icon/voice.png" />
+          <div class="voiceName">Nokia</div>
+          <div class="voiceLen">00:60</div>
+        </div>
+        <div class="right hint">
+          <a class="showMaterialBoxBtn" type="Voice">编辑</a>
+          <a class="deleteRowBtn" type="msg">删除</a>
+        </div>
+        <div class="clear"></div>
+      </div>
   	</div>
   	<div class="foot">
   	  文字（<font class="textAmount">1</font>）
   	  图片（<font class="imageAmount">1</font>）
-  	  语音（<font class="voiceAmount">0</font>）
+  	  语音（<font class="voiceAmount">1</font>）
   	  视频（<font class="videoAmount">0</font>）
   	  图文（<font class="newsAmount">0</font>）
   	  <div class="btnBox right">

@@ -85,7 +85,7 @@ var bindSaveRuleAction= function() {
   	totalAmount += (parseInt(newsAmount));
   	var keywords = [];
   	$(rule.find('.keyword')).each(function() {
-  	  var keyword = $(this).children('.val').text();
+  	  var keyword = $(this).children('.val').html();
   	  keywords.push(keyword);
   	});
   	$(ruleShort.find('.ruleName')[0]).text(name);
@@ -114,15 +114,17 @@ var bindDeleteRuleAction = function() {
 
 TO_INSERT_ROW = null;
 
+// 当用户在素材框中选择了图片时将图片加到回复中的行为
 var saveImage = function() {
   var choosenImage = $('.imageItem.choosen');
   var imgUrl = $(choosenImage.find('img')[0]).attr('src');
   var mediaId = choosenImage.attr('mediaId');
+  // 如果进入这个判断，则说明是点击添加按钮，否则是点击编辑按钮
   if (TO_INSERT_ROW == null || TO_INSERT_ROW.attr('role') == 'btnBox') {
     var box = TO_INSERT_ROW.parents('.content');
     var newRow = $(IMG_ROW);
     $(newRow.find('img')[0]).attr('src', imgUrl);
-    $(newRow.find('img')[0]).attr('mediaId', mediaId);
+    newRow.attr('mediaId', mediaId);
     box.append(newRow);
     // 在最下面的信息计数中增加一个计数器
     var box = TO_INSERT_ROW.parents('.ruleDetailWrapper');
@@ -130,7 +132,7 @@ var saveImage = function() {
     imageAmountBox.text(parseInt(imageAmountBox.text()) + 1);
   } else {
     var box = TO_INSERT_ROW.children('.val');
-    box.html('<img src="' + imgUrl + '" mediaId="' + mediaId + '" />');
+    box.html('<img src="' + imgUrl + '" />');
   }
   // 把已选择的图片去除选择标记
   choosenImage.removeClass('choosen');
@@ -139,9 +141,63 @@ var saveImage = function() {
   TO_INSERT_ROW = null;
 }
 
+// 当用户在素材框中填写了新文字时将文字加到回复中的行为
+var saveText = function() {
+  var textContent = $('#materialTextInputArea').html();
+  $('#materialTextInputArea').html('');
+  if (TO_INSERT_ROW != null && TO_INSERT_ROW.attr('role') == 'addKeyword') {
+    var row = $(ADD_KEYWORD_ROW);
+    row.children('.val').html(textContent);
+    var box = TO_INSERT_ROW.parent().children('.keywordsWrapper');
+    box.prepend(row);
+  } else if (TO_INSERT_ROW != null && TO_INSERT_ROW.attr("role") == 'editKeyword') {
+    TO_INSERT_ROW.children('.val').html(textContent);
+  } else if (TO_INSERT_ROW != null && TO_INSERT_ROW.attr("role") == 'btnBox') {
+    var box = TO_INSERT_ROW.parents('.content');
+    var row = $(TEXT_ROW);
+    row.children('.val').html(textContent);
+    box.append(row);
+    // 在最下面的计数器中加一
+    var box = TO_INSERT_ROW.parents('.ruleDetailWrapper');
+    var textAmountBox = $(box.find('.textAmount')[0]);
+    textAmountBox.text(parseInt(textAmountBox.text()) + 1);
+  } else {
+    TO_INSERT_ROW.children('.val').html(textContent);
+  }
+  $('#materialBoxWrapper').fadeOut();
+  TO_INSERT_ROW = null;
+}
+
+// 当用户在素材框中选择了语音后将语音加到回复中的行为
+var saveVoice = function() {
+  var choosenVoice = $($('input[name="voiceSelect"]:checked').parents('.voiceItem')[0]);
+  var mediaId = choosenVoice.attr('mediaId');
+  var name = choosenVoice.children('.voiceName').text();
+  var len = choosenVoice.children('.voiceLen').text();
+  if (TO_INSERT_ROW != null && TO_INSERT_ROW.attr('role') == 'btnBox') {
+    var row = $(VOICE_ROW);
+    row.attr('mediaId', mediaId);
+    row.children('.val').children('.voiceName').text(name);
+    row.children('.val').children('.voiceLen').text(len);
+    var box = TO_INSERT_ROW.parents('.content');
+    box.append(row);
+    // 在最下面的计数器中加一
+    var box = TO_INSERT_ROW.parents('.ruleDetailWrapper');
+    var voiceAmountBox = $(box.find('.voiceAmount')[0]);
+    voiceAmountBox.text(parseInt(voiceAmountBox.text()) + 1);
+  } else {
+    TO_INSERT_ROW.children('.val').children('.voiceName').text(name);
+    TO_INSERT_ROW.children('.val').children('.voiceLen').text(len);
+    TO_INSERT_ROW.attr('mediaId', mediaId);
+  }
+  $('#materialBoxWrapper').fadeOut();
+  TO_INSERT_ROW = null;
+}
+
 var showMaterialBoxAction = function() {
   var handlers = {
     'Image' : saveImage,
+    'Text' : saveText,
   };
   $(document).delegate('.showMaterialBoxBtn', 'click', function() {
   	var type = $(this).attr('type');

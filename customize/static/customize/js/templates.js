@@ -31,3 +31,34 @@ var IMG_ROW = '<div class="ruleRow small" type="image">' +
               '  </div>' +
               '  <div class="clear"></div>' +
               '</div>';
+
+var ADD_KEYWORD_ROW = '<div class="ruleRow small keyword" role="editKeyword">' +
+                      '  <div class="left point">&nbsp;</div>' +
+                      '  <div class="left val"></div>' +
+                      '  <div class="hint right"><a class="fullMatchBtn">未全匹配</a><a class="showMaterialBoxBtn" role="Text">编辑</a><a class="deleteRowBtn">删除</a></div>' +
+                      '  <div class="clear"></div>' +
+                      '</div>';
+
+var TEXT_ROW = '<div class="ruleRow small" type="text">' +
+               '  <div class="left point">&nbsp;</div>' +
+               '  <div class="left val"></div>' +
+               '  <div class="right hint">' +
+               '    <a class="showMaterialBoxBtn" type="Text">编辑</a>' +
+               '    <a class="deleteRowBtn" type="msg">删除</a>' +
+               '  </div>' +
+               '  <div class="clear"></div>' +
+               '</div>';
+
+var VOICE_ROW = '<div class="ruleRow small" type="voice">' +
+                '  <div class="left point">&nbsp;</div>' +
+                '  <div class="left val">' +
+                '    <img class="left" src="/static/customize/icon/voice.png" />' +
+                '    <div class="voiceName"></div>' +
+                '    <div class="voiceLen"></div>' +
+                '  </div>' +
+                '  <div class="right hint">' +
+                '    <a class="showMaterialBoxBtn" type="Voice">编辑</a>' +
+                '    <a class="deleteRowBtn" type="msg">删除</a>' +
+                '  </div>' +
+                '  <div class="clear"></div>' +
+                '</div>'
