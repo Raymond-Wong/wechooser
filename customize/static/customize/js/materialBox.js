@@ -243,6 +243,6 @@ var saveVideo = function() {
 var saveAction = function() {
   $('#choosenBtn').click(function() {
   	var type = $('.materialBox.active').attr('id');
-  	return handlers[type]();
+  	return SAVE_HANDLERS[type]();
   });
 }
