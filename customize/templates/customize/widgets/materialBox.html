@@ -1,6 +1,30 @@
 <div id="materialBoxWrapper">
 <div id="materialBoxContainer">
 <div id="materialBoxOuter">
+  <!-- 文字输入框 -->
+  <div id="materialTextBox" class="materialBox">
+    <div class="materialBoxHead">
+      <font>添加文字</font>
+      <font class="right hideMaterialBoxBtn">关闭</font>
+    </div>
+    <div class="materialBoxInner">
+      <div class="materialBoxContent">
+        <div id="materialTextContainer">
+          <div id="materialTextInputArea" contenteditable></div>
+          {% include 'customize/widgets/face2.html' %}
+          <div id="materialTextHintArea">
+            <div class="showFaceBtn left">
+              <img src="/static/customize/icon/face.png" />
+            </div>
+            <div class="right remainChar">
+              还可以输入<font>600</font>字
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 图片选择框 -->
   <div id="materialImageBox" class="materialBox active">
   	<div class="materialBoxHead">
   	  <font>选择图片</font>
@@ -17,6 +41,7 @@
       </div>
   	</div>
   </div>
+  <!-- 语音选择框 -->
   <div id="materialVoiceBox" class="materialBox">
   	<div class="materialBoxHead">
       <font>选择语音</font>
@@ -32,6 +57,7 @@
       </div>
     </div>
   </div>
+  <!-- 视频选择框 -->
   <div id="materialVideoBox" class="materialBox">
   	<div class="materialBoxHead">
       <font>选择视频</font>
@@ -47,6 +73,7 @@
       </div>
     </div>
   </div>
+  <!-- 图文选择框 -->
   <div id="materialNewsBox" class="materialBox">
   	
   </div>

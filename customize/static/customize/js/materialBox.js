@@ -5,13 +5,19 @@ $(document).ready(function() {
 });
 
 var bindMaterialBoxAction = function() {
-  // showMaterialBoxAction();
   hideMaterialBoxAction();
   toPageAction();
   saveAction();
+  bindMaterialTextBoxAction();
   bindMaterialImageBoxAction();
   bindMaterialVoiceBoxAction();
   bindMaterialVideoBoxAction();
+}
+
+var bindMaterialTextBoxAction = function() {
+  showFace();
+  chooseFace();
+  remainCharAmount();
 }
 
 var bindMaterialImageBoxAction = function() {
@@ -84,7 +90,7 @@ var updateMaterialImageBox = function(offset, count, callback) {
 
 // 更新语音素材框中的语音
 var updateMaterialVoiceBox = function(offset, count, callback) {
-  // return false;
+  return false;
   var params = {'type' : 'voice', 'count' : count, 'offset' : offset};
   var box = $('#materialVoiceBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
@@ -109,7 +115,7 @@ var updateMaterialVoiceBox = function(offset, count, callback) {
 
 // 更新视频素材库中的语音
 var updateMaterialVideoBox = function(offset, count, callback) {
-  // return false;
+  return false;
   var params = {'type' : 'video', 'count' : count, 'offet' : offset};
   var box = $('#materialVideoBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
@@ -131,15 +137,8 @@ var updateMaterialVideoBox = function(offset, count, callback) {
 }
 
 // 显示素材框
-// var showMaterialBoxAction = function() {
-//   var btns = $('.showMaterialBoxBtn');
-//   btns.click(function() {
-//   	var type = $(this).attr('type');
-//   	$('.materialBox.active').removeClass('active');
-//   	$('#material' + type + 'Box').addClass('active');
-//   	$('#materialBoxWrapper').fadeIn();
-//   });
-// }
+// 传入要显示的素材框的类型（首字母大写）
+// 传入点击保存时的处理函数
 var showMaterialBox = function(type, handler) {
   SAVE_HANDLER = handler;
   $('.materialBox.active').removeClass('active');
@@ -201,48 +200,55 @@ var deleteVideoAction = function() {
   });
 }
 
-// 当素材框中是图片素材框时，将内容提取出来
-var saveImage = function() {
-  var choosenImage = $('.imageItem.choosen');
-  var imgUrl = $(choosenImage.find('img')[0]).attr('src');
-  var mediaId = choosenImage.attr('mediaId');
-  $('#materialImage').append('<img src="' + imgUrl + '" mediaId="' + mediaId + '" />');
-  $('#materialImage').append('<a id="deleteImageMaterialBtn">删除</a>');
-  $('#chooseImageBtn').hide();
-  $('#materialImage').show();
-  $('#materialBoxWrapper').fadeOut();
+var showFace = function() {
+  $('#materialTextHintArea .showFaceBtn').click(function() {
+    $('#faceTable2').fadeIn();
+    return false;
+  });
+  $(window).click(function() {
+    $('#faceTable2').fadeOut();
+  });
 }
 
-// 当素材框中是语音素材时，将内容提取出来
-var saveVoice = function() {
-  var choosenVoice = $($('input[name="voiceSelect"]:checked').parents('.voiceItem')[0]);
-  var mediaId = choosenVoice.attr('mediaId');
-  var name = choosenVoice.children('.voiceName').text();
-  var len = choosenVoice.children('.voiceLen').text();
-  $('#materialVoice').children('.voiceName').text(name);
-  $('#materialVoice').children('.voiceLen').text(len);
-  $('#materialVoice').attr('mediaId', mediaId);
-  $('#chooseVoiceBtn').hide();
-  $('#materialVoice').show();
-  $('#materialBoxWrapper').fadeOut();
+var chooseFace = function() {
+  $('#faceTable2 tr td').click(function() {
+    var face = $(this).children('img');
+    var materialText = $('#materialTextInputArea');
+    var insertFaceStr = '<img src="' + face.attr('src') + '" name="' + face.attr('name') + '" class="insertedFace" />';
+    materialText.append(insertFaceStr);
+    updateRemainChar();
+    return false;
+  });
 }
 
-// 当素材框中是视频素材时，将内容提取出来
-var saveVideo = function() {
-  var choosenVideo = $($('input[name="videoSelect"]:checked').parents('.videoItem')[0]);
-  var mediaId = choosenVideo.attr('mediaId');
-  var name = choosenVideo.children('.videoName').text();
-  $('#materialVideo').children('.videoName').text(name);
-  $('#materialVideo').attr('mediaId', mediaId);
-  $('#chooseVideoBtn').hide();
-  $('#materialVideo').show();
-  $('#materialBoxWrapper').fadeOut();
+var remainCharAmount = function() {
+  var materialText = $('#materialTextBox .materialBoxContent');
+  materialText.keydown(function(evt) {
+    if (evt.keyCode == '13') {
+      return false;
+    }
+  });
+  if (materialText.addEventListener) {
+    materialText.addEventListener('DOMCharacterDataModified', function(evt) {
+      updateRemainChar();
+    }, false);
+  }
+}
+
+// 更新可输入字符数
+var updateRemainChar = function() {
+  var materialText = $('#materialTextInputArea');
+  var remainText = $('#materialTextHintArea .remainChar font');
+  var charAmount = materialText.text().length;
+  var faceAmount = materialText.find('.insertedFace').length;
+  var remainAmount = 600 - charAmount - faceAmount;
+  remainText.text(remainAmount);
+  return remainAmount;
 }
 
 // 点击素材框中的保存按钮时，根据当前素材框显示的信息类别不同，选择不同的handler来提取素材狂内容并隐藏素材狂
 var saveAction = function() {
   $('#choosenBtn').click(function() {
-  	// var type = $('.materialBox.active').attr('id');
   	return SAVE_HANDLER();
   });
 }

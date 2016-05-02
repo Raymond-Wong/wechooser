@@ -12,11 +12,11 @@ var bindReplyAction = function() {
   	  return false;
   	}
     console.log(getMaterialContent());
-  	$.post(url, getMaterialContent(), function(res) {
-  	  if (res['code'] == 0)
-  	    topAlert(res['msg']);
-  	  else
-  	  	topAlert(res['msg'], 'error');
-  	});
+  	// $.post(url, getMaterialContent(), function(res) {
+  	//   if (res['code'] == 0)
+  	//     topAlert(res['msg']);
+  	//   else
+  	//   	topAlert(res['msg'], 'error');
+  	// });
   });
 }

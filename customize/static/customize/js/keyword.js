@@ -9,6 +9,7 @@ var bindKeywordAction = function() {
   bindReplyAllAction();
   bindSaveRuleAction();
   bindDeleteRuleAction();
+  showMaterialBoxAction();
 }
 
 var bindDetailToggle = function() {
@@ -108,5 +109,35 @@ var bindDeleteRuleAction = function() {
   $(document).delegate('.deleteRuleBtn', 'click', function() {
     var rule = $(this).parents('.ruleWrapper');
     rule.remove();
+  });
+}
+
+TO_INSERT_ROW = null;
+
+var saveImage = function() {
+  var choosenImage = $('.imageItem.choosen');
+  var imgUrl = $(choosenImage.find('img')[0]).attr('src');
+  var mediaId = choosenImage.attr('mediaId');
+  if (TO_INSERT_ROW == null || TO_INSERT_ROW.attr('role') == 'btnBox') {
+    var box = TO_INSERT_ROW.parents('.content');
+    var newRow = $(IMG_ROW);
+    $(newRow.find('img')[0]).attr('src', imgUrl);
+    $(newRow.find('img')[0]).attr('mediaId', mediaId);
+    box.append(newRow);
+  } else {
+    var box = TO_INSERT_ROW.children('.val');
+    box.html('<img src="' + imgUrl + '" mediaId="' + mediaId + '" />');
+  }
+  $('#materialBoxWrapper').fadeOut();
+  TO_INSERT_ROW = null;
+}
+
+var showMaterialBoxAction = function() {
+  var handlers = {};
+  $(document).delegate('.showMaterialBoxBtn', 'click', function() {
+  	var type = $(this).attr('type');
+    TO_INSERT_ROW = $(this).parents('.ruleRow');
+  	var handler = handlers[type];
+  	showMaterialBox(type, handler);
   });
 }

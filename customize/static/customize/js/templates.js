@@ -19,3 +19,15 @@ var VIDEO_ITEM = '<div class="videoItem">' +
 
 
 var LOADING_ELEMENT = '<div class="loadingElement">正在加载素材...<div>';
+
+var IMG_ROW = '<div class="ruleRow small" type="image">' +
+              '  <div class="left point">&nbsp;</div>' +
+              '  <div class="left val">' + 
+              '    <img src="" />' +
+              '  </div>' +
+              '  <div class="right hint">' +
+              '    <a class="showMaterialBoxBtn" type="Image">编辑</a>' +
+              '    <a class="deleteRowBtn" type="msg">删除</a>' +
+              '  </div>' +
+              '  <div class="clear"></div>' +
+              '</div>';
