@@ -133,7 +133,9 @@ var saveImage = function() {
 }
 
 var showMaterialBoxAction = function() {
-  var handlers = {};
+  var handlers = {
+    'Image' : saveImage,
+  };
   $(document).delegate('.showMaterialBoxBtn', 'click', function() {
   	var type = $(this).attr('type');
     TO_INSERT_ROW = $(this).parents('.ruleRow');
