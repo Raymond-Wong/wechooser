@@ -7,7 +7,6 @@ var bindKeywordAction = function() {
   bindDeleteRowAction();
   bindFullMatchAction();
   bindReplyAllAction();
-  bindSaveRuleAction();
   bindDeleteRuleAction();
   showMaterialBoxAction();
 }
@@ -67,41 +66,6 @@ var bindReplyAllAction = function() {
   	  rule.attr('replyAll', 'False');
   	  $(this).text('未回复全部');
   	}
-  });
-}
-
-var bindSaveRuleAction= function() {
-  $(document).delegate('.saveRuleBtn', 'click', function() {
-  	var rule = $(this).parents('.ruleDetailWrapper');
-  	var ruleShort = $(rule.siblings('.ruleShortWrapper')[0]);
-  	var name = $(rule.find('input[name="ruleName"]')[0]).val();
-  	var textAmount = $(rule.find('.textAmount')[0]).text();
-  	var imageAmount = $(rule.find('.imageAmount')[0]).text();
-  	var voiceAmount = $(rule.find('.voiceAmount')[0]).text();
-  	var videoAmount = $(rule.find('.videoAmount')[0]).text();
-  	var newsAmount = $(rule.find('.newsAmount')[0]).text();
-  	var totalAmount = parseInt(textAmount) + parseInt(imageAmount);
-  	totalAmount += (parseInt(voiceAmount) + parseInt(videoAmount));
-  	totalAmount += (parseInt(newsAmount));
-  	var keywords = [];
-  	$(rule.find('.keyword')).each(function() {
-  	  var keyword = $(this).children('.val').html();
-  	  keywords.push(keyword);
-  	});
-  	$(ruleShort.find('.ruleName')[0]).text(name);
-  	$(ruleShort.find('.totalAmount')[0]).text(totalAmount);
-  	$(ruleShort.find('.textAmount')[0]).text(textAmount);
-  	$(ruleShort.find('.imageAmount')[0]).text(imageAmount);
-  	$(ruleShort.find('.voiceAmount')[0]).text(voiceAmount);
-  	$(ruleShort.find('.videoAmount')[0]).text(videoAmount);
-  	$(ruleShort.find('.newsAmount')[0]).text(newsAmount);
-  	var keywordsWrapper = $(ruleShort.find('.keywordsWrapper .val')[0]);
-  	keywordsWrapper.html('');
-  	for (var i = 0; i < keywords.length; i++) {
-  	  keywordsWrapper.append('<font>' + keywords[i] + '</font>');
-  	}
-  	rule.hide();
-  	ruleShort.show();
   });
 }
 

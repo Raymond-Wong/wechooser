@@ -20,7 +20,7 @@ var VIDEO_ITEM = '<div class="videoItem">' +
 
 var LOADING_ELEMENT = '<div class="loadingElement">正在加载素材...<div>';
 
-var IMG_ROW = '<div class="ruleRow small" type="image">' +
+var IMG_ROW = '<div class="ruleRow small reply" type="image">' +
               '  <div class="left point">&nbsp;</div>' +
               '  <div class="left val">' + 
               '    <img src="" />' +
@@ -38,7 +38,7 @@ var ADD_KEYWORD_ROW = '<div class="ruleRow small keyword" role="editKeyword">' +
                       '  <div class="clear"></div>' +
                       '</div>';
 
-var TEXT_ROW = '<div class="ruleRow small" type="text">' +
+var TEXT_ROW = '<div class="ruleRow small reply" type="text">' +
                '  <div class="left point">&nbsp;</div>' +
                '  <div class="left val"></div>' +
                '  <div class="right hint">' +
@@ -48,7 +48,7 @@ var TEXT_ROW = '<div class="ruleRow small" type="text">' +
                '  <div class="clear"></div>' +
                '</div>';
 
-var VOICE_ROW = '<div class="ruleRow small" type="voice">' +
+var VOICE_ROW = '<div class="ruleRow small reply" type="voice">' +
                 '  <div class="left point">&nbsp;</div>' +
                 '  <div class="left val">' +
                 '    <img class="left" src="/static/customize/icon/voice.png" />' +
@@ -61,7 +61,7 @@ var VOICE_ROW = '<div class="ruleRow small" type="voice">' +
                 '  <div class="clear"></div>' +
                 '</div>';
 
-var VIDEO_ROW = '<div class="ruleRow small" type="video">' +
+var VIDEO_ROW = '<div class="ruleRow small reply" type="video">' +
                 '  <div class="left point">&nbsp;</div>' +
                 '  <div class="left val"></div>' +
                 '  <div class="right hint">' +
