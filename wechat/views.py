@@ -107,5 +107,5 @@ def getMaterial(request, token):
   if tp == 'voice':
     materials = utils.getVoiceLen(token, materials)
   if tp == 'video':
-    materials = utils.getVideoImg(token, materials)
+    materials = utils.getVideoInfo(token, materials)
   return HttpResponse(Response(m=materials).toJson(), content_type='application/json')
