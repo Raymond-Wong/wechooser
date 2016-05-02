@@ -1,0 +1,151 @@
+#pageBox {
+  height: auto;
+}
+
+#navWrapper {
+  height: 621px;
+}
+
+#contentWrapper {
+  padding-bottom: 30px;
+  min-height: 621px;
+}
+
+#rulesWrapper {
+  width: 100%;
+  background-color: lightblue;
+  color: #5b5b5b;
+  font-size: 14px;
+}
+
+#addRuleBtn {
+  width: 107px;
+  height: 34px;
+  color: white;
+  margin-bottom: 28px;
+}
+
+#rulesWrapper .ruleDetailWrapper {
+  display: none;
+}
+
+#rulesWrapper .ruleShortWrapper, #rulesWrapper .ruleDetailWrapper {
+  width: 100%;
+  height: auto;
+  border: 1px solid #d9d9d9;
+}
+
+#rulesWrapper .ruleShortWrapper .head, #rulesWrapper .ruleDetailWrapper .head {
+  width: 100%;
+  height: 57px;
+  line-height: 57px;
+  background-color: #e7e8eb;
+  padding: 0 15px;
+}
+
+#rulesWrapper .ruleShortWrapper .head:hover, #rulesWrapper .ruleDetailWrapper .head:hover {
+  cursor: pointer;
+}
+
+#rulesWrapper .ruleShortWrapper .content {
+  width: 100%;
+  padding: 30px 17px;
+  background-color: white;
+  line-height: 3em;
+}
+
+#rulesWrapper .ruleDetailWrapper .content {
+  width: 100%;
+  background-color: white;
+}
+
+#rulesWrapper .ruleShortWrapper .content .key {
+  width: 10%;
+  height: 100%;
+}
+
+#rulesWrapper .ruleShortWrapper .content .val {
+  width: 90%;
+  padding-left: 1em;
+  overflow-x: hidden;
+}
+
+#rulesWrapper .ruleShortWrapper .content .keywordsWrapper font {
+  padding: 0.5em 1em;
+  background-color: #d8d8d8;
+  margin: 0 0.5em 0 0;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .ruleRow {
+  width: 100%;
+  border-bottom: 1px solid #d9d9d9;
+  padding: 1em 0;
+  /*line-height: 2em;*/
+  padding: 1em;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .ruleRow:last-child {
+  border-bottom: 0;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .point {
+  width: 10%;
+  text-align: center;
+  font-weight: bold;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .key {
+  width: 15%;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .val {
+  width: 50%;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .ruleRow.small {
+  /*line-height: 1.2em;*/
+}
+
+#rulesWrapper .ruleDetailWrapper .content .ruleRow.small img {
+  width: 120px;
+  height: 120px;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .ruleRow.keyword .val {
+  width: 65%;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .hint {
+  width: 25%;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .hint a {
+  margin-right: 0.5em;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .hint a:hover {
+  cursor: pointer;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .val input {
+  height: 2.5em;
+  line-height: 2.5em;
+  padding-left: 0.5em;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .val .addContentBtn {
+  margin-right: 1em;
+  color: #5b5b5b;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .val .addContentBtn:hover {
+  cursor: pointer;
+}
+
+#rulesWrapper .ruleDetailWrapper .foot {
+  padding: 1em;
+  background-color: #e7e8eb;
+  font-size: 12px;
+  color: #9b9b9b;
+  line-height: 3em;
+}

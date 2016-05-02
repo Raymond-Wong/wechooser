@@ -7,6 +7,7 @@ var bindMaterialAction = function() {
   showFacesAction();
   chooseFaceAction();
   listenInput();
+  showMaterialBoxAction();
 }
 
 // 切换回复消息类型的事件
@@ -105,14 +106,65 @@ var videoHandler = function() {
   return params;
 }
 
-var HANDLERS = {
-  'text' : textHandler,
-  'image' : imageHandler,
-  'voice' : voiceHandler,
-  'video' : videoHandler,
-  // 'news' : newsHandler,
-};
+
 var getMaterialContent = function() {
+  var HANDLERS = {
+    'text' : textHandler,
+    'image' : imageHandler,
+    'voice' : voiceHandler,
+    'video' : videoHandler,
+  };
   var choosenType = $('#materialNav li.active').attr('name');
   return HANDLERS[choosenType]();
+}
+
+
+// 当素材框中是图片素材框时，将内容提取出来
+var saveImage = function() {
+  var choosenImage = $('.imageItem.choosen');
+  var imgUrl = $(choosenImage.find('img')[0]).attr('src');
+  var mediaId = choosenImage.attr('mediaId');
+  $('#materialImage').append('<img src="' + imgUrl + '" mediaId="' + mediaId + '" />');
+  $('#materialImage').append('<a id="deleteImageMaterialBtn">删除</a>');
+  $('#chooseImageBtn').hide();
+  $('#materialImage').show();
+  $('#materialBoxWrapper').fadeOut();
+}
+
+// 当素材框中是语音素材时，将内容提取出来
+var saveVoice = function() {
+  var choosenVoice = $($('input[name="voiceSelect"]:checked').parents('.voiceItem')[0]);
+  var mediaId = choosenVoice.attr('mediaId');
+  var name = choosenVoice.children('.voiceName').text();
+  var len = choosenVoice.children('.voiceLen').text();
+  $('#materialVoice').children('.voiceName').text(name);
+  $('#materialVoice').children('.voiceLen').text(len);
+  $('#materialVoice').attr('mediaId', mediaId);
+  $('#chooseVoiceBtn').hide();
+  $('#materialVoice').show();
+  $('#materialBoxWrapper').fadeOut();
+}
+
+// 当素材框中是视频素材时，将内容提取出来
+var saveVideo = function() {
+  var choosenVideo = $($('input[name="videoSelect"]:checked').parents('.videoItem')[0]);
+  var mediaId = choosenVideo.attr('mediaId');
+  var name = choosenVideo.children('.videoName').text();
+  $('#materialVideo').children('.videoName').text(name);
+  $('#materialVideo').attr('mediaId', mediaId);
+  $('#chooseVideoBtn').hide();
+  $('#materialVideo').show();
+  $('#materialBoxWrapper').fadeOut();
+}
+
+var showMaterialBoxAction = function() {
+  var handlers = {
+    'Image' : saveImage,
+    'Voice' : saveVoice,
+    'Video' : saveVideo
+  };
+  $('.showMaterialBoxBtn').click(function() {
+    var type = $(this).attr('type');
+    showMaterialBox(type, handlers[type]);
+  });
 }

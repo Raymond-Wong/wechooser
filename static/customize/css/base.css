@@ -107,11 +107,11 @@ body {
 #navWrapper {
   width: 213px;
   height: 100%;
-  border-right: 1px solid #b6b6b6;
 }
 
 #contentWrapper {
   width: 685px;
   height: 100%;
   padding: 0px 54px 0px 31px;
+  border-left: 1px solid #b6b6b6;
 }

@@ -1,9 +1,11 @@
+var SAVE_HANDLERS = {};
+
 $(document).ready(function() {
   bindMaterialBoxAction();
 });
 
 var bindMaterialBoxAction = function() {
-  showMaterialBoxAction();
+  // showMaterialBoxAction();
   hideMaterialBoxAction();
   toPageAction();
   saveAction();
@@ -56,7 +58,7 @@ var toPageAction = function() {
 
 // 更新图片素材框中的图片
 var updateMaterialImageBox = function(offset, count, callback) {
-  return false;
+  // return false;
   var params = {'type' : 'image', 'count' : count, 'offset' : offset};
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
   // 清空容器中的东西
@@ -82,6 +84,7 @@ var updateMaterialImageBox = function(offset, count, callback) {
 
 // 更新语音素材框中的语音
 var updateMaterialVoiceBox = function(offset, count, callback) {
+  return false;
   var params = {'type' : 'voice', 'count' : count, 'offset' : offset};
   var box = $('#materialVoiceBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
@@ -106,6 +109,7 @@ var updateMaterialVoiceBox = function(offset, count, callback) {
 
 // 更新视频素材库中的语音
 var updateMaterialVideoBox = function(offset, count, callback) {
+  return false;
   var params = {'type' : 'video', 'count' : count, 'offet' : offset};
   var box = $('#materialVideoBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
@@ -127,14 +131,20 @@ var updateMaterialVideoBox = function(offset, count, callback) {
 }
 
 // 显示素材框
-var showMaterialBoxAction = function() {
-  var btns = $('.showMaterialBoxBtn');
-  btns.click(function() {
-  	var type = $(this).attr('type');
-  	$('.materialBox.active').removeClass('active');
-  	$('#material' + type + 'Box').addClass('active');
-  	$('#materialBoxWrapper').fadeIn();
-  });
+// var showMaterialBoxAction = function() {
+//   var btns = $('.showMaterialBoxBtn');
+//   btns.click(function() {
+//   	var type = $(this).attr('type');
+//   	$('.materialBox.active').removeClass('active');
+//   	$('#material' + type + 'Box').addClass('active');
+//   	$('#materialBoxWrapper').fadeIn();
+//   });
+// }
+var showMaterialBox = function(type, handler) {
+  SAVE_HANDLERS[type] = handler;
+  $('.materialBox.active').removeClass('active');
+  $('#material' + type + 'Box').addClass('active');
+  $('#materialBoxWrapper').fadeIn();
 }
 
 // 隐藏素材框
@@ -231,11 +241,6 @@ var saveVideo = function() {
 
 // 点击素材框中的保存按钮时，根据当前素材框显示的信息类别不同，选择不同的handler来提取素材狂内容并隐藏素材狂
 var saveAction = function() {
-  var handlers = {
-  	'materialImageBox' : saveImage,
-    'materialVoiceBox' : saveVoice,
-    'materialVideoBox' : saveVideo,
-  }
   $('#choosenBtn').click(function() {
   	var type = $('.materialBox.active').attr('id');
   	return handlers[type]();
