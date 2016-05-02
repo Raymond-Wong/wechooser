@@ -127,9 +127,12 @@ var updateMaterialVideoBox = function(offset, count, callback) {
       var video = videos[i];
       var name = video['name'];
       var mediaId = video['media_id'];
+      var desc = video['description'];
       newVideo = $(VIDEO_ITEM);
       newVideo.children('.videoName').text(name);
       newVideo.attr('mediaId', mediaId);
+      newVideo.children('.videoDesc').text(desc);
+      newVideo.children('.videoTitle').text(video['title']);
       box.append(newVideo);
     }
     box.children('.loadingElement').remove();

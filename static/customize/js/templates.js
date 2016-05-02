@@ -15,7 +15,9 @@ var VOICE_ITEM = '<div class="voiceItem">' +
 var VIDEO_ITEM = '<div class="videoItem">' +
           		 '	<span class="videoSelect"><input type="radio" name="videoSelect" /></span>' +
           		 '	<span class="videoName"></span>' +
-        		 '</div>';
+               '  <span class="videoTitle"></span>' +
+               '  <span class="videoDesc></span>' +
+        		   '</div>';
 
 
 var LOADING_ELEMENT = '<div class="loadingElement">正在加载素材...<div>';

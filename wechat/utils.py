@@ -172,10 +172,12 @@ def getVoiceLen(token, materials):
     # os.remove(name)
   return materials
 
-def getVideoImg(token, materials):
+def getVideoInfo(token, materials):
   for count, item in enumerate(materials['item']):
     video = getMaterialContent(token, item['media_id'])
-    wechooser.utils.logger('DEBUG', video)
+    materials['item'][count]['description'] = video['description']
+    materials['item'][count]['down_url'] = video['down_url']
+    materials['item'][count]['title'] = video['title']
   return materials
 
 # 获取永久素材
