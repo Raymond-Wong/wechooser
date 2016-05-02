@@ -1,4 +1,4 @@
-var SAVE_HANDLERS = {};
+var SAVE_HANDLER = null;
 
 $(document).ready(function() {
   bindMaterialBoxAction();
@@ -141,7 +141,7 @@ var updateMaterialVideoBox = function(offset, count, callback) {
 //   });
 // }
 var showMaterialBox = function(type, handler) {
-  SAVE_HANDLERS[type] = handler;
+  SAVE_HANDLER = handler;
   $('.materialBox.active').removeClass('active');
   $('#material' + type + 'Box').addClass('active');
   $('#materialBoxWrapper').fadeIn();
@@ -242,7 +242,7 @@ var saveVideo = function() {
 // 点击素材框中的保存按钮时，根据当前素材框显示的信息类别不同，选择不同的handler来提取素材狂内容并隐藏素材狂
 var saveAction = function() {
   $('#choosenBtn').click(function() {
-  	var type = $('.materialBox.active').attr('id');
-  	return SAVE_HANDLERS[type]();
+  	// var type = $('.materialBox.active').attr('id');
+  	return SAVE_HANDLER();
   });
 }
