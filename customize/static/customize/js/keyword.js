@@ -194,6 +194,26 @@ var saveVoice = function() {
   TO_INSERT_ROW = null;
 }
 
+// 当用户在素材框中选择了视频后将视频加到回复中的行为
+var saveVideo = function() {
+  var choosenVideo = $($('input[name="videoSelect"]:checked').parents('.videoItem')[0]);
+  var mediaId = choosenVideo.attr('mediaId');
+  var name = choosenVideo.children('.videoName').text();
+  if (TO_INSERT_ROW != NULL && TO_INSERT_ROW.attr('role') == 'btnBox') {
+    var newRow = $(VIDEO_ROW);
+    newRow.attr('mediaId', mediaId);
+    newRow.children('.val').text(name);
+    var box = TO_INSERT_ROW.parents('.content');
+    box.append(newRow);
+    // 在最下面的计数器中加一
+    var box = TO_INSERT_ROW.parents('.ruleDetailWrapper');
+    var videoAmountBox = $(box.find('.videoAmount')[0]);
+    videoAmountBox.text(parseInt(videoAmountBox.text()) + 1);
+  }
+  $('#materialBoxWrapper').fadeOut();
+  TO_INSERT_ROW = null;
+}
+
 var showMaterialBoxAction = function() {
   var handlers = {
     'Image' : saveImage,

@@ -26,7 +26,6 @@ var IMG_ROW = '<div class="ruleRow small" type="image">' +
               '    <img src="" />' +
               '  </div>' +
               '  <div class="right hint">' +
-              '    <a class="showMaterialBoxBtn" type="Image">编辑</a>' +
               '    <a class="deleteRowBtn" type="msg">删除</a>' +
               '  </div>' +
               '  <div class="clear"></div>' +
@@ -57,8 +56,16 @@ var VOICE_ROW = '<div class="ruleRow small" type="voice">' +
                 '    <div class="voiceLen"></div>' +
                 '  </div>' +
                 '  <div class="right hint">' +
-                '    <a class="showMaterialBoxBtn" type="Voice">编辑</a>' +
                 '    <a class="deleteRowBtn" type="msg">删除</a>' +
                 '  </div>' +
                 '  <div class="clear"></div>' +
-                '</div>'
+                '</div>';
+
+var VIDEO_ROW = '<div class="ruleRow small" type="video">' +
+                '  <div class="left point">&nbsp;</div>' +
+                '  <div class="left val"></div>' +
+                '  <div class="right hint">' +
+                '    <a class="deleteRowBtn" type="msg">删除</a>' +
+                '  </div>' +
+                '  <div class="clear"></div>' +
+                '</div>';
