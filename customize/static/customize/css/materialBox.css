@@ -208,15 +208,35 @@
   display: inline-block;
 }
 
-#materialVoiceBox .voiceItem .voiceName,
-#materialVideoBox .videoItem .videoName {
+#materialVoiceBox .voiceItem .voiceName {
   width: 80%;
   display: inline-block;
+}
+
+#materialVideoBox .videoItem .videoName {
+  width: 20%;
+}
+
+#materialVideoBox .videoItem .videoTitle {
+  width: 30%;
+}
+
+#materialVideoBox .videoItem .videoDesc {
+  width: 35%;
 }
 
 #materialVoiceBox .voiceItem .voiceLen {
   width: 9%;
   display: inline-block;
+}
+
+#materialVideoBox .videoItem .videoTitle,
+#materialVideoBox .videoItem .videoDesc,
+#materialVideoBox .videoItem .videoName {
+  display: inline-block;
+  /*overflow: hidden;*/
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #materialTextBox .materialBoxContent {

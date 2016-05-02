@@ -174,23 +174,23 @@ def getVoiceLen(token, materials):
 
 def getVideoInfo(token, materials):
   for count, item in enumerate(materials['item']):
-    video = getMaterialContent(token, item['media_id'])
+    video = getMaterialContent(token, item['media_id'], toLoad=True)
     materials['item'][count]['description'] = video['description']
     materials['item'][count]['down_url'] = video['down_url']
     materials['item'][count]['title'] = video['title']
   return materials
 
 # 获取永久素材
-def getMaterialContent(token, mediaId):
+def getMaterialContent(token, mediaId, toLoad=False):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/material/get_material?access_token='
   method = 'POST'
   params = {'media_id' : mediaId}
   try:
-    res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=False)
+    res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=toLoad)
   except PastDueException:
     token = update_token()
-    res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=False)
+    res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=toLoad)
   if res[0]:
     return res[1]
   return None

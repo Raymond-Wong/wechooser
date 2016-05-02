@@ -116,6 +116,13 @@ class PastDueException(Exception):
   def __str__(self):
     return repr(self.msg)
 
+def parseBool(string):
+  if string == 'True':
+    return True
+  elif string == 'False':
+    return False
+  return None
+
 def prettyTime(sec):
   # ret = ''
   # if sec <= 60:

@@ -16,7 +16,7 @@ class Reply(models.Model):
 
 class KeywordReply(models.Model):
   # 关键词
-  keyword = models.CharField(max_length=30, blank=False)
+  keyword = models.CharField(max_length=30, blank=False, unique=True)
   # 是否全匹配
   is_fully_match = models.BooleanField(default=False)
 
@@ -28,5 +28,5 @@ class Rule(models.Model):
   # 是否全部回复
   is_reply_all = models.BooleanField(default=False)
   # 该规则属于的关键词
-  reply = models.ForeignKey(KeywordReply)
+  replys = models.ManyToManyField(KeywordReply)
 
