@@ -119,15 +119,21 @@ var saveImage = function() {
   var imgUrl = $(choosenImage.find('img')[0]).attr('src');
   var mediaId = choosenImage.attr('mediaId');
   if (TO_INSERT_ROW == null || TO_INSERT_ROW.attr('role') == 'btnBox') {
-    var box = TO_INSERT_ROW.parents('.content');
+    var box = TO_INSERT_ROW.parents('.ruleDetailWrapper');
     var newRow = $(IMG_ROW);
     $(newRow.find('img')[0]).attr('src', imgUrl);
     $(newRow.find('img')[0]).attr('mediaId', mediaId);
     box.append(newRow);
+    // 在最下面的信息计数中增加一个计数器
+    var imageAmountBox = $(box.find('.imageAmount')[0]);
+    imageAmountBox.text(parseInt(imageAmountBox.text()) + 1);
   } else {
     var box = TO_INSERT_ROW.children('.val');
     box.html('<img src="' + imgUrl + '" mediaId="' + mediaId + '" />');
   }
+  // 把已选择的图片去除选择标记
+  choosenImage.removeClass('choosen');
+  $(choosenImage.find('.choosenFlag')[0]).remove();
   $('#materialBoxWrapper').fadeOut();
   TO_INSERT_ROW = null;
 }
