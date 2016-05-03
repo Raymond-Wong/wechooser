@@ -175,6 +175,7 @@ def getVoiceLen(token, materials):
 def getVideoInfo(token, materials):
   for count, item in enumerate(materials['item']):
     video = getMaterialContent(token, item['media_id'], toLoad=True)
+    wechooser.utils.logger('DEBUG', video)
     materials['item'][count]['description'] = video['description']
     materials['item'][count]['down_url'] = video['down_url']
     materials['item'][count]['title'] = video['title']
