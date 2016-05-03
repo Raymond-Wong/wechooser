@@ -84,6 +84,8 @@ def dict2xml(root, d):
         child = ET.SubElement(root, key)
         child = dict2xml(child, item[key])
   else:
+    if isinstance(d, int) or isinstance(d, float):
+      d = str(d)
     root.text = d
   return root
 
