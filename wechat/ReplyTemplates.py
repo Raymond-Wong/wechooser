@@ -133,8 +133,7 @@ class NewsTemplate(Template):
     dic['ArticleCount'] = len(self.Items)
     dic['Articles'] = []
     for item in self.Items:
-      dic['Articles'].append(item.toDic())
-    utils.logger('DEBUG', dic)
+      dic['Articles'].append({'item' : item.toDic()})
     return ET.tostring(utils.dict2xml(ET.Element('xml'), dic), 'utf-8')
   def toSend(self):
     ret = {}
