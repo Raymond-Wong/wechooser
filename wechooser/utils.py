@@ -58,10 +58,18 @@ def send_request(host, path, method, port=443, params={}, toLoad=True):
 def xml2dict(root):
   dictionary = {}
   for child in root:
-    if child.text:
-      dictionary[child.tag] = child.text
+    if isinstance(dictionary, dict) and not dictionary.has_key(child.tag):
+      if child.text:
+        dictionary[child.tag] = child.text
+      else:
+        dictionary[child.tag] = xml2dict(child)
     else:
-      dictionary[child.tag] = xml2dict(child)
+      if isinstance(dictionary, dict) and not isinstance(dictionary[child.tag], list):
+        dictionary = [{child.tag : dictionary[child.tag]}]
+      if child.text:
+        dictionary.append({child.tag : child.text})
+      else:
+        dictionary.append({child.tag : xml2dict(child)})
   return dictionary
 
 # 将字典解析成xml
@@ -70,6 +78,11 @@ def dict2xml(root, d):
     for key in d.keys():
       child = ET.SubElement(root, key)
       child = dict2xml(child, d[key])
+  elif isinstance(d, list):
+    for item in d:
+      for key in item.keys():
+        child = ET.SubElement(root, key)
+        child = dict2xml(child, item[key])
   else:
     root.text = d
   return root

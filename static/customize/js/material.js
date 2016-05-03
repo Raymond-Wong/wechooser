@@ -102,7 +102,10 @@ var voiceHandler = function() {
 
 var videoHandler = function() {
   var mediaId =$('#materialVideo').attr('mediaId');
-  params = {'MsgType' : 'video', 'MediaId' : mediaId};
+  var title = $('#materialVideo').children('.videoTitle').text();
+  var name = $('#materialVideo').children('.videoName').text();
+  var desc = $('#materialVideo').children('.videoDesc').text();
+  params = {'MsgType' : 'video', 'MediaId' : mediaId, 'Title' : title, 'Name' : name, 'Description' : desc};
   return params;
 }
 
@@ -150,7 +153,11 @@ var saveVideo = function() {
   var choosenVideo = $($('input[name="videoSelect"]:checked').parents('.videoItem')[0]);
   var mediaId = choosenVideo.attr('mediaId');
   var name = choosenVideo.children('.videoName').text();
+  var title = choosenVideo.children('.videoTitle').text();
+  var desc = choosenVideo.children('.videoDesc').text();
   $('#materialVideo').children('.videoName').text(name);
+  $('#materialVideo').children('.videoTitle').text(title);
+  $('#materialVideo').children('.videoDesc').text(desc);
   $('#materialVideo').attr('mediaId', mediaId);
   $('#chooseVideoBtn').hide();
   $('#materialVideo').show();

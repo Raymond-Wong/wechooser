@@ -163,10 +163,14 @@ var saveVideo = function() {
   var choosenVideo = $($('input[name="videoSelect"]:checked').parents('.videoItem')[0]);
   var mediaId = choosenVideo.attr('mediaId');
   var name = choosenVideo.children('.videoName').text();
-  if (TO_INSERT_ROW != NULL && TO_INSERT_ROW.attr('role') == 'btnBox') {
+  var title = choosenVideo.children('.videoTitle').text();
+  var desc = choosenVideo.children('.videoDesc').text();
+  if (TO_INSERT_ROW != null && TO_INSERT_ROW.attr('role') == 'btnBox') {
     var newRow = $(VIDEO_ROW);
     newRow.attr('mediaId', mediaId);
-    newRow.children('.val').text(name);
+    newRow.children('.val').children('.videoName').text(name);
+    newRow.children('.val').children('.videoTitle').text(title);
+    newRow.children('.val').children('.videoDesc').text(desc);
     var box = TO_INSERT_ROW.parents('.content');
     box.append(newRow);
     // 在最下面的计数器中加一
@@ -182,6 +186,8 @@ var showMaterialBoxAction = function() {
   var handlers = {
     'Image' : saveImage,
     'Text' : saveText,
+    'Voice' : saveVoice,
+    'Video' : saveVideo,
   };
   $(document).delegate('.showMaterialBoxBtn', 'click', function() {
   	var type = $(this).attr('type');

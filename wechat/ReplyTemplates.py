@@ -25,12 +25,12 @@ class Template:
     self.CreateTime = str(int(time.time()))
     return self
   def toDic(self):
+    self.update()
     ret = {}
     ret['FromUserName'] = self.FromUserName
     ret['ToUserName'] = self.ToUserName
     ret['CreateTime'] = self.CreateTime
     ret['MsgType'] = self.MsgType
-    self.update()
     return ret
   @abstractmethod
   def toReply(self):
@@ -108,3 +108,35 @@ class VideoTemplate(Template):
     ret['video']['description'] = self.Description
     ret['video']['thumb_media_id'] = self.ThumbMediaId
     return ret
+
+class NewsItem:
+  def __init__(self, Title="", Description="", PicUrl="", Url=""):
+    self.Title = Title
+    self.Description = Description
+    self.PicUrl = PicUrl
+    self.Url = Url
+  def toDic():
+    ret = []
+    ret['Title'] = self.Title
+    ret['Description'] = self.Description
+    ret['PicUrl'] = self.PicUrl
+    ret['Url'] = self.Url
+
+class NewsTemplate(Template):
+  def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='news', Items=None):
+    Template.__init__(self, ToUserName=ToUserName, FromUserName=FromUserName, MsgType=MsgType, CreateTime=CreateTime)
+    self.Items = Items
+  def toReply(self):
+    dic = self.toDic()
+    dic['ArticleCount'] = len(self.Items)
+    dic['Articles'] = []
+    for item in self.Items:
+      dic['Articles'].append(item.toDic())
+    return ET.tostring(utils.dict2xml(ET.Element('xml'), dic), 'utf-8')
+  def toSend(self):
+    ret = {}
+    ret['touser'] = self.ToUserName
+    ret['msgtype'] = self.MsgType
+    ret['news'] = {'articles' : []}
+    for item in self.Items:
+      ret['news']['articles'].append(item.toDic())

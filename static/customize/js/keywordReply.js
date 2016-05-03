@@ -22,21 +22,24 @@ var textHandler = function(box) {
 var imageHandler = function(box) {
   var params = {'MsgType' : 'image'};
   var mediaId = box.attr('mediaId');
-  params['media_id'] = mediaId;
+  params['MediaId'] = mediaId;
   return params;
 }
 
 var voiceHandler = function(box) {
   var params = {'MsgType' : 'voice'};
   var mediaId = box.attr('mediaId');
-  params['media_id'] = mediaId;
+  params['MediaId'] = mediaId;
   return params;
 }
 
 var videoHandler = function(box) {
   var params = {'MsgType' : 'video'};
   var mediaId = box.attr('mediaId');
-  params['media_id'] = mediaId;
+  params['MediaId'] = mediaId;
+  params['Title'] = box.children('.val').children('.videoTitle').text();
+  params['Name'] = box.children('.val').children('.videoName').text();
+  params['Description'] = box.children('.val').children('.videoDesc').text();
   return params;
 }
 
@@ -82,9 +85,9 @@ var bindSaveRuleAction = function() {
   	}
   	var replyAll = rule.attr('replyAll');
   	replyAll = replyAll == undefined ? 'False' : replyAll;
-  	params = {'keywords' : keywords, 'replys' : JSON.stringify(replys), 'name' : ruleName, 'isReplyAll' : replyAll};
+  	params = {'keywords' : JSON.stringify(keywords), 'replys' : JSON.stringify(replys), 'name' : ruleName, 'isReplyAll' : replyAll};
   	console.log(params);
-  	$.post('/wechat/reply?type=keyword', params, function(res) {
+  	$.post('/reply?type=keyword', params, function(res) {
   	  if (res['code'] == 0) {
   	  	topAlert('保存成功');
   	  	closeRuleAction($(this));

@@ -16,7 +16,7 @@ var VIDEO_ITEM = '<div class="videoItem">' +
           		 '	<span class="videoSelect"><input type="radio" name="videoSelect" /></span>' +
           		 '	<span class="videoName"></span>' +
                '  <span class="videoTitle"></span>' +
-               '  <span class="videoDesc></span>' +
+               '  <span class="videoDesc"></span>' +
         		   '</div>';
 
 
@@ -65,7 +65,11 @@ var VOICE_ROW = '<div class="ruleRow small reply" type="voice">' +
 
 var VIDEO_ROW = '<div class="ruleRow small reply" type="video">' +
                 '  <div class="left point">&nbsp;</div>' +
-                '  <div class="left val"></div>' +
+                '  <div class="left val">' +
+                '    <div class="videoName"></div>' +
+                '    <div class="videoTitle"></div>' +
+                '    <div class="videoDesc"></div>' +
+                '  </div>' +
                 '  <div class="right hint">' +
                 '    <a class="deleteRowBtn" type="msg">删除</a>' +
                 '  </div>' +
