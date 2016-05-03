@@ -104,15 +104,15 @@ var bindSaveRuleAction = function() {
   	replyAll = replyAll == undefined ? 'False' : replyAll;
   	params = {'keywords' : JSON.stringify(keywords), 'replys' : JSON.stringify(replys), 'name' : ruleName, 'isReplyAll' : replyAll};
   	console.log(params);
-  	// $.post('/reply?type=keyword', params, function(res) {
-  	//   if (res['code'] == 0) {
-  	//   	topAlert('保存成功');
-  	//   	closeRuleAction($(this));
-  	//   } else {
-  	//   	topAlert(res['msg']);
-  	//   }
-  	// });
-  	// closeRuleAction($(this));
+  	$.post('/reply?type=keyword', params, function(res) {
+  	  if (res['code'] == 0) {
+  	  	topAlert('保存成功');
+  	  	closeRuleAction($(this));
+  	  } else {
+  	  	topAlert(res['msg']);
+  	  }
+  	});
+  	closeRuleAction($(this));
   });
 }
 
