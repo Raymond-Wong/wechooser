@@ -12,6 +12,7 @@ var bindMaterialBoxAction = function() {
   bindMaterialImageBoxAction();
   bindMaterialVoiceBoxAction();
   bindMaterialVideoBoxAction();
+  bindMaterialNewsBoxAction();
 }
 
 var bindMaterialTextBoxAction = function() {
@@ -32,8 +33,13 @@ var bindMaterialVoiceBoxAction = function() {
 }
 
 var bindMaterialVideoBoxAction = function() {
-  updateMaterialVideoBox(0, 2);
+  updateMaterialVideoBox(0, 5);
   deleteVideoAction();
+}
+
+var bindMaterialNewsBoxAction = function() {
+  updateMaterialNewsBox(0, 2);
+  chooseNewsAction();
 }
 
 // 跳转页码
@@ -58,6 +64,10 @@ var toPageAction = function() {
       updateMaterialImageBox(10 * (page - 1), 10);
     } else if (type == 'materialVoiceBox') {
       updateMaterialVoiceBox(5 * (page - 1), 5);
+    } else if (type == 'materialVideoBox') {
+      updateMaterialVideoBox(5 * (page - 1), 5);
+    } else if (type == 'materialNewsBox') {
+      updateMaterialNewsBox(2 * (page - 1), 2);
     }
   });
 }
@@ -88,6 +98,39 @@ var updateMaterialImageBox = function(offset, count, callback) {
   }); 
 }
 
+var updateMaterialNewsBox = function(offset, count, callback) {
+  var params = {'type' : 'news', 'count' : count, 'offset' : offset};
+  var box = $('#materialNewsBox .materialBoxContent');
+  box.html(LOADING_ELEMENT);
+  $.post('/wechat/getMaterial', params, function(res) {
+    console.log(res);
+    var items = res['msg']['item']
+    var totalCount = res['msg']['total_count'];
+    $($('#materialNewsBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 2));
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      var mediaId = item['media_id'];
+      var newsItems = item['news_item'];
+      var newsWrapper = $(NEWS_WRAPPER);
+      for (var j = 0; j < newsItems.length; j++) {
+        var newsItem = newsItems[i];
+        var title = newsItem['title'];
+        var desc = newsItem['digest'];
+        var url = newsItem['url'];
+        var thumbUrl = newsItem['thumbUrl'];
+        var newsBox = $(NEWS_BOX);
+        newsBox.children('.newsItemTitle') = title;
+        newsBox.children('.newsItemImg').css('backgroundImage', thumbUrl);
+        newsBox.attr('description', desc);
+        newsBox.attr('url', url);
+        newsWrapper.append(newsBox);
+      }
+      box.append(newsWrapper);
+    }
+    box.children('.loadingElement').remove();
+  });
+}
+
 // 更新语音素材框中的语音
 var updateMaterialVoiceBox = function(offset, count, callback) {
   return false;
@@ -115,14 +158,14 @@ var updateMaterialVoiceBox = function(offset, count, callback) {
 
 // 更新视频素材库中的语音
 var updateMaterialVideoBox = function(offset, count, callback) {
-  // return false;
+  return false;
   var params = {'type' : 'video', 'count' : count, 'offet' : offset};
   var box = $('#materialVideoBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
   $.post('/wechat/getMaterial', params, function(res) {
     var videos = res['msg']['item'];
     var totalCount = res['msg']['total_count'];
-    $($('#materialVoiceBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 2));
+    $($('#materialVoiceBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 5));
     for (var i = 0; i < videos.length; i++) {
       var video = videos[i];
       var name = video['name'];
@@ -169,6 +212,23 @@ var chooseImageAction = function() {
     $(this).children('.imageContentBox').append(choosenFlag);
     $(this).addClass('choosen');
     $('.choosenAmount').text('1');
+  });
+}
+
+var chooseNewsAction = function() {
+  $(document).delegate('.newsItemWrapper', 'click', function() {
+    var oldChoosenNews = $('.newsItemWrapper.choosen');
+    var choosenFlag = $(oldChoosenNews.find('.choosenFlag')[0]);
+    var height = $(this).height() + 2 * parseFloat($(this).css('padding'));
+    if (oldChoosenNews.length > 0) {
+      oldChoosenNews.removeClass('choosen');
+    } else {
+      choosenFlag = $('<div class="choosenFlag vertical_outer"><span class="vertical_inner glyphicon glyphicon-ok"></span></div>');
+    }
+    choosenFlag.css('height', height + 'px');
+    $(this).append(choosenFlag);
+    $(this).addClass('choosen');
+    $($('#materialNewsBox').find('.choosenAmount')[0]).text('1');
   });
 }
 

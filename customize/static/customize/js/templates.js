@@ -75,3 +75,10 @@ var VIDEO_ROW = '<div class="ruleRow small reply" type="video">' +
                 '  </div>' +
                 '  <div class="clear"></div>' +
                 '</div>';
+
+var NEWS_WRAPPER = '<div class="newsItemWrapper left"></div>';
+
+var NEWS_BOX = '<div class="newsItemBox">' +
+               '  <div class="newsItemImg"></div>' +
+               '  <div class="newsItemTitle"></div>' +
+               '</div>'
