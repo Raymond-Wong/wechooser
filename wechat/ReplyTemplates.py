@@ -116,7 +116,7 @@ class NewsItem:
     self.PicUrl = PicUrl
     self.Url = Url
   def toDic(self):
-    ret = []
+    ret = {}
     ret['Title'] = self.Title
     ret['Description'] = self.Description
     ret['PicUrl'] = self.PicUrl
