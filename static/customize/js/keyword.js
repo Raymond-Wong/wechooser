@@ -44,7 +44,6 @@ var bindFullMatchAction = function() {
   $(document).delegate('.fullMatchBtn', 'click', function() {
   	var keyword = $(this).parents('.keyword');
   	var state = keyword.attr('fullMatch');
-  	console.log(state);
   	if (state == undefined || state == "False") {
   	  keyword.attr('fullMatch', 'True');
   	  $(this).text('全匹配');
@@ -182,12 +181,32 @@ var saveVideo = function() {
   TO_INSERT_ROW = null;
 }
 
+var saveNews = function() {
+  var choosenNews = $('.newsItemWrapper.choosen').clone();
+  if (TO_INSERT_ROW != null && TO_INSERT_ROW.attr('role') == 'btnBox') {
+    var newRow = $(NEWS_ROW);
+    newRow.children('.val').html(choosenNews);
+    var box = TO_INSERT_ROW.parents('.content');
+    box.append(newRow);
+    // 在最下面的计数器中加一
+    var box = TO_INSERT_ROW.parents('.ruleDetailWrapper');
+    var newsAmountBox = $(box.find('.newsAmount')[0]);
+    newsAmountBox.text(parseInt(newsAmountBox.text()) + 1);
+  }
+  $($('.newsItemWrapper.choosen').find('.choosenFlag')[0]).remove()
+  $('.newsItemWrapper.choosen').removeClass('choosen');
+  $(choosenNews.find('.choosenFlag')[0]).remove();
+  $('#materialBoxWrapper').fadeOut();
+  TO_INSERT_ROW = null;
+}
+
 var showMaterialBoxAction = function() {
   var handlers = {
     'Image' : saveImage,
     'Text' : saveText,
     'Voice' : saveVoice,
     'Video' : saveVideo,
+    'News' : saveNews,
   };
   $(document).delegate('.showMaterialBoxBtn', 'click', function() {
   	var type = $(this).attr('type');

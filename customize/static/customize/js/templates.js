@@ -76,6 +76,16 @@ var VIDEO_ROW = '<div class="ruleRow small reply" type="video">' +
                 '  <div class="clear"></div>' +
                 '</div>';
 
+var NEWS_ROW = '<div class="ruleRow small reply" type="news">' +
+                '  <div class="left point">&nbsp;</div>' +
+                '  <div class="left val">' +
+                '  </div>' +
+                '  <div class="right hint">' +
+                '    <a class="deleteRowBtn" type="msg">删除</a>' +
+                '  </div>' +
+                '  <div class="clear"></div>' +
+                '</div>';
+
 var NEWS_WRAPPER = '<div class="newsItemWrapper left"></div>';
 
 var NEWS_BOX = '<div class="newsItemBox">' +

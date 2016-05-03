@@ -43,6 +43,22 @@ var videoHandler = function(box) {
   return params;
 }
 
+var newsHandler = function(box) {
+  var params = {'MsgType' : 'news'};
+  box = $(box.find('.newsItemWrapper')[0]);
+  params['MediaId'] = box.attr('mediaId');
+  params['item'] = []
+  $(box.find('.newsItemBox')).each(function() {
+    var item = {};
+    item['Url'] = $(this).attr('url');
+    item['Title'] = $(this).children('.newsItemTitle').text()
+    item['Description'] = $(this).attr('description');
+    item['PicUrl'] = $(this).attr('thumbUrl');
+    params['item'].push(item);
+  });
+  return params;
+}
+
 var bindSaveRuleAction = function() {
   $(document).delegate('.saveRuleBtn', 'click', function() {
   	var rule = $(this).parents('.ruleDetailWrapper');
@@ -68,6 +84,7 @@ var bindSaveRuleAction = function() {
   	  'image' : imageHandler,
   	  'voice' : voiceHandler,
   	  'video' : videoHandler,
+      'news' : newsHandler,
   	}
   	var replys = [];
   	$(rule.find('.reply')).each(function() {
@@ -87,14 +104,14 @@ var bindSaveRuleAction = function() {
   	replyAll = replyAll == undefined ? 'False' : replyAll;
   	params = {'keywords' : JSON.stringify(keywords), 'replys' : JSON.stringify(replys), 'name' : ruleName, 'isReplyAll' : replyAll};
   	console.log(params);
-  	$.post('/reply?type=keyword', params, function(res) {
-  	  if (res['code'] == 0) {
-  	  	topAlert('保存成功');
-  	  	closeRuleAction($(this));
-  	  } else {
-  	  	topAlert(res['msg']);
-  	  }
-  	});
+  	// $.post('/reply?type=keyword', params, function(res) {
+  	//   if (res['code'] == 0) {
+  	//   	topAlert('保存成功');
+  	//   	closeRuleAction($(this));
+  	//   } else {
+  	//   	topAlert(res['msg']);
+  	//   }
+  	// });
   	// closeRuleAction($(this));
   });
 }

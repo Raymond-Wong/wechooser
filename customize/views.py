@@ -105,6 +105,12 @@ def setKeywordReply(request):
       templates.append(VoiceTemplate(MediaId=template['MediaId']))
     elif template['MsgType'] == 'video':
       templates.append(VideoTemplate(MediaId=template['MediaId'], Title=template['Title'], Description=template['Description'], ThumbMediaId=template['ThumbMediaId']))
+    elif template['MsgType'] == 'news':
+      mediaId = template['MediaId']
+      newsItems = []
+      for item in template['item']:
+        newsItems.append(NewsItem(Title=item['Title'], Description=item['Description'], Url=item['Url'], PicUrl=item['PicUrl']))
+      templates.append(NewsTemplate(MediaId=mediaId, Items=newsItems))
   rule.templates = json.dumps(templates, default=wechooser.utils.dumps)
   rule.save()
   # 规则更新结束，开始更新关键词

@@ -161,6 +161,14 @@ def imgUrl2base64(token, materials):
     materials['item'][count]['url'] = 'data:image/jpeg;base64,' + base64.b64encode(media)
   return materials
 
+def getNewsInfo(token, materials):
+  for i, item in enumerate(materials['item']):
+    for j, newsItem in enumerate(item['content']['news_item']):
+      mediaId = newsItem['thumb_media_id']
+      media = getMaterialContent(token, mediaId)
+      materials['item'][i]['content']['news_item'][j]['img'] = 'data:image/png;base64,' + base64.b64encode(media)
+  return materials
+
 def getVoiceLen(token, materials):
   for count, item in enumerate(materials['item']):
     # voice = getMaterialContent(token, item['media_id'])

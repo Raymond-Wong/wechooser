@@ -123,9 +123,10 @@ class NewsItem:
     ret['Url'] = self.Url
 
 class NewsTemplate(Template):
-  def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='news', Items=None):
+  def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='news', MediaId='', Items=None):
     Template.__init__(self, ToUserName=ToUserName, FromUserName=FromUserName, MsgType=MsgType, CreateTime=CreateTime)
     self.Items = Items
+    self.MediaId = MediaId
   def toReply(self):
     dic = self.toDic()
     dic['ArticleCount'] = len(self.Items)
@@ -140,3 +141,4 @@ class NewsTemplate(Template):
     ret['news'] = {'articles' : []}
     for item in self.Items:
       ret['news']['articles'].append(item.toDic())
+    return ret
