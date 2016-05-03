@@ -133,6 +133,7 @@ class NewsTemplate(Template):
     dic['Articles'] = []
     for item in self.Items:
       dic['Articles'].append(item.toDic())
+    console.log(dic)
     return ET.tostring(utils.dict2xml(ET.Element('xml'), dic), 'utf-8')
   def toSend(self):
     ret = {}
