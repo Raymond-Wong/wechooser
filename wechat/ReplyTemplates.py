@@ -139,8 +139,6 @@ class NewsTemplate(Template):
   def toSend(self):
     ret = {}
     ret['touser'] = self.ToUserName
-    ret['msgtype'] = self.MsgType
-    ret['news'] = {'articles' : []}
-    for item in self.Items:
-      ret['news']['articles'].append(item.toDic())
+    ret['msgtype'] = 'mpnews'
+    ret['mpnews'] = {'media_id' : self.MediaId}
     return ret
