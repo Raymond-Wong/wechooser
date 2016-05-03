@@ -60,7 +60,7 @@ class TextReplyHandler(ReplyHandler):
     keywordReplys = KeywordReply.objects.all()
     rules = []
     for keywordReply in keywordReplys:
-      if not keyword.is_fully_match and keywordReply.keyword in self.params['Content']:
+      if not keywordReply.is_fully_match and keywordReply.keyword in self.params['Content']:
         rules += keywordReply.rule_set.all()
       elif keyword.is_fully_match and keywordReply.keyword == self.params['Content']:
         rules += keywordReply.rule_set.all()
