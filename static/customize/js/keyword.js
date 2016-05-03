@@ -3,12 +3,21 @@ $(document).ready(function() {
 });
 
 var bindKeywordAction = function() {
+  bindAddKeywordAction();
   bindDetailToggle();
   bindDeleteRowAction();
   bindFullMatchAction();
   bindReplyAllAction();
   bindDeleteRuleAction();
   showMaterialBoxAction();
+}
+
+var bindAddKeywordAction = function() {
+  $('#addRuleBtn').click(function() {
+    var newRule = $(NEW_RULE);
+    $('#rulesWrapper').append(newRule);
+    newRule.children('.ruleShortWrapper').children('.head').trigger('click');
+  });
 }
 
 var bindDetailToggle = function() {

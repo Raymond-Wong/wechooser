@@ -91,4 +91,85 @@ var NEWS_WRAPPER = '<div class="newsItemWrapper left"></div>';
 var NEWS_BOX = '<div class="newsItemBox">' +
                '  <div class="newsItemImg"></div>' +
                '  <div class="newsItemTitle"></div>' +
-               '</div>'
+               '</div>';
+
+var NEW_RULE = '<div class="ruleWrapper">' +
+               '  <div class="ruleShortWrapper">' +
+               '    <div class="head">' +
+               '      <font class="ruleName">新规则</font>' +
+               '      <font class="right showDetailBtn"><span class="glyphicon glyphicon-chevron-down"></span></font>' +
+               '    </div>' +
+               '    <div class="content">' +
+               '      <div class="keywordsWrapper">' +
+               '        <div class="key left">关键词：</div>' +
+               '        <div class="right val"></div>' +
+               '        <div class="clear"></div>' +
+               '      </div>' +
+               '      <div class="replyWrapper">' +
+               '        <div class="key left">回复：</div>' +
+               '        <div class="right val">' +
+               '          <font class="totalAmount">0</font>条（' +
+               '          <font class="textAmount">0</font>条文字' +
+               '          <font class="imageAmount">0</font>条图片' +
+               '          <font class="voiceAmount">0</font>条语音' +
+               '          <font class="videoAmount">0</font>条视频' +
+               '          <font class="newsAmount">0</font>条图文）' +
+               '        </div>' +
+               '        <div class="clear"></div>' +
+               '      </div>' +
+               '    </div>' +
+               '  </div>' +
+               '  <div class="ruleDetailWrapper">' +
+               '    <div class="head">' +
+               '      新规则' +
+               '      <font class="right showDetailBtn"><span class="glyphicon glyphicon-chevron-up"></span></font>' +
+               '    </div>' +
+               '    <div class="content">' +
+               '      <div class="ruleRow">' +
+               '        <div class="left point">·</div>' +
+               '        <div class="left key">规则名</div>' +
+               '        <div class="left val"><input type="text" name="ruleName" placeholder="规则名最多60字" /></div>' +
+               '        <div class="clear"></div>' +
+               '      </div>' +
+               '      <div class="ruleRow" role="addKeyword">' +
+               '        <div class="left point">·</div>' +
+               '        <div class="left key">关键字</div>' +
+               '        <div class="left val"></div>' +
+               '        <div class="right hint"><a class="showMaterialBoxBtn" type="Text">添加关键字</a></div>' +
+               '        <div class="clear"></div>' +
+               '      </div>' +
+               '      <div class="keywordsWrapper">' +
+               '      </div>' +
+               '      <div class="ruleRow">' +
+               '        <div class="left point">·</div>' +
+               '        <div class="left key">回复</div>' +
+               '        <div class="left val"></div>' +
+               '        <div class="right hint"><a class="replyAllBtn">未回复全部</a></div>' +
+               '        <div class="clear"></div>' +
+               '      </div>' +
+               '      <div class="ruleRow small" role="btnBox">' +
+               '        <div class="left point">&nbsp;</div>' +
+               '        <div class="left val">' +
+               '          <a class="addContentBtn showMaterialBoxBtn" type="Text">文字</a>' +
+               '          <a class="addContentBtn showMaterialBoxBtn" type="Image">图片</a>' +
+               '          <a class="addContentBtn showMaterialBoxBtn" type="Voice">语音</a>' +
+               '          <a class="addContentBtn showMaterialBoxBtn" type="Video">视频</a>' +
+               '          <a class="addContentBtn showMaterialBoxBtn" type="News">图文</a>' +
+               '        </div>' +
+               '        <div class="clear"></div>' +
+               '      </div>' +
+               '    </div>' +
+               '    <div class="foot">' +
+               '      文字（<font class="textAmount">0</font>）' +
+               '      图片（<font class="imageAmount">0</font>）' +
+               '      语音（<font class="voiceAmount">0</font>）' +
+               '      视频（<font class="videoAmount">0</font>）' +
+               '      图文（<font class="newsAmount">0</font>）' +
+               '      <div class="btnBox right">' +
+               '        <div class="btn saveRuleBtn">保存</div>' +
+               '        <div class="btn wait deleteRuleBtn">删除</div>' +
+               '      </div>' +
+               '      <div class="clear"></div>' +
+               '    </div>' +
+               '  </div>' +
+               '</div>';

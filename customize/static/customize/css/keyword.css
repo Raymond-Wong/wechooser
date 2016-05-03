@@ -13,7 +13,7 @@
 
 #rulesWrapper {
   width: 100%;
-  background-color: lightblue;
+  /*background-color: lightblue;*/
   color: #5b5b5b;
   font-size: 14px;
 }
@@ -23,6 +23,14 @@
   height: 34px;
   color: white;
   margin-bottom: 28px;
+}
+
+#rulesWrapper .ruleWrapper {
+  margin-top: 1em;
+}
+
+#rulesWrapper .ruleWrapper:first-child {
+  margin-top: 0;
 }
 
 #rulesWrapper .ruleDetailWrapper {
@@ -57,6 +65,10 @@
 #rulesWrapper .ruleDetailWrapper .content {
   width: 100%;
   background-color: white;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .ruleRow:first-child {
+  line-height: 35px;
 }
 
 #rulesWrapper .ruleShortWrapper .content .key {
@@ -162,7 +174,7 @@
 }
 
 
-.materialBoxContent {
+#materialNewsBox .materialBoxContent {
   padding: 21px 15%;
   overflow: auto;
 }

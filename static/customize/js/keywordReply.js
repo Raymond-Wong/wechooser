@@ -133,6 +133,7 @@ var closeRuleAction = function(saveRuleBtn) {
   	  var keyword = $(this).children('.val').html();
   	  keywords.push(keyword);
   	});
+    $(rule.find('.ruleName')[0]).text(name);
   	$(ruleShort.find('.ruleName')[0]).text(name);
   	$(ruleShort.find('.totalAmount')[0]).text(totalAmount);
   	$(ruleShort.find('.textAmount')[0]).text(textAmount);

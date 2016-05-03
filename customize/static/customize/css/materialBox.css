@@ -86,7 +86,7 @@
   width: 153px;
   height: 440px;
   border-right: 1px solid #d9d9d9;
-  background-color: lightblue;
+  /*background-color: lightblue;*/
   padding-left: 26px;
   padding-top: 19px;
   font-size: 16px;
@@ -97,7 +97,7 @@
   width: 750px;
   height: 374px;
   overflow: hidden;
-  background-color: yellow;
+  /*background-color: yellow;*/
   padding: 0px 21px;
 }
 
@@ -105,7 +105,7 @@
   width: 750px;
   height: 66px;
   line-height: 66px;
-  background-color: lightpink;
+  /*background-color: lightpink;*/
   padding-right: 30px;
   text-align: center;
 }

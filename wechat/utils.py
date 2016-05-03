@@ -156,17 +156,21 @@ def verify(token, timestamp, nonce, signature):
 # 将素材中的图片url转换成base64编码
 def imgUrl2base64(token, materials):
   for count, item in enumerate(materials['item']):
+    imgTypeIndex = item['url'].find('wx_fmt')
+    imgType = item['url'][imgTypeIndex + 7:]
     mediaId = item['media_id']
     media = getMaterialContent(token, mediaId)
-    materials['item'][count]['url'] = 'data:image/jpeg;base64,' + base64.b64encode(media)
+    materials['item'][count]['url'] = 'data:image/' + imgType + ';base64,' + base64.b64encode(media)
   return materials
 
 def getNewsInfo(token, materials):
   for i, item in enumerate(materials['item']):
     for j, newsItem in enumerate(item['content']['news_item']):
+      imgTypeIndex = newsItem['thumb_url'].find('wx_fmt')
+      imgType = newsItem['thumb_url'][imgTypeIndex + 7:]
       mediaId = newsItem['thumb_media_id']
       media = getMaterialContent(token, mediaId)
-      materials['item'][i]['content']['news_item'][j]['img'] = 'data:image/png;base64,' + base64.b64encode(media)
+      materials['item'][i]['content']['news_item'][j]['img'] = 'data:image/' + imgType + ';base64,' + base64.b64encode(media)
   return materials
 
 def getVoiceLen(token, materials):

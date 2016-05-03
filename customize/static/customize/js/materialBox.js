@@ -108,12 +108,13 @@ var updateMaterialNewsBox = function(offset, count, callback) {
     $($('#materialNewsBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 2));
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
+      console.log(item);
       var mediaId = item['media_id'];
       var newsItems = item['content']['news_item'];
       var newsWrapper = $(NEWS_WRAPPER);
       newsWrapper.attr('mediaId', mediaId);
       for (var j = 0; j < newsItems.length; j++) {
-        var newsItem = newsItems[i];
+        var newsItem = newsItems[j];
         var title = newsItem['title'];
         var desc = newsItem['digest'];
         var url = newsItem['url'];
@@ -198,6 +199,9 @@ var showMaterialBox = function(type, handler) {
 var hideMaterialBoxAction = function() {
   $('.hideMaterialBoxBtn').click(function() {
   	$('#materialBoxWrapper').fadeOut();
+  });
+  $('#cancelBtn').click(function() {
+    $('#materialBoxWrapper').fadeOut();
   });
 }
 

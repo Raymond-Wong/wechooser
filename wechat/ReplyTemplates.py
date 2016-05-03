@@ -110,11 +110,12 @@ class VideoTemplate(Template):
     return ret
 
 class NewsItem:
-  def __init__(self, Title="", Description="", PicUrl="", Url=""):
+  def __init__(self, Title="", Description="", PicUrl="", Url="", SrcUrl=""):
     self.Title = Title
     self.Description = Description
     self.PicUrl = PicUrl
     self.Url = Url
+    self.SrcUrl = SrcUrl
   def toDic(self):
     ret = {}
     ret['Title'] = self.Title
