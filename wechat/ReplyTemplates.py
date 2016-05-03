@@ -121,6 +121,7 @@ class NewsItem:
     ret['Description'] = self.Description
     ret['PicUrl'] = self.PicUrl
     ret['Url'] = self.Url
+    return ret
 
 class NewsTemplate(Template):
   def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='news', MediaId='', Items=None):
