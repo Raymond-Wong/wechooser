@@ -111,7 +111,7 @@ def setKeywordReply(request):
             news['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=news['PicUrl'], mediaId=news['MediaId'])
       newRule['templates'] = templates
       retRule.append(newRule)
-    return render_to_response('customize/keyword.html', {'rules' : retRule})
+    return render_to_response('customize/keyword.html', {'active' : 'keyword', 'rules' : retRule})
   # 获取关键词列表
   keywords = json.loads(request.POST.get('keywords', '{}'))
   replys = json.loads(request.POST.get('replys', '[]'))
