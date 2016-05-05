@@ -1,4 +1,5 @@
 var alertBox = $('#alertBox');
+var topAlertTimer = null;
 
 var topAlert = function(msg, tp) {
   var tp = tp ? tp : 'info';
@@ -6,7 +7,7 @@ var topAlert = function(msg, tp) {
   alertBox.html(msg);
   alertBox.animate({'top' : '0px'});
   if (tp == 'error') {
-  	alertBox.css('backgroundColor', 'red');
+  	topAlertTimer = alertBox.css('backgroundColor', 'red');
   }
   setTimeout(hideTopAlert, 5000);
 }

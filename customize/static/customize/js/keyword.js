@@ -111,6 +111,11 @@ var saveImage = function() {
 // 当用户在素材框中填写了新文字时将文字加到回复中的行为
 var saveText = function() {
   var textContent = $('#materialTextInputArea').html();
+  var remainChar = parseInt($('#materialTextBox .remainChar font').text());
+  if (remainChar < 0) {
+    topAlert('输入文本长度超过限制', 'error');
+    return false;
+  }
   $('#materialTextInputArea').html('');
   if (TO_INSERT_ROW != null && TO_INSERT_ROW.attr('role') == 'addKeyword') {
     var row = $(ADD_KEYWORD_ROW);
@@ -216,6 +221,19 @@ var showMaterialBoxAction = function() {
   	var type = $(this).attr('type');
     TO_INSERT_ROW = $(this).parents('.ruleRow');
   	var handler = handlers[type];
+    // 如果要显示的素材是文字输入时要对素材框进行初始化
+    if (type == 'Text') {
+      var maxCharAmount = parseInt(TO_INSERT_ROW.attr('maxCharAmount'));
+      var html = TO_INSERT_ROW.children('.val').html();
+      var text = TO_INSERT_ROW.children('.val').text();
+      var remainCharAmount = maxCharAmount - TO_INSERT_ROW.children('.val').find('.insertedFace').length - text.length;
+      if (TO_INSERT_ROW.attr('role') == 'addKeyword' || TO_INSERT_ROW.attr('role') == 'btnBox') {
+        html = "";
+        remainCharAmount = maxCharAmount;
+      }
+      $($('#materialTextBox').find('.remainChar font')[0]).text(remainCharAmount);
+      $('#materialTextInputArea').html(html);
+    }
   	showMaterialBox(type, handler);
   });
 }

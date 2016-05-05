@@ -296,14 +296,14 @@ var chooseFace = function() {
 }
 
 var remainCharAmount = function() {
-  var materialText = $('#materialTextBox .materialBoxContent');
+  var materialText = $('#materialTextInputArea');
   materialText.keydown(function(evt) {
     if (evt.keyCode == '13') {
       return false;
     }
   });
-  if (materialText.addEventListener) {
-    materialText.addEventListener('DOMCharacterDataModified', function(evt) {
+  if (materialText[0].addEventListener) {
+    materialText[0].addEventListener('DOMCharacterDataModified', function(evt) {
       updateRemainChar();
     }, false);
   }
@@ -315,7 +315,8 @@ var updateRemainChar = function() {
   var remainText = $('#materialTextHintArea .remainChar font');
   var charAmount = materialText.text().length;
   var faceAmount = materialText.find('.insertedFace').length;
-  var remainAmount = 600 - charAmount - faceAmount;
+  var maxAmount = parseInt(TO_INSERT_ROW.attr('maxCharAmount'));
+  var remainAmount = maxAmount - charAmount - faceAmount;
   remainText.text(remainAmount);
   return remainAmount;
 }

@@ -135,7 +135,8 @@
 #rulesWrapper .ruleDetailWrapper .content .ruleRow .val .insertedFace {
   width: 20px;
   height: 20px;
-  vertical-align: bottom;
+  /*vertical-align: bottom;*/
+  margin-right: 0;
 }
 
 #rulesWrapper .ruleDetailWrapper .content .hint {

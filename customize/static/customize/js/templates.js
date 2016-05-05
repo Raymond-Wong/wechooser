@@ -33,14 +33,14 @@ var IMG_ROW = '<div class="ruleRow small reply" type="image">' +
               '  <div class="clear"></div>' +
               '</div>';
 
-var ADD_KEYWORD_ROW = '<div class="ruleRow small keyword" role="editKeyword">' +
+var ADD_KEYWORD_ROW = '<div class="ruleRow small keyword" role="editKeyword" maxCharAmount="30">' +
                       '  <div class="left point">&nbsp;</div>' +
                       '  <div class="left val"></div>' +
-                      '  <div class="hint right"><a class="fullMatchBtn">未全匹配</a><a class="showMaterialBoxBtn" role="Text">编辑</a><a class="deleteRowBtn">删除</a></div>' +
+                      '  <div class="hint right"><a class="fullMatchBtn">未全匹配</a><a class="showMaterialBoxBtn" type="Text">编辑</a><a class="deleteRowBtn">删除</a></div>' +
                       '  <div class="clear"></div>' +
                       '</div>';
 
-var TEXT_ROW = '<div class="ruleRow small reply" type="text">' +
+var TEXT_ROW = '<div class="ruleRow small reply" type="text" maxCharAmount="300">' +
                '  <div class="left point">&nbsp;</div>' +
                '  <div class="left val"></div>' +
                '  <div class="right hint">' +
@@ -131,7 +131,7 @@ var NEW_RULE = '<div class="ruleWrapper">' +
                '        <div class="left val"><input type="text" name="ruleName" placeholder="规则名最多60字" /></div>' +
                '        <div class="clear"></div>' +
                '      </div>' +
-               '      <div class="ruleRow" role="addKeyword">' +
+               '      <div class="ruleRow" role="addKeyword" maxCharAmount="30">' +
                '        <div class="left point">·</div>' +
                '        <div class="left key">关键字</div>' +
                '        <div class="left val"></div>' +
@@ -147,7 +147,7 @@ var NEW_RULE = '<div class="ruleWrapper">' +
                '        <div class="right hint"><a class="replyAllBtn">未回复全部</a></div>' +
                '        <div class="clear"></div>' +
                '      </div>' +
-               '      <div class="ruleRow small" role="btnBox">' +
+               '      <div class="ruleRow small" role="btnBox" maxCharAmount="300">' +
                '        <div class="left point">&nbsp;</div>' +
                '        <div class="left val">' +
                '          <a class="addContentBtn showMaterialBoxBtn" type="Text">文字</a>' +

@@ -52,7 +52,7 @@
 		    <div class="left val"><input type="text" name="ruleName" value="{{ rule.name }}" placeholder="规则名最多60字" /></div>
 		    <div class="clear"></div>
   	  </div>
-  	  <div class="ruleRow" role="addKeyword">
+  	  <div class="ruleRow" role="addKeyword" maxCharAmount="30">
   	  	<div class="left point">·</div>
   	  	<div class="left key">关键字</div>
   	  	<div class="left val"></div>
@@ -61,7 +61,7 @@
   	  </div>
       <div class="keywordsWrapper">
         {% for kw in rule.keywords %}
-    	  <div class="ruleRow small keyword" role="editKeyword" {% ifequal kw.is_fully_match True %}fullmatch="True"{% endifequal %}>
+    	  <div class="ruleRow small keyword" role="editKeyword" maxCharAmount="30" {% ifequal kw.is_fully_match True %}fullmatch="True"{% endifequal %}>
     	  	<div class="left point">&nbsp;</div>
     	  	<div class="left val">{{ kw.keyword }}</div>
     	  	<div class="hint right">
@@ -80,7 +80,7 @@
 		    <div class="right hint"><a class="replyAllBtn">{% ifequal rule.is_reply_all False %}未{% endifequal %}回复全部</a></div>
 		    <div class="clear"></div>
   	  </div>
-  	  <div class="ruleRow small" role="btnBox">
+  	  <div class="ruleRow small" role="btnBox" maxCharAmount="300">
   	  	<div class="left point">&nbsp;</div>
   	  	<div class="left val">
   	  	  <a class="addContentBtn showMaterialBoxBtn" type="Text">文字</a>
@@ -93,7 +93,7 @@
   	  </div>
       {% for template in rule.templates %}
       {% ifequal template.MsgType "text" %}
-  	  <div class="ruleRow small reply" type="text">
+  	  <div class="ruleRow small reply" type="text" maxCharAmount="300">
   	  	<div class="left point">&nbsp;</div>
   	  	<div class="left val">
   	  	  {{ template.Content }}
