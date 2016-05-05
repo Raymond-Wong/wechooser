@@ -66,7 +66,7 @@ CREATE TABLE `auth_permission` (
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   KEY `auth_permission_37ef4eb4` (`content_type_id`),
   CONSTRAINT `content_type_id_refs_id_d043b34a` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +147,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,16 +198,69 @@ CREATE TABLE `wechat_access_token` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `wechat_replytemplate`
+-- Table structure for table `wechat_keywordreply`
 --
 
-DROP TABLE IF EXISTS `wechat_replytemplate`;
+DROP TABLE IF EXISTS `wechat_keywordreply`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `wechat_replytemplate` (
-  `msgType` varchar(100) NOT NULL,
-  `content` longtext NOT NULL,
-  PRIMARY KEY (`msgType`)
+CREATE TABLE `wechat_keywordreply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `keyword` varchar(30) NOT NULL,
+  `is_fully_match` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `keyword` (`keyword`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `wechat_reply`
+--
+
+DROP TABLE IF EXISTS `wechat_reply`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `wechat_reply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reply_type` varchar(10) NOT NULL,
+  `template` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `wechat_rule`
+--
+
+DROP TABLE IF EXISTS `wechat_rule`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `wechat_rule` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) NOT NULL,
+  `templates` longtext NOT NULL,
+  `is_reply_all` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `wechat_rule_replys`
+--
+
+DROP TABLE IF EXISTS `wechat_rule_replys`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `wechat_rule_replys` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rule_id` int(11) NOT NULL,
+  `keywordreply_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `rule_id` (`rule_id`,`keywordreply_id`),
+  KEY `wechat_rule_replys_fb21b565` (`rule_id`),
+  KEY `wechat_rule_replys_8525c2be` (`keywordreply_id`),
+  CONSTRAINT `keywordreply_id_refs_id_4940d601` FOREIGN KEY (`keywordreply_id`) REFERENCES `wechat_keywordreply` (`id`),
+  CONSTRAINT `rule_id_refs_id_fa378845` FOREIGN KEY (`rule_id`) REFERENCES `wechat_rule` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -220,4 +273,4 @@ CREATE TABLE `wechat_replytemplate` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-26 15:46:04
+-- Dump completed on 2016-05-05 14:24:11
