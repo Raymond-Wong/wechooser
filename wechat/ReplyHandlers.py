@@ -18,11 +18,14 @@ class ReplyHandler:
     self.params = params
 
   def getReply(self):
-    reply = Reply.objects.get(reply_type=self.reply_type).template
-    reply = json.loads(reply, object_hook=wechooser.utils.loads)
-    reply.FromUserName = self.params['ToUserName']
-    reply.ToUserName = self.params['FromUserName']
-    return reply.toReply()
+    try:
+      reply = Reply.objects.get(reply_type=self.reply_type).template
+      reply = json.loads(reply, object_hook=wechooser.utils.loads)
+      reply.FromUserName = self.params['ToUserName']
+      reply.ToUserName = self.params['FromUserName']
+      return reply.toReply()
+    except Exception:
+      return ''
 
 # 未处理类型自动回复
 class DefaultReplyHandler(ReplyHandler):
