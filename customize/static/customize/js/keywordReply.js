@@ -33,6 +33,7 @@ var voiceHandler = function(box) {
   var params = {'MsgType' : 'voice'};
   var mediaId = box.attr('mediaId');
   params['MediaId'] = mediaId;
+  params['VoiceName'] = $(box.find('.voiceName')[0]).text();
   return params;
 }
 
