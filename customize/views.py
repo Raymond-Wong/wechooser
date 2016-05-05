@@ -82,8 +82,7 @@ def setReply(request):
     mediaId = request.POST.get('MediaId')
     title = request.POST.get('Title')
     description = request.POST.get('Description')
-    thumbMediaId = request.POST.get('ThumbMediaId')
-    reply.template = json.dumps(VideoTemplate(MediaId=mediaId, Title=title, Description=description, ThumbMediaId=thumbMediaId), default=wechooser.utils.dumps)
+    reply.template = json.dumps(VideoTemplate(MediaId=mediaId, Title=title, Description=description), default=wechooser.utils.dumps)
   reply.save()
   return HttpResponse(Response(m="保存成功").toJson(), content_type='application/json')
 
@@ -138,7 +137,7 @@ def setKeywordReply(request):
     elif template['MsgType'] == 'voice':
       templates.append(VoiceTemplate(MediaId=template['MediaId'], VoiceName=template['VoiceName']))
     elif template['MsgType'] == 'video':
-      templates.append(VideoTemplate(MediaId=template['MediaId'], Title=template['Title'], Description=template['Description'], ThumbMediaId=template['ThumbMediaId']))
+      templates.append(VideoTemplate(MediaId=template['MediaId'], Title=template['Title'], Description=template['Description']))
     elif template['MsgType'] == 'news':
       mediaId = template['MediaId']
       newsItems = []

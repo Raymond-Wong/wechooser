@@ -166,7 +166,7 @@ var updateMaterialVoiceBox = function(offset, count, callback) {
 
 // 更新视频素材库中的视频
 var updateMaterialVideoBox = function(offset, count, callback) {
-  return false;
+  // return false;
   var params = {'type' : 'video', 'count' : count, 'offet' : offset};
   var box = $('#materialVideoBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
