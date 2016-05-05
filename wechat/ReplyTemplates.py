@@ -94,6 +94,7 @@ class VideoTemplate(Template):
     self.MediaId = MediaId
     self.Title = Title
     self.Description = Description
+    self.ThumbMediaId = ThumbMediaId
   def toReply(self):
     dic = self.toDic()
     dic['Video'] = {}
