@@ -11,4 +11,5 @@ urlpatterns = patterns('',
 
   url(r'^login$', views.login, name='login'),
   url(r'^reply$', views.setReply, name='setReply'),
+  url(r'^reply/delete$', views.deleteReply, name='deleteReply'),
 )

@@ -39,6 +39,7 @@ var initReply = function() {
 
 var bindReplyAction = function() {
   var saveBtn = $('#saveBtn');
+  var deleteBtn = $('#deleteBtn');
   saveBtn.click(function() {
   	var url = window.location.pathname + window.location.search;
   	var params = getMaterialContent();
@@ -53,5 +54,12 @@ var bindReplyAction = function() {
   	  else
   	  	topAlert(res['msg'], 'error');
   	});
+  });
+  deleteBtn.click(function() {
+    var url = window.location.pathname + '/delete' + window.location.search
+    $.get(url, {}, function(res) {
+      topAlert('回复删除成功');
+      window.location.reload();
+    });
   });
 }

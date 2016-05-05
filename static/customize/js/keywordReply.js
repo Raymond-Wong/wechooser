@@ -1,5 +1,6 @@
 $(document).ready(function() {
   bindSaveRuleAction();
+  bindDeleteRuleAction();
 });
 
 var parseFace = function(domEle) {
@@ -110,7 +111,7 @@ var bindSaveRuleAction = function() {
   	$.post('/reply?type=keyword', params, function(res) {
   	  if (res['code'] == 0) {
   	  	topAlert('保存成功');
-  	  	closeRuleAction($(this));
+  	  	// closeRuleAction($(this));
   	  } else {
   	  	topAlert(res['msg']);
   	  }
@@ -151,4 +152,16 @@ var closeRuleAction = function(saveRuleBtn) {
   	}
   	rule.hide();
   	ruleShort.show();
+}
+
+var bindDeleteRuleAction = function() {
+  $(document).delegate('.deleteRuleBtn', 'click', function() {
+    var rule = $(this).parents('.ruleWrapper');
+    var rid = rule.children('.ruleDetailWrapper').attr('rid');
+    var url = window.location.pathname + '/delete' + window.location.search;
+    $.get(url, {'rid' : rid}, function(res) {
+      topAlert('回复删除成功');
+      rule.remove();
+    });
+  });
 }

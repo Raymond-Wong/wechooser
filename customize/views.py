@@ -171,3 +171,24 @@ def setKeywordReply(request):
         kw.delete()
   rule.save()
   return HttpResponse(Response(m="保存成功").toJson(), content_type='application/json')
+
+# 删除回复的接口
+@csrf_exempt
+def deleteReply(request):
+  replyType = request.GET.get('type', 'subscribe')
+  if replyType != 'keyword':
+    Reply.objects.get(reply_type=replyType).delete()
+  else:
+    rid = request.GET.get('rid', None)
+    wechooser.utils.logger('DEBUG', 'rid=%s' % rid)
+    try:
+      rule = Rule.objects.get(id=rid)
+    except Exception:
+      return HttpResponse(Response(m='').toJson(), content_type='application/json')
+    for kw in rule.replys.all():
+      rule.replys.remove(kw)
+      # 如果该关键词没有与其他关键词存在关联,则删除
+      if len(kw.rule_set.all()) <= 0:
+        kw.delete()
+    rule.delete()
+  return HttpResponse(Response(m='').toJson(), content_type='application/json')

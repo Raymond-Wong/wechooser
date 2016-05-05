@@ -8,14 +8,13 @@ var bindKeywordAction = function() {
   bindDeleteRowAction();
   bindFullMatchAction();
   bindReplyAllAction();
-  bindDeleteRuleAction();
   showMaterialBoxAction();
 }
 
 var bindAddKeywordAction = function() {
   $('#addRuleBtn').click(function() {
     var newRule = $(NEW_RULE);
-    $('#rulesWrapper').append(newRule);
+    $('#rulesWrapper').prepend(newRule);
     newRule.children('.ruleShortWrapper').children('.head').trigger('click');
   });
 }
@@ -74,13 +73,6 @@ var bindReplyAllAction = function() {
   	  rule.attr('replyAll', 'False');
   	  $(this).text('未回复全部');
   	}
-  });
-}
-
-var bindDeleteRuleAction = function() {
-  $(document).delegate('.deleteRuleBtn', 'click', function() {
-    var rule = $(this).parents('.ruleWrapper');
-    rule.remove();
   });
 }
 
