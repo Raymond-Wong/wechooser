@@ -22,7 +22,9 @@ var textHandler = function(box) {
 var imageHandler = function(box) {
   var params = {'MsgType' : 'image'};
   var mediaId = box.attr('mediaId');
+  var oriUrl = box.attr('ori_url');
   params['MediaId'] = mediaId;
+  params['OriUrl'] = oriUrl;
   return params;
 }
 
@@ -54,6 +56,7 @@ var newsHandler = function(box) {
     item['Title'] = $(this).children('.newsItemTitle').text()
     item['Description'] = $(this).attr('description');
     item['PicUrl'] = $(this).attr('thumbUrl');
+    item['MediaId'] = $(this).attr('mediaId');
     params['item'].push(item);
   });
   return params;
@@ -102,7 +105,7 @@ var bindSaveRuleAction = function() {
   	}
   	var replyAll = rule.attr('replyAll');
   	replyAll = replyAll == undefined ? 'False' : replyAll;
-  	params = {'keywords' : JSON.stringify(keywords), 'replys' : JSON.stringify(replys), 'name' : ruleName, 'isReplyAll' : replyAll};
+  	params = {'rid' : rule.attr('rid'), 'keywords' : JSON.stringify(keywords), 'replys' : JSON.stringify(replys), 'name' : ruleName, 'isReplyAll' : replyAll};
   	console.log(params);
   	$.post('/reply?type=keyword', params, function(res) {
   	  if (res['code'] == 0) {

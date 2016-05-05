@@ -160,6 +160,7 @@ def imgUrl2base64(token, materials):
     imgType = item['url'][imgTypeIndex + 7:]
     mediaId = item['media_id']
     media = getMaterialContent(token, mediaId)
+    materials['item'][count]['ori_url'] = materials['item'][count]['url']
     materials['item'][count]['url'] = 'data:image/' + imgType + ';base64,' + base64.b64encode(media)
   return materials
 
@@ -208,4 +209,21 @@ def getMaterialContent(token, mediaId, toLoad=False):
     return res[1]
   return None
 
+def getBase64Img(mediaId, oriUrl):
+  imgTypeIndex = oriUrl.find('wx_fmt')
+  imgType = oriUrl[imgTypeIndex + 7:]
+  token = get_access_token()
+  media = getMaterialContent(token, mediaId)
+  return 'data:image/' + imgType + ';base64,' + base64.b64encode(media)
+
+def getOneVoiceLen(mediaId):
+  return '00:60'
+
+def getOneVideoInfo(template):
+  token = get_access_token()
+  video = getMaterialContent(token, template['MediaId'], toLoad=True)
+  template['VideoName'] = video['title']
+  template['VideoTitle'] = video['title']
+  template['VideoDesc'] = video['description']
+  return template
 

@@ -45,8 +45,19 @@ def getMaterial(request):
 def setReply(request):
   replyType = request.GET.get('type', 'subscribe')
   if request.method == 'GET':
-    wechooser.utils.logger('DEBUG', '返回模板: %s.html' % replyType)
-    return render_to_response('customize/%s.html' % replyType, {'active' : replyType})
+    template = ''
+    try:
+      template = Reply.objects.get(reply_type=replyType).template
+    except Exception:
+      if replyType == 'keyword':
+        return setKeywordReply(request)
+      return render_to_response('customize/%s.html' % replyType, {'active' : replyType, 'template' : ''})
+    template = json.loads(template)
+    if template['MsgType'] == 'image':
+      template['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=template['OriUrl'], mediaId=template['MediaId'])
+    if template['MsgType'] == 'voice':
+      template['VoiceLen'] = wechat.utils.getOneVoiceLen(mediaId=template['MediaId'])
+    return render_to_response('customize/%s.html' % replyType, {'active' : replyType, 'template' : json.dumps(template)})
   if replyType == 'keyword':
     return setKeywordReply(request)
   # 尝试从数据库中获取该类型的模板，如果不存在则新建
@@ -61,10 +72,12 @@ def setReply(request):
     reply.template = json.dumps(TextTemplate(Content=content), default=wechooser.utils.dumps)
   elif msgType == 'image':
     mediaId = request.POST.get('MediaId')
-    reply.template = json.dumps(ImageTemplate(MediaId=mediaId), default=wechooser.utils.dumps)
+    oriUrl = request.POST.get('OriUrl')
+    reply.template = json.dumps(ImageTemplate(MediaId=mediaId, OriUrl=oriUrl), default=wechooser.utils.dumps)
   elif msgType == 'voice':
     mediaId = request.POST.get('MediaId')
-    reply.template = json.dumps(VoiceTemplate(MediaId=mediaId), default=wechooser.utils.dumps)
+    voiceName = request.POST.get('VoiceName')
+    reply.template = json.dumps(VoiceTemplate(MediaId=mediaId, VoiceName=voiceName), default=wechooser.utils.dumps)
   elif msgType == 'video':
     mediaId = request.POST.get('MediaId')
     title = request.POST.get('Title')
@@ -77,7 +90,28 @@ def setReply(request):
 @csrf_exempt
 def setKeywordReply(request):
   if request.method == 'GET':
-    raise Http404
+    rules = Rule.objects.all().order_by('-id')
+    retRule = []
+    for rule in rules:
+      newRule = {'id' : rule.id, 'name' : rule.name, 'is_reply_all' : rule.is_reply_all, 'keywords' : []}
+      keywords = rule.replys.all()
+      for kw in keywords:
+        newRule['keywords'].append({'keyword' : kw.keyword, 'is_fully_match' : kw.is_fully_match})
+      newRule['totalAmount'] = newRule['textAmount'] = newRule['imageAmount'] = newRule['voiceAmount'] = newRule['videoAmount'] = newRule['newsAmount'] = 0
+      templates = json.loads(rule.templates)
+      for template in templates:
+        newRule['%sAmount' % template['MsgType']] += 1
+        newRule['totalAmount'] += 1
+        if template['MsgType'] == 'image':
+          template['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=template['OriUrl'], mediaId=template['MediaId'])
+        elif template['MsgType'] == 'voice':
+          template['VoiceLen'] = wechat.utils.getOneVoiceLen(mediaId=template['MediaId'])
+        elif template['MsgType'] == 'news':
+          for news in template['Items']:
+            news['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=news['PicUrl'], mediaId=news['MediaId'])
+      newRule['templates'] = templates
+      retRule.append(newRule)
+    return render_to_response('customize/keyword.html', {'rules' : retRule})
   # 获取关键词列表
   keywords = json.loads(request.POST.get('keywords', '{}'))
   replys = json.loads(request.POST.get('replys', '[]'))
@@ -100,16 +134,16 @@ def setKeywordReply(request):
     if template['MsgType'] == 'text':
       templates.append(TextTemplate(Content=template['Content']))
     elif template['MsgType'] == 'image':
-      templates.append(ImageTemplate(MediaId=template['MediaId']))
+      templates.append(ImageTemplate(MediaId=template['MediaId'], OriUrl=template['OriUrl']))
     elif template['MsgType'] == 'voice':
-      templates.append(VoiceTemplate(MediaId=template['MediaId']))
+      templates.append(VoiceTemplate(MediaId=template['MediaId'], VoiceName=template['VoiceName']))
     elif template['MsgType'] == 'video':
       templates.append(VideoTemplate(MediaId=template['MediaId'], Title=template['Title'], Description=template['Description'], ThumbMediaId=template['ThumbMediaId']))
     elif template['MsgType'] == 'news':
       mediaId = template['MediaId']
       newsItems = []
       for item in template['item']:
-        newsItems.append(NewsItem(Title=item['Title'], Description=item['Description'], Url=item['Url'], PicUrl=item['PicUrl']))
+        newsItems.append(NewsItem(MediaId=item['MediaId'], Title=item['Title'], Description=item['Description'], Url=item['Url'], PicUrl=item['PicUrl']))
       templates.append(NewsTemplate(MediaId=mediaId, Items=newsItems))
   rule.templates = json.dumps(templates, default=wechooser.utils.dumps)
   rule.save()

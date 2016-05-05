@@ -90,13 +90,16 @@ var textHandler = function() {
 // 将image信息返回给后台的json
 var imageHandler = function() {
   var mediaId = $('#materialImage img').attr('mediaId');
-  params = {'MsgType' : 'image', 'MediaId' : mediaId};
+  var imageUrl = $('#materialImage img').attr('src');
+  var oriUrl = $('#materialImage img').attr('ori_url');
+  params = {'MsgType' : 'image', 'MediaId' : mediaId, 'ImageUrl' : imageUrl, 'OriUrl' : oriUrl};
   return params;
 }
 
 var voiceHandler = function() {
   var mediaId = $('#materialVoice').attr('mediaId');
-  params = {'MsgType' : 'voice', 'MediaId' : mediaId};
+  var voiceName = $('#materialVoice').children('.voiceName').text()
+  params = {'MsgType' : 'voice', 'MediaId' : mediaId, 'VoiceName' : voiceName};
   return params;
 }
 
@@ -127,7 +130,8 @@ var saveImage = function() {
   var choosenImage = $('.imageItem.choosen');
   var imgUrl = $(choosenImage.find('img')[0]).attr('src');
   var mediaId = choosenImage.attr('mediaId');
-  $('#materialImage').append('<img src="' + imgUrl + '" mediaId="' + mediaId + '" />');
+  var ori_url = choosenImage.attr('ori_url');
+  $('#materialImage').append('<img src="' + imgUrl + '" mediaId="' + mediaId + '" ori_url="' + ori_url + '"/>');
   $('#materialImage').append('<a id="deleteImageMaterialBtn">删除</a>');
   $('#chooseImageBtn').hide();
   $('#materialImage').show();

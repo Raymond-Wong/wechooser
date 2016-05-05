@@ -74,7 +74,7 @@ var toPageAction = function() {
 
 // 更新图片素材框中的图片
 var updateMaterialImageBox = function(offset, count, callback) {
-  // return false;
+  return false;
   var params = {'type' : 'image', 'count' : count, 'offset' : offset};
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
   // 清空容器中的东西
@@ -88,8 +88,10 @@ var updateMaterialImageBox = function(offset, count, callback) {
       var url = image['url'];
       var mediaId = image['media_id'];
       var name = image['name'];
+      var ori_url = image['ori_url'];
       var newImgItem = $(IMG_ITEM);
       newImgItem.attr('mediaId', mediaId);
+      newImgItem.attr('ori_url', ori_url);
       $(newImgItem.find('img')[0]).attr('src', url);
       newImgItem.children('.imageName').html(name);
       box.append(newImgItem);
@@ -99,6 +101,7 @@ var updateMaterialImageBox = function(offset, count, callback) {
 }
 
 var updateMaterialNewsBox = function(offset, count, callback) {
+  return false;
   var params = {'type' : 'news', 'count' : count, 'offset' : offset};
   var box = $('#materialNewsBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
@@ -119,6 +122,7 @@ var updateMaterialNewsBox = function(offset, count, callback) {
         var desc = newsItem['digest'];
         var url = newsItem['url'];
         var thumbUrl = newsItem['thumb_url'];
+        var mediaId = newsItem['thumb_media_id'];
         var img = newsItem['img']
         var newsBox = $(NEWS_BOX);
         newsBox.children('.newsItemTitle').text(title);
@@ -126,6 +130,7 @@ var updateMaterialNewsBox = function(offset, count, callback) {
         newsBox.attr('thumbUrl', thumbUrl);
         newsBox.attr('description', desc);
         newsBox.attr('url', url);
+        newsBox.attr('mediaId', mediaId);
         newsWrapper.append(newsBox);
       }
       box.append(newsWrapper);
@@ -136,7 +141,7 @@ var updateMaterialNewsBox = function(offset, count, callback) {
 
 // 更新语音素材框中的语音
 var updateMaterialVoiceBox = function(offset, count, callback) {
-  // return false;
+  return false;
   var params = {'type' : 'voice', 'count' : count, 'offset' : offset};
   var box = $('#materialVoiceBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
@@ -161,7 +166,7 @@ var updateMaterialVoiceBox = function(offset, count, callback) {
 
 // 更新视频素材库中的语音
 var updateMaterialVideoBox = function(offset, count, callback) {
-  // return false;
+  return false;
   var params = {'type' : 'video', 'count' : count, 'offet' : offset};
   var box = $('#materialVideoBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
@@ -320,4 +325,35 @@ var saveAction = function() {
   $('#choosenBtn').click(function() {
   	return SAVE_HANDLER();
   });
+}
+
+String.format = function() {
+    if (arguments.length == 0)
+        return null;
+    var str = arguments[0];
+    for ( var i = 1; i < arguments.length; i++) {
+        var re = new RegExp('\\{' + (i - 1) + '\\}', 'gm');
+        str = str.replace(re, arguments[i]);
+    }
+    return str;
+};
+
+// 把字符串中的表情转换成图片
+var str2face = function(str) {
+  var faceImg = '<img class="insertedFace" src="{0}" name="{1}" />';
+  var start = str.indexOf('[', 0);
+  var end = str.indexOf(']', start) + 1;
+  while (start >= 0 && end >= 0) {
+    var faceStr = str.substring(start + 1, end - 1);
+    var faceImgStr = String.format(faceImg, $('img[name="[' + faceStr + ']"]').attr('src'), faceStr);
+    str = str.replace('[' + faceStr + ']', faceImgStr);
+    start = str.indexOf('[', end);
+    end = str.indexOf(']', start) + 1;
+  }
+  var tmpDom = $('<div></div>');
+  tmpDom.html(str);
+  tmpDom.children('img').each(function() {
+    $(this).attr('name', '[' + $(this).attr('name') + ']');
+  })
+  return tmpDom.html();
 }

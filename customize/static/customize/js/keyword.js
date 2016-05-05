@@ -90,12 +90,14 @@ TO_INSERT_ROW = null;
 var saveImage = function() {
   var choosenImage = $('.imageItem.choosen');
   var imgUrl = $(choosenImage.find('img')[0]).attr('src');
+  var oriUrl = choosenImage.attr('ori_url');
   var mediaId = choosenImage.attr('mediaId');
   // 如果进入这个判断，则说明是点击添加按钮，否则是点击编辑按钮
   if (TO_INSERT_ROW == null || TO_INSERT_ROW.attr('role') == 'btnBox') {
     var box = TO_INSERT_ROW.parents('.content');
     var newRow = $(IMG_ROW);
     $(newRow.find('img')[0]).attr('src', imgUrl);
+    newRow.attr('ori_url', oriUrl);
     newRow.attr('mediaId', mediaId);
     box.append(newRow);
     // 在最下面的信息计数中增加一个计数器
@@ -105,6 +107,7 @@ var saveImage = function() {
   } else {
     var box = TO_INSERT_ROW.children('.val');
     box.html('<img src="' + imgUrl + '" />');
+    TO_INSERT_ROW.attr('ori_url', oriUrl);
   }
   // 把已选择的图片去除选择标记
   choosenImage.removeClass('choosen');

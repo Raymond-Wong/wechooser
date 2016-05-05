@@ -9,46 +9,47 @@
 <h1 id="replyHead">关键词自动回复</h1>
 <div id="addRuleBtn" class="btn">添加规则</div>
 <div id="rulesWrapper">
+  {% for rule in rules %}
   <div class="ruleWrapper">
   <div class="ruleShortWrapper">
   	<div class="head">
-  		<font class="ruleName">新规则</font>
+  		<font class="ruleName">{{ rule.name }}</font>
   		<font class="right showDetailBtn"><span class="glyphicon glyphicon-chevron-down"></span></font>
   	</div>
   	<div class="content">
   	  <div class="keywordsWrapper">
   	  	<div class="key left">关键词：</div>
   	  	<div class="right val">
-  	    <font>关键词关键词关键词关键词关键词关键词关键词关键词关键词关键词</font>
-  	  	<font>关键词1</font><font>关键词1</font><font>关键词1</font><font>关键词1</font>
-  	  	<font>关键词1</font><font>关键词1</font><font>关键词1</font><font>关键词1</font>
+        {% for kw in rule.keywords %}
+  	    <font>{{ kw.keyword }}</font>
+        {% endfor %}
   	    </div>
   	  	<div class="clear"></div>
   	  </div>
   	  <div class="replyWrapper">
   	  	<div class="key left">回复：</div>
   	  	<div class="right val">
-  	  		<font class="totalAmount">0</font>条（
-  	  		<font class="textAmount">0</font>条文字
-  	  		<font class="imageAmount">0</font>条图片
-  	  		<font class="voiceAmount">0</font>条语音
-  	  		<font class="videoAmount">0</font>条视频
-  	  		<font class="newsAmount">0</font>条图文）
+  	  		<font class="totalAmount">{{ rule.totalAmount }}</font>条（
+  	  		<font class="textAmount">{{ rule.textAmount }}</font>条文字
+  	  		<font class="imageAmount">{{ rule.imageAmount }}</font>条图片
+  	  		<font class="voiceAmount">{{ rule.voiceAmount }}</font>条语音
+  	  		<font class="videoAmount">{{ rule.videoAmount }}</font>条视频
+  	  		<font class="newsAmount">{{ rule.newsAmount }}</font>条图文）
   	  	</div>
   	  	<div class="clear"></div>
   	  </div>
   	</div>
   </div>
-  <div class="ruleDetailWrapper">
+  <div class="ruleDetailWrapper" rid="{{ rule.id }}" {% ifequal rule.is_reply_all True %}replyall="True"{% endifequal %}>
   	<div class="head">
-  		<font class="ruleName">新规则</font>
+  		<font class="ruleName">{{ rule.name }}</font>
   		<font class="right showDetailBtn"><span class="glyphicon glyphicon-chevron-up"></span></font>
   	</div>
   	<div class="content">
   	  <div class="ruleRow">
   	  	<div class="left point">·</div>
   	  	<div class="left key">规则名</div>
-		    <div class="left val"><input type="text" name="ruleName" placeholder="规则名最多60字" /></div>
+		    <div class="left val"><input type="text" name="ruleName" value="{{ rule.name }}" placeholder="规则名最多60字" /></div>
 		    <div class="clear"></div>
   	  </div>
   	  <div class="ruleRow" role="addKeyword">
@@ -59,32 +60,24 @@
 		    <div class="clear"></div>
   	  </div>
       <div class="keywordsWrapper">
-    	  <div class="ruleRow small keyword" role="editKeyword">
+        {% for kw in rule.keywords %}
+    	  <div class="ruleRow small keyword" role="editKeyword" {% ifequal kw.is_fully_match True %}fullmatch="True"{% endifequal %}>
     	  	<div class="left point">&nbsp;</div>
-    	  	<div class="left val">关键词关键词关键词关键词关键词关键词关键词关键词关键词关键词</div>
+    	  	<div class="left val">{{ kw.keyword }}</div>
     	  	<div class="hint right">
-            <a class="fullMatchBtn">未全匹配</a>
+            <a class="fullMatchBtn">{% ifequal kw.is_fully_match False %}未{% endifequal %}全匹配</a>
             <a class="showMaterialBoxBtn" type="Text">编辑</a>
             <a class="deleteRowBtn">删除</a>
           </div>
   		    <div class="clear"></div>
     	  </div>
-    	  <div class="ruleRow small keyword">
-    	  	<div class="left point">&nbsp;</div>
-    	  	<div class="left val">关键词</div>
-    	  	<div class="hint right">
-            <a class="fullMatchBtn">未全匹配</a>
-            <a class="showMaterialBoxBtn" type="Text">编辑</a>
-            <a class="deleteRowBtn">删除</a>
-          </div>
-  		    <div class="clear"></div>
-    	  </div>
+        {% endfor %}
       </div>
   	  <div class="ruleRow">
   	  	<div class="left point">·</div>
   	  	<div class="left key">回复</div>
   	  	<div class="left val"></div>
-		    <div class="right hint"><a class="replyAllBtn">未回复全部</a></div>
+		    <div class="right hint"><a class="replyAllBtn">{% ifequal rule.is_reply_all False %}未{% endifequal %}回复全部</a></div>
 		    <div class="clear"></div>
   	  </div>
   	  <div class="ruleRow small" role="btnBox">
@@ -98,10 +91,12 @@
   	  	</div>
 		    <div class="clear"></div>
   	  </div>
+      {% for template in rule.templates %}
+      {% ifequal template.MsgType "text" %}
   	  <div class="ruleRow small reply" type="text">
   	  	<div class="left point">&nbsp;</div>
   	  	<div class="left val">
-  	  	  哈哈哈哈[微笑]
+  	  	  {{ template.Content }}
   	  	</div>
 		    <div class="right hint">
           <a class="showMaterialBoxBtn" type="Text">编辑</a>
@@ -109,45 +104,72 @@
         </div>
 		    <div class="clear"></div>
   	  </div>
-  	  <div class="ruleRow small reply" type="image" mediaId="image">
-  	  	<div class="left point">&nbsp;</div>
-  	  	<div class="left val">
-  	  	  <img src="/static/customize/image/1.jpg" />
-  	  	</div>
-		    <div class="right hint">
+      {% endifequal %}
+      {% ifequal template.MsgType "image" %}
+      <div class="ruleRow small reply" type="image" mediaId="{{ template.MediaId }}">
+        <div class="left point">&nbsp;</div>
+        <div class="left val">
+          <img src="{{ template.ImageUrl }}" ori_url="{{ template.OriUrl}}" />
+        </div>
+        <div class="right hint">
           <a class="deleteRowBtn" type="msg">删除</a>
         </div>
-		    <div class="clear"></div>
-  	  </div>
-      <div class="ruleRow small reply" type="voice" mediaId="voice">
+        <div class="clear"></div>
+      </div>
+      {% endifequal %}
+      {% ifequal template.MsgType "voice" %}
+      <div class="ruleRow small reply" type="voice" mediaId="{{ template.MediaId }}">
         <div class="left point">&nbsp;</div>
         <div class="left val">
           <img class="left" src="/static/customize/icon/voice.png" />
-          <div class="voiceName">Nokia</div>
-          <div class="voiceLen">00:60</div>
+          <div class="voiceName">{{ template.VoiceName }}</div>
+          <div class="voiceLen">{{ template.VoiceLen }}</div>
         </div>
         <div class="right hint">
           <a class="deleteRowBtn" type="msg">删除</a>
         </div>
         <div class="clear"></div>
       </div>
-      <div class="ruleRow small reply" type="video" mediaId="video">
+      {% endifequal %}
+      {% ifequal template.MsgType "video" %}
+      <div class="ruleRow small reply" type="video" mediaId="{{ template.MediaId }}">
         <div class="left point">&nbsp;</div>
         <div class="left val">
-          视频1
+          {{ template.Title }}
         </div>
         <div class="right hint">
           <a class="deleteRowBtn" type="msg">删除</a>
         </div>
         <div class="clear"></div>
       </div>
+      {% endifequal %}
+      {% ifequal template.MsgType "news" %}
+      <div class="ruleRow small reply" type="news" mediaId="{{ template.MediaId }}">
+        <div class="left point">&nbsp;</div>
+        <div class="left val">
+          <div class="newsItemWrapper left" mediaId="{{ template.MediaId }}">
+            {% for news in template.Items %}
+            <div class="newsItemBox">
+              <div class="newsItemImg" style="background-image: url({{ news.ImageUrl }})"></div>
+              <div class="newsItemTitle">{{ news.Title }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="right hint">
+          <a class="deleteRowBtn" type="msg">删除</a>
+        </div>
+        <div class="clear"></div>
+      </div>
+      {% endifequal %}
+      {% endfor %}
   	</div>
   	<div class="foot">
-  	  文字（<font class="textAmount">1</font>）
-  	  图片（<font class="imageAmount">1</font>）
-  	  语音（<font class="voiceAmount">1</font>）
-  	  视频（<font class="videoAmount">1</font>）
-  	  图文（<font class="newsAmount">0</font>）
+  	  文字（<font class="textAmount">{{ rule.textAmount }}</font>）
+  	  图片（<font class="imageAmount">{{ rule.imageAmount }}</font>）
+  	  语音（<font class="voiceAmount">{{ rule.voiceAmount }}</font>）
+  	  视频（<font class="videoAmount">{{ rule.videoAmount }}</font>）
+  	  图文（<font class="newsAmount">{{ rule.newsAmount }}</font>）
   	  <div class="btnBox right">
   	  	<div class="btn saveRuleBtn">保存</div>
   	  	<div class="btn wait deleteRuleBtn">删除</div>
@@ -156,6 +178,7 @@
   	</div>
   </div>
   </div>
+  {% endfor %}
 </div>
 {% endblock %}
 

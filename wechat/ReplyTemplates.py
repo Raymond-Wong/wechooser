@@ -56,9 +56,10 @@ class TextTemplate(Template):
     return ret
 
 class ImageTemplate(Template):
-  def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='image', MediaId=''):
+  def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='image', MediaId='', OriUrl=''):
     Template.__init__(self, ToUserName=ToUserName, FromUserName=FromUserName, MsgType=MsgType, CreateTime=CreateTime)
     self.MediaId = MediaId
+    self.OriUrl = OriUrl
   def toReply(self):
     dic = self.toDic()
     dic['Image'] = {'MediaId' : self.MediaId}
@@ -72,9 +73,10 @@ class ImageTemplate(Template):
     return ret
 
 class VoiceTemplate(Template):
-  def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='voice', MediaId=''):
+  def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='voice', MediaId='', VoiceName=''):
     Template.__init__(self, ToUserName=ToUserName, FromUserName=FromUserName, MsgType=MsgType, CreateTime=CreateTime)
     self.MediaId = MediaId
+    self.VoiceName = VoiceName
   def toReply(self):
     dic = self.toDic()
     dic['Voice'] = {'MediaId' : self.MediaId}
@@ -110,12 +112,13 @@ class VideoTemplate(Template):
     return ret
 
 class NewsItem:
-  def __init__(self, Title="", Description="", PicUrl="", Url="", SrcUrl=""):
+  def __init__(self, Title="", Description="", PicUrl="", Url="", SrcUrl="", MediaId=""):
     self.Title = Title
     self.Description = Description
     self.PicUrl = PicUrl
     self.Url = Url
     self.SrcUrl = SrcUrl
+    self.MediaId = MediaId
   def toDic(self):
     ret = {}
     ret['Title'] = self.Title

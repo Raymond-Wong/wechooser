@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block page %}
-<h1 id="replyHead">{% block replyHead %}{% endblock %}</h1>
+<h1 id="replyHead" template="{{ template }}">{% block replyHead %}{% endblock %}</h1>
 {% include 'customize/widgets/material.html' %}
 <div id="btnWrapper">
   <div class="btn left" id="saveBtn">保存</div>
