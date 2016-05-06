@@ -165,7 +165,7 @@
   padding-left: 72px;
 }
 
-#materialVoice a:hover, #materialVideo a:hover {
+#materialVoice a:hover, #materialVideo a:hover, #materialNews a:hover {
   cursor: pointer;
 }
 
