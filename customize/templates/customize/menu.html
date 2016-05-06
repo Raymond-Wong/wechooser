@@ -1,0 +1,107 @@
+{% extends "customize/widgets/base.html" %}
+
+{% block style %}
+<link type="text/css" rel="stylesheet" href="/static/customize/css/material.css">
+<link type="text/css" rel="stylesheet" href="/static/customize/css/menu.css">
+{% endblock %}
+
+{% block page %}
+<div id="menuPreviewWrapper" class="left">
+  <div class="menuHeadWrapper">
+    <div class="menuHeadBar"></div>
+    <div class="menuHeadName">
+      <font class="left"><span class="glyphicon glyphicon-chevron-left"></span>返回</font>
+      选择自己
+      <font class="right glyphicon glyphicon-user"></font>
+    </div>
+  </div>
+  <div class="menuBtnContainer">
+    <div class="left showMenuInputBtn"></div>
+    <div class="right menuBtnWrapper">
+      <!-- <div class="menuBtnBox">
+        <div class="editMenuBtn menuBtn choosen">
+          菜单名称
+        </div>
+        <div class="menuSubBtnContainer">
+          <div class="menuSubBtnWrapper">
+            <div class="menuSubBtnBox">
+              <div class="editMenuBtn menuBtn">
+                菜单名称
+              </div>
+              <div class="editMenuBtn menuBtn">
+                菜单名称
+              </div>
+              <div class="editMenuBtn menuBtn">
+                菜单名称
+              </div>
+              <div class="editMenuBtn menuBtn">
+                菜单名称
+              </div>
+              <div class="editMenuBtn menuBtn">
+                菜单名称
+              </div>
+              <div class="addMenuBtn menuBtn">
+                <span class="glyphicon glyphicon-plus"></span>
+              </div>
+            </div>
+            <div class="arrowOuter"></div>
+            <div class="arrowInner"></div>
+          </div>
+        </div>
+      </div> -->
+      <div class="menuBtnBox" id="addFstMenuBtnBox">
+        <div class="addMenuBtn menuBtn">
+          <span class="glyphicon glyphicon-plus"></span><font>添加菜单</font>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="menuContentWrapper" class="right">
+  <div id="nameOnlyPanel" class="menuContentPanel">
+    <div class="head">
+      <font class="menuName">菜单名称</font>
+      <a class="right deleteMenuBtn">删除菜单</a>
+    </div>
+    <p class="hint nameOnlyHint">已添加子菜单，仅可设置菜单名称</p>
+    <div class="menuRow">
+      <div class="key left">菜单名称</div>
+      <div class="val right">
+        <input type="text" name="menuName" value="菜单名称" />
+        <div class="hint">字数不超过4个汉字或8个字母</div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <div id="inputContentPanel" class="menuContentPanel">
+    <div class="head">
+      <font class="menuName">菜单名称</font>
+      <a class="right deleteMenuBtn">删除菜单</a>
+    </div>
+    <div class="menuRow">
+      <div class="key left">菜单名称</div>
+      <div class="val right">
+        <input type="text" name="menuName" value="菜单名称" />
+        <div class="hint">字数不超过4个汉字或8个字母</div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="menuRow">
+      <div class="key left">菜单内容</div>
+      <div class="val right">
+        <input type="radio" class="contentType" name="contentType" checked value="msg" />发送消息
+        <input type="radio" class="contentType" name="contentType" value="link" />跳转网页
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="menuRow">
+    {% include 'customize/widgets/material.html' %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="/static/customize/js/material.js"></script>
+<script type="text/javascript" src="/static/customize/js/menu.js"></script>
+{% endblock %}

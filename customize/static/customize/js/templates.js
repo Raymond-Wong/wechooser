@@ -173,3 +173,17 @@ var NEW_RULE = '<div class="ruleWrapper">' +
                '    </div>' +
                '  </div>' +
                '</div>';
+var NEW_MENU_ITEM = '<div class="menuBtnBox">' +
+                    '  <div class="editMenuBtn menuBtn flMenuBtn">菜单名称</div>' +
+                    '  <div class="menuSubBtnContainer">' +
+                    '    <div class="menuSubBtnWrapper">' +
+                    '      <div class="menuSubBtnBox">' +
+                    '        <div class="addMenuBtn menuBtn">' +
+                    '          <span class="glyphicon glyphicon-plus"></span>' +
+                    '        </div>' +
+                    '      </div>' +
+                    '      <div class="arrowOuter"></div>' +
+                    '      <div class="arrowInner"></div>' +
+                    '</div></div></div>';
+
+var MENU_SECOND_BTN = '<div class="editMenuBtn menuBtn">子菜单名称</div>'

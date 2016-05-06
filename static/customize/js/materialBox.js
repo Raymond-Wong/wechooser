@@ -40,6 +40,7 @@ var bindMaterialVideoBoxAction = function() {
 var bindMaterialNewsBoxAction = function() {
   updateMaterialNewsBox(0, 2);
   chooseNewsAction();
+  deleteNewsAction();
 }
 
 // 跳转页码
@@ -253,6 +254,14 @@ var deleteImageAction = function() {
     var choosenFlag = $(choosenImage.find('.choosenFlag')[0]);
     choosenImage.removeClass('choosen');
     choosenFlag.remove();
+  });
+}
+
+var deleteNewsAction = function() {
+  $('#deleteNewsMaterialBtn').click(function() {
+    $($(this).siblings('.newsItemWrapper')[0]).remove();
+    $('#materialNews').hide();
+    $('#chooseNewsBtn').show();
   });
 }
 

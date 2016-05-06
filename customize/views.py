@@ -34,8 +34,7 @@ def login(request):
 def editMenu(request, token):
   if request.method == 'GET':
     menu = wechat.utils.getMenu(token)
-    wechooser.utils.logger('DEBUG', menu['menu']['button'][0]['name'])
-    return render_to_response('customize/editMenu.html', {'menu' : menu['menu']['button']})
+    return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : menu['menu']['button']})
 
 def getMaterial(request):
   if request.method == 'GET':

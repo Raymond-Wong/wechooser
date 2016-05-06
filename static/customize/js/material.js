@@ -168,11 +168,22 @@ var saveVideo = function() {
   $('#materialBoxWrapper').fadeOut();
 }
 
+var saveNews = function() {
+  var choosenNews = $('.newsItemWrapper.choosen');
+  var newNews = choosenNews.clone();
+  $('.newsItemWrapper .choosenFlag').remove();
+  $('#materialNews').prepend(choosenNews.clone());
+  $('#chooseNewsBtn').hide();
+  $('#materialNews').show();
+  $('#materialBoxWrapper').fadeOut();
+}
+
 var showMaterialBoxAction = function() {
   var handlers = {
     'Image' : saveImage,
     'Voice' : saveVoice,
-    'Video' : saveVideo
+    'Video' : saveVideo,
+    'News' : saveNews,
   };
   $('.showMaterialBoxBtn').click(function() {
     var type = $(this).attr('type');
