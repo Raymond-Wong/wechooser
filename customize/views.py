@@ -51,7 +51,6 @@ def editMenu(request, token):
       flBtn.pop('reply')
     flBtn.pop('mid')
   # 发请求更改菜单
-  wechooser.utils.logger(menuBtns)
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/menu/create?access_token='
   method = 'POST'
