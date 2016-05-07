@@ -33,7 +33,6 @@ def logger(tp, msg):
 # 发送请求
 # 如果发送请求时服务器返回的是access_token过期的话，就跑出一个PastDueException
 def send_request(host, path, method, port=443, params={}, toLoad=True):
-  logger('DEBUG', params)
   client = httplib.HTTPSConnection(host, port)
   if method == 'GET':
     path = '?'.join([path, urllib.urlencode(params)])
@@ -45,7 +44,6 @@ def send_request(host, path, method, port=443, params={}, toLoad=True):
   if not res.status == 200:
     return False, res.status
   resStr = res.read()
-  logger('DEBUG', 'resStr = %s' % resStr)
   if toLoad:
     resDict = json.loads(resStr, encoding="utf-8")
     if 'errcode' in resDict.keys() and resDict['errcode'] == 40001:
