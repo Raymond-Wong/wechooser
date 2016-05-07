@@ -62,7 +62,7 @@ def editMenu(request, token):
     res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
   if res[0]:
     return HttpResponse(Response().toJson(), content_type='application/json')
-  return HttpResponse(Response(c=-1, m="access token过期").toJson(), content_type='application/json')
+  return HttpResponse(Response(c=-1, m=res[1]).toJson(), content_type='application/json')
 
 def getMaterial(request):
   if request.method == 'GET':
