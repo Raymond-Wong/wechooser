@@ -75,7 +75,7 @@ var toPageAction = function() {
 
 // 更新图片素材框中的图片
 var updateMaterialImageBox = function(offset, count, callback) {
-  // return false;
+  return false;
   var params = {'type' : 'image', 'count' : count, 'offset' : offset};
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
   // 清空容器中的东西
@@ -112,7 +112,6 @@ var updateMaterialNewsBox = function(offset, count, callback) {
     $($('#materialNewsBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 2));
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
-      console.log(item);
       var mediaId = item['media_id'];
       var newsItems = item['content']['news_item'];
       var newsWrapper = $(NEWS_WRAPPER);
@@ -142,7 +141,7 @@ var updateMaterialNewsBox = function(offset, count, callback) {
 
 // 更新语音素材框中的语音
 var updateMaterialVoiceBox = function(offset, count, callback) {
-  // return false;
+  return false;
   var params = {'type' : 'voice', 'count' : count, 'offset' : offset};
   var box = $('#materialVoiceBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
@@ -258,7 +257,7 @@ var deleteImageAction = function() {
 }
 
 var deleteNewsAction = function() {
-  $('#deleteNewsMaterialBtn').click(function() {
+  $(document).delegate('#deleteNewsMaterialBtn', 'click', function() {
     $($(this).siblings('.newsItemWrapper')[0]).remove();
     $('#materialNews').hide();
     $('#chooseNewsBtn').show();
@@ -267,7 +266,7 @@ var deleteNewsAction = function() {
 
 // 删除已选语音
 var deleteVoiceAction = function() {
-  $('#deleteVoiceMaterialBtn').click(function() {
+  $(document).delegate('#deleteVoiceMaterialBtn', 'click', function() {
     $('input[name="voiceSelect"]:checked').removeAttr('checked');
     $('#materialVoice').hide();
     $('#materialVoiceWrapper .showMaterialBoxBtn').show();
@@ -276,7 +275,7 @@ var deleteVoiceAction = function() {
 
 // 删除已选视频
 var deleteVideoAction = function() {
-  $('#deleteVideoMaterialBtn').click(function() {
+  $(document).delegate('#deleteVideoMaterialBtn', 'click', function() {
     $('input[name="videoSelect"]:checked').removeAttr('checked');
     $('#materialVideo').hide();
     $('#materialVideoWrapper .showMaterialBoxBtn').show();
@@ -367,3 +366,22 @@ var str2face = function(str) {
   })
   return tmpDom.html();
 }
+
+/* 
+ *  方法:Array.remove(dx) 
+ *  功能:根据元素位置值删除数组元素. 
+ *  参数:元素值 
+ *  返回:在原数组上修改数组 
+ *  作者：pxp 
+ */  
+Array.prototype.remove = function (dx) {  
+    if (isNaN(dx) || dx > this.length) {  
+        return false;  
+    }  
+    for (var i = 0, n = 0; i < this.length; i++) {  
+        if (this[i] != this[dx]) {  
+            this[n++] = this[i];  
+        }  
+    }  
+    this.length -= 1;  
+};  

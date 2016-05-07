@@ -24,18 +24,18 @@
     <div id="chooseImageBtn" class="showMaterialBoxBtn" type="Image">
       从素材库中选择图片
     </div>
-    <div id="materialImage"></div>
+    <div id="materialImage" class="showMaterialChoosenBox"></div>
   </div>
   <!-- 自动回复内容为语音时的素材编辑框 -->
   <div id="materialVoiceWrapper" class="materialPanel">
     <div id="chooseVoiceBtn" class="showMaterialBoxBtn" type="Voice">
       从素材库中选择语音
     </div>
-    <div id="materialVoice">
+    <div id="materialVoice" class="showMaterialChoosenBox">
       <img src="/static/customize/icon/voice.png" class="left"/>
       <div class="voiceName"></div>
       <div class="voiceLen"></div>
-      <a id="deleteVoiceMaterialBtn">删除</a>
+      <a id="deleteVoiceMaterialBtn" class="deleteMaterialBtn">删除</a>
       <div class="clear"></div>
     </div>
   </div>
@@ -44,11 +44,11 @@
     <div id="chooseVideoBtn" class="showMaterialBoxBtn" type="Video">
       从素材库中选择视频
     </div>
-    <div id="materialVideo">
+    <div id="materialVideo" class="showMaterialChoosenBox">
       <div class="videoName"></div>
       <div class="videoTitle">></div>
       <div class="videoDesc"></div>
-      <a id="deleteVideoMaterialBtn">删除</a>
+      <a id="deleteVideoMaterialBtn" class="deleteMaterialBtn">删除</a>
     </div>
   </div>
   <!-- 自动回复内容为图文时的素材编辑框 -->
@@ -56,8 +56,8 @@
     <div id="chooseNewsBtn" class="showMaterialBoxBtn" type="News">
       从素材库中选择图文
     </div>
-    <div id="materialNews">
-      <a id="deleteNewsMaterialBtn">删除</a>
+    <div id="materialNews" class="showMaterialChoosenBox">
+      <a id="deleteNewsMaterialBtn" class="deleteMaterialBtn">删除</a>
     </div>
   </div>
 </div>

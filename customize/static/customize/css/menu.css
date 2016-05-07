@@ -162,6 +162,7 @@
 #menuContentWrapper {
   width: 363px;
   height: 100%;
+  display: none;
 }
 
 #menuContentWrapper .menuContentPanel {
@@ -234,4 +235,19 @@
 .showMaterialBoxBtn {
   height: 210px;
   line-height: 210px;
+}
+
+#menuContentWrapper {
+  position: relative;
+}
+
+#menuSaveWrapper {
+  width: 100%;
+  text-align: left;
+  position: absolute;
+  bottom: -50px;
+}
+
+.backupBox {
+  display: none;
 }

@@ -30,11 +30,40 @@ def login(request):
       return HttpResponse(Response(c=-1, s="failed", m="账号错误").toJson(), content_type='application/json')
     return HttpResponse(Response(c=-2, s="failed", m="密码错误").toJson(), content_type='application/json')
 
+@csrf_exempt
 @has_token
 def editMenu(request, token):
   if request.method == 'GET':
-    menu = wechat.utils.getMenu(token)
-    return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : menu['menu']['button']})
+    # menu = wechat.utils.getMenu(token)
+    # return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps(menu['menu']['button'])})
+    return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps([])})
+  menuBtns = sorted(json.loads(request.POST.get('menu')), key=lambda x:x['mid'])
+  replys = []
+  for i, flBtn in enumerate(menuBtns):
+    if len(flBtn['sub_button']) > 0:
+      menuBtns[i]['sub_button'] = sorted(flBtn['sub_button'], key=lambda x:x['mid'])
+      for j, slBtn in enumerate(menuBtns[i]['sub_button']):
+        replys.append({slBtn['mid'] : slBtn['reply']})
+        menuBtns[i]['sub_button'][j].pop('reply')
+        slBtn.pop('mid')
+    else:
+      replys.append({'key' : flBtn['reply']})
+      flBtn.pop('reply')
+    flBtn.pop('mid')
+  # 发请求更改菜单
+  wechooser.utils.logger(menuBtns)
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/menu/create?access_token='
+  method = 'POST'
+  params = menuBtns
+  try:
+    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  except PastDueException:
+    token = utils.update_token()
+    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  if res[0]:
+    return HttpResponse(Response().toJson(), content_type='application/json')
+  return HttpResponse(Response(c=-1, m="access token过期").toJson(), content_type='application/json')
 
 def getMaterial(request):
   if request.method == 'GET':

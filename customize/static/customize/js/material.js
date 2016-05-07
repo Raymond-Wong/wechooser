@@ -112,6 +112,24 @@ var videoHandler = function() {
   return params;
 }
 
+var newsHandler = function() {
+  var box = $('#materialNews');
+  var params = {'MsgType' : 'news'};
+  box = $(box.find('.newsItemWrapper')[0]);
+  params['MediaId'] = box.attr('mediaId');
+  params['item'] = []
+  $(box.find('.newsItemBox')).each(function() {
+    var item = {};
+    item['Url'] = $(this).attr('url');
+    item['Title'] = $(this).children('.newsItemTitle').text()
+    item['Description'] = $(this).attr('description');
+    item['PicUrl'] = $(this).attr('thumbUrl');
+    item['MediaId'] = $(this).attr('mediaId');
+    params['item'].push(item);
+  });
+  return params;
+}
+
 
 var getMaterialContent = function() {
   var HANDLERS = {
@@ -119,6 +137,7 @@ var getMaterialContent = function() {
     'image' : imageHandler,
     'voice' : voiceHandler,
     'video' : videoHandler,
+    'news' : newsHandler,
   };
   var choosenType = $('#materialNav li.active').attr('name');
   return HANDLERS[choosenType]();
@@ -132,7 +151,7 @@ var saveImage = function() {
   var mediaId = choosenImage.attr('mediaId');
   var ori_url = choosenImage.attr('ori_url');
   $('#materialImage').append('<img src="' + imgUrl + '" mediaId="' + mediaId + '" ori_url="' + ori_url + '"/>');
-  $('#materialImage').append('<a id="deleteImageMaterialBtn">删除</a>');
+  $('#materialImage').append('<a id="deleteImageMaterialBtn" class="deleteMaterialBtn">删除</a>');
   $('#chooseImageBtn').hide();
   $('#materialImage').show();
   $('#materialBoxWrapper').fadeOut();
@@ -169,10 +188,13 @@ var saveVideo = function() {
 }
 
 var saveNews = function() {
-  var choosenNews = $('.newsItemWrapper.choosen');
-  var newNews = choosenNews.clone();
-  $('.newsItemWrapper .choosenFlag').remove();
-  $('#materialNews').prepend(choosenNews.clone());
+  var choosenNews = $('.newsItemWrapper.choosen').clone();
+  $($('.newsItemWrapper.choosen').find('.choosenFlag')[0]).remove();
+  $('.newsItemWrapper.choosen').removeClass('choosen');
+  $(choosenNews.find('.choosenFlag')[0]).remove();
+  choosenNews.removeClass('choosen');
+  $('#materialNews .newsItemWrapper').remove();
+  $('#materialNews').prepend(choosenNews);
   $('#chooseNewsBtn').hide();
   $('#materialNews').show();
   $('#materialBoxWrapper').fadeOut();

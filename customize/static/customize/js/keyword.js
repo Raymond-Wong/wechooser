@@ -205,6 +205,7 @@ var saveNews = function() {
   $($('.newsItemWrapper.choosen').find('.choosenFlag')[0]).remove()
   $('.newsItemWrapper.choosen').removeClass('choosen');
   $(choosenNews.find('.choosenFlag')[0]).remove();
+  choosenNews.removeClass('choosen');
   $('#materialBoxWrapper').fadeOut();
   TO_INSERT_ROW = null;
 }
