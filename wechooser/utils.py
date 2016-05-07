@@ -44,6 +44,7 @@ def send_request(host, path, method, port=443, params={}, toLoad=True):
   if not res.status == 200:
     return False, res.status
   resStr = res.read()
+  wechooser.utils.logger('DEBUG', 'resStr = %s' % resStr)
   if toLoad:
     resDict = json.loads(resStr, encoding="utf-8")
     if 'errcode' in resDict.keys() and resDict['errcode'] == 40001:
