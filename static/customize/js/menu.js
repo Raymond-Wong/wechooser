@@ -36,7 +36,7 @@ var bindSaveAction = function() {
       if (res['code'] == 0) {
         topAlert('保存成功');
       } else {
-        topAlert(res['msg'], 'error');
+        topAlert(res, 'error');
       }
     });
   });
