@@ -54,7 +54,7 @@ def editMenu(request, token):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/menu/create?access_token='
   method = 'POST'
-  params = menuBtns
+  params = {'button' : menuBtns}
   try:
     res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
   except PastDueException:
