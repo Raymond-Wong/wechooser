@@ -53,6 +53,7 @@ class EventReplyHandler(ReplyHandler):
     if self.params['Event'] == 'subscribe':
       return SubscribeReplyHandler(self.params).getReply()
     eventKey = self.params['EventKey']
+    wechooser.utils.logger('DEBUG', 'menu btn key: %s' % eventKey)
     try:
       reply = MenuReply.objects.get(mid=eventKey)
       template = json.loads(reply.template, object_hook=wechooser.utils.loads)
