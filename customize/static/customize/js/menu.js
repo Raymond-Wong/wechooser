@@ -251,8 +251,6 @@ var editMenuAction = function() {
 
 var chooseBtn = function(btn) {
   $('#menuContentWrapper').css('display', 'block');
-  $('#nameOnlyPanel').hide();
-  $('#inputContentPanel').hide();
   var oldBtn = $('.menuBtn.choosen');
   // 处理旧的数据
   if (!IS_INITIAL) {
@@ -329,6 +327,7 @@ var updateMaterialContent = function(btn) {
       $(btn.parent().find('.menuSubBtnBox')[0]).children().length > 1) {
     $('#nameOnlyPanel input[name="menuName"]').val(btnInfo['name']);
     $('#nameOnlyPanel .head .menuName').text(btnInfo['name']);
+    $('#inputContentPanel').hide();
     $('#nameOnlyPanel').show();
   } else {
     $('#inputContentPanel input[name="menuName"]').val(btnInfo['name']);
@@ -343,6 +342,7 @@ var updateMaterialContent = function(btn) {
       $('.showMaterialBoxBtn').show();
       $('#materialNav li[name="image"]').trigger('click');
     }
+    $('#nameOnlyPanel').hide();
     $('#inputContentPanel').show();
   }
 }

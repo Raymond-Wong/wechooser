@@ -1,12 +1,13 @@
 var MENU = [];
 var IS_DELETING = false;
+var IS_INITIAL = false;
 
 $(document).ready(function() {
   addMenuAction();
   deleteMenuAction();
   editMenuAction();
   initMenu();
-  initReply();
+  // initReply();
   bindSaveAction();
   deleteMaterialPreviewAction();
 });
@@ -55,33 +56,54 @@ var deleteMaterialPreviewAction = function() {
 }
 
 var initMenu = function() {
+  IS_INITIAL = true;
   MENU = $.parseJSON($('#menuPreviewWrapper').attr('menu'));
   var menu = MENU;
   for (var i = 0; i < menu.length; i++) {
-    // 添加一个一级菜单
-    $('#addFstMenuBtnBox .menuBtn').trigger('click');
-    var btnDom = $('.menuBtn.choosen');
-    // 判断该菜单类型
     var btn = menu[i];
+    // 添加一个一级菜单
+    if (i == 0 && btn['sub_button'] != undefined && btn['sub_button'].length > 0) {
+      $('#addFstMenuBtnBox .menuBtn').trigger('click');
+      updateMaterialContent($('.editMenuBtn.choosen'));
+    } else if (i == 0) {
+      $('#addFstMenuBtnBox .menuBtn').trigger('click');
+      initMenuReply(btn['name'], btn['reply']);
+    } else {
+      backupMaterialContent($('.editMenuBtn.choosen'));
+      $('#addFstMenuBtnBox .menuBtn').trigger('click');
+      initMenuReply(btn['name'], btn['reply']);
+    }
+    var btnDom = $('.menuBtn.choosen');
+    setBtnDom(btnDom, btn);
+    btn['mid'] = btnDom.attr('mid');
+    // 判断该菜单类型
     if (btn['sub_button'] && btn['sub_button'].length > 0) {
       btnDom.text(btn['name']);
       for (var j = 0; j < btn['sub_button'].length; j++) {
         var subBtn = btn['sub_button'][j];
+        backupMaterialContent($('.editMenuBtn.choosen'));
         $($(btnDom.siblings('.menuSubBtnContainer')[0]).find('.addMenuBtn')[0]).trigger('click');
+        initMenuReply(subBtn['name'], subBtn['reply']);
         var subBtnDom = $('.menuBtn.choosen');
         setBtnDom(subBtnDom, subBtn);
       }
-    } else {
-      setBtnDom(btnDom, btn);
     }
   }
+  IS_INITIAL = false;
 }
 
 var setBtnDom = function(btnDom, btn) {
-  if (btn['type'] == 'click') {
+  if (btn['type'] == undefined) {
+    var mid = Date.parse(new Date());
+    btnDom.attr('type', 'click');
+    btnDom.text(btn['name']);
+    btnDom.attr('key', mid);
+    btnDom.attr('mid', mid);
+  } else if (btn['type'] == 'click') {
     btnDom.attr('type', 'click');
     btnDom.text(btn['name']);
     btnDom.attr('key', btn['key']);
+    btnDom.attr('mid', btn['mid']);
   } else {
     btnDom.attr('type', 'view');
     btnDom.text(btn['name']);
@@ -163,9 +185,11 @@ var addFirstLevelMenu = function() {
   var newBtnBox = $(NEW_MENU_ITEM);
   $('#addFstMenuBtnBox').before(newBtnBox);
   adjustFlMenuBtnStyle();
-  var mid = Date.parse(new Date());
-  newBtnBox.children('.editMenuBtn').attr('mid', mid);
-  MENU.push({'type' : 'click', 'name' : '菜单名称', 'key' : mid, 'mid' : mid, 'sub_button' : []});
+  if (!IS_INITIAL) {
+    var mid = Date.parse(new Date());
+    newBtnBox.children('.editMenuBtn').attr('mid', mid);
+    MENU.push({'type' : 'click', 'name' : '菜单名称', 'key' : mid, 'mid' : mid, 'sub_button' : []});
+  }
   chooseBtn(newBtnBox.children('.editMenuBtn'));
 }
 
@@ -192,11 +216,13 @@ var addSecondLevelMenu = function(addBtn) {
   var newMenuBtn = $(MENU_SECOND_BTN);
   btnBox.prepend(newMenuBtn);
   adjustSlMenuBtnStyle(addBtn);
-  var mid = Date.parse(new Date());
   var pMid = newMenuBtn.parents('.menuBtnBox').children('.flMenuBtn').attr('mid');
-  newMenuBtn.attr('mid', mid);
   var pMidIndex = getBtnIndexByMid(pMid)[0];
-  MENU[pMidIndex]['sub_button'].push({'type' : 'click', 'name' : '子菜单名称', 'key' : mid, 'mid' : mid});
+  if (!IS_INITIAL) {
+    var mid = Date.parse(new Date());
+    newMenuBtn.attr('mid', mid);
+    MENU[pMidIndex]['sub_button'].push({'type' : 'click', 'name' : '子菜单名称', 'key' : mid, 'mid' : mid});
+  }
   $('#' + pMid).remove();
   chooseBtn(newMenuBtn);
   MENU[pMidIndex]['reply'] = undefined;
@@ -227,12 +253,14 @@ var chooseBtn = function(btn) {
   $('#menuContentWrapper').css('display', 'block');
   var oldBtn = $('.menuBtn.choosen');
   // 处理旧的数据
-  if (($('#inputContentPanel').css('display') != 'none' ||
-      $('#nameOnlyPanel').css('display') != 'none') && !IS_DELETING) {
-    backupMaterialContent(oldBtn);
+  if (!IS_INITIAL) {
+    if (($('#inputContentPanel').css('display') != 'none' ||
+        $('#nameOnlyPanel').css('display') != 'none') && !IS_DELETING) {
+      backupMaterialContent(oldBtn);
+    }
+    // 处理新数据
+    updateMaterialContent(btn);
   }
-  // 处理新数据
-  updateMaterialContent(btn);
   oldBtn.parents('.menuBtnBox').removeClass('choosen');
   oldBtn.removeClass('choosen');
   btn.parents('.menuBtnBox').addClass('choosen');
@@ -299,6 +327,7 @@ var updateMaterialContent = function(btn) {
       $(btn.parent().find('.menuSubBtnBox')[0]).children().length > 1) {
     $('#nameOnlyPanel input[name="menuName"]').val(btnInfo['name']);
     $('#nameOnlyPanel .head .menuName').text(btnInfo['name']);
+    $('#inputContentPanel').hide();
     $('#nameOnlyPanel').show();
   } else {
     $('#inputContentPanel input[name="menuName"]').val(btnInfo['name']);
@@ -308,7 +337,12 @@ var updateMaterialContent = function(btn) {
       $('#material' + firstCharUpper(btnInfo['reply']['MsgType'])).html($('#' + btn.attr('mid')).html());
       $('#choose' + firstCharUpper(btnInfo['reply']['MsgType']) + 'Btn').hide();
       $('#material' + firstCharUpper(btnInfo['reply']['MsgType'])).show();
+    } else {
+      $('.showMaterialChoosenBox').hide();
+      $('.showMaterialBoxBtn').show();
+      $('#materialNav li[name="image"]').trigger('click');
     }
+    $('#nameOnlyPanel').hide();
     $('#inputContentPanel').show();
   }
 }
@@ -331,4 +365,61 @@ var firstCharUpper = function(str) {
   var ret = '';
   ret = str.substr(0, 1).toUpperCase() + str.substr(1);
   return ret;
+}
+
+var initMenuReply = function(name, template) {
+  $('#inputContentPanel input[name="menuName"]').val(name);
+  $('#inputContentPanel .head .menuName').text(name);
+  $('#inputContentPanel').show();
+  $('#materialNav li[name="' + template['MsgType'] + '"]').trigger('click');
+  if (template['MsgType'] == 'image') {
+    $('#materialImage').append('<img src="' + template['ImageUrl'] + '" mediaId="' + template['MediaId'] + '" ori_url="' + template['OriUrl'] + '" />');
+    $('#materialImage').append('<a id="deleteImageMaterialBtn">删除</a>');
+    $('#chooseImageBtn').hide();
+    $('#materialImage').show();
+  } else if (template['MsgType'] == 'voice') {
+    var box = $('#materialVoice');
+    box.attr('mediaId', template['MediaId']);
+    box.children('.voiceName').text(template['VoiceName']);
+    box.children('.voiceLen').text(template['VoiceLen']);
+    $('#chooseVoiceBtn').hide();
+    box.show();
+  } else if (template['MsgType'] == 'video') {
+    var box = $('#materialVideo');
+    box.children('.videoName').text(template['Title']);
+    box.children('.videoTitle').text(template['Title']);
+    box.children('.videoDesc').text(template['Description']);
+    box.attr('mediaId', template['MediaId']);
+    $('#chooseVideoBtn').hide();
+    box.show();
+  } else if (template['MsgType'] == 'news') {
+    var box = $('#materialNews');
+    var mediaId = template['MediaId'];
+    var newsWrapper = $(NEWS_WRAPPER);
+    var newsItems = template['Items'];
+    newsWrapper.attr('mediaId', mediaId);
+    for (var j = 0; j < newsItems.length; j++) {
+      var newsItem = newsItems[j];
+      var title = newsItem['Title'];
+      var desc = newsItem['Description'];
+      var url = newsItem['Url'];
+      var thumbUrl = newsItem['PicUrl'];
+      var mediaId = newsItem['MediaId'];
+      var img = newsItem['ImageUrl']
+      var newsBox = $(NEWS_BOX);
+      newsBox.children('.newsItemTitle').text(title);
+      newsBox.children('.newsItemImg').css('backgroundImage', 'url(' + img + ')');
+      newsBox.attr('thumbUrl', thumbUrl);
+      newsBox.attr('description', desc);
+      newsBox.attr('url', url);
+      newsBox.attr('mediaId', mediaId);
+      newsWrapper.append(newsBox);
+    }
+    box.append(newsWrapper);
+    $('#chooseNewsBtn').hide();
+    box.show();
+  } else {
+    $('#materialNav li[name="image"]').trigger('click');
+    $('#chooseImageBtn').show();
+  }
 }
