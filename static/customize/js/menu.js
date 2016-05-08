@@ -208,6 +208,8 @@ var adjustFlMenuBtnStyle = function() {
     // 如果正在添加第三个主菜单,则把添加菜单按钮隐藏
     $('#addFstMenuBtnBox').hide();
     fstBtnBoxAmount -= 1;
+  } else {
+    $('#addFstMenuBtnBox').show();
   }
   // 计算每一个btnBox的宽度
   var btnBoxWidth = $('.menuBtnWrapper').width() / (fstBtnBoxAmount);
@@ -243,6 +245,8 @@ var adjustSlMenuBtnStyle = function(addBtn) {
   if (btnAmount == 6) {
     addBtn.hide();
     btnAmount -= 1;
+  } else {
+    addBtn.show();
   }
   var container = addBtn.parents('.menuSubBtnContainer');
   var newH = btnAmount * (btnHeight + 2) + 2;
