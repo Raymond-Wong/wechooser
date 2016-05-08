@@ -86,7 +86,7 @@ def saveMenu(request, token):
   try:
     res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
   except PastDueException:
-    token = utils.update_token()
+    token = wechat.utils.update_token()
     res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
   # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
   if res[0]:
