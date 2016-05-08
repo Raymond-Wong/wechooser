@@ -102,7 +102,7 @@ var initMenu = function() {
 
 var setBtnDom = function(btnDom, btn) {
   if (btn['type'] == undefined) {
-    var mid = Date.parse(new Date());
+    var mid = new Date().getTime();
     btnDom.attr('type', 'click');
     btnDom.text(btn['name']);
     btnDom.attr('key', mid);
@@ -194,7 +194,7 @@ var addFirstLevelMenu = function() {
   $('#addFstMenuBtnBox').before(newBtnBox);
   adjustFlMenuBtnStyle();
   if (!IS_INITIAL) {
-    var mid = Date.parse(new Date());
+    var mid = new Date().getTime();
     newBtnBox.children('.editMenuBtn').attr('mid', mid);
     MENU.push({'type' : 'click', 'name' : '菜单名称', 'key' : mid, 'mid' : mid, 'sub_button' : []});
   }
@@ -229,7 +229,7 @@ var addSecondLevelMenu = function(addBtn) {
   var pMid = newMenuBtn.parents('.menuBtnBox').children('.flMenuBtn').attr('mid');
   var pMidIndex = getBtnIndexByMid(pMid)[0];
   if (!IS_INITIAL) {
-    var mid = Date.parse(new Date());
+    var mid = new Date().getTime();
     newMenuBtn.attr('mid', mid);
     MENU[pMidIndex]['sub_button'].push({'type' : 'click', 'name' : '子菜单名称', 'key' : mid, 'mid' : mid});
   }
@@ -262,6 +262,7 @@ var editMenuAction = function() {
 }
 
 var chooseBtn = function(btn) {
+  debugger
   $('#menuContentWrapper').css('display', 'block');
   var oldBtn = $('.menuBtn.choosen');
   // 处理旧的数据
