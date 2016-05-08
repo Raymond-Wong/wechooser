@@ -6,7 +6,7 @@ sys.setdefaultencoding('utf-8')
 import random
 from abc import ABCMeta, abstractmethod
 
-from models import Reply, KeywordReply
+from models import Reply, KeywordReply, MenuReply
 from ReplyTemplates import *
 
 import wechooser.utils
@@ -60,7 +60,6 @@ class EventReplyHandler(ReplyHandler):
       template.ToUserName = self.params['FromUserName']
       return template.toReply()
     except Exception, e:
-      wechooser.utils.logger('ERROR', e)
       return DefaultReplyHandler(self.params).getReply()
 
 # 文本自动回复
