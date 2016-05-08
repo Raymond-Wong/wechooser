@@ -45,14 +45,26 @@ def editMenu(request, token):
             if slBtn['type'] == 'click':
               slBtn['mid'] = slBtn['key']
               slBtn['reply'] = getMenuReplyTemplate(slBtn["mid"])
+    wechooser.utils.logger('DEBUG', menu)
+    # return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps(menu)})
     return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps(menu)})
   else:
     # 如果是post请求则保存菜单
     return saveMenu(request, token)
 
 def getMenuReplyTemplate(mid):
-  return 'undefined'
-
+  try:
+    template = json.loads(MenuReply.objects.get(mid=mid).template)
+    if template['MsgType'] == 'image':
+      template['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=template['OriUrl'], mediaId=template['MediaId'])
+    elif template['MsgType'] == 'voice':
+      template['VoiceLen'] = wechat.utils.getOneVoiceLen(mediaId=template['MediaId'])
+    elif template['MsgType'] == 'news':
+      for news in template['Items']:
+        news['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=news['PicUrl'], mediaId=news['MediaId'])
+    return template
+  except Exception:
+    return 'undefined'
 
 def saveMenu(request, token):
   menuBtns = sorted(json.loads(request.POST.get('menu')), key=lambda x:x['mid'])
@@ -69,19 +81,21 @@ def saveMenu(request, token):
       flBtn.pop('reply')
     flBtn.pop('mid')
   # 发请求更改菜单
-  host = 'api.weixin.qq.com'
-  path = '/cgi-bin/menu/create?access_token='
-  method = 'POST'
-  params = {'button' : menuBtns}
-  try:
-    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
-  except PastDueException:
-    token = utils.update_token()
-    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
-  # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
-  if res[0]:
+  # host = 'api.weixin.qq.com'
+  # path = '/cgi-bin/menu/create?access_token='
+  # method = 'POST'
+  # params = {'button' : menuBtns}
+  # try:
+  #   res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  # except PastDueException:
+  #   token = utils.update_token()
+  #   res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  # # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
+  # if res[0]:
+  if True:
     # 将menu的key和reply存入数据库中
     for key in replys.keys():
+      wechooser.utils.logger('DEBUG', key)
       # 处理返回模板
       replyRecord = None;
       try:
@@ -102,9 +116,9 @@ def saveMenu(request, token):
         replyRecord.template = json.dumps(NewsTemplate(MediaId=reply['MediaId'], Items=newsItems), default=wechooser.utils.dumps)
       replyRecord.save()
     # 将MenuReply表中多余的按钮去除
-    for reply in MenuReply.objects.all():
-      if long(reply.mid, 10) not in replys.keys():
-        reply.delete()
+    # for reply in MenuReply.objects.all():
+    #   if long(reply.mid, 10) not in replys.keys():
+    #     reply.delete()
     # 将保存成功的讯息传回前端
     return HttpResponse(Response().toJson(), content_type='application/json')
   return HttpResponse(Response(c=-1, m=res[1]).toJson(), content_type='application/json')
