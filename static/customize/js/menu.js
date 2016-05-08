@@ -60,7 +60,6 @@ var initMenu = function() {
   MENU = $.parseJSON($('#menuPreviewWrapper').attr('menu'));
   var menu = MENU;
   for (var i = 0; i < menu.length; i++) {
-    debugger;
     var btn = menu[i];
     // 添加一个一级菜单
     if (i == 0) {

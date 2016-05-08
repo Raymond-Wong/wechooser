@@ -150,6 +150,7 @@ var saveImage = function() {
   var imgUrl = $(choosenImage.find('img')[0]).attr('src');
   var mediaId = choosenImage.attr('mediaId');
   var ori_url = choosenImage.attr('ori_url');
+  $('#materialImage').html('');
   $('#materialImage').append('<img src="' + imgUrl + '" mediaId="' + mediaId + '" ori_url="' + ori_url + '"/>');
   $('#materialImage').append('<a id="deleteImageMaterialBtn" class="deleteMaterialBtn">删除</a>');
   $('#chooseImageBtn').hide();
