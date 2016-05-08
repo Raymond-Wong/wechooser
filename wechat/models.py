@@ -30,3 +30,8 @@ class Rule(models.Model):
   # 该规则属于的关键词
   replys = models.ManyToManyField(KeywordReply)
 
+class MenuReply(models.Model):
+  # 按钮的key值
+  mid = models.TextField()
+  # 回复
+  template = models.TextField(blank=False)

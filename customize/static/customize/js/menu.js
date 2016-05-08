@@ -5,8 +5,8 @@ $(document).ready(function() {
   addMenuAction();
   deleteMenuAction();
   editMenuAction();
-  initMenu();
-  initReply();
+  // initMenu();
+  // initReply();
   bindSaveAction();
   deleteMaterialPreviewAction();
 });

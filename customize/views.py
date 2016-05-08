@@ -34,20 +34,38 @@ def login(request):
 @has_token
 def editMenu(request, token):
   if request.method == 'GET':
-    # menu = wechat.utils.getMenu(token)
-    # return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps(menu['menu']['button'])})
-    return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps([])})
+    menu = wechat.utils.getMenu(token)['menu']['button']
+    for flBtn in menu:
+      if flBtn.has_key('type') and flBtn['type'] == 'click':
+        flBtn['mid'] = flBtn['key']
+        flBtn['reply'] = getMenuReplyTemplate(flBtn['mid'])
+      else:
+        if len(flBtn['sub_button']) > 0:
+          for slBtn in flBtn['sub_button']:
+            if slBtn['type'] == 'click':
+              slBtn['mid'] = slBtn['key']
+              slBtn['reply'] = getMenuReplyTemplate(slBtn["mid"])
+    return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps(menu)})
+  else:
+    # 如果是post请求则保存菜单
+    return saveMenu(request, token)
+
+def getMenuReplyTemplate(mid):
+  return 'undefined'
+
+
+def saveMenu(request, token):
   menuBtns = sorted(json.loads(request.POST.get('menu')), key=lambda x:x['mid'])
-  replys = []
+  replys = {}
   for i, flBtn in enumerate(menuBtns):
     if len(flBtn['sub_button']) > 0:
       menuBtns[i]['sub_button'] = sorted(flBtn['sub_button'], key=lambda x:x['mid'])
       for j, slBtn in enumerate(menuBtns[i]['sub_button']):
-        replys.append({slBtn['mid'] : slBtn['reply']})
+        replys[slBtn['mid']] = slBtn['reply']
         menuBtns[i]['sub_button'][j].pop('reply')
         slBtn.pop('mid')
     else:
-      replys.append({'key' : flBtn['reply']})
+      replys[flBtn['mid']] = flBtn['reply']
       flBtn.pop('reply')
     flBtn.pop('mid')
   # 发请求更改菜单
@@ -60,7 +78,34 @@ def editMenu(request, token):
   except PastDueException:
     token = utils.update_token()
     res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
   if res[0]:
+    # 将menu的key和reply存入数据库中
+    for key in replys.keys():
+      # 处理返回模板
+      replyRecord = None;
+      try:
+        replyRecord = MenuReply.objects.get(mid=key)
+      except Exception:
+        replyRecord = MenuReply(mid=key)
+      reply = replys[key]
+      if reply['MsgType'] == 'image':
+        replyRecord.template = json.dumps(ImageTemplate(MediaId=reply['MediaId'], OriUrl=reply['OriUrl']), default=wechooser.utils.dumps)
+      elif reply['MsgType'] == 'voice':
+        replyRecord.template = json.dumps(VoiceTemplate(MediaId=reply['MediaId'], VoiceName=reply["VoiceName"]), default=wechooser.utils.dumps)
+      elif reply['MsgType'] == 'video':
+        replyRecord.template = json.dumps(VideoTemplate(MediaId=reply['MediaId'], Title=reply['Title'], Description=reply['Description']), default=wechooser.utils.dumps)
+      elif reply['MsgType'] == 'news':
+        newsItems = []
+        for item in reply['item']:
+          newsItems.append(NewsItem(MediaId=item['MediaId'], Title=item['Title'], Description=item['Description'], Url=item['Url'], PicUrl=item['PicUrl']))
+        replyRecord.template = json.dumps(NewsTemplate(MediaId=reply['MediaId'], Items=newsItems), default=wechooser.utils.dumps)
+      replyRecord.save()
+    # 将MenuReply表中多余的按钮去除
+    for reply in MenuReply.objects.all():
+      if long(reply.mid, 10) not in replys.keys():
+        reply.delete()
+    # 将保存成功的讯息传回前端
     return HttpResponse(Response().toJson(), content_type='application/json')
   return HttpResponse(Response(c=-1, m=res[1]).toJson(), content_type='application/json')
 
