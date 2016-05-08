@@ -262,7 +262,6 @@ var editMenuAction = function() {
 }
 
 var chooseBtn = function(btn) {
-  debugger
   $('#menuContentWrapper').css('display', 'block');
   var oldBtn = $('.menuBtn.choosen');
   // 处理旧的数据
