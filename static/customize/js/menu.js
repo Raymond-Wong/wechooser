@@ -60,18 +60,27 @@ var initMenu = function() {
   MENU = $.parseJSON($('#menuPreviewWrapper').attr('menu'));
   var menu = MENU;
   for (var i = 0; i < menu.length; i++) {
+    debugger;
     var btn = menu[i];
     // 添加一个一级菜单
-    if (i == 0 && btn['sub_button'] != undefined && btn['sub_button'].length > 0) {
-      $('#addFstMenuBtnBox .menuBtn').trigger('click');
-      updateMaterialContent($('.editMenuBtn.choosen'));
-    } else if (i == 0) {
-      $('#addFstMenuBtnBox .menuBtn').trigger('click');
-      initMenuReply(btn['name'], btn['reply']);
+    if (i == 0) {
+      if (btn['sub_button'] != undefined && btn['sub_button'].length > 0) {
+        $('#addFstMenuBtnBox .menuBtn').trigger('click');
+        updateMaterialContent($('.editMenuBtn.choosen'));
+      } else {
+        $('#addFstMenuBtnBox .menuBtn').trigger('click');
+        initMenuReply(btn['name'], btn['reply']);
+      }
     } else {
-      backupMaterialContent($('.editMenuBtn.choosen'));
-      $('#addFstMenuBtnBox .menuBtn').trigger('click');
-      initMenuReply(btn['name'], btn['reply']);
+      if (btn['sub_button'] != undefined && btn['sub_button'].length > 0) {
+        backupMaterialContent($('.editMenuBtn.choosen'));
+        $('#addFstMenuBtnBox .menuBtn').trigger('click');
+        updateMaterialContent($('.editMenuBtn.choosen'));
+      } else {
+        backupMaterialContent($('.editMenuBtn.choosen'));
+        $('#addFstMenuBtnBox .menuBtn').trigger('click');
+        initMenuReply(btn['name'], btn['reply']);
+      }
     }
     var btnDom = $('.menuBtn.choosen');
     setBtnDom(btnDom, btn);
