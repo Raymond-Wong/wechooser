@@ -52,7 +52,14 @@ class EventReplyHandler(ReplyHandler):
   def getReply(self):
     if self.params['Event'] == 'subscribe':
       return SubscribeReplyHandler(self.params).getReply()
-    else:
+    eventKey = self.params['EventKey']
+    try:
+      reply = MenuReply.objects.get(mid=eventKey)
+      template = json.loads(reply.template, object_hook=wechooser.utils.loads)
+      template.FromUserName = self.params['ToUserName']
+      template.ToUserName = self.params['FromUserName']
+      return template.toReply()
+    except Exception:
       return DefaultReplyHandler(self.params).getReply()
 
 # 文本自动回复
