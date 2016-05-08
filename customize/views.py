@@ -45,8 +45,6 @@ def editMenu(request, token):
             if slBtn['type'] == 'click':
               slBtn['mid'] = slBtn['key']
               slBtn['reply'] = getMenuReplyTemplate(slBtn["mid"])
-    wechooser.utils.logger('DEBUG', menu)
-    # return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps(menu)})
     return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps(menu)})
   else:
     # 如果是post请求则保存菜单
@@ -67,11 +65,11 @@ def getMenuReplyTemplate(mid):
     return 'undefined'
 
 def saveMenu(request, token):
-  # menuBtns = sorted(json.loads(request.POST.get('menu')), key=lambda x:x['mid'])
+  menuBtns = json.loads(request.POST.get('menu'))
   replys = {}
   for i, flBtn in enumerate(menuBtns):
     if len(flBtn['sub_button']) > 0:
-      # menuBtns[i]['sub_button'] = sorted(flBtn['sub_button'], key=lambda x:x['mid'])
+      menuBtns[i]['sub_button'] = flBtn['sub_button']
       for j, slBtn in enumerate(menuBtns[i]['sub_button']):
         replys[slBtn['mid']] = slBtn['reply']
         menuBtns[i]['sub_button'][j].pop('reply')
