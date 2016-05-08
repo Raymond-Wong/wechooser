@@ -65,6 +65,7 @@ HANDLERS = {
 }
 def message(dictionary, token):
   # 如果信息类型不是文字，图片或者事件的话，则用默认处理类进行处理
+  wechooser.utils.logger('INFO', 'Get the following msg: %s' % dictionary)
   handler = DefaultReplyHandler
   if dictionary['MsgType'] in HANDLERS.keys():
     handler = HANDLERS[dictionary['MsgType']]
