@@ -60,7 +60,7 @@ class EventReplyHandler(ReplyHandler):
       template.ToUserName = self.params['FromUserName']
       return template.toReply()
     except Exception, e:
-      return DefaultReplyHandler(self.params).getReply()
+      return ''
 
 # 文本自动回复
 class TextReplyHandler(ReplyHandler):

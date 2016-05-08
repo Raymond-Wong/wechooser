@@ -67,11 +67,11 @@ def getMenuReplyTemplate(mid):
     return 'undefined'
 
 def saveMenu(request, token):
-  menuBtns = sorted(json.loads(request.POST.get('menu')), key=lambda x:x['mid'])
+  # menuBtns = sorted(json.loads(request.POST.get('menu')), key=lambda x:x['mid'])
   replys = {}
   for i, flBtn in enumerate(menuBtns):
     if len(flBtn['sub_button']) > 0:
-      menuBtns[i]['sub_button'] = sorted(flBtn['sub_button'], key=lambda x:x['mid'])
+      # menuBtns[i]['sub_button'] = sorted(flBtn['sub_button'], key=lambda x:x['mid'])
       for j, slBtn in enumerate(menuBtns[i]['sub_button']):
         replys[slBtn['mid']] = slBtn['reply']
         menuBtns[i]['sub_button'][j].pop('reply')
