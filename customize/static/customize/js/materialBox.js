@@ -75,7 +75,7 @@ var toPageAction = function() {
 
 // 更新图片素材框中的图片
 var updateMaterialImageBox = function(offset, count, callback) {
-  return false;
+  // return false;
   var params = {'type' : 'image', 'count' : count, 'offset' : offset};
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
   // 清空容器中的东西
@@ -141,7 +141,7 @@ var updateMaterialNewsBox = function(offset, count, callback) {
 
 // 更新语音素材框中的语音
 var updateMaterialVoiceBox = function(offset, count, callback) {
-  return false;
+  // return false;
   var params = {'type' : 'voice', 'count' : count, 'offset' : offset};
   var box = $('#materialVoiceBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
