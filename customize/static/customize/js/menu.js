@@ -3,6 +3,7 @@ var IS_DELETING = false;
 var IS_INITIAL = false;
 
 $(document).ready(function() {
+  changeBtnTypeAction();
   addMenuAction();
   deleteMenuAction();
   editMenuAction();
@@ -11,6 +12,18 @@ $(document).ready(function() {
   bindSaveAction();
   deleteMaterialPreviewAction();
 });
+
+var changeBtnTypeAction = function() {
+  $('input[name="btnType"]').click(function() {
+    if ($(this).val() == 'Material') {
+      $('#menuViewBox').hide();
+      $('#menuMaterialBox').show();
+    } else {
+      $('#menuMaterialBox').hide();
+      $('#menuViewBox').show();
+    }
+  });
+}
 
 var bindSaveAction = function() {
   $('#menuSaveBtn').click(function() {
@@ -107,15 +120,18 @@ var setBtnDom = function(btnDom, btn) {
     btnDom.text(btn['name']);
     btnDom.attr('key', mid);
     btnDom.attr('mid', mid);
+    $('#showMenuMaterialBtn').trigger('click');
   } else if (btn['type'] == 'click') {
     btnDom.attr('type', 'click');
     btnDom.text(btn['name']);
     btnDom.attr('key', btn['key']);
     btnDom.attr('mid', btn['mid']);
+    $('#showMenuMaterialBtn').trigger('click');
   } else {
     btnDom.attr('type', 'view');
     btnDom.text(btn['name']);
     btnDom.attr('url', btn['url']);
+    $('#showMenuViewBtn').trigger('click');
   }
 }
 
@@ -356,6 +372,11 @@ var updateMaterialContent = function(btn) {
     }
     $('#nameOnlyPanel').hide();
     $('#inputContentPanel').show();
+    if (btnInfo['type'] == 'click') {
+      $('#showMenuMaterialBtn').trigger('click');
+    } else {
+      $('#showMenuViewBtn').trigger('click');
+    }
   }
 }
 

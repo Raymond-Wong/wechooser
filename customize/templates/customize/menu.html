@@ -89,13 +89,17 @@
     <div class="menuRow">
       <div class="key left">菜单内容</div>
       <div class="val right">
-        <input type="radio" class="contentType" name="contentType" checked value="msg" />发送消息
-        <input type="radio" class="contentType" name="contentType" value="link" />跳转网页
+        <input type="radio" class="contentType" name="btnType" id="showMenuMaterialBtn" value="Material" />发送消息
+        <input type="radio" class="contentType" name="btnType" id="showMenuViewBtn" value="View" />跳转网页
       </div>
       <div class="clear"></div>
     </div>
-    <div class="menuRow">
+    <div class="menuRow" id="menuMaterialBox">
     {% include 'customize/widgets/material.html' %}
+    </div>
+    <div class="menuRow" id="menuViewBox">
+      <div class="key left">跳转链接</div>
+      <div class="val right"><input type="text" id="menuViewLink" /></div>
     </div>
   </div>
   <div id="menuSaveWrapper">
