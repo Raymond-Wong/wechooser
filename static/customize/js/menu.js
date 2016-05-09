@@ -431,6 +431,7 @@ var initMenuReply = function(name, template, url) {
   }
   $('#materialNav li[name="' + template['MsgType'] + '"]').trigger('click');
   if (template['MsgType'] == 'image') {
+    $('#materialImage').html('');
     $('#materialImage').append('<img src="' + template['ImageUrl'] + '" mediaId="' + template['MediaId'] + '" ori_url="' + template['OriUrl'] + '" />');
     $('#materialImage').append('<a id="deleteImageMaterialBtn">删除</a>');
     $('#chooseImageBtn').hide();
