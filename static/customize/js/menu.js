@@ -109,6 +109,7 @@ var initMenu = function() {
         initMenuReply(subBtn['name'], subBtn['reply'], subBtn['url']);
         var subBtnDom = $('.menuBtn.choosen');
         setBtnDom(subBtnDom, subBtn);
+        subBtn['mid'] = subBtnDom.attr('mid');
       }
     }
   }
@@ -130,6 +131,8 @@ var setBtnDom = function(btnDom, btn) {
     btnDom.attr('mid', btn['mid']);
     $('#showMenuMaterialBtn').trigger('click');
   } else {
+    var mid = new Date().getTime();
+    btnDom.attr('mid', mid);
     btnDom.attr('type', 'view');
     btnDom.text(btn['name']);
     btnDom.attr('url', btn['url']);
