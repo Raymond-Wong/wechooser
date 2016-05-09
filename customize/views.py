@@ -87,6 +87,7 @@ def saveMenu(request, token):
   path = '/cgi-bin/menu/create?access_token='
   method = 'POST'
   params = {'button' : menuBtns}
+  wechooser.utils.logger('DEBUG', menuBtns)
   try:
     res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
   except PastDueException:
