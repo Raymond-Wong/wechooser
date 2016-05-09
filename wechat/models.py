@@ -35,8 +35,3 @@ class MenuReply(models.Model):
   mid = models.TextField()
   # 回复
   template = models.TextField(blank=False)
-
-class Media(models.Model):
-  media_id = models.TextField(unique=True)
-  update_time = models.DateTimeField()
-  data = models.FileField(upload_to='/media/')
