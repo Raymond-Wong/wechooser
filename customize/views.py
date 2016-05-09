@@ -75,13 +75,15 @@ def saveMenu(request, token):
           replys[str(int(slBtn['mid']))] = slBtn['reply']
         if slBtn.has_key('reply'):
           menuBtns[i]['sub_button'][j].pop('reply')
-        slBtn.pop('mid')
+        if slBtn.has_key('mid'):
+          slBtn.pop('mid')
     else:
       if flBtn['type'] == 'click':
         replys[str(int(flBtn['mid']))] = flBtn['reply']
       if flBtn.has_key('reply'):
         flBtn.pop('reply')
-    flBtn.pop('mid')
+    if flBtn.has_key('mid'):
+      flBtn.pop('mid')
   # 发请求更改菜单
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/menu/create?access_token='
