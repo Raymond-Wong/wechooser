@@ -3,6 +3,7 @@ var IS_DELETING = false;
 var IS_INITIAL = false;
 
 $(document).ready(function() {
+  changeBtnTypeAction();
   addMenuAction();
   deleteMenuAction();
   editMenuAction();
@@ -12,12 +13,25 @@ $(document).ready(function() {
   deleteMaterialPreviewAction();
 });
 
+var changeBtnTypeAction = function() {
+  $('input[name="btnType"]').click(function() {
+    if ($(this).val() == 'Material') {
+      $('#menuViewBox').hide();
+      $('#menuMaterialBox').show();
+    } else {
+      $('#menuMaterialBox').hide();
+      $('#menuViewBox').show();
+    }
+  });
+}
+
 var bindSaveAction = function() {
   $('#menuSaveBtn').click(function() {
     $('.editMenuBtn.choosen').trigger('click');
     for (var i = 0; i < MENU.length; i++) {
       var flBtn = MENU[i];
-      if (flBtn['sub_button'].length <= 0 && flBtn['reply'] == undefined) {
+      if ((flBtn['type'] == 'click' && flBtn['sub_button'].length <= 0 && flBtn['reply'] == undefined) ||
+          (flBtn['type'] == 'view' && flBtn['sub_button'].length <=  0 && (flBtn['url'] == undefined || flBtn['url'] == ''))) {
         $('.editMenuBtn[mid="' + flBtn['mid'] + '"]').trigger('click');
         topAlert('菜单: ' + flBtn['name'] + ' 未填入内容', 'error');
         return false;
@@ -25,7 +39,8 @@ var bindSaveAction = function() {
       if (flBtn['sub_button'].length > 0) {
         for (var j = 0; j < flBtn['sub_button'].length; j++) {
           var slBtn = flBtn['sub_button'][j];
-          if (slBtn['reply'] == undefined) {
+          if ((slBtn['type'] == 'click' && slBtn['reply'] == undefined) ||
+              (slBtn['type'] == 'view' && (slBtn['url'] == undefined || slBtn['url'] == ''))) {
             $('.editMenuBtn[mid="' + slBtn['mid'] + '"]').trigger('click');
             topAlert('子菜单: ' + slBtn['name'] + ' 未填入内容', 'error');
             return false;
@@ -107,15 +122,18 @@ var setBtnDom = function(btnDom, btn) {
     btnDom.text(btn['name']);
     btnDom.attr('key', mid);
     btnDom.attr('mid', mid);
+    $('#showMenuMaterialBtn').trigger('click');
   } else if (btn['type'] == 'click') {
     btnDom.attr('type', 'click');
     btnDom.text(btn['name']);
     btnDom.attr('key', btn['key']);
     btnDom.attr('mid', btn['mid']);
+    $('#showMenuMaterialBtn').trigger('click');
   } else {
     btnDom.attr('type', 'view');
     btnDom.text(btn['name']);
     btnDom.attr('url', btn['url']);
+    $('#showMenuViewBtn').trigger('click');
   }
 }
 
@@ -163,7 +181,6 @@ var deleteMenuAction = function() {
       // 调整一级菜单样式
       adjustFlMenuBtnStyle();
       // 如果存在一级按钮就点击,否则隐藏掉输入栏
-      console.log(toChooseBtn);
       if (toChooseBtn.length > 0) {
         toChooseBtn.trigger('click');
       } else {
@@ -240,7 +257,7 @@ var addSecondLevelMenu = function(addBtn) {
 
 var adjustSlMenuBtnStyle = function(addBtn) {
   var btnBox = addBtn.parent();
-  var btnHeight = addBtn.height();
+  var btnHeight = $('.editMenuBtn').height() + 3;
   var btnAmount = btnBox.children('.menuBtn').length;
   if (btnAmount == 6) {
     addBtn.hide();
@@ -290,10 +307,26 @@ var backupMaterialContent = function(oldBtn) {
     btnName = $('#inputContentPanel input[name="menuName"]').val();
     oldBtn.text(btnName);
     var btnIndex = getBtnIndexByMid(oldBtn.attr('mid'));
+    var link = $('#menuViewLink').val();
+    $('#menuViewLink').val('');
     if (btnIndex[1] >= 0) {
       MENU[btnIndex[0]]['sub_button'][btnIndex[1]]['name'] = btnName;
+      // backup link
+      MENU[btnIndex[0]]['sub_button'][btnIndex[1]]['url'] = link;
+      // backup btn type
+      if ($('#menuViewBox').css('display') == 'none')
+        MENU[btnIndex[0]]['sub_button'][btnIndex[1]]['type'] = 'click';
+      else
+        MENU[btnIndex[0]]['sub_button'][btnIndex[1]]['type'] = 'view';
     } else {
       MENU[btnIndex[0]]['name'] = btnName;
+      // backup link
+      MENU[btnIndex[0]]['url'] = link;
+      // backup btn type
+      if ($('#menuViewBox').css('display') == 'none')
+        MENU[btnIndex[0]]['type'] = 'click';
+      else
+        MENU[btnIndex[0]]['type'] = 'view';
     }
     // 把所有显示素材框隐藏,把所有显示素材按钮显示
     // 把旧的material的内容备份起来
@@ -356,6 +389,14 @@ var updateMaterialContent = function(btn) {
     }
     $('#nameOnlyPanel').hide();
     $('#inputContentPanel').show();
+    if (btnInfo['url'] != undefined) {
+      $('#menuViewLink').val(btnInfo['url']);
+    }
+    if (btnInfo['type'] == 'click' || btnInfo['type'] == undefined) {
+      $('#showMenuMaterialBtn').trigger('click');
+    } else {
+      $('#showMenuViewBtn').trigger('click');
+    }
   }
 }
 

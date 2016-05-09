@@ -251,3 +251,7 @@
 .backupBox {
   display: none;
 }
+
+#menuMaterialBox, #menuViewBox {
+  display: none;
+}
