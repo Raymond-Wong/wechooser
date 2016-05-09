@@ -52,7 +52,7 @@ var bindSaveAction = function() {
       if (res['code'] == 0) {
         topAlert('保存成功');
       } else {
-        topAlert(res, 'error');
+        topAlert(JSON.stringify(res), 'error');
       }
     });
   });
