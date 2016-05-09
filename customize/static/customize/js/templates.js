@@ -19,6 +19,12 @@ var VIDEO_ITEM = '<div class="videoItem">' +
                '  <span class="videoDesc"></span>' +
         		   '</div>';
 
+var MPNEWS_ITEM = '<div class="mpNewsItem">' +
+                  '  <span class="mpNewsSelect"><input type="radio" name="mpNewsSelect" /></span>' +
+                  '  <span class="mpNewsName"></span>' +
+                  '  <span class="mpNewsCreateTime"></span>' +
+                  '</div>';
+
 
 var LOADING_ELEMENT = '<div class="loadingElement">正在加载素材...<div>';
 

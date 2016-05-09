@@ -13,6 +13,7 @@ var bindMaterialBoxAction = function() {
   bindMaterialVoiceBoxAction();
   bindMaterialVideoBoxAction();
   bindMaterialNewsBoxAction();
+  bindMaterialMpNewsBoxAction();
 }
 
 var bindMaterialTextBoxAction = function() {
@@ -43,6 +44,10 @@ var bindMaterialNewsBoxAction = function() {
   deleteNewsAction();
 }
 
+var bindMaterialMpNewsBoxAction = function() {
+  updateMaterialMpNewsBox(0, 5);
+}
+
 // 跳转页码
 var toPageAction = function() {
   $('.materialBoxPageWrapper .toPageBtn').click(function() {
@@ -69,6 +74,8 @@ var toPageAction = function() {
       updateMaterialVideoBox(5 * (page - 1), 5);
     } else if (type == 'materialNewsBox') {
       updateMaterialNewsBox(2 * (page - 1), 2);
+    } else if (type == 'materialMpNewsBox') {
+      updateMaterialMpNewsBox(5 * (page - 1), 5);
     }
   });
 }
@@ -134,6 +141,34 @@ var updateMaterialNewsBox = function(offset, count, callback) {
         newsWrapper.append(newsBox);
       }
       box.append(newsWrapper);
+    }
+    box.children('.loadingElement').remove();
+  });
+}
+
+var updateMaterialMpNewsBox = function(offset, count, callback) {
+  // return false;
+  var params = {'type' : 'news', 'count' : count, 'offset' : offset};
+  var box = $('#materialMpNewsBox .materialBoxContent');
+  box.html(LOADING_ELEMENT);
+  $.post('/wechat/getMaterial', params, function(res) {
+    var items = res['msg']['item']
+    var totalCount = res['msg']['total_count'];
+    $($('#materialMpNewsBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 5));
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      var newsItems = item['content']['news_item'];
+      // var createTime = formatDate(new Date(item['update_time']));
+      for (var j = 0; j < newsItems.length; j++) {
+        var newsItem = newsItems[j];
+        var title = newsItem['title'];
+        var url = newsItem['url'];
+        var mpNews = $(MPNEWS_ITEM);
+        mpNews.children('.mpNewsName').text(title);
+        mpNews.children('.mpNewsCreateTime').text('');
+        mpNews.attr('url', url);
+        box.append(mpNews);
+      }
     }
     box.children('.loadingElement').remove();
   });
@@ -384,4 +419,14 @@ Array.prototype.remove = function (dx) {
         }  
     }  
     this.length -= 1;  
-};  
+};
+
+var formatDate = function(now)   {     
+  var   year=now.getYear();     
+  var   month=now.getMonth()+1;     
+  var   date=now.getDate();     
+  var   hour=now.getHours();     
+  var   minute=now.getMinutes();     
+  var   second=now.getSeconds();     
+  return   year+"-"+month+"-"+date+"   "+hour+":"+minute+":"+second;     
+}   

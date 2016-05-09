@@ -83,7 +83,7 @@ var initMenu = function() {
         updateMaterialContent($('.editMenuBtn.choosen'));
       } else {
         $('#addFstMenuBtnBox .menuBtn').trigger('click');
-        initMenuReply(btn['name'], btn['reply']);
+        initMenuReply(btn['name'], btn['reply'], btn['url']);
       }
     } else {
       if (btn['sub_button'] != undefined && btn['sub_button'].length > 0) {
@@ -93,7 +93,7 @@ var initMenu = function() {
       } else {
         backupMaterialContent($('.editMenuBtn.choosen'));
         $('#addFstMenuBtnBox .menuBtn').trigger('click');
-        initMenuReply(btn['name'], btn['reply']);
+        initMenuReply(btn['name'], btn['reply'], btn['url']);
       }
     }
     var btnDom = $('.menuBtn.choosen');
@@ -106,7 +106,7 @@ var initMenu = function() {
         var subBtn = btn['sub_button'][j];
         backupMaterialContent($('.editMenuBtn.choosen'));
         $($(btnDom.siblings('.menuSubBtnContainer')[0]).find('.addMenuBtn')[0]).trigger('click');
-        initMenuReply(subBtn['name'], subBtn['reply']);
+        initMenuReply(subBtn['name'], subBtn['reply'], subBtn['url']);
         var subBtnDom = $('.menuBtn.choosen');
         setBtnDom(subBtnDom, subBtn);
       }
@@ -420,10 +420,15 @@ var firstCharUpper = function(str) {
   return ret;
 }
 
-var initMenuReply = function(name, template) {
+var initMenuReply = function(name, template, url) {
   $('#inputContentPanel input[name="menuName"]').val(name);
   $('#inputContentPanel .head .menuName').text(name);
   $('#inputContentPanel').show();
+  if (url != undefined) {
+    $('#showMenuViewBtn').trigger('click');
+    $('#menuViewLink').val(url);
+    return false;
+  }
   $('#materialNav li[name="' + template['MsgType'] + '"]').trigger('click');
   if (template['MsgType'] == 'image') {
     $('#materialImage').append('<img src="' + template['ImageUrl'] + '" mediaId="' + template['MediaId'] + '" ori_url="' + template['OriUrl'] + '" />');

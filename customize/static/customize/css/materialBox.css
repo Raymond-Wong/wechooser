@@ -183,7 +183,8 @@
 #materialVoiceBox .materialBoxInner, #materialVoiceBox .materialBoxContent, #materialVoiceBox .materialBoxPageWrapper,
 #materialVideoBox .materialBoxInner, #materialVideoBox .materialBoxContent, #materialVideoBox .materialBoxPageWrapper,
 #materialTextBox .materialBoxInner, #materialTextBox .materialBoxContent, #materialTextBox .materialBoxPageWrapper,
-#materialNewsBox .materialBoxInner, #materialNewsBox .materialBoxContent, #materialNewsBox .materialBoxPageWrapper {
+#materialNewsBox .materialBoxInner, #materialNewsBox .materialBoxContent, #materialNewsBox .materialBoxPageWrapper,
+#materialMpNewsBox .materialBoxInner, #materialMpNewsBox .materialBoxContent, #materialMpNewsBox .materialBoxPageWrapper {
   width: 100%;
   outline: none;
 }
@@ -191,11 +192,12 @@
 #materialVoiceBox .materialBoxPageWrapper,
 #materialVideoBox .materialBoxPageWrapper,
 #materialTextBox .materialBoxPageWrapper,
-#materialNewsBox .materialBoxPageWrapper {
+#materialNewsBox .materialBoxPageWrapper,
+#materialMpNewsBox .materialBoxPageWrapper {
   height: 70px;
 }
 
-#materialVoiceBox .voiceItem, #materialVideoBox .videoItem {
+#materialVoiceBox .voiceItem, #materialVideoBox .videoItem, #materialMpNewsBox .mpNewsItem {
   width: 100%;
   height: 74px;
   line-height: 74px;
@@ -203,16 +205,25 @@
 }
 
 #materialVoiceBox .voiceItem .voiceSelect,
-#materialVideoBox .videoItem .videoSelect {
+#materialVideoBox .videoItem .videoSelect,
+#materialMpNewsBox .mpNewsItem .mpNewsSelect {
   padding-left: 2em;
   outline: none;
   width: 9%;
   display: inline-block;
 }
 
-#materialVoiceBox .voiceItem .voiceName {
+#materialVoiceBox .voiceItem .voiceName,
+#materialMpNewsBox .mpNewsItem .mpNewsName {
   width: 80%;
   display: inline-block;
+/*  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;*/
+}
+
+#materialMpNewsBox .mpNewsItem .mpNewsName {
+  width: 70%;
 }
 
 #materialVideoBox .videoItem .videoName {
