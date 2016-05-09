@@ -453,6 +453,7 @@ var initMenuReply = function(name, template, url) {
     box.show();
   } else if (template['MsgType'] == 'news') {
     var box = $('#materialNews');
+    box.html('');
     var mediaId = template['MediaId'];
     var newsWrapper = $(NEWS_WRAPPER);
     var newsItems = template['Items'];
