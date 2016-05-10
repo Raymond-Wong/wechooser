@@ -37,6 +37,7 @@ var bindSaveAction = function() {
         return false;
       }
       if (flBtn['sub_button'].length > 0) {
+        flBtn['sub_button'] = flBtn['sub_button'].reverse()
         for (var j = 0; j < flBtn['sub_button'].length; j++) {
           var slBtn = flBtn['sub_button'][j];
           if ((slBtn['type'] == 'click' && slBtn['reply'] == undefined) ||
