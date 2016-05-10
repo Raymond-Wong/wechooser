@@ -37,7 +37,14 @@ var chooseFaceAction = function() {
   	var face = $(this).children('img');
   	var materialText = $('#materialText');
   	var insertFaceStr = '<img src="' + face.attr('src') + '" name="' + face.attr('name') + '" class="insertedFace" />';
-    materialText.append(insertFaceStr);
+    var toInsertBox = materialText.find('div');
+    if (toInsertBox.length > 0) {
+      toInsertBox = $(toInsertBox[toInsertBox.length - 1]);
+      toInsertBox.children('br').replaceWith('');
+    } else {
+      toInsertBox = materialText;
+    }
+    toInsertBox.append(insertFaceStr);
     updateRemainChar();
   	return false;
   });
@@ -48,7 +55,14 @@ var listenInput = function() {
   var materialText = $('#materialText')[0]
   $('#materialText').keydown(function(evt) {
     if (evt.keyCode == '13') {
-      return false;
+      var materialText = $('#materialText');
+      var inputingBox = materialText.find('div');
+      if (inputingBox.length > 0) {
+        inputingBox = $(inputingBox[inputingBox.length - 1]);
+      } else {
+        inputingBox = materialText;
+      }
+      inputingBox.html(inputingBox.html() + '\n');
     }
   });
   if (materialText.addEventListener) {
