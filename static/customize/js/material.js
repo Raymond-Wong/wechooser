@@ -72,7 +72,7 @@ var updateRemainChar = function() {
 // 将text信息返回给后台的json
 var textHandler = function() {
   var tmpDiv = $('#materialText').clone();
-  tmpDiv.find('nl').replaceWith('\r\n');
+  tmpDiv.find('nl').replaceWith('\n');
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');
     $(this).before(face);
