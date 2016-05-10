@@ -96,7 +96,8 @@ var textHandler = function() {
 // 将image信息返回给后台的json
 var imageHandler = function() {
   var mediaId = $('#materialImage img').attr('mediaId');
-  var imageUrl = $('#materialImage img').attr('src');
+  // var imageUrl = $('#materialImage img').attr('src');
+  imageUrl = undefined;
   var oriUrl = $('#materialImage img').attr('ori_url');
   params = {'MsgType' : 'image', 'MediaId' : mediaId, 'ImageUrl' : imageUrl, 'OriUrl' : oriUrl};
   return params;
