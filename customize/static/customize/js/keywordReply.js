@@ -5,6 +5,7 @@ $(document).ready(function() {
 
 var parseFace = function(domEle) {
   var tmpDiv = domEle.clone();
+  tmpDiv.find('nl').replaceWith('\n\r');
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');
     $(this).before(face);

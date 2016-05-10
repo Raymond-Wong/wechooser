@@ -37,14 +37,7 @@ var chooseFaceAction = function() {
   	var face = $(this).children('img');
   	var materialText = $('#materialText');
   	var insertFaceStr = '<img src="' + face.attr('src') + '" name="' + face.attr('name') + '" class="insertedFace" />';
-    var toInsertBox = materialText.find('div');
-    if (toInsertBox.length > 0) {
-      toInsertBox = $(toInsertBox[toInsertBox.length - 1]);
-      toInsertBox.children('br').replaceWith('');
-    } else {
-      toInsertBox = materialText;
-    }
-    toInsertBox.append(insertFaceStr);
+    insertIntoCaret('materialText', insertFaceStr);
     updateRemainChar();
   	return false;
   });
@@ -55,14 +48,7 @@ var listenInput = function() {
   var materialText = $('#materialText')[0]
   $('#materialText').keydown(function(evt) {
     if (evt.keyCode == '13') {
-      var materialText = $('#materialText');
-      var inputingBox = materialText.find('div');
-      if (inputingBox.length > 0) {
-        inputingBox = $(inputingBox[inputingBox.length - 1]);
-      } else {
-        inputingBox = materialText;
-      }
-      inputingBox.html(inputingBox.html() + '\n');
+      insertIntoCaret('materialText', '<nl/>');
     }
   });
   if (materialText.addEventListener) {
@@ -86,6 +72,7 @@ var updateRemainChar = function() {
 // 将text信息返回给后台的json
 var textHandler = function() {
   var tmpDiv = $('#materialText').clone();
+  tmpDiv.find('nl').replaceWith('\r\n');
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');
     $(this).before(face);
