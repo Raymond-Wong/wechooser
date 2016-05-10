@@ -71,6 +71,10 @@
   line-height: 35px;
 }
 
+#rulesWrapper .ruleDetailWrapper .content .keywordsWrapper .ruleRow:first-child {
+  line-height: 1.2em;
+}
+
 #rulesWrapper .ruleShortWrapper .content .key {
   width: 10%;
   height: 100%;

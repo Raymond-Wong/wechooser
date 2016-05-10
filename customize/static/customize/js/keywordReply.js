@@ -11,7 +11,12 @@ var parseFace = function(domEle) {
     $(this).before(face);
     $(this).remove();
   });
-  return tmpDiv.text();
+  var content = tmpDiv.text().split('\n');
+  for (var i = 0; i < content.length; i++) {
+    if (content[i] == '')
+      content.splice(i, 1);
+  }
+  return content.join('\n');
 }
 
 var textHandler = function(box) {

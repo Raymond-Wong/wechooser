@@ -45,7 +45,7 @@ var chooseFaceAction = function() {
 
 // 监听输入框变化
 var listenInput = function() {
-  var materialText = $('#materialText')[0]
+  var materialText = $('#materialText')[0];
   $('#materialText').keydown(function(evt) {
     if (evt.keyCode == '13') {
       insertIntoCaret('materialText', '<nl/>');
@@ -79,7 +79,12 @@ var textHandler = function() {
     $(this).remove();
   });
   params = {'MsgType' : 'text'};
-  params['Content'] = tmpDiv.text();
+  var content = tmpDiv.text().split('\n');
+  for (var i = 0; i < content.length; i++) {
+    if (content[i] == '')
+      content.splice(i, 1);
+  }
+  params['Content'] = content.join('\n');
   if (parseInt($('#materialRemain font').text()) < 0) {
     params['MsgType'] = null;
     params['Content'] = '输入字数不可超过600字';

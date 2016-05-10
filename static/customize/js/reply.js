@@ -11,7 +11,23 @@ var initReply = function() {
   $('#materialNav li[name="' + template['MsgType'] + '"]').trigger('click');
   if (template['MsgType'] == 'text') {
     var content = str2face(template['Content']);
-    $('#materialText').html(content);
+    var start = content.indexOf('\n');
+    var end = content.indexOf('\n', start + 2);
+    var lines = [];
+    if (start < 0) {
+      lines.push(content);
+    } else {
+      lines.push(content.substring(0, start));
+      while (true) {
+        end = end > 0 ? end : content.length;
+        lines.push('<div>' + content.substring(start + 1, end) + '</div>');
+        start = content.indexOf('\n', end);
+        if (start < 0) break;
+        end = content.indexOf('\n', start + 2);
+      }
+      lines.push('<div>' + content.substring(end + 1, content.length) + '</div>');
+    }
+    $('#materialText').html(lines.join('<nl></nl>'));
     var textAmount = $('#materialText').text().length + $('#materialText').find('.insertedFace').length;
     $('#materialRemain font').text(parseInt($('#materialRemain font').text()) - textAmount);
   } else if (template['MsgType'] == 'image') {

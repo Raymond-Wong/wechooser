@@ -9,6 +9,31 @@ var bindKeywordAction = function() {
   bindFullMatchAction();
   bindReplyAllAction();
   showMaterialBoxAction();
+  initTextReply();
+}
+
+var initTextReply = function() {
+  $('.reply[type="text"]').each(function() {
+    var box = $(this).children('.val')
+    var content = str2face(box.text());
+    var start = content.indexOf('\n');
+    var end = content.indexOf('\n', start + 2);
+    var lines = [];
+    if (start < 0) {
+      lines.push(content);
+    } else {
+      lines.push(content.substring(0, start));
+      while (true) {
+        end = end > 0 ? end : content.length;
+        lines.push('<div>' + content.substring(start + 1, end) + '</div>');
+        start = content.indexOf('\n', end);
+        if (start < 0) break;
+        end = content.indexOf('\n', start + 2);
+      }
+      lines.push('<div>' + content.substring(end + 1, content.length) + '</div>');
+    }
+    box.html(lines.join('<nl></nl>'));
+  });
 }
 
 var bindAddKeywordAction = function() {
@@ -115,13 +140,38 @@ var saveText = function() {
   if (remainChar < 0) {
     topAlert('输入文本长度超过限制', 'error');
     return false;
+  } else if (textContent.replace('\n', '').replace('\r', '') == '') {
+    topAlert('输入文本不可为空', 'error');
+    return false;
   }
   $('#materialTextInputArea').html('');
   if (TO_INSERT_ROW != null && TO_INSERT_ROW.attr('role') == 'addKeyword') {
-    var row = $(ADD_KEYWORD_ROW);
-    row.children('.val').html(textContent);
-    var box = TO_INSERT_ROW.parent().children('.keywordsWrapper');
-    box.prepend(row);
+    var keywords = [];
+    var start = textContent.indexOf('<div>', 0);
+    var end = textContent.indexOf('</div>', start);
+    if (start < 0 && end < 0) {
+      keywords.push(textContent);
+    } else {
+      if (start != 0) {
+        keywords.push(textContent.substring(0, start - 9));
+      }
+      while (true) {
+        var content = textContent.substring(start + 5, end);
+        console.log(content);
+        keywords.push(content);
+        start = textContent.indexOf('<div>', end);
+        if (start < 0) break;
+        end = textContent.indexOf('</div>', start);
+      }
+      if (end + 6 < textContent.length)
+        keywords.push(textContent.substring(end + 6, textContent.length));
+    }
+    for (var i = 0; i < keywords.length; i++) {
+      var row = $(ADD_KEYWORD_ROW);
+      row.children('.val').html(keywords[i]);
+      var box = TO_INSERT_ROW.parent().children('.keywordsWrapper');
+      box.prepend(row);
+    }
   } else if (TO_INSERT_ROW != null && TO_INSERT_ROW.attr("role") == 'editKeyword') {
     TO_INSERT_ROW.children('.val').html(textContent);
   } else if (TO_INSERT_ROW != null && TO_INSERT_ROW.attr("role") == 'btnBox') {
