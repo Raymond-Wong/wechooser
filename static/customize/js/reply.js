@@ -68,15 +68,17 @@ var bindReplyAction = function() {
         (params['MsgType'] != 'text' && (params['MediaId'] == undefined || params['MediaId'] == 'undefined'))) {
       topAlert('未选择素材', 'error');
     }
+    topAlert('正在保存中...');
   	$.post(url, getMaterialContent(), function(res) {
   	  if (res['code'] == 0)
   	    topAlert(res['msg']);
   	  else
-  	  	topAlert(res['msg'], 'error');
+  	  	topAlert(JSON.stringify(res['msg']), 'error');
   	});
   });
   deleteBtn.click(function() {
     var url = window.location.pathname + '/delete' + window.location.search
+    topAlert('正在删除中...');
     $.get(url, {}, function(res) {
       topAlert('回复删除成功');
     });

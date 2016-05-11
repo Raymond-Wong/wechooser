@@ -23,29 +23,24 @@ var bindMaterialTextBoxAction = function() {
 }
 
 var bindMaterialImageBoxAction = function() {
-  updateMaterialImageBox(0, 10);
   chooseImageAction();
   deleteImageAction();
 }
 
 var bindMaterialVoiceBoxAction = function() {
-  updateMaterialVoiceBox(0, 5);
   deleteVoiceAction();
 }
 
 var bindMaterialVideoBoxAction = function() {
-  updateMaterialVideoBox(0, 5);
   deleteVideoAction();
 }
 
 var bindMaterialNewsBoxAction = function() {
-  updateMaterialNewsBox(0, 2);
   chooseNewsAction();
   deleteNewsAction();
 }
 
 var bindMaterialMpNewsBoxAction = function() {
-  updateMaterialMpNewsBox(0, 5);
 }
 
 // 跳转页码
@@ -83,6 +78,7 @@ var toPageAction = function() {
 // 更新图片素材框中的图片
 var updateMaterialImageBox = function(offset, count, callback) {
   // return false;
+  console.log('update image material: (', offset, ', ', count, ')');
   var params = {'type' : 'image', 'count' : count, 'offset' : offset};
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
   // 清空容器中的东西
@@ -110,6 +106,7 @@ var updateMaterialImageBox = function(offset, count, callback) {
 
 var updateMaterialNewsBox = function(offset, count, callback) {
   // return false;
+  console.log('update news material: (', offset, ', ', count, ')');
   var params = {'type' : 'news', 'count' : count, 'offset' : offset};
   var box = $('#materialNewsBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
@@ -148,6 +145,7 @@ var updateMaterialNewsBox = function(offset, count, callback) {
 
 var updateMaterialMpNewsBox = function(offset, count, callback) {
   // return false;
+  console.log('update mpNews material: (', offset, ', ', count, ')');
   var params = {'type' : 'news', 'count' : count, 'offset' : offset};
   var box = $('#materialMpNewsBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
@@ -177,6 +175,7 @@ var updateMaterialMpNewsBox = function(offset, count, callback) {
 // 更新语音素材框中的语音
 var updateMaterialVoiceBox = function(offset, count, callback) {
   // return false;
+  console.log('update voice material: (', offset, ', ', count, ')');
   var params = {'type' : 'voice', 'count' : count, 'offset' : offset};
   var box = $('#materialVoiceBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
@@ -202,6 +201,7 @@ var updateMaterialVoiceBox = function(offset, count, callback) {
 // 更新视频素材库中的视频
 var updateMaterialVideoBox = function(offset, count, callback) {
   // return false;
+  console.log('update video material: (', offset, ', ', count, ')');
   var params = {'type' : 'video', 'count' : count, 'offet' : offset};
   var box = $('#materialVideoBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
@@ -231,7 +231,22 @@ var updateMaterialVideoBox = function(offset, count, callback) {
 var showMaterialBox = function(type, handler) {
   SAVE_HANDLER = handler;
   $('.materialBox.active').removeClass('active');
-  $('#material' + type + 'Box').addClass('active');
+  var box = $('#material' + type + 'Box');
+  var content = $(box.find('.materialBoxContent')[0]);
+  if (content.find('*').length <= 0) {
+    if (type == 'Image') {
+      updateMaterialImageBox(0, 10);
+    } else if (type == 'Voice') {
+      updateMaterialVoiceBox(0, 5);
+    } else if (type == 'Video') {
+      updateMaterialVideoBox(0, 5);
+    } else if (type == 'News') {
+      updateMaterialNewsBox(0, 2);
+    } else if (type == 'MpNews') {
+      updateMaterialMpNewsBox(0, 5);
+    }
+  }
+  box.addClass('active');
   $('#materialBoxWrapper').fadeIn();
 }
 

@@ -115,15 +115,16 @@ var bindSaveRuleAction = function() {
   	replyAll = replyAll == undefined ? 'False' : replyAll;
   	params = {'rid' : rule.attr('rid'), 'keywords' : JSON.stringify(keywords), 'replys' : JSON.stringify(replys), 'name' : ruleName, 'isReplyAll' : replyAll};
   	console.log(params);
+    topAlert('正在保存中...');
   	$.post('/reply?type=keyword', params, function(res) {
   	  if (res['code'] == 0) {
   	  	topAlert('保存成功');
   	  	// closeRuleAction($(this));
   	  } else {
-  	  	topAlert(res['msg']);
+  	  	topAlert(JSON.stringify(res['msg']), 'error');
   	  }
   	});
-  	closeRuleAction($(this));
+  	// closeRuleAction($(this));
   });
 }
 
@@ -166,6 +167,7 @@ var bindDeleteRuleAction = function() {
     var rule = $(this).parents('.ruleWrapper');
     var rid = rule.children('.ruleDetailWrapper').attr('rid');
     var url = window.location.pathname + '/delete' + window.location.search;
+    topAlert('正在删除中...');
     $.get(url, {'rid' : rid}, function(res) {
       topAlert('回复删除成功');
       rule.remove();

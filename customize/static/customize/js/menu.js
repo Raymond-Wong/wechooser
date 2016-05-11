@@ -49,6 +49,7 @@ var bindSaveAction = function() {
         }
       }
     }
+    topAlert('正在保存中...');
     $.post('/menu', {'menu' : JSON.stringify(MENU)}, function(res) {
       if (res['code'] == 0) {
         topAlert('保存成功');
