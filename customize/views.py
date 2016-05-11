@@ -40,8 +40,8 @@ def login(request):
       return HttpResponse(Response(c=-1, s="failed", m="账号错误").toJson(), content_type='application/json')
     return HttpResponse(Response(c=-2, s="failed", m="密码错误").toJson(), content_type='application/json')
 
-# @is_logined
 @csrf_exempt
+@is_logined
 @has_token
 def editMenu(request, token):
   if request.method == 'GET':
@@ -96,18 +96,19 @@ def saveMenu(request, token):
     if flBtn.has_key('mid'):
       flBtn.pop('mid')
   # 发请求更改菜单
-  host = 'api.weixin.qq.com'
-  path = '/cgi-bin/menu/create?access_token='
-  method = 'POST'
-  params = {'button' : menuBtns}
-  wechooser.utils.logger('DEBUG', menuBtns)
-  try:
-    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
-  except PastDueException:
-    token = wechat.utils.update_token()
-    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
-  # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
-  if res[0]:
+  # host = 'api.weixin.qq.com'
+  # path = '/cgi-bin/menu/create?access_token='
+  # method = 'POST'
+  # params = {'button' : menuBtns}
+  # wechooser.utils.logger('DEBUG', menuBtns)
+  # try:
+  #   res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  # except PastDueException:
+  #   token = wechat.utils.update_token()
+  #   res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  # # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
+  # if res[0]:
+  if True:
     # 将menu的key和reply存入数据库中
     for key in replys.keys():
       # 处理返回模板
