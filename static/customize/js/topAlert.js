@@ -10,7 +10,7 @@ var topAlert = function(msg, tp) {
   hideTopAlert(function() {
     // 开始下一次的动作
     if (alertType == 'error') {
-      alertBox.css('backgroundColor', '#f2dede');
+      alertBox.css('backgroundColor', '#fe0000');
     } else {
       alertBox.css('backgroundColor', '#09bb07');
     }
