@@ -17,6 +17,9 @@ from wechat.ReplyTemplates import *
 from wechat.models import *
 from wechooser.decorator import *
 
+def test(request):
+  return render_to_response('customize/test.html')
+
 @is_logined
 def index(request):
   return HttpResponseRedirect('/reply?type=subscribe')
