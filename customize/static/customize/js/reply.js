@@ -64,18 +64,21 @@ var bindReplyAction = function() {
   	  return false;
   	}
     console.log(getMaterialContent());
-  	$.post(url, getMaterialContent(), function(res) {
-  	  if (res['code'] == 0)
-  	    topAlert(res['msg']);
-  	  else
-  	  	topAlert(res['msg'], 'error');
-  	});
+    if ((params['MsgType'] == 'text' && params['Content'] == "") ||
+        params['MediaId'] == undefined || params['MediaId'] == 'undefined') {
+      topAlert('未选择素材', 'error');
+    }
+  	// $.post(url, getMaterialContent(), function(res) {
+  	//   if (res['code'] == 0)
+  	//     topAlert(res['msg']);
+  	//   else
+  	//   	topAlert(res['msg'], 'error');
+  	// });
   });
   deleteBtn.click(function() {
     var url = window.location.pathname + '/delete' + window.location.search
     $.get(url, {}, function(res) {
       topAlert('回复删除成功');
-      window.location.reload();
     });
   });
 }

@@ -304,6 +304,7 @@ var deleteVoiceAction = function() {
   $(document).delegate('#deleteVoiceMaterialBtn', 'click', function() {
     $('input[name="voiceSelect"]:checked').removeAttr('checked');
     $('#materialVoice').hide();
+    $('#materialVoice').attr('mediaId', 'undefined');
     $('#materialVoiceWrapper .showMaterialBoxBtn').show();
   });
 }
@@ -313,6 +314,7 @@ var deleteVideoAction = function() {
   $(document).delegate('#deleteVideoMaterialBtn', 'click', function() {
     $('input[name="videoSelect"]:checked').removeAttr('checked');
     $('#materialVideo').hide();
+    $('#materialVideo').attr('mediaId', 'undefined');
     $('#materialVideoWrapper .showMaterialBoxBtn').show();
   });
 }

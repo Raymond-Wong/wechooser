@@ -115,3 +115,59 @@ body {
   padding: 0px 54px 0px 31px;
   border-left: 1px solid #b6b6b6;
 }
+
+#loadingContainer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  z-index: 2000;
+  text-align: center;
+}
+
+#loadingWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#loadingBox {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 2em;
+  height: 2em;
+  font-size: 2em;
+  margin: auto;
+}
+
+#loadingEle.rotate {
+  animation: circle 1s infinite linear;
+  -moz-animation: circle 1s infinite linear; /* Firefox */
+  -o-animation: circle 1s infinite linear; /* Opera */
+  -webkit-animation: circle 1s infinite linear;
+}
+
+@keyframes circle {
+  0%{ transform:rotate(0deg); }
+  100%{ transform:rotate(360deg); }
+}
+
+@-moz-keyframes circle { /* Firefox */
+  0%{ transform:rotate(0deg); }
+  100%{ transform:rotate(360deg); }
+}
+
+@-webkit-keyframes circle { /* Safari 和 Chrome */
+  0%{ transform:rotate(0deg); }
+  100%{ transform:rotate(360deg); }
+}
+
+@-o-keyframes circle { /* Opera */
+  0%{ transform:rotate(0deg); }
+  100%{ transform:rotate(360deg); }
+}

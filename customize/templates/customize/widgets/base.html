@@ -13,6 +13,13 @@
   {% block style %}{% endblock %}
 </head>
 <body>
+  <div id="loadingContainer">
+    <div id="loadingWrapper">
+      <div id="loadingBox">
+        <span id="loadingEle" class="rotate glyphicon glyphicon-repeat"></span>
+      </div>
+    </div>
+  </div>
   {% include "customize/widgets/topAlert.html" %}
   {% include 'customize/widgets/materialBox.html' %}
   <div id="pageHeadWrapper">
@@ -40,4 +47,5 @@
 <script type="text/javascript" src="/static/customize/js/templates.js"></script>
 <script type="text/javascript" src="/static/customize/js/materialBox.js"></script>
 {% block script %}{% endblock %}
+<script type="text/javascript" src="/static/customize/js/finishedLoading.js"></script>
 </html>

@@ -27,3 +27,13 @@ var insertIntoCaret = function(id, str){
     selection.addRange(range)
   }
 }
+
+var showLoading = function() {
+  $('#loadingEle').addClass('rotate');
+  $('#loadingContainer').show();
+}
+
+var hideLoading = function() {
+  $('#loadingEle').removeClass('rotate');
+  $('#loadingContainer').hide();
+}
