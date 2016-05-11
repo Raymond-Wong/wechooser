@@ -74,12 +74,14 @@ var deleteMaterialPreviewAction = function() {
 var initMenu = function() {
   IS_INITIAL = true;
   MENU = $.parseJSON($('#menuPreviewWrapper').attr('menu'));
+  $('#menuPreviewWrapper').attr('menu', '');
   var menu = MENU;
   for (var i = 0; i < menu.length; i++) {
     var btn = menu[i];
     // 添加一个一级菜单
     if (i == 0) {
       if (btn['sub_button'] != undefined && btn['sub_button'].length > 0) {
+        btn['sub_button'] = btn['sub_button'].reverse();
         $('#addFstMenuBtnBox .menuBtn').trigger('click');
         updateMaterialContent($('.editMenuBtn.choosen'));
       } else {
@@ -88,6 +90,7 @@ var initMenu = function() {
       }
     } else {
       if (btn['sub_button'] != undefined && btn['sub_button'].length > 0) {
+        btn['sub_button'] = btn['sub_button'].reverse();
         backupMaterialContent($('.editMenuBtn.choosen'));
         $('#addFstMenuBtnBox .menuBtn').trigger('click');
         updateMaterialContent($('.editMenuBtn.choosen'));

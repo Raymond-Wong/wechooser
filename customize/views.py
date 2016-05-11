@@ -5,7 +5,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import json
 
-from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 
@@ -17,6 +17,15 @@ from wechat.ReplyTemplates import *
 from wechat.models import *
 from wechooser.decorator import *
 
+@is_logined
+def index(request):
+  return HttpResponseRedirect('/reply?type=subscribe')
+
+@is_logined
+def logout(request):
+  request.session['is_logined'] = False
+  return HttpResponseRedirect('/login')
+
 @csrf_exempt
 def login(request):
   if request.method == 'GET':
@@ -25,11 +34,13 @@ def login(request):
     account = request.POST.get('account')
     password = request.POST.get('password')
     if account=="wechooser" and password=="wechooser":
-      return HttpResponse(Response(m="/home").toJson(), content_type='application/json')
+      request.session['is_logined'] = True
+      return HttpResponse(Response(m="/reply?type=subscribe").toJson(), content_type='application/json')
     elif account != "wechooser":
       return HttpResponse(Response(c=-1, s="failed", m="账号错误").toJson(), content_type='application/json')
     return HttpResponse(Response(c=-2, s="failed", m="密码错误").toJson(), content_type='application/json')
 
+@is_logined
 @csrf_exempt
 @has_token
 def editMenu(request, token):
@@ -130,6 +141,7 @@ def getMaterial(request):
   if request.method == 'GET':
     return render_to_response('customize/getMaterial.html')
 
+@is_logined
 @csrf_exempt
 def setReply(request):
   replyType = request.GET.get('type', 'subscribe')

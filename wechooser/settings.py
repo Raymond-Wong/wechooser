@@ -8,7 +8,7 @@ if REMOTE:
     # LOCAL 本地调试用，便于导出数据库,根据本地MYSQL数据库填写下面参数<----------------如果文件中出现中文，一定要在开始添加 #coding:utf-8
     MYSQL_DB = 'wechooser'
     MYSQL_USER = 'root'
-    MYSQL_PASS = '123852'
+    MYSQL_PASS = '\''
     MYSQL_HOST_M = '127.0.0.1'
     MYSQL_HOST_S = '127.0.0.1'
     MYSQL_PORT = '3306'
