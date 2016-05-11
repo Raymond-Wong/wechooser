@@ -96,19 +96,18 @@ def saveMenu(request, token):
     if flBtn.has_key('mid'):
       flBtn.pop('mid')
   # 发请求更改菜单
-  # host = 'api.weixin.qq.com'
-  # path = '/cgi-bin/menu/create?access_token='
-  # method = 'POST'
-  # params = {'button' : menuBtns}
-  # wechooser.utils.logger('DEBUG', menuBtns)
-  # try:
-  #   res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
-  # except PastDueException:
-  #   token = wechat.utils.update_token()
-  #   res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
-  # # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
-  # if res[0]:
-  if True:
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/menu/create?access_token='
+  method = 'POST'
+  params = {'button' : menuBtns}
+  wechooser.utils.logger('DEBUG', menuBtns)
+  try:
+    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  except PastDueException:
+    token = wechat.utils.update_token()
+    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
+  if res[0]:
     # 将menu的key和reply存入数据库中
     for key in replys.keys():
       # 处理返回模板
