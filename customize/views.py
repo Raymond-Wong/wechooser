@@ -141,8 +141,8 @@ def getMaterial(request):
   if request.method == 'GET':
     return render_to_response('customize/getMaterial.html')
 
-@is_logined
 @csrf_exempt
+@is_logined
 def setReply(request):
   replyType = request.GET.get('type', 'subscribe')
   if request.method == 'GET':
