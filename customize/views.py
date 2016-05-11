@@ -40,7 +40,7 @@ def login(request):
       return HttpResponse(Response(c=-1, s="failed", m="账号错误").toJson(), content_type='application/json')
     return HttpResponse(Response(c=-2, s="failed", m="密码错误").toJson(), content_type='application/json')
 
-@is_logined
+# @is_logined
 @csrf_exempt
 @has_token
 def editMenu(request, token):
