@@ -27,10 +27,10 @@ class Template:
   def toDic(self):
     self.update()
     ret = {}
-    ret['FromUserName'] = self.FromUserName
-    ret['ToUserName'] = self.ToUserName
-    ret['CreateTime'] = self.CreateTime
-    ret['MsgType'] = self.MsgType
+    ret['FromUserName'] = '![CDATA[' + self.FromUserName + ']]'
+    ret['ToUserName'] = '![CDATA[' + self.ToUserName + ']]'
+    ret['CreateTime'] = '![CDATA[' + self.CreateTime + ']]'
+    ret['MsgType'] = '![CDATA[' + self.MsgType + ']]'
     return ret
   @abstractmethod
   def toReply(self):
@@ -62,7 +62,7 @@ class ImageTemplate(Template):
     self.OriUrl = OriUrl
   def toReply(self):
     dic = self.toDic()
-    dic['Image'] = {'MediaId' : self.MediaId}
+    dic['Image'] = {'MediaId' : '![CDATA[' + self.MediaId + ']]'}
     return ET.tostring(utils.dict2xml(ET.Element('xml'), dic), 'utf-8')
   def toSend(self):
     ret = {}
