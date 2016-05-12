@@ -42,8 +42,8 @@ class Template:
 class TextTemplate(Template):
   def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='text', Content=''):
     Template.__init__(self, ToUserName=ToUserName, FromUserName=FromUserName, MsgType=MsgType, CreateTime=CreateTime)
-    utils.logger('DEBUG', 'text template\'s content: %s' % content)
     self.Content = Content.strip().strip('\t').strip('\r').strip('\n')
+    utils.logger('DEBUG', 'text template\'s content: %s' % self.Content)
   def toReply(self):
     dic = self.toDic()
     dic['Content'] = self.Content
