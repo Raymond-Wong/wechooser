@@ -48,7 +48,9 @@ def login(request):
 @has_token
 def editMenu(request, token):
   if request.method == 'GET':
-    menu = wechat.utils.getMenu(token)['menu']['button']
+    menuParent = wechat.utils.getMenu(token)
+    wechooser.utils.logger('DEBUG', 'menu got is: %s' % menuParent)
+    menu = menuParent['menu']['button']
     for flBtn in menu:
       if flBtn.has_key('type') and flBtn['type'] == 'click':
         flBtn['mid'] = flBtn['key']
