@@ -48,7 +48,7 @@ var listenInput = function() {
   var materialText = $('#materialText')[0];
   $('#materialText').keydown(function(evt) {
     if (evt.keyCode == '13') {
-      // insertIntoCaret('materialText', '<nl />');
+      insertIntoCaret('materialText', '\n');
     }
   });
   if (materialText.addEventListener) {

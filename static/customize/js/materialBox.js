@@ -359,7 +359,7 @@ var remainCharAmount = function() {
   var materialText = $('#materialTextInputArea');
   materialText.keydown(function(evt) {
     if (evt.keyCode == '13') {
-      insertIntoCaret('materialTextInputArea', '\n');
+      insertIntoCaret('materialTextInputArea', '<nl/>');
     }
   });
   if (materialText[0].addEventListener) {
