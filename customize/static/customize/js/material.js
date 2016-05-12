@@ -48,10 +48,7 @@ var listenInput = function() {
   var materialText = $('#materialText')[0];
   $('#materialText').keydown(function(evt) {
     if (evt.keyCode == '13') {
-      if ($(materialText).html().indexOf('<div>') != 0) {
-        $(materialText).html('<div>' + $(materialText).text() + '</div>');
-      }
-      // insertIntoCaret('materialText', '\n');
+      insertIntoCaret('materialText', '\n\n');
     }
   });
   if (materialText.addEventListener) {
@@ -76,9 +73,9 @@ var updateRemainChar = function() {
 var textHandler = function() {
   var tmpDiv = parseFirstLine($('#materialText')).clone();
   // 在每个div前面加一个换行符
-  tmpDiv.find('div').each(function() {
-    $(this).prepend('\n');
-  })
+  // tmpDiv.find('div').each(function() {
+  //   $(this).prepend('\n');
+  // })
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');
     $(this).before(face);
