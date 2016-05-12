@@ -70,6 +70,7 @@ class ImageTemplate(Template):
     ret['msgtype'] = 'image'
     ret['image'] = {}
     ret['image']['media_id'] = self.MediaId
+    utils.logger('DEBUG', 'return a picture whose mediaid is %s' % self.MediaId)
     return ret
 
 class VoiceTemplate(Template):
