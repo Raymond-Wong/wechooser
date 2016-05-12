@@ -63,6 +63,7 @@ class ImageTemplate(Template):
   def toReply(self):
     dic = self.toDic()
     dic['Image'] = {'MediaId' : self.MediaId}
+    utils.logger('DEBUG', 'return mediaId is: %s' % self.MediaId)
     return ET.tostring(utils.dict2xml(ET.Element('xml'), dic), 'utf-8')
   def toSend(self):
     ret = {}
