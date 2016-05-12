@@ -40,6 +40,7 @@ var hideLoading = function() {
 
 var post = function(url, data, callback) {
   $.post(url, data, function(res, status) {
+    alert(status);
     if (status == 'success') {
       callback(res);
     } else {
