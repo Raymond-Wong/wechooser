@@ -54,7 +54,7 @@ var listenInput = function() {
       if ($(materialText).html().indexOf('div') != 0) {
         var content = $(materialText).html();
         $(materialText).html('');
-        $(materialText).append('<div>' + content + '</div>');
+        insertIntoCaret('#materialText', ('<div>' + content + '</div>'));
       }
       // insertIntoCaret('materialText', '\n');
     }
