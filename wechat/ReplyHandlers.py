@@ -89,13 +89,15 @@ class TextReplyHandler(ReplyHandler):
     templates = json.loads(rule.templates, object_hook=wechooser.utils.loads)
     # 如果是从该规则中随机选择一个模板进行回复
     # 则直接返回用自动回复接口进行回复
-    # if not rule.is_reply_all or len(templates) < 2:
-    #   template = random.choice(templates)
-    #   template.ToUserName = self.params['FromUserName']
-    #   template.FromUserName = self.params['ToUserName']
-    #   return template.toReply()
-    # 如果要将该规则中所有信息都回复，则调用客服接口进行回复
     token = wechat.utils.get_access_token()
+    if not rule.is_reply_all or len(templates) < 2:
+      template = random.choice(templates)
+      template.ToUserName = self.params['FromUserName']
+      template.FromUserName = self.params['ToUserName']
+      wechat.utils.sendMsgTo(token, template.toSend())
+      return ''
+      # return template.toReply()
+    # 如果要将该规则中所有信息都回复，则调用客服接口进行回复
     for template in templates:
       template.ToUserName = self.params['FromUserName']
       template.FromUserName = self.params['ToUserName']
