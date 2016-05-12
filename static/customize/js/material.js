@@ -48,7 +48,7 @@ var listenInput = function() {
   var materialText = $('#materialText')[0];
   $('#materialText').keydown(function(evt) {
     if (evt.keyCode == '13') {
-      insertIntoCaret('materialText', '<nl/>');
+      // insertIntoCaret('materialText', '<nl />');
     }
   });
   if (materialText.addEventListener) {
@@ -72,7 +72,9 @@ var updateRemainChar = function() {
 // 将text信息返回给后台的json
 var textHandler = function() {
   var tmpDiv = $('#materialText').clone();
-  tmpDiv.find('nl').replaceWith('\n');
+  tmpDiv.find('div').each(function() {
+    $(this).prepend('\n');
+  })
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');
     $(this).before(face);

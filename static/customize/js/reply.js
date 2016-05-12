@@ -70,12 +70,12 @@ var bindReplyAction = function() {
       return false;
     }
     topAlert('正在保存中...');
-  	$.post(url, params, function(res) {
-  	  if (res['code'] == 0)
-  	    topAlert(res['msg']);
-  	  else
-  	  	topAlert(JSON.stringify(res['msg']), 'error');
-  	});
+  	// $.post(url, params, function(res) {
+  	//   if (res['code'] == 0)
+  	//     topAlert(res['msg']);
+  	//   else
+  	//   	topAlert(JSON.stringify(res['msg']), 'error');
+  	// });
   });
   deleteBtn.click(function() {
     var url = window.location.pathname + '/delete' + window.location.search
