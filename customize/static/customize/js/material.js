@@ -52,7 +52,7 @@ var listenInput = function() {
     }
     if (evt.keyCode == '13') {
       if ($(materialText).html().indexOf('div') != 0) {
-        $(materialText).html('<div>' + $(materialText).html() + '</div>';
+        $(materialText).html('<div>' + $(materialText).html() + '</div>');
       }
       // insertIntoCaret('materialText', '\n');
     }
