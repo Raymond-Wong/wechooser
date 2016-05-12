@@ -13,7 +13,7 @@ var initReply = function() {
     var content = str2face(template['Content']);
     console.log(content);
     var start = content.indexOf('\n');
-    var end = content.indexOf('\n', start + 2);
+    var end = content.indexOf('\n', start + 1);
     var lines = [];
     if (start < 0) {
       lines.push(content);
@@ -24,11 +24,10 @@ var initReply = function() {
         lines.push('<div>' + content.substring(start + 1, end) + '</div>');
         start = content.indexOf('\n', end);
         if (start < 0) break;
-        end = content.indexOf('\n', start + 2);
+        end = content.indexOf('\n', start + 1);
       }
       lines.push('<div>' + content.substring(end + 1, content.length) + '</div>');
     }
-    console.log(lines);
     $('#materialText').html(lines.join('<nl></nl>'));
     var textAmount = $('#materialText').text().length + $('#materialText').find('.insertedFace').length;
     $('#materialRemain font').text(parseInt($('#materialRemain font').text()) - textAmount);
