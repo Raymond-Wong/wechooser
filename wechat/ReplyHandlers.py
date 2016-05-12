@@ -64,6 +64,7 @@ class EventReplyHandler(ReplyHandler):
       template.FromUserName = self.params['ToUserName']
       template.ToUserName = self.params['FromUserName']
       wechat.utils.sendMsgTo(wechat.utils.get_access_token(), template.toSend())
+      return ''
       # return template.toReply()
     except Exception, e:
       return ''
