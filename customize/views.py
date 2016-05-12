@@ -49,9 +49,8 @@ def login(request):
 def editMenu(request, token):
   if request.method == 'GET':
     menuParent = wechat.utils.getMenu(token)
-    wechooser.utils.logger('DEBUG', 'menu got is: %s' % menuParent)
     if menuParent == None:
-      return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps({})})
+      return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps([])})
     menu = menuParent['menu']['button']
     for flBtn in menu:
       if flBtn.has_key('type') and flBtn['type'] == 'click':
