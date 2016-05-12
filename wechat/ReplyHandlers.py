@@ -63,7 +63,8 @@ class EventReplyHandler(ReplyHandler):
       template = json.loads(reply.template, object_hook=wechooser.utils.loads)
       template.FromUserName = self.params['ToUserName']
       template.ToUserName = self.params['FromUserName']
-      return template.toReply()
+      wechat.utils.sendMsgTo(wechat.utils.get_access_token(), template.toSend())
+      # return template.toReply()
     except Exception, e:
       return ''
 
