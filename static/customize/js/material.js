@@ -78,7 +78,7 @@ var updateRemainChar = function() {
 
 // 将text信息返回给后台的json
 var textHandler = function() {
-  var tmpDiv = parseFirstLine($('#materialText')).clone();
+  var tmpDiv = $('#materialText').clone();
   // 在每个div前面加一个换行符
   tmpDiv.find('div').each(function() {
     $(this).prepend('\n');
