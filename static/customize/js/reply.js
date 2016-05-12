@@ -63,14 +63,14 @@ var bindReplyAction = function() {
   	  topAlert(params['Content'], 'error');
   	  return false;
   	}
-    console.log(getMaterialContent());
+    console.log(params);
     if ((params['MsgType'] == 'text' && params['Content'] == "") ||
         (params['MsgType'] != 'text' && (params['MediaId'] == undefined || params['MediaId'] == 'undefined'))) {
       topAlert('未选择素材', 'error');
       return false;
     }
     topAlert('正在保存中...');
-  	$.post(url, getMaterialContent(), function(res) {
+  	$.post(url, params, function(res) {
   	  if (res['code'] == 0)
   	    topAlert(res['msg']);
   	  else
