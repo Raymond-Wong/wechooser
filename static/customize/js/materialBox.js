@@ -365,7 +365,7 @@ var remainCharAmount = function() {
       if ($(materialText).html().indexOf('<div>') != 0) {
         var content = $(materialText).html();
         $(materialText).html('');
-        insertIntoCaret('materialText', ('<div>' + content + '</div>'));
+        insertIntoCaret('materialTextInputArea', ('<div>' + content + '</div>'));
       }
     }
   });
