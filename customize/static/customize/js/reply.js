@@ -72,7 +72,7 @@ var bindReplyAction = function() {
       return false;
     }
     topAlert('正在保存中...');
-  	$.post(url, params, function(res) {
+  	post(url, params, function(res) {
   	  if (res['code'] == 0)
   	    topAlert(res['msg']);
   	  else

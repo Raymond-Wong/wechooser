@@ -37,3 +37,13 @@ var hideLoading = function() {
   $('#loadingEle').removeClass('rotate');
   $('#loadingContainer').hide();
 }
+
+var post = function(url, data, callback) {
+  $.post(url, data, function(res, status) {
+    if (status == 'success') {
+      callback(res);
+    } else {
+      topAlert('服务器发生错误', 'error');
+    }
+  })
+}

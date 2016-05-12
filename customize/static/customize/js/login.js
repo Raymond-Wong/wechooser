@@ -14,7 +14,7 @@ $(document).ready(function() {
   	}
   	console.log("password: " + password);
   	var params = {'account' : account, 'password' : password};
-  	$.post(url, params, function(res) {
+  	post(url, params, function(res) {
   	  console.log(res);
   	  if (res['code'] == '0') {
   	  	window.location.href=res['msg'];

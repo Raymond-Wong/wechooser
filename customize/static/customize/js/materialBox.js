@@ -83,7 +83,7 @@ var updateMaterialImageBox = function(offset, count, callback) {
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
   // 清空容器中的东西
   box.html(LOADING_ELEMENT);
-  $.post('/wechat/getMaterial', params, function(res) {
+  post('/wechat/getMaterial', params, function(res) {
     var images = res['msg']['item'];
     var totalCount = res['msg']['total_count'];
     $($('#materialImageBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 10));
@@ -110,7 +110,7 @@ var updateMaterialNewsBox = function(offset, count, callback) {
   var params = {'type' : 'news', 'count' : count, 'offset' : offset};
   var box = $('#materialNewsBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
-  $.post('/wechat/getMaterial', params, function(res) {
+  post('/wechat/getMaterial', params, function(res) {
     var items = res['msg']['item']
     var totalCount = res['msg']['total_count'];
     $($('#materialNewsBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 2));
@@ -149,7 +149,7 @@ var updateMaterialMpNewsBox = function(offset, count, callback) {
   var params = {'type' : 'news', 'count' : count, 'offset' : offset};
   var box = $('#materialMpNewsBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
-  $.post('/wechat/getMaterial', params, function(res) {
+  post('/wechat/getMaterial', params, function(res) {
     var items = res['msg']['item']
     var totalCount = res['msg']['total_count'];
     $($('#materialMpNewsBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 5));
@@ -179,7 +179,7 @@ var updateMaterialVoiceBox = function(offset, count, callback) {
   var params = {'type' : 'voice', 'count' : count, 'offset' : offset};
   var box = $('#materialVoiceBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
-  $.post('/wechat/getMaterial', params, function(res) {
+  post('/wechat/getMaterial', params, function(res) {
     var voices = res['msg']['item'];
     var totalCount = res['msg']['total_count'];
     $($('#materialVoiceBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 5));
@@ -205,7 +205,7 @@ var updateMaterialVideoBox = function(offset, count, callback) {
   var params = {'type' : 'video', 'count' : count, 'offet' : offset};
   var box = $('#materialVideoBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
-  $.post('/wechat/getMaterial', params, function(res) {
+  post('/wechat/getMaterial', params, function(res) {
     var videos = res['msg']['item'];
     var totalCount = res['msg']['total_count'];
     $($('#materialVoiceBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 5));
