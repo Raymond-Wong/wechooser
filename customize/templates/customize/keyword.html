@@ -106,10 +106,10 @@
   	  </div>
       {% endifequal %}
       {% ifequal template.MsgType "image" %}
-      <div class="ruleRow small reply" type="image" mediaId="{{ template.MediaId }}">
+      <div class="ruleRow small reply" type="image" mediaId="{{ template.MediaId }}" ori_url="{{ template.OriUrl}}">
         <div class="left point">&nbsp;</div>
         <div class="left val">
-          <img src="{{ template.ImageUrl }}" ori_url="{{ template.OriUrl}}" />
+          <img src="{{ template.ImageUrl }}" />
         </div>
         <div class="right hint">
           <a class="deleteRowBtn" type="msg">删除</a>
