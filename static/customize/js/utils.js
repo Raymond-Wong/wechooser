@@ -40,12 +40,19 @@ var hideLoading = function() {
 
 var post = function(url, data, callback) {
   console.log('url:', url, 'data:', data);
-  $.post(url, data, function(res, status) {
-    alert(status);
-    if (status == 'success') {
-      callback(res);
-    } else {
+  // $.post(url, data, function(res, status) {
+  //   if (status == 'success') {
+  //     callback(res);
+  //   } else {
+  //   }
+  // })
+  $.ajax({
+    url: url,
+    data: data,
+    type: 'POST',
+    success: callback,
+    error: function() {
       topAlert('服务器发生错误', 'error');
     }
-  })
+  });
 }
