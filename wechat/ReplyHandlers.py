@@ -23,7 +23,10 @@ class ReplyHandler:
       reply = json.loads(reply, object_hook=wechooser.utils.loads)
       reply.FromUserName = self.params['ToUserName']
       reply.ToUserName = self.params['FromUserName']
-      return reply.toReply()
+      token = wechat.utils.get_access_token()
+      wechat.utils.sendMsgTo(token, reply.toSend())
+      return ''
+      # return reply.toReply()
     except Exception, e:
       wechooser.utils.logger('ERROR', '回复错误: %s' % e)
       return ''
