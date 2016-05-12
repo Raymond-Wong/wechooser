@@ -69,7 +69,6 @@ def message(dictionary, token):
   handler = DefaultReplyHandler
   if dictionary['MsgType'] in HANDLERS.keys():
     handler = HANDLERS[dictionary['MsgType']]
-  wechooser.utils.logger('DEBUG', 'handlers: %s' % handler)
   return HttpResponse(handler(dictionary).getReply())
 
 @csrf_exempt

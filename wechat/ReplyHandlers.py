@@ -23,6 +23,7 @@ class ReplyHandler:
       reply = json.loads(reply, object_hook=wechooser.utils.loads)
       reply.FromUserName = self.params['ToUserName']
       reply.ToUserName = self.params['FromUserName']
+      utils.logger('DEBUG', 'return template is: %s' % reply)
       return reply.toReply()
     except Exception:
       return ''
