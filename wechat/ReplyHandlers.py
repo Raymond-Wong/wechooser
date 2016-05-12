@@ -24,7 +24,8 @@ class ReplyHandler:
       reply.FromUserName = self.params['ToUserName']
       reply.ToUserName = self.params['FromUserName']
       return reply.toReply()
-    except Exception:
+    except Exception, e:
+      wechooser.utils.logger('ERROR', '回复错误: %s' % e)
       return ''
 
 # 未处理类型自动回复
