@@ -11,6 +11,7 @@ var initReply = function() {
   $('#materialNav li[name="' + template['MsgType'] + '"]').trigger('click');
   if (template['MsgType'] == 'text') {
     var content = str2face(template['Content']);
+    console.log(content);
     var start = content.indexOf('\n');
     var end = content.indexOf('\n', start + 2);
     var lines = [];

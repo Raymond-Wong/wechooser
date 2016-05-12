@@ -72,6 +72,7 @@ var updateRemainChar = function() {
 // 将text信息返回给后台的json
 var textHandler = function() {
   var tmpDiv = $('#materialText').clone();
+  // 在每个div前面加一个换行符
   tmpDiv.find('div').each(function() {
     $(this).prepend('\n');
   })
@@ -81,6 +82,7 @@ var textHandler = function() {
     $(this).remove();
   });
   params = {'MsgType' : 'text'};
+  // 去除连续的空行
   // var content = tmpDiv.text().split('\n');
   // for (var i = 0; i < content.length; i++) {
   //   if (content[i] == '')
