@@ -74,7 +74,7 @@ var textHandler = function() {
   var tmpDiv = $('#materialText').clone();
   // 在每个div前面加一个换行符
   tmpDiv.find('div').each(function() {
-    $(this).prepend('\n');
+    $(this).append('\n');
   })
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');

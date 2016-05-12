@@ -29,7 +29,6 @@ var initReply = function() {
       }
       lines.push('<div>' + content.substring(end + 1, content.length) + '</div>');
     }
-    console.log(lines);
     $('#materialText').html(lines.join('<nl></nl>'));
     var textAmount = $('#materialText').text().length + $('#materialText').find('.insertedFace').length;
     $('#materialRemain font').text(parseInt($('#materialRemain font').text()) - textAmount);
