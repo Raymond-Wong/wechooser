@@ -205,6 +205,7 @@ def getMaterialContent(token, mediaId, toLoad=False):
   except PastDueException:
     token = update_token()
     res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=toLoad)
+  wechooser.utils.logger('DEBUG', res);
   if res[0]:
     return res[1]
   return None
