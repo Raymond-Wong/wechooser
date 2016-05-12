@@ -358,8 +358,15 @@ var chooseFace = function() {
 var remainCharAmount = function() {
   var materialText = $('#materialTextInputArea');
   materialText.keydown(function(evt) {
+    if ($(materialText).text() == '') {
+      $(materialText).html('');
+    }
     if (evt.keyCode == '13') {
-      insertIntoCaret('materialTextInputArea', '<nl/>');
+      if ($(materialText).html().indexOf('<div>') != 0) {
+        var content = $(materialText).html();
+        $(materialText).html('');
+        insertIntoCaret('materialText', ('<div>' + content + '</div>'));
+      }
     }
   });
   if (materialText[0].addEventListener) {

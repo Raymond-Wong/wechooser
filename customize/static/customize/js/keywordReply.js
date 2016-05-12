@@ -5,18 +5,16 @@ $(document).ready(function() {
 
 var parseFace = function(domEle) {
   var tmpDiv = domEle.clone();
-  tmpDiv.find('nl').replaceWith('\n');
+  // 在每个div前面加一个换行符
+  tmpDiv.find('div').each(function() {
+    $(this).prepend('\n');
+  })
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');
     $(this).before(face);
     $(this).remove();
   });
-  var content = tmpDiv.text().split('\n');
-  for (var i = 0; i < content.length; i++) {
-    if (content[i] == '')
-      content.splice(i, 1);
-  }
-  return content.join('\n');
+  return tmpDiv.text();
 }
 
 var textHandler = function(box) {

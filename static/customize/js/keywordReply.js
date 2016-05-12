@@ -5,18 +5,16 @@ $(document).ready(function() {
 
 var parseFace = function(domEle) {
   var tmpDiv = domEle.clone();
-  tmpDiv.find('nl').replaceWith('\n');
+  // 在每个div前面加一个换行符
+  tmpDiv.find('div').each(function() {
+    $(this).prepend('\n');
+  })
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');
     $(this).before(face);
     $(this).remove();
   });
-  var content = tmpDiv.text().split('\n');
-  for (var i = 0; i < content.length; i++) {
-    if (content[i] == '')
-      content.splice(i, 1);
-  }
-  return content.join('\n');
+  return tmpDiv.text();
 }
 
 var textHandler = function(box) {
@@ -115,16 +113,15 @@ var bindSaveRuleAction = function() {
   	replyAll = replyAll == undefined ? 'False' : replyAll;
   	params = {'rid' : rule.attr('rid'), 'keywords' : JSON.stringify(keywords), 'replys' : JSON.stringify(replys), 'name' : ruleName, 'isReplyAll' : replyAll};
   	console.log(params);
-    topAlert('正在保存中...');
   	$.post('/reply?type=keyword', params, function(res) {
   	  if (res['code'] == 0) {
   	  	topAlert('保存成功');
   	  	// closeRuleAction($(this));
   	  } else {
-  	  	topAlert(JSON.stringify(res['msg']), 'error');
+  	  	topAlert(res['msg']);
   	  }
   	});
-  	// closeRuleAction($(this));
+  	closeRuleAction($(this));
   });
 }
 
@@ -167,7 +164,6 @@ var bindDeleteRuleAction = function() {
     var rule = $(this).parents('.ruleWrapper');
     var rid = rule.children('.ruleDetailWrapper').attr('rid');
     var url = window.location.pathname + '/delete' + window.location.search;
-    topAlert('正在删除中...');
     $.get(url, {'rid' : rid}, function(res) {
       topAlert('回复删除成功');
       rule.remove();
