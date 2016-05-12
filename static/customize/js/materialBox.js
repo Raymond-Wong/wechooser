@@ -211,7 +211,6 @@ var updateMaterialVideoBox = function(offset, count, callback) {
     $($('#materialVoiceBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 5));
     for (var i = 0; i < videos.length; i++) {
       var video = videos[i];
-      console.log(video);
       var name = video['name'];
       var mediaId = video['media_id'];
       var desc = video['description'];
