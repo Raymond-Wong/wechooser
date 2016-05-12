@@ -56,7 +56,6 @@ var listenInput = function() {
         $(materialText).html('');
         insertIntoCaret('materialText', ('<div>' + content + '</div>'));
       }
-      // insertIntoCaret('materialText', '\n');
     }
   });
   if (materialText.addEventListener) {
