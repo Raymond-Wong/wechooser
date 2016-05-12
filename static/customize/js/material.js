@@ -81,12 +81,13 @@ var textHandler = function() {
     $(this).remove();
   });
   params = {'MsgType' : 'text'};
-  var content = tmpDiv.text().split('\n');
-  for (var i = 0; i < content.length; i++) {
-    if (content[i] == '')
-      content.splice(i, 1);
-  }
-  params['Content'] = content.join('\n');
+  // var content = tmpDiv.text().split('\n');
+  // for (var i = 0; i < content.length; i++) {
+  //   if (content[i] == '')
+  //     content.splice(i, 1);
+  // }
+  // params['Content'] = content.join('\n');
+  params['Content'] = tmpDiv.text();
   if (parseInt($('#materialRemain font').text()) < 0) {
     params['MsgType'] = null;
     params['Content'] = '输入字数不可超过600字';
