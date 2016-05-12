@@ -47,6 +47,7 @@ def entrance(request):
     else:
       return HttpResponse('forbiden from browswer')
   else:
+    wechooser.utils.logger('INFO', 'Get the following msg: %s' % request.body)
     return parseXml(request)
   raise Http404
 
@@ -65,11 +66,12 @@ HANDLERS = {
 }
 def message(dictionary, token):
   # 如果信息类型不是文字，图片或者事件的话，则用默认处理类进行处理
-  wechooser.utils.logger('INFO', 'Get the following msg: %s' % dictionary)
   handler = DefaultReplyHandler
   if dictionary['MsgType'] in HANDLERS.keys():
     handler = HANDLERS[dictionary['MsgType']]
-  return HttpResponse(handler(dictionary).getReply())
+  ret = handler(dictionary).getReply()
+  wechooser.utils.logger('INFO', 'return following msg: %s' % ret)
+  return HttpResponse(ret)
 
 @csrf_exempt
 @has_token
