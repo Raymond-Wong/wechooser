@@ -229,7 +229,6 @@ var updateMaterialVideoBox = function(offset, count, callback) {
 // 传入要显示的素材框的类型（首字母大写）
 // 传入点击保存时的处理函数
 var showMaterialBox = function(type, handler) {
-  console.log(type);
   SAVE_HANDLER = handler;
   $('.materialBox.active').removeClass('active');
   var box = $('#material' + type + 'Box');
