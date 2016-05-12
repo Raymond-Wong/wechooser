@@ -37,3 +37,8 @@ var hideLoading = function() {
   $('#loadingEle').removeClass('rotate');
   $('#loadingContainer').hide();
 }
+
+var parseFirstLine = function(ele) {
+  var html = ele.html();
+  return ele;
+}
