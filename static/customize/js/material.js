@@ -51,7 +51,7 @@ var listenInput = function() {
       $(materialText).html('');
     }
     if (evt.keyCode == '13') {
-      if ($(materialText).html().indexOf('div') != 0) {
+      if ($(materialText).html().indexOf('<div>') != 0) {
         var content = $(materialText).html();
         $(materialText).html('');
         insertIntoCaret('materialText', ('<div>' + content + '</div>'));
