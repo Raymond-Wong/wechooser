@@ -21,8 +21,7 @@ var initReply = function() {
       while (true) {
         end = end > 0 ? end : content.length;
         var lineContent = content.substring(start + 1, end);
-        lineContent = '' ? '<br>' : lineContent;
-        console.log(lineContent);
+        lineContent = (lineContent == '' ? '<br>' : lineContent);
         lines.push('<div>' + lineContent + '</div>');
         start = content.indexOf('\n', end);
         if (start < 0) break;
