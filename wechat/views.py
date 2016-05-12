@@ -110,8 +110,7 @@ def getMaterial(request, token):
   if tp == 'voice':
     materials = utils.getVoiceLen(token, materials)
   if tp == 'video':
-    pass
-    # materials = utils.getVideoInfo(token, materials)
+    materials = utils.getVideoInfo(token, materials)
   if tp == 'news':
     materials = utils.getNewsInfo(token, materials)
   return HttpResponse(Response(m=materials).toJson(), content_type='application/json')
