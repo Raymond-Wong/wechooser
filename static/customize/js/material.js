@@ -49,7 +49,7 @@ var listenInput = function() {
   $('#materialText').keydown(function(evt) {
     if (evt.keyCode == '13') {
       if ($(materialText).html().indexOf('<div>') != 0) {
-        $(materialText).html('<div>' + $(materialText).html() + '</div>');
+        $(materialText).html('<div>' + $(materialText).text() + '</div>');
       }
       // insertIntoCaret('materialText', '\n');
     }
