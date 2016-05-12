@@ -270,6 +270,7 @@
   height: 250px;
   padding: 2em;
   outline: none;
+  overflow: auto;
 }
 
 #materialTextInputArea .insertedFace {
