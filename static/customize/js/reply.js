@@ -29,7 +29,7 @@ var initReply = function() {
       }
       lines.push('<div>' + content.substring(end + 1, content.length) + '</div>');
     }
-    $('#materialText').html(lines.join('<nl></nl>'));
+    $('#materialText').html(lines.join(''));
     var textAmount = $('#materialText').text().length + $('#materialText').find('.insertedFace').length;
     $('#materialRemain font').text(parseInt($('#materialRemain font').text()) - textAmount);
   } else if (template['MsgType'] == 'image') {
