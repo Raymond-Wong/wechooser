@@ -9,6 +9,7 @@ var insertIntoCaret = function(id, str){
     range.collapse(false);
     range.select();
   }else{
+    debugger;
     document.getElementById(id).focus();
     range.collapse(false);
     var hasR = range.createContextualFragment(str);
