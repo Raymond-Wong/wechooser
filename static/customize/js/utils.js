@@ -44,7 +44,14 @@ var post = function(url, data, callback) {
     url: url,
     data: data,
     type: 'POST',
-    success: callback,
+    success: function(data, status) {
+      if (data['code'] == 0) {
+        callback(data, status);
+      } else {
+        topAlert(data['msg'], 'error');
+        return false;
+      }
+    },
     error: function() {
       topAlert('服务器发生错误', 'error');
     }

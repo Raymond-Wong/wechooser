@@ -52,7 +52,7 @@ def editMenuHandler(request, token):
   except PastDueException:
     return HttpResponse(Response(c=-1, m='access token过期').toJson(), content_type='application/json')
   except Exception, e:
-    return HttpResponse(Response(c=-1, m='服务器内部错误: %s' % e).toJson(), content_type='application/json')
+    return HttpResponse(Response(c=-1, m='未知错误: %s' % e).toJson(), content_type='application/json')
 
 def editMenu(request, token):
   if request.method == 'GET':
@@ -147,12 +147,16 @@ def saveMenu(request, token):
     return HttpResponse(Response().toJson(), content_type='application/json')
   return HttpResponse(Response(c=-1, m=res[1]).toJson(), content_type='application/json')
 
-def getMaterial(request):
-  if request.method == 'GET':
-    return render_to_response('customize/getMaterial.html')
-
 @csrf_exempt
 @is_logined
+def setReplyHandler(request):
+  try:
+    return setReply(request)
+  except PastDueException:
+    return HttpResponse(Response(c=-1, m='access token过期').toJson(), content_type='application/json')
+  except Exception, e:
+    return HttpResponse(Response(c=-1, m='未知错误: %s' % e).toJson(), content_type='application/json')
+
 def setReply(request):
   replyType = request.GET.get('type', 'subscribe')
   if request.method == 'GET':

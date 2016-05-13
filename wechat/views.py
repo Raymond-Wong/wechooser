@@ -75,24 +75,14 @@ def message(dictionary, token):
 
 @csrf_exempt
 @has_token
-def editMenu(request, token):
-  if request.method == 'GET':
-    return HttpResponse('forbidden from browser')
-  host = 'api.weixin.qq.com'
-  path = '/cgi-bin/menu/create?access_token='
-  method = 'POST'
-  params = json.loads(request.POST.get('menu'))
-  res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
-  if res[0]:
-    now = datetime.now()
-    offset = timedelta(seconds=(5 * 60))
-    end = now + offset
-    end = end.strftime('%Y-%m-%d %H:%M:%S')
-    return HttpResponse(Response(m=u"自定义菜单将在 %s 时生效; access_token: %s" % (end, token.token)).toJson())
-  return HttpResponse(Response(c=-1, m=str(res[1])).toJson())
+def getMaterialHandler(request, token):
+  try:
+    return getMaterial(request, token)
+  except PastDueException:
+    return HttpResponse(Response(c=-1, m='access token过期').toJson(), content_type='application/json')
+  except Exception, e:
+    return HttpResponse(Response(c=-2, m='未知错误: %s' % e).toJson(), content_type='application/json')
 
-@csrf_exempt
-@has_token
 def getMaterial(request, token):
   if request.method == 'GET':
     return HttpResponse('forbidden from browser')
