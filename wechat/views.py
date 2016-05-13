@@ -103,5 +103,8 @@ def getMaterial(request, token):
 
 @csrf_exempt
 def updateTokenHandler(request):
-  utils.update_token()
-  return HttpResponse('')
+  try:
+    utils.update_token()
+    return HttpResponse(Response(m='更新成功').toJson(), content_type='application/json')
+  except Exception, e:
+    return HttpResponse(Response(c=-2, m='未知错误: %s' % e).toJson(), content_type='application/json')
