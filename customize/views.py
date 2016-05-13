@@ -114,7 +114,6 @@ def saveMenu(request, token):
   path = '/cgi-bin/menu/create?access_token='
   method = 'POST'
   params = {'button' : menuBtns}
-  wechooser.utils.logger('DEBUG', menuBtns)
   res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
   # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
   if res[0]:
@@ -281,7 +280,6 @@ def setKeywordReply(request):
     if kw.keyword not in keywords.keys():
       # 如果该关键词没有指向任何其他规则则可以删除
       if len(kw.rule_set.all()) <= 1:
-        wechooser.utils.logger('DEBUG', u'从数据库中删除关键词: %s' % kw.keyword)
         rule.replys.remove(kw)
         kw.delete()
   rule.save()
@@ -295,7 +293,6 @@ def deleteReply(request):
     Reply.objects.get(reply_type=replyType).delete()
   else:
     rid = request.GET.get('rid', None)
-    wechooser.utils.logger('DEBUG', 'rid=%s' % rid)
     try:
       rule = Rule.objects.get(id=rid)
     except Exception:

@@ -100,3 +100,8 @@ def getMaterial(request, token):
   if tp == 'news':
     materials = utils.getNewsInfo(token, materials)
   return HttpResponse(Response(m=materials).toJson(), content_type='application/json')
+
+@csrf_exempt
+def updateTokenHandler(request):
+  utils.update_token()
+  return HttpResponse('')
