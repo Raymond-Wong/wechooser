@@ -13,6 +13,6 @@ urlpatterns = patterns('',
   url(r'^logout$', views.logout, name='logout'),
   url(r'^reply$', views.setReply, name='setReply'),
   url(r'^reply/delete$', views.deleteReply, name='deleteReply'),
-  url(r'^menu$', views.editMenu, name='editMenu'),
+  url(r'^menu$', views.editMenuHandler, name='editMenuHandler'),
   url(r'^test$', views.test, name='test'),
 )

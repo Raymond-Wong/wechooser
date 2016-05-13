@@ -82,11 +82,7 @@ def editMenu(request, token):
   path = '/cgi-bin/menu/create?access_token='
   method = 'POST'
   params = json.loads(request.POST.get('menu'))
-  try:
-    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
-  except PastDueException:
-    token = utils.update_token()
-    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
   if res[0]:
     now = datetime.now()
     offset = timedelta(seconds=(5 * 60))

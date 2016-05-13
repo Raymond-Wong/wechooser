@@ -46,6 +46,14 @@ def login(request):
 @csrf_exempt
 @is_logined
 @has_token
+def editMenuHandler(request, token):
+  try:
+    return editMenu(request, token)
+  except PastDueException:
+    return HttpResponse(Response(c=-1, m='access token过期').toJson(), content_type='application/json')
+  except Exception, e:
+    return HttpResponse(Response(c=-1, m='服务器内部错误: %s' % e).toJson(), content_type='application/json')
+
 def editMenu(request, token):
   if request.method == 'GET':
     menuParent = wechat.utils.getMenu(token)
@@ -107,11 +115,7 @@ def saveMenu(request, token):
   method = 'POST'
   params = {'button' : menuBtns}
   wechooser.utils.logger('DEBUG', menuBtns)
-  try:
-    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
-  except PastDueException:
-    token = wechat.utils.update_token()
-    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
   # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
   if res[0]:
     # 将menu的key和reply存入数据库中

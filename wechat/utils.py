@@ -92,11 +92,7 @@ def sendMsgTo(token, params):
   path = '/cgi-bin/message/custom/send?access_token='
   method = 'POST'
   wechooser.utils.logger('DEBUG', '发送一条客服消息: %s' % params)
-  try:
-    res = wechooser.utils.send_request(host=host, path=path + token.token, method=method, port=443, params=params)
-  except PastDueException:
-    token = update_token()
-    res = wechooser.utils.send_request(host=host, path=path + token.token, method=method, port=443, params=params)
+  res = wechooser.utils.send_request(host=host, path=path + token.token, method=method, port=443, params=params)
   return res
 
 def getMaterial(token, tp, offset, count):
@@ -104,11 +100,7 @@ def getMaterial(token, tp, offset, count):
   path = '/cgi-bin/material/batchget_material?access_token='
   method = 'POST'
   params = {'type' : tp, 'offset' : offset, 'count' : count}
-  try:
-    res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params)
-  except PastDueException:
-    token = update_token()
-    res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params)
+  res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params)
   if res[0]:
     return res[1]
   return {}
@@ -118,12 +110,7 @@ def getMaterialCount(token, tp):
   path = '/cgi-bin/material/get_materialcount'
   method = 'GET'
   params = {'access_token' : token.token}
-  try:
-    res = wechooser.utils.send_request(host, path, method, port=443, params=params)
-  except PastDueException:
-    token = update_token()
-    params['access_token'] = token.token
-    res = wechooser.utils.send_request(host, path, method, port=443, params=params)
+  res = wechooser.utils.send_request(host, path, method, port=443, params=params)
   if res[0]:
     return res[1][tp + '_count']
   return -1
@@ -134,12 +121,7 @@ def getMenu(token):
   path = '/cgi-bin/menu/get'
   method = 'GET'
   params = {'access_token' : token.token}
-  try:
-    res = wechooser.utils.send_request(host, path, method, port=443, params=params)
-  except PastDueException:
-    token = update_token()
-    params['access_token'] = token.token
-    res = wechooser.utils.send_request(host, path, method, port=443, params=params)
+  res = wechooser.utils.send_request(host, path, method, port=443, params=params)
   if res[0]:
     return res[1]
   return None
@@ -200,12 +182,7 @@ def getMaterialContent(token, mediaId, toLoad=False):
   path = '/cgi-bin/material/get_material?access_token='
   method = 'POST'
   params = {'media_id' : mediaId}
-  try:
-    res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=toLoad)
-  except PastDueException:
-    token = update_token()
-    res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=toLoad)
-  wechooser.utils.logger('DEBUG', res);
+  res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=toLoad)
   if res[0]:
     return res[1]
   return None
