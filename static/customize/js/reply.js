@@ -67,6 +67,7 @@ var bindReplyAction = function() {
     if ((params['MsgType'] == 'text' && params['Content'] == "") ||
         params['MediaId'] == undefined && params['MediaId'] == 'undefined') {
       topAlert('未选择素材', 'error');
+      return false;
     }
   	$.post(url, getMaterialContent(), function(res) {
   	  if (res['code'] == 0)
