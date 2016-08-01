@@ -259,7 +259,7 @@ def setKeywordReply(request):
         rule.replys.remove(kw)
         kw.delete()
   rule.save()
-  return HttpResponse(Response(m="保存成功").toJson(), content_type='application/json')
+  return HttpResponse(Response(m=rule.id).toJson(), content_type='application/json')
 
 # 删除回复的接口
 @csrf_exempt
