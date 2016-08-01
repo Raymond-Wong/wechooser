@@ -78,7 +78,7 @@ var textHandler = function() {
     $(this).remove();
   });
   tmpDiv.find('nl').replaceWith('nl');
-  var content = $.trim(tmpDiv.text()).split('nl');
+  var content = tmpDiv.text().split('nl');
   params = {'MsgType' : 'text'};
   for (var i = 0; i < content.length; i++) {
     if (content[i] == '')
