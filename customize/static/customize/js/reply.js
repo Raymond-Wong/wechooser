@@ -10,7 +10,6 @@ var initReply = function() {
   var template = $.parseJSON(templateStr);
   $('#materialNav li[name="' + template['MsgType'] + '"]').trigger('click');
   if (template['MsgType'] == 'text') {
-    debugger;
     var content = str2face(template['Content']);
     var start = content.indexOf('\n');
     var end = content.indexOf('\n', start + 2);
@@ -18,7 +17,7 @@ var initReply = function() {
     if (start < 0) {
       lines.push(content);
     } else {
-      lines.push(content.substring(0, start + 1));
+      lines.push(content.substring(0, start));
       while (true) {
         end = end > 0 ? end : content.length;
         lines.push('<div>' + content.substring(start + 1, end) + '</div>');
