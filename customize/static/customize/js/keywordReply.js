@@ -5,13 +5,13 @@ $(document).ready(function() {
 
 var parseFace = function(domEle) {
   var tmpDiv = domEle.clone();
-  tmpDiv.find('nl').replaceWith('\n');
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');
     $(this).before(face);
     $(this).remove();
   });
-  var content = tmpDiv.text().split('\n');
+  tmpDiv.find('nl').replaceWith('nl');
+  var content = tmpDiv.text().split('nl');
   for (var i = 0; i < content.length; i++) {
     if (content[i] == '')
       content.splice(i, 1);
@@ -20,6 +20,7 @@ var parseFace = function(domEle) {
 }
 
 var textHandler = function(box) {
+  debugger;
   var params = {'MsgType' : 'text'};
   var content = parseFace(box.children('.val'));
   params['Content'] = content;
