@@ -119,7 +119,7 @@ var bindSaveRuleAction = function() {
   	$.post('/reply?type=keyword', params, function(res) {
   	  if (res['code'] == 0) {
   	  	topAlert('保存成功');
-        rule.attr('id', res['msg']);
+        rule.attr('rid', res['msg']);
   	  	closeRuleAction(that);
   	  } else {
   	  	topAlert(res['msg'], 'error');
