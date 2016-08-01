@@ -71,14 +71,14 @@ var updateRemainChar = function() {
 
 // 将text信息返回给后台的json
 var textHandler = function() {
-  debugger;
   var tmpDiv = $('#materialText').clone();
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');
     $(this).before(face);
     $(this).remove();
   });
-  var content = tmpDiv.find('nl').replaceWith('nl').text().split('nl');
+  tmpDiv.find('nl').replaceWith('nl');
+  var content = tmpDiv.text().split('nl');
   params = {'MsgType' : 'text'};
   for (var i = 0; i < content.length; i++) {
     if (content[i] == '')
