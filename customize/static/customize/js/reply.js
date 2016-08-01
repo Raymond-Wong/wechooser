@@ -10,6 +10,7 @@ var initReply = function() {
   var template = $.parseJSON(templateStr);
   $('#materialNav li[name="' + template['MsgType'] + '"]').trigger('click');
   if (template['MsgType'] == 'text') {
+    debugger;
     var content = str2face(template['Content']);
     var start = content.indexOf('\n');
     var end = content.indexOf('\n', start + 2);
