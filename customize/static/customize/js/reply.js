@@ -18,7 +18,7 @@ var initReply = function() {
     if (start < 0) {
       lines.push(content);
     } else {
-      lines.push(content.substring(0, start));
+      lines.push(content.substring(0, start + 1));
       while (true) {
         end = end > 0 ? end : content.length;
         lines.push('<div>' + content.substring(start + 1, end) + '</div>');
