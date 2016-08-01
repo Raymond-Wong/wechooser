@@ -71,6 +71,7 @@ var updateRemainChar = function() {
 
 // 将text信息返回给后台的json
 var textHandler = function() {
+  debugger;
   var tmpDiv = $('#materialText').clone();
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');
