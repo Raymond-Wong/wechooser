@@ -80,10 +80,10 @@ var textHandler = function() {
   });
   params = {'MsgType' : 'text'};
   var content = tmpDiv.text().split('\n');
-  for (var i = 0; i < content.length; i++) {
-    if (content[i] == '')
-      content.splice(i, 1);
-  }
+  // for (var i = 0; i < content.length; i++) {
+  //   if (content[i] == '')
+  //     content.splice(i, 1);
+  // }
   params['Content'] = content.join('\n');
   if (parseInt($('#materialRemain font').text()) < 0) {
     params['MsgType'] = null;
