@@ -65,7 +65,7 @@ var bindReplyAction = function() {
   	}
     console.log(getMaterialContent());
     if ((params['MsgType'] == 'text' && params['Content'] == "") ||
-        params['MediaId'] == undefined || params['MediaId'] == 'undefined') {
+        params['MediaId'] == undefined && params['MediaId'] == 'undefined') {
       topAlert('未选择素材', 'error');
     }
   	// $.post(url, getMaterialContent(), function(res) {
