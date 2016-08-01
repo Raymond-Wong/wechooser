@@ -25,7 +25,7 @@ def login(request):
     account = request.POST.get('account')
     password = request.POST.get('password')
     if account=="wechooser" and password=="wechooser":
-      return HttpResponse(Response(m="/home").toJson(), content_type='application/json')
+      return HttpResponse(Response(m="/reply").toJson(), content_type='application/json')
     elif account != "wechooser":
       return HttpResponse(Response(c=-1, s="failed", m="账号错误").toJson(), content_type='application/json')
     return HttpResponse(Response(c=-2, s="failed", m="密码错误").toJson(), content_type='application/json')
