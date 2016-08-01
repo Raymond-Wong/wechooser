@@ -142,7 +142,7 @@ def getMenu(token):
     res = wechooser.utils.send_request(host, path, method, port=443, params=params)
   if res[0]:
     return res[1]
-  return {}
+  return {'menu' : {'button' : []}}
 
 
 # 验证信息是否从微信发送过来
