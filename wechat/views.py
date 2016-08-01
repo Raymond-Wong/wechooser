@@ -45,7 +45,7 @@ def entrance(request):
       utils.update_token()
       return HttpResponse(request.GET.get('echostr', None))
     else:
-      return HttpResponse('forbiden from browswer')
+      return HttpResponse('forbidden from browswer')
   else:
     return parseXml(request)
   raise Http404
