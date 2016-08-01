@@ -20,7 +20,6 @@ var parseFace = function(domEle) {
 }
 
 var textHandler = function(box) {
-  debugger;
   var params = {'MsgType' : 'text'};
   var content = parseFace(box.children('.val'));
   params['Content'] = content;
