@@ -45,8 +45,9 @@ def entrance(request):
       utils.update_token()
       return HttpResponse(request.GET.get('echostr', None))
     else:
-      return HttpResponse('forbidden from browswer')
+      return HttpResponse('forbiden from browswer')
   else:
+    wechooser.utils.logger('INFO', 'Get the following msg: %s' % request.body)
     return parseXml(request)
   raise Http404
 
@@ -65,36 +66,23 @@ HANDLERS = {
 }
 def message(dictionary, token):
   # 如果信息类型不是文字，图片或者事件的话，则用默认处理类进行处理
-  wechooser.utils.logger('INFO', 'Get the following msg: %s' % dictionary)
   handler = DefaultReplyHandler
   if dictionary['MsgType'] in HANDLERS.keys():
     handler = HANDLERS[dictionary['MsgType']]
-  return HttpResponse(handler(dictionary).getReply())
+  ret = handler(dictionary).getReply()
+  wechooser.utils.logger('INFO', 'return following msg: %s' % ret)
+  return HttpResponse(ret)
 
 @csrf_exempt
 @has_token
-def editMenu(request, token):
-  if request.method == 'GET':
-    return HttpResponse('forbidden from browser')
-  host = 'api.weixin.qq.com'
-  path = '/cgi-bin/menu/create?access_token='
-  method = 'POST'
-  params = json.loads(request.POST.get('menu'))
+def getMaterialHandler(request, token):
   try:
-    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+    return getMaterial(request, token)
   except PastDueException:
-    token = utils.update_token()
-    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
-  if res[0]:
-    now = datetime.now()
-    offset = timedelta(seconds=(5 * 60))
-    end = now + offset
-    end = end.strftime('%Y-%m-%d %H:%M:%S')
-    return HttpResponse(Response(m=u"自定义菜单将在 %s 时生效; access_token: %s" % (end, token.token)).toJson())
-  return HttpResponse(Response(c=-1, m=str(res[1])).toJson())
+    return HttpResponse(Response(c=-1, m='access token过期').toJson(), content_type='application/json')
+  except Exception, e:
+    return HttpResponse(Response(c=-2, m='未知错误: %s' % e).toJson(), content_type='application/json')
 
-@csrf_exempt
-@has_token
 def getMaterial(request, token):
   if request.method == 'GET':
     return HttpResponse('forbidden from browser')
@@ -108,8 +96,15 @@ def getMaterial(request, token):
   if tp == 'voice':
     materials = utils.getVoiceLen(token, materials)
   if tp == 'video':
-    pass
-    # materials = utils.getVideoInfo(token, materials)
+    materials = utils.getVideoInfo(token, materials)
   if tp == 'news':
     materials = utils.getNewsInfo(token, materials)
   return HttpResponse(Response(m=materials).toJson(), content_type='application/json')
+
+@csrf_exempt
+def updateTokenHandler(request):
+  try:
+    utils.update_token()
+    return HttpResponse(Response(m='更新成功').toJson(), content_type='application/json')
+  except Exception, e:
+    return HttpResponse(Response(c=-2, m='未知错误: %s' % e).toJson(), content_type='application/json')

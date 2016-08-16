@@ -42,7 +42,7 @@ class Template:
 class TextTemplate(Template):
   def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='text', Content=''):
     Template.__init__(self, ToUserName=ToUserName, FromUserName=FromUserName, MsgType=MsgType, CreateTime=CreateTime)
-    self.Content = Content
+    self.Content = Content.strip().strip('\t').strip('\r').strip('\n')
   def toReply(self):
     dic = self.toDic()
     dic['Content'] = self.Content
@@ -139,7 +139,6 @@ class NewsTemplate(Template):
     dic['Articles'] = []
     for item in self.Items:
       dic['Articles'].append({'item' : item.toDic()})
-    utils.logger('DEBUG', dic)
     return ET.tostring(utils.dict2xml(ET.Element('xml'), dic), 'utf-8')
   def toSend(self):
     ret = {}

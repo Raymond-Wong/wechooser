@@ -6,10 +6,11 @@ import views
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-  url(r'^material$', views.getMaterial, name='getMaterial'),
-
+  url(r'^$', views.index, name="index"),
   url(r'^login$', views.login, name='login'),
-  url(r'^reply$', views.setReply, name='setReply'),
+  url(r'^logout$', views.logout, name='logout'),
+  url(r'^reply$', views.setReplyHandler, name='setReplyHandler'),
   url(r'^reply/delete$', views.deleteReply, name='deleteReply'),
-  url(r'^menu$', views.editMenu, name='editMenu'),
+  url(r'^menu$', views.editMenuHandler, name='editMenuHandler'),
+  url(r'^test$', views.test, name='test'),
 )

@@ -1,19 +1,25 @@
 var alertBox = $('#alertBox');
 var topAlertTimer = null;
+var alertType = 'info';
 
 var topAlert = function(msg, tp) {
-  var tp = tp ? tp : 'info';
-  console.log("alert: " + msg);
-  alertBox.html(msg);
-  alertBox.animate({'top' : '0px'});
-  if (tp == 'error') {
-  	topAlertTimer = alertBox.css('backgroundColor', 'red');
-  }
-  setTimeout(hideTopAlert, 5000);
+  // 终止上一次的动作
+  alertBox.stop(true, true);
+  clearTimeout(topAlertTimer);
+  alertType = tp;
+  hideTopAlert(function() {
+    // 开始下一次的动作
+    if (alertType == 'error') {
+      alertBox.css('backgroundColor', '#dc143c');
+    } else {
+      alertBox.css('backgroundColor', '#09bb07');
+    }
+    alertBox.html(msg);
+    alertBox.animate({'top' : '0px'});
+    topAlertTimer = setTimeout(hideTopAlert, 5000);  
+  });
 }
 
-var hideTopAlert = function() {
-  alertBox.animate({'top' : '-3em'}, function() {
-  	alertBox.css('backgroundColor', '#09bb07')
-  });
+var hideTopAlert = function(callback) {
+  alertBox.animate({'top' : '-3em'}, callback);
 }

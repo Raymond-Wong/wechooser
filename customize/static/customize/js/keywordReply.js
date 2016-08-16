@@ -5,18 +5,16 @@ $(document).ready(function() {
 
 var parseFace = function(domEle) {
   var tmpDiv = domEle.clone();
+  // 在每个div前面加一个换行符
+  tmpDiv.find('div').each(function() {
+    $(this).prepend('\n');
+  })
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');
     $(this).before(face);
     $(this).remove();
   });
-  tmpDiv.find('nl').replaceWith('nl');
-  var content = tmpDiv.text().split('nl');
-  for (var i = 0; i < content.length; i++) {
-    if (content[i] == '')
-      content.splice(i, 1);
-  }
-  return content.join('\n');
+  return tmpDiv.text();
 }
 
 var textHandler = function(box) {
@@ -115,17 +113,15 @@ var bindSaveRuleAction = function() {
   	replyAll = replyAll == undefined ? 'False' : replyAll;
   	params = {'rid' : rule.attr('rid'), 'keywords' : JSON.stringify(keywords), 'replys' : JSON.stringify(replys), 'name' : ruleName, 'isReplyAll' : replyAll};
   	console.log(params);
-    var that = $(this);
-  	$.post('/reply?type=keyword', params, function(res) {
+  	post('/reply?type=keyword', params, function(res) {
   	  if (res['code'] == 0) {
   	  	topAlert('保存成功');
-        rule.attr('rid', res['msg']);
-  	  	closeRuleAction(that);
+  	  	// closeRuleAction($(this));
   	  } else {
-  	  	topAlert(res['msg'], 'error');
+  	  	topAlert(res['msg']);
   	  }
   	});
-  	// closeRuleAction($(this));
+  	closeRuleAction($(this));
   });
 }
 

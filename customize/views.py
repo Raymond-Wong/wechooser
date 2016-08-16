@@ -5,7 +5,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import json
 
-from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 
@@ -17,6 +17,18 @@ from wechat.ReplyTemplates import *
 from wechat.models import *
 from wechooser.decorator import *
 
+def test(request):
+  return render_to_response('customize/test.html')
+
+@is_logined
+def index(request):
+  return HttpResponseRedirect('/reply?type=subscribe')
+
+@is_logined
+def logout(request):
+  request.session['is_logined'] = False
+  return HttpResponseRedirect('/login')
+
 @csrf_exempt
 def login(request):
   if request.method == 'GET':
@@ -25,16 +37,29 @@ def login(request):
     account = request.POST.get('account')
     password = request.POST.get('password')
     if account=="wechooser" and password=="wechooser":
-      return HttpResponse(Response(m="/reply").toJson(), content_type='application/json')
+      request.session['is_logined'] = True
+      return HttpResponse(Response(m="/reply?type=subscribe").toJson(), content_type='application/json')
     elif account != "wechooser":
       return HttpResponse(Response(c=-1, s="failed", m="账号错误").toJson(), content_type='application/json')
     return HttpResponse(Response(c=-2, s="failed", m="密码错误").toJson(), content_type='application/json')
 
 @csrf_exempt
+@is_logined
 @has_token
+def editMenuHandler(request, token):
+  try:
+    return editMenu(request, token)
+  except PastDueException:
+    return HttpResponse(Response(c=-1, m='access token过期').toJson(), content_type='application/json')
+  except Exception, e:
+    return HttpResponse(Response(c=-1, m='未知错误: %s' % e).toJson(), content_type='application/json')
+
 def editMenu(request, token):
   if request.method == 'GET':
-    menu = wechat.utils.getMenu(token)['menu']['button']
+    menuParent = wechat.utils.getMenu(token)
+    if menuParent == None:
+      return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps([])})
+    menu = menuParent['menu']['button']
     for flBtn in menu:
       if flBtn.has_key('type') and flBtn['type'] == 'click':
         flBtn['mid'] = flBtn['key']
@@ -89,12 +114,7 @@ def saveMenu(request, token):
   path = '/cgi-bin/menu/create?access_token='
   method = 'POST'
   params = {'button' : menuBtns}
-  wechooser.utils.logger('DEBUG', menuBtns)
-  try:
-    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
-  except PastDueException:
-    token = wechat.utils.update_token()
-    res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
   # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
   if res[0]:
     # 将menu的key和reply存入数据库中
@@ -126,11 +146,16 @@ def saveMenu(request, token):
     return HttpResponse(Response().toJson(), content_type='application/json')
   return HttpResponse(Response(c=-1, m=res[1]).toJson(), content_type='application/json')
 
-def getMaterial(request):
-  if request.method == 'GET':
-    return render_to_response('customize/getMaterial.html')
-
 @csrf_exempt
+@is_logined
+def setReplyHandler(request):
+  try:
+    return setReply(request)
+  except PastDueException:
+    return HttpResponse(Response(c=-1, m='access token过期').toJson(), content_type='application/json')
+  except Exception, e:
+    return HttpResponse(Response(c=-1, m='未知错误: %s' % e).toJson(), content_type='application/json')
+
 def setReply(request):
   replyType = request.GET.get('type', 'subscribe')
   if request.method == 'GET':
@@ -255,11 +280,10 @@ def setKeywordReply(request):
     if kw.keyword not in keywords.keys():
       # 如果该关键词没有指向任何其他规则则可以删除
       if len(kw.rule_set.all()) <= 1:
-        wechooser.utils.logger('DEBUG', u'从数据库中删除关键词: %s' % kw.keyword)
         rule.replys.remove(kw)
         kw.delete()
   rule.save()
-  return HttpResponse(Response(m=rule.id).toJson(), content_type='application/json')
+  return HttpResponse(Response(m="保存成功").toJson(), content_type='application/json')
 
 # 删除回复的接口
 @csrf_exempt
@@ -269,7 +293,6 @@ def deleteReply(request):
     Reply.objects.get(reply_type=replyType).delete()
   else:
     rid = request.GET.get('rid', None)
-    wechooser.utils.logger('DEBUG', 'rid=%s' % rid)
     try:
       rule = Rule.objects.get(id=rid)
     except Exception:

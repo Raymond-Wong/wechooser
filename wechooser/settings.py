@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Django settings for WechatApi project.
 import os
 from os import environ
 

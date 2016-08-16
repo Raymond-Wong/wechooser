@@ -17,7 +17,7 @@ var initTextReply = function() {
     var box = $(this).children('.val')
     var content = str2face(box.text());
     var start = content.indexOf('\n');
-    var end = content.indexOf('\n', start + 2);
+    var end = content.indexOf('\n', start + 1);
     var lines = [];
     if (start < 0) {
       lines.push(content);
@@ -25,14 +25,16 @@ var initTextReply = function() {
       lines.push(content.substring(0, start));
       while (true) {
         end = end > 0 ? end : content.length;
-        lines.push('<div>' + content.substring(start + 1, end) + '</div>');
+        var lineContent = content.substring(start + 1, end);
+        lineContent = (lineContent == '' ? '<br>' : lineContent);
+        lines.push('<div>' + lineContent + '</div>');
         start = content.indexOf('\n', end);
         if (start < 0) break;
-        end = content.indexOf('\n', start + 2);
+        end = content.indexOf('\n', start + 1);
       }
       lines.push('<div>' + content.substring(end + 1, content.length) + '</div>');
     }
-    box.html(lines.join('<nl></nl>'));
+    box.html(lines.join(''));
   });
 }
 

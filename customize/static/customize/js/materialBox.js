@@ -23,29 +23,24 @@ var bindMaterialTextBoxAction = function() {
 }
 
 var bindMaterialImageBoxAction = function() {
-  updateMaterialImageBox(0, 10);
   chooseImageAction();
   deleteImageAction();
 }
 
 var bindMaterialVoiceBoxAction = function() {
-  updateMaterialVoiceBox(0, 5);
   deleteVoiceAction();
 }
 
 var bindMaterialVideoBoxAction = function() {
-  updateMaterialVideoBox(0, 5);
   deleteVideoAction();
 }
 
 var bindMaterialNewsBoxAction = function() {
-  updateMaterialNewsBox(0, 2);
   chooseNewsAction();
   deleteNewsAction();
 }
 
 var bindMaterialMpNewsBoxAction = function() {
-  updateMaterialMpNewsBox(0, 5);
 }
 
 // 跳转页码
@@ -83,11 +78,12 @@ var toPageAction = function() {
 // 更新图片素材框中的图片
 var updateMaterialImageBox = function(offset, count, callback) {
   // return false;
+  console.log('update image material: (', offset, ', ', count, ')');
   var params = {'type' : 'image', 'count' : count, 'offset' : offset};
   var box = $('#materialImageBox .materialBoxInner .materialBoxContent');
   // 清空容器中的东西
   box.html(LOADING_ELEMENT);
-  $.post('/wechat/getMaterial', params, function(res) {
+  post('/wechat/getMaterial', params, function(res) {
     var images = res['msg']['item'];
     var totalCount = res['msg']['total_count'];
     $($('#materialImageBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 10));
@@ -110,10 +106,11 @@ var updateMaterialImageBox = function(offset, count, callback) {
 
 var updateMaterialNewsBox = function(offset, count, callback) {
   // return false;
+  console.log('update news material: (', offset, ', ', count, ')');
   var params = {'type' : 'news', 'count' : count, 'offset' : offset};
   var box = $('#materialNewsBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
-  $.post('/wechat/getMaterial', params, function(res) {
+  post('/wechat/getMaterial', params, function(res) {
     var items = res['msg']['item']
     var totalCount = res['msg']['total_count'];
     $($('#materialNewsBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 2));
@@ -148,10 +145,11 @@ var updateMaterialNewsBox = function(offset, count, callback) {
 
 var updateMaterialMpNewsBox = function(offset, count, callback) {
   // return false;
+  console.log('update mpNews material: (', offset, ', ', count, ')');
   var params = {'type' : 'news', 'count' : count, 'offset' : offset};
   var box = $('#materialMpNewsBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
-  $.post('/wechat/getMaterial', params, function(res) {
+  post('/wechat/getMaterial', params, function(res) {
     var items = res['msg']['item']
     var totalCount = res['msg']['total_count'];
     $($('#materialMpNewsBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 5));
@@ -177,10 +175,11 @@ var updateMaterialMpNewsBox = function(offset, count, callback) {
 // 更新语音素材框中的语音
 var updateMaterialVoiceBox = function(offset, count, callback) {
   // return false;
+  console.log('update voice material: (', offset, ', ', count, ')');
   var params = {'type' : 'voice', 'count' : count, 'offset' : offset};
   var box = $('#materialVoiceBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
-  $.post('/wechat/getMaterial', params, function(res) {
+  post('/wechat/getMaterial', params, function(res) {
     var voices = res['msg']['item'];
     var totalCount = res['msg']['total_count'];
     $($('#materialVoiceBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 5));
@@ -202,10 +201,11 @@ var updateMaterialVoiceBox = function(offset, count, callback) {
 // 更新视频素材库中的视频
 var updateMaterialVideoBox = function(offset, count, callback) {
   // return false;
+  console.log('update video material: (', offset, ', ', count, ')');
   var params = {'type' : 'video', 'count' : count, 'offet' : offset};
   var box = $('#materialVideoBox .materialBoxContent');
   box.html(LOADING_ELEMENT);
-  $.post('/wechat/getMaterial', params, function(res) {
+  post('/wechat/getMaterial', params, function(res) {
     var videos = res['msg']['item'];
     var totalCount = res['msg']['total_count'];
     $($('#materialVoiceBox').find('.totalPage')[0]).text(Math.ceil(totalCount / 5));
@@ -231,7 +231,22 @@ var updateMaterialVideoBox = function(offset, count, callback) {
 var showMaterialBox = function(type, handler) {
   SAVE_HANDLER = handler;
   $('.materialBox.active').removeClass('active');
-  $('#material' + type + 'Box').addClass('active');
+  var box = $('#material' + type + 'Box');
+  var content = $(box.find('.materialBoxContent')[0]);
+  if (content.find('*').length <= 0) {
+    if (type == 'Image') {
+      updateMaterialImageBox(0, 10);
+    } else if (type == 'Voice') {
+      updateMaterialVoiceBox(0, 5);
+    } else if (type == 'Video') {
+      updateMaterialVideoBox(0, 5);
+    } else if (type == 'News') {
+      updateMaterialNewsBox(0, 2);
+    } else if (type == 'MpNews') {
+      updateMaterialMpNewsBox(0, 5);
+    }
+  }
+  box.addClass('active');
   $('#materialBoxWrapper').fadeIn();
 }
 
@@ -343,8 +358,15 @@ var chooseFace = function() {
 var remainCharAmount = function() {
   var materialText = $('#materialTextInputArea');
   materialText.keydown(function(evt) {
+    if ($(materialText).text() == '') {
+      $(materialText).html('');
+    }
     if (evt.keyCode == '13') {
-      insertIntoCaret('materialTextInputArea', '<nl/>');
+      if ($(materialText).html().indexOf('<div>') != 0) {
+        var content = $(materialText).html();
+        $(materialText).html('');
+        insertIntoCaret('materialTextInputArea', ('<div>' + content + '</div>'));
+      }
     }
   });
   if (materialText[0].addEventListener) {

@@ -12,22 +12,24 @@ var initReply = function() {
   if (template['MsgType'] == 'text') {
     var content = str2face(template['Content']);
     var start = content.indexOf('\n');
-    var end = content.indexOf('\n', start + 2);
+    var end = content.indexOf('\n', start + 1);
     var lines = [];
     if (start < 0) {
       lines.push(content);
     } else {
-      lines.push(content.substring(0, start));
+      lines.push('<div>' + content.substring(0, start) + '</div>');
       while (true) {
         end = end > 0 ? end : content.length;
-        lines.push('<div>' + content.substring(start + 1, end) + '</div>');
+        var lineContent = content.substring(start + 1, end);
+        lineContent = (lineContent == '' ? '<br>' : lineContent);
+        lines.push('<div>' + lineContent + '</div>');
         start = content.indexOf('\n', end);
         if (start < 0) break;
-        end = content.indexOf('\n', start + 2);
+        end = content.indexOf('\n', start + 1);
       }
       lines.push('<div>' + content.substring(end + 1, content.length) + '</div>');
     }
-    $('#materialText').html(lines.join('<nl></nl>'));
+    $('#materialText').html(lines.join(''));
     var textAmount = $('#materialText').text().length + $('#materialText').find('.insertedFace').length;
     $('#materialRemain font').text(parseInt($('#materialRemain font').text()) - textAmount);
   } else if (template['MsgType'] == 'image') {
@@ -63,21 +65,23 @@ var bindReplyAction = function() {
   	  topAlert(params['Content'], 'error');
   	  return false;
   	}
-    console.log(getMaterialContent());
+    console.log(params);
     if ((params['MsgType'] == 'text' && params['Content'] == "") ||
-        params['MediaId'] == undefined && params['MediaId'] == 'undefined') {
+        (params['MsgType'] != 'text' && (params['MediaId'] == undefined || params['MediaId'] == 'undefined'))) {
       topAlert('未选择素材', 'error');
       return false;
     }
-  	$.post(url, getMaterialContent(), function(res) {
+    topAlert('正在保存中...');
+  	post(url, params, function(res) {
   	  if (res['code'] == 0)
   	    topAlert(res['msg']);
   	  else
-  	  	topAlert(res['msg'], 'error');
+  	  	topAlert(JSON.stringify(res['msg']), 'error');
   	});
   });
   deleteBtn.click(function() {
     var url = window.location.pathname + '/delete' + window.location.search
+    topAlert('正在删除中...');
     $.get(url, {}, function(res) {
       topAlert('回复删除成功');
     });

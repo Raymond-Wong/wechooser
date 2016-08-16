@@ -47,8 +47,15 @@ var chooseFaceAction = function() {
 var listenInput = function() {
   var materialText = $('#materialText')[0];
   $('#materialText').keydown(function(evt) {
+    if ($(materialText).text() == '') {
+      $(materialText).html('');
+    }
     if (evt.keyCode == '13') {
-      insertIntoCaret('materialText', '<nl/>');
+      if ($(materialText).html().indexOf('<div>') != 0) {
+        var content = $(materialText).html();
+        $(materialText).html('');
+        insertIntoCaret('materialText', ('<div>' + content + '</div>'));
+      }
     }
   });
   if (materialText.addEventListener) {
@@ -72,19 +79,24 @@ var updateRemainChar = function() {
 // 将text信息返回给后台的json
 var textHandler = function() {
   var tmpDiv = $('#materialText').clone();
+  // 在每个div前面加一个换行符
+  tmpDiv.find('div').each(function() {
+    $(this).prepend('\n');
+  })
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');
     $(this).before(face);
     $(this).remove();
   });
-  tmpDiv.find('nl').replaceWith('nl');
-  var content = tmpDiv.text().split('nl');
   params = {'MsgType' : 'text'};
-  for (var i = 0; i < content.length; i++) {
-    if (content[i] == '')
-      content.splice(i, 1);
-  }
-  params['Content'] = content.join('\n');
+  // 去除连续的空行
+  // var content = tmpDiv.text().split('\n');
+  // for (var i = 0; i < content.length; i++) {
+  //   if (content[i] == '')
+  //     content.splice(i, 1);
+  // }
+  // params['Content'] = content.join('\n');
+  params['Content'] = tmpDiv.text();
   if (parseInt($('#materialRemain font').text()) < 0) {
     params['MsgType'] = null;
     params['Content'] = '输入字数不可超过600字';

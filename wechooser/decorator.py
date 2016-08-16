@@ -7,7 +7,7 @@ import json
 import hashlib
 from datetime import datetime, timedelta
 
-from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, Http404
 
 # from wechat.models import access_token
 
@@ -37,3 +37,11 @@ def is_verified(view):
     else:
       raise Http404
   return verified
+
+def is_logined(view):
+  def logined(request, *args, **kwargs):
+    if request.session.get('is_logined', False):
+      return view(request, *args, **kwargs)
+    else:
+      return HttpResponseRedirect('/login')
+  return logined

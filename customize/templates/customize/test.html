@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>选择自己</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <link type="text/css" rel="stylesheet" href="/static/common/css/bootstrap.min.css" />
+  <link type="text/css" rel="stylesheet" href="/static/customize/css/alert.css">
+</head>
+<body>
+  {% include "customize/widgets/topAlert.html" %}
+  <br>
+  <br>
+  <br>
+  <br>
+  <button id="infoBtn">alert info</button>
+  <button id="errorBtn">alert error</button>
+</body>
+<script type="text/javascript" src="/static/common/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/static/customize/js/topAlert.js"></script>
+<script>
+$(document).ready(function() {
+  $('#infoBtn').click(function() {
+    topAlert('info');
+  });
+  $('#errorBtn').click(function() {
+    topAlert('error', 'error');
+  });
+});
+</script>
+</html>

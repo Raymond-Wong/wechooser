@@ -7,6 +7,6 @@ import views
 
 urlpatterns = patterns('',
   url(r'^$', views.entrance, name='entrance'),
-  url(r'menu', views.editMenu, name='editMenu'),
-  url(r'getMaterial', views.getMaterial, name='getMaterial'),
+  url(r'update', views.updateTokenHandler, name='updateTokenHandler'),
+  url(r'getMaterial', views.getMaterialHandler, name='getMaterialHandler'),
 )
