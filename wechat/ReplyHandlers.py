@@ -24,10 +24,10 @@ class ReplyHandler:
       reply.FromUserName = self.params['ToUserName']
       reply.ToUserName = self.params['FromUserName']
       # 所有回复都用客服发送接口进行发送
-      token = wechat.utils.get_access_token()
-      wechat.utils.sendMsgTo(token, reply.toSend())
-      return ''
-      # return reply.toReply()
+      # token = wechat.utils.get_access_token()
+      # wechat.utils.sendMsgTo(token, reply.toSend())
+      # return ''
+      return reply.toReply()
     except Exception, e:
       wechooser.utils.logger('ERROR', '回复错误: %s' % e)
       return ''
@@ -63,9 +63,9 @@ class EventReplyHandler(ReplyHandler):
       template = json.loads(reply.template, object_hook=wechooser.utils.loads)
       template.FromUserName = self.params['ToUserName']
       template.ToUserName = self.params['FromUserName']
-      wechat.utils.sendMsgTo(wechat.utils.get_access_token(), template.toSend())
-      return ''
-      # return template.toReply()
+      # wechat.utils.sendMsgTo(wechat.utils.get_access_token(), template.toSend())
+      # return ''
+      return template.toReply()
     except Exception, e:
       return ''
 
@@ -94,9 +94,9 @@ class TextReplyHandler(ReplyHandler):
       template = random.choice(templates)
       template.ToUserName = self.params['FromUserName']
       template.FromUserName = self.params['ToUserName']
-      wechat.utils.sendMsgTo(token, template.toSend())
-      return ''
-      # return template.toReply()
+      # wechat.utils.sendMsgTo(token, template.toSend())
+      # return ''
+      return template.toReply()
     # 如果要将该规则中所有信息都回复，则调用客服接口进行回复
     for template in templates:
       template.ToUserName = self.params['FromUserName']

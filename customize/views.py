@@ -50,7 +50,7 @@ def editMenuHandler(request, token):
   try:
     return editMenu(request, token)
   except PastDueException:
-    return HttpResponse(Response(c=-1, m='access token过期').toJson(), content_type='application/json')
+    return HttpResponse(Response(c=-1, m='access token past due').toJson(), content_type='application/json')
   except Exception, e:
     return HttpResponse(Response(c=-1, m='未知错误: %s' % e).toJson(), content_type='application/json')
 
@@ -114,7 +114,8 @@ def saveMenu(request, token):
   path = '/cgi-bin/menu/create?access_token='
   method = 'POST'
   params = {'button' : menuBtns}
-  res = wechooser.utils.send_request(host, path + token.token, method, port=80, params=params)
+  res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params)
+  print res
   # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
   if res[0]:
     # 将menu的key和reply存入数据库中

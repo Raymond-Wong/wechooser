@@ -72,7 +72,7 @@ def update_token():
   token_record.token = token
   token_record.end_time = endtime
   token_record.save()
-  wechooser.utils.logger('DEBUG', u'更新数据库中的access token: %s' % token_record.token)
+  wechooser.utils.logger('DEBUG', u'updating the access token in database: %s' % token_record.token)
   return token_record
 
 
