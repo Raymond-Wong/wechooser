@@ -406,26 +406,6 @@ String.format = function() {
     return str;
 };
 
-// 把字符串中的表情转换成图片
-var str2face = function(str) {
-  var faceImg = '<img class="insertedFace" src="{0}" name="{1}" />';
-  var start = str.indexOf('[', 0);
-  var end = str.indexOf(']', start) + 1;
-  while (start >= 0 && end >= 0) {
-    var faceStr = str.substring(start + 1, end - 1);
-    var faceImgStr = String.format(faceImg, $('img[name="[' + faceStr + ']"]').attr('src'), faceStr);
-    str = str.replace('[' + faceStr + ']', faceImgStr);
-    start = str.indexOf('[', end);
-    end = str.indexOf(']', start) + 1;
-  }
-  var tmpDom = $('<div></div>');
-  tmpDom.html(str);
-  tmpDom.children('img').each(function() {
-    $(this).attr('name', '[' + $(this).attr('name') + ']');
-  })
-  return tmpDom.html();
-}
-
 /* 
  *  方法:Array.remove(dx) 
  *  功能:根据元素位置值删除数组元素. 

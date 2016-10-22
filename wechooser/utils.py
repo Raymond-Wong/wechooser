@@ -17,16 +17,10 @@ from datetime import datetime, timedelta
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 
 from wechat.models import access_token
+from wechooser.settings import WX_APPID, WX_SECRET
 
-# 测试平台
-# APPID = 'wxfd6b432a6e1e6d48'
-# APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
-# 订阅号
-# APPID = 'wxa9e7579ea96fd669'
-# APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
-# 服务号
-APPID = 'wx466a0c7c6871bc8e'
-APPSECRET = 'aa06e2a00ce7dcae1d5e975e5217c478'
+APPID = WX_APPID
+APPSECRET = WX_SECRET
 
 # 日志
 def logger(tp, msg):
@@ -36,6 +30,7 @@ def logger(tp, msg):
 # 发送请求
 # 如果发送请求时服务器返回的是access_token过期的话，就跑出一个PastDueException
 def send_request(host, path, method, port=443, params={}, toLoad=True):
+  logger('INFO', 'send request:\t[host:%s][path:%s][params:%s]' % (host, path, params))
   client = httplib.HTTPSConnection(host, port)
   if method == 'GET':
     path = '?'.join([path, urllib.urlencode(params)])
@@ -47,9 +42,10 @@ def send_request(host, path, method, port=443, params={}, toLoad=True):
   if not res.status == 200:
     return False, res.status
   resStr = res.read()
+  logger('INFO', 'get response:\t%s' % resStr)
   if toLoad:
     resDict = json.loads(resStr, encoding="utf-8")
-    if 'errcode' in resDict.keys() and resDict['errcode'] == 40001:
+    if 'errcode' in resDict.keys() and (resDict['errcode'] == 40001 or resDict['errcode'] == 40014 or resDict['errcode'] == 42001):
       raise PastDueException('access token past due')
     if 'errcode' in resDict.keys() and resDict['errcode'] != 0:
       return False, resDict

@@ -197,6 +197,9 @@ var deleteMenuAction = function() {
         $('#inputContentPanel').hide();
       }
     }
+    // 如果当前菜单被清空，则保存菜单
+    if (MENU.length == 0 && confirm('是否清空菜单？'))
+      $('#menuSaveBtn').trigger('click');
     IS_DELETING = false;
   });
 }
@@ -393,7 +396,9 @@ var updateMaterialContent = function(btn) {
     } else {
       $('.showMaterialChoosenBox').hide();
       $('.showMaterialBoxBtn').show();
-      $('#materialNav li[name="image"]').trigger('click');
+      $('#materialText').html('');
+      updateRemainChar();
+      $('#materialNav li[name="text"]').trigger('click');
     }
     $('#nameOnlyPanel').hide();
     $('#inputContentPanel').show();
@@ -487,7 +492,28 @@ var initMenuReply = function(name, template, url) {
     $('#chooseNewsBtn').hide();
     box.show();
   } else {
-    $('#materialNav li[name="image"]').trigger('click');
-    $('#chooseImageBtn').show();
+    $('#materialNav li[name="text"]').trigger('click');
+    var content = str2face(template['Content']);
+    var start = content.indexOf('\n');
+    var end = content.indexOf('\n', start + 1);
+    var lines = [];
+    if (start < 0) {
+      lines.push(content);
+    } else {
+      lines.push('<div>' + content.substring(0, start) + '</div>');
+      while (true) {
+        end = end > 0 ? end : content.length;
+        var lineContent = content.substring(start + 1, end);
+        lineContent = (lineContent == '' ? '<br>' : lineContent);
+        lines.push('<div>' + lineContent + '</div>');
+        start = content.indexOf('\n', end);
+        if (start < 0) break;
+        end = content.indexOf('\n', start + 1);
+      }
+      lines.push('<div>' + content.substring(end + 1, content.length) + '</div>');
+    }
+    $('#materialText').html(lines.join(''));
+    var textAmount = $('#materialText').text().length + $('#materialText').find('.insertedFace').length;
+    $('#materialRemain font').text(parseInt($('#materialRemain font').text()) - textAmount);
   }
 }

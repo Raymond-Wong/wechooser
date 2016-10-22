@@ -113,15 +113,17 @@ var bindSaveRuleAction = function() {
   	replyAll = replyAll == undefined ? 'False' : replyAll;
   	params = {'rid' : rule.attr('rid'), 'keywords' : JSON.stringify(keywords), 'replys' : JSON.stringify(replys), 'name' : ruleName, 'isReplyAll' : replyAll};
   	console.log(params);
+    var saveRuleBtn = $(this);
   	post('/reply?type=keyword', params, function(res) {
   	  if (res['code'] == 0) {
   	  	topAlert('保存成功');
-  	  	// closeRuleAction($(this));
+        rule.attr('rid', res['msg']);
+  	  	closeRuleAction(saveRuleBtn);
   	  } else {
   	  	topAlert(res['msg']);
   	  }
   	});
-  	closeRuleAction($(this));
+  	// closeRuleAction($(this));
   });
 }
 

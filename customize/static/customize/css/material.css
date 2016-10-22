@@ -22,6 +22,10 @@
   font-size: 14px;
 }
 
+#materialNav li:last-child {
+  border-right: 0;
+}
+
 #materialNav li.active {
   background-color: #576477;
   color: white;
@@ -93,6 +97,7 @@
   background-color: white;
   position: absolute;
   display: none;
+  z-index: 10;
 }
 
 #faceTable, #faceTable tr, #faceTable tr td {
@@ -252,4 +257,8 @@
   width: 210px;
   height: 5em;
   line-height: 5em;
+}
+
+#materialWrapper {
+  background-color: white;
 }

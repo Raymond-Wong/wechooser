@@ -17,7 +17,9 @@ from wechat.ReplyTemplates import *
 from wechat.models import *
 from wechooser.decorator import *
 
-def test(request):
+@has_token
+def test(request, token):
+  wechat.utils.getUserList(token)
   return render_to_response('customize/test.html')
 
 @is_logined
@@ -49,8 +51,6 @@ def login(request):
 def editMenuHandler(request, token):
   try:
     return editMenu(request, token)
-  except PastDueException:
-    return HttpResponse(Response(c=-1, m='access token past due').toJson(), content_type='application/json')
   except Exception, e:
     return HttpResponse(Response(c=-1, m='未知错误: %s' % e).toJson(), content_type='application/json')
 
@@ -89,8 +89,22 @@ def getMenuReplyTemplate(mid):
   except Exception:
     return 'undefined'
 
+def deleteMenu(token):
+   # 发请求更改菜单
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/menu/delete?access_token='
+  method = 'POST'
+  res = wechooser.utils.send_request(host, path + token.token, method, port=443, params={})
+  if res[0]:
+    MenuReply.objects.all().delete()
+    # 将保存成功的讯息传回前端
+    return HttpResponse(Response(m='删除菜单成功').toJson(), content_type='application/json')
+  return HttpResponse(Response(c=-1, m=res[1]).toJson(), content_type='application/json')
+
 def saveMenu(request, token):
   menuBtns = json.loads(request.POST.get('menu'))
+  if len(menuBtns) == 0:
+    return deleteMenu(token)
   replys = {}
   for i, flBtn in enumerate(menuBtns):
     if len(flBtn['sub_button']) > 0:
@@ -115,7 +129,6 @@ def saveMenu(request, token):
   method = 'POST'
   params = {'button' : menuBtns}
   res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params)
-  print res
   # 如果创建菜单成功,则将菜单中需要回复的内容存进数据库中
   if res[0]:
     # 将menu的key和reply存入数据库中
@@ -133,6 +146,8 @@ def saveMenu(request, token):
         replyRecord.template = json.dumps(VoiceTemplate(MediaId=reply['MediaId'], VoiceName=reply["VoiceName"]), default=wechooser.utils.dumps)
       elif reply['MsgType'] == 'video':
         replyRecord.template = json.dumps(VideoTemplate(MediaId=reply['MediaId'], Title=reply['Title'], Description=reply['Description']), default=wechooser.utils.dumps)
+      elif reply['MsgType'] == 'text':
+        replyRecord.template = json.dumps(TextTemplate(Content=reply['Content']), default=wechooser.utils.dumps)
       elif reply['MsgType'] == 'news':
         newsItems = []
         for item in reply['item']:
@@ -284,7 +299,7 @@ def setKeywordReply(request):
         rule.replys.remove(kw)
         kw.delete()
   rule.save()
-  return HttpResponse(Response(m="保存成功").toJson(), content_type='application/json')
+  return HttpResponse(Response(m=rule.id).toJson(), content_type='application/json')
 
 # 删除回复的接口
 @csrf_exempt

@@ -286,6 +286,13 @@ var showMaterialBoxAction = function() {
       }
       $($('#materialTextBox').find('.remainChar font')[0]).text(remainCharAmount);
       $('#materialTextInputArea').html(html);
+      // 判断是否可以选择表情
+      var face = $(this).attr('face');
+      if (face == 'false') {
+        $('.showFaceBtn').hide();
+      } else {
+        $('.showFaceBtn').show();
+      }
     }
   	showMaterialBox(type, handler);
   });

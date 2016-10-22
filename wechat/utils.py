@@ -21,18 +21,11 @@ from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http
 
 from wechat.models import access_token
 from wechooser.utils import Response, PastDueException
+from wechooser.settings import WX_APPID, WX_SECRET
 import wechooser.utils
 
-# 测试平台
-# APPID = 'wxfd6b432a6e1e6d48'
-# APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
-# 订阅号
-# APPID = 'wxa9e7579ea96fd669'
-# APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
-# 服务号
-APPID = 'wx466a0c7c6871bc8e'
-APPSECRET = 'aa06e2a00ce7dcae1d5e975e5217c478'
-
+APPID = WX_APPID
+APPSECRET = WX_SECRET
 
 # 获取数据库中access_token的接口
 def get_access_token():
@@ -203,4 +196,20 @@ def getOneVideoInfo(template):
   template['VideoTitle'] = video['title']
   template['VideoDesc'] = video['description']
   return template
+
+# 获取关注用户列表
+def getUserList(token, next=None):
+  url = '/cgi-bin/user/get?access_token=' + token.token
+  if next is not None:
+    url += ('&next_openid=' + next)
+  host = 'api.weixin.qq.com'
+  path = url
+  method = 'GET'
+ 
+  res = wechooser.utils.send_request(host, path, method)
+  if not res[0]:
+    return False
+  if res[1].get('errcode'):
+    return False
+  print res
 

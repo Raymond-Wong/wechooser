@@ -23,6 +23,8 @@ var changeMsgTypeAction = function() {
 // 显示表情菜单
 var showFacesAction = function() {
   $('#materialFace').click(function() {
+    // 使得文本框获得焦点
+    $(this).parent().parent().children('#materialText').focus();
   	$('#faceTable').fadeIn();
   	return false;
   });

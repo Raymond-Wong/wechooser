@@ -12,21 +12,22 @@ from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, Http404
 # from wechat.models import access_token
 
 from utils import *
+from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
 import wechat.utils
 
-APPID = 'wxfd6b432a6e1e6d48'
-APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
-TOKEN = 'wechooser'
+APPID = WX_APPID
+APPSECRET = WX_SECRET
+TOKEN = WX_TOKEN
 
 # 获取access_token的修饰器
 def has_token(view):
-  tokens = access_token.objects.order_by('-start_time')
-  now = datetime.now()
-  if len(tokens) <= 0 or now > tokens[0].end_time:
-    most_recent_token = wechat.utils.update_token()
-  else:
-    most_recent_token = tokens[0]
   def do_has_token(request, *args, **kwargs):
+    tokens = access_token.objects.order_by('-start_time')
+    now = datetime.now()
+    if len(tokens) <= 0 or now > tokens[0].end_time:
+      most_recent_token = wechat.utils.update_token()
+    else:
+      most_recent_token = tokens[0]
     return view(request, most_recent_token, *args, **kwargs)
   return do_has_token
 

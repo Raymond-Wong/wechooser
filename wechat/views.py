@@ -21,22 +21,17 @@ from django.views.decorators.csrf import csrf_exempt
 
 from wechooser.decorator import has_token, is_verified
 from wechooser.utils import Response, PastDueException
+from ReplyTemplates import TextTemplate
 from ReplyHandlers import *
+from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
 import wechooser.utils
 import utils
 
 from models import Reply
 
-TOKEN = 'wechooser'
-# 测试平台
-# APPID = 'wxfd6b432a6e1e6d48'
-# APPSECRET = 'fc9428a6b0aa1a27aecd5850871580cb'
-# 公众号
-# APPID = 'wxa9e7579ea96fd669'
-# APPSECRET = '684b3b6d705db03dfda263b64412b1cd'
-# 服务号
-APPID = 'wx466a0c7c6871bc8e'
-APPSECRET = 'aa06e2a00ce7dcae1d5e975e5217c478'
+TOKEN = WX_TOKEN
+APPID = WX_APPID
+APPSECRET = WX_SECRET
 
 @csrf_exempt
 def entrance(request):
@@ -64,14 +59,23 @@ HANDLERS = {
   'image' : ImageReplyHandler,
   'event' : EventReplyHandler,
 }
-def message(dictionary, token):
-  # 如果信息类型不是文字，图片或者事件的话，则用默认处理类进行处理
-  handler = DefaultReplyHandler
-  if dictionary['MsgType'] in HANDLERS.keys():
-    handler = HANDLERS[dictionary['MsgType']]
-  ret = handler(dictionary).getReply()
-  wechooser.utils.logger('INFO', 'return following msg: %s' % ret)
-  return HttpResponse(ret)
+def message(dictionary, token, retried=False):
+  try:
+    # 如果信息类型不是文字，图片或者事件的话，则用默认处理类进行处理
+    handler = DefaultReplyHandler
+    if dictionary['MsgType'] in HANDLERS.keys():
+      handler = HANDLERS[dictionary['MsgType']]
+    ret = handler(dictionary).getReply()
+    wechooser.utils.logger('INFO', 'return following msg: %s' % ret)
+    return HttpResponse(ret)
+  except:
+    # 尝试更新token后重新发送消息
+    if not retried:
+      token = utils.update_token()
+      return message(dictionary, token, True)
+  # 发生异常，返回错误信息
+  errTemplate = TextTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], Content='服务器发生错误，请联系工作人员')
+  return HttpResponse(errTemplate.toReply())
 
 @csrf_exempt
 @has_token

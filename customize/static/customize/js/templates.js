@@ -42,7 +42,7 @@ var IMG_ROW = '<div class="ruleRow small reply" type="image">' +
 var ADD_KEYWORD_ROW = '<div class="ruleRow small keyword" role="editKeyword" maxCharAmount="30">' +
                       '  <div class="left point">&nbsp;</div>' +
                       '  <div class="left val"></div>' +
-                      '  <div class="hint right"><a class="fullMatchBtn">未全匹配</a><a class="showMaterialBoxBtn" type="Text">编辑</a><a class="deleteRowBtn">删除</a></div>' +
+                      '  <div class="hint right"><a class="fullMatchBtn">未全匹配</a><a class="showMaterialBoxBtn" face="false" type="Text">编辑</a><a class="deleteRowBtn">删除</a></div>' +
                       '  <div class="clear"></div>' +
                       '</div>';
 
@@ -141,7 +141,7 @@ var NEW_RULE = '<div class="ruleWrapper">' +
                '        <div class="left point">·</div>' +
                '        <div class="left key">关键字</div>' +
                '        <div class="left val"></div>' +
-               '        <div class="right hint"><a class="showMaterialBoxBtn" type="Text">添加关键字</a></div>' +
+               '        <div class="right hint"><a class="showMaterialBoxBtn" type="Text" face="false">添加关键字</a></div>' +
                '        <div class="clear"></div>' +
                '      </div>' +
                '      <div class="keywordsWrapper">' +
