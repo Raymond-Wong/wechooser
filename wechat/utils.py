@@ -199,17 +199,15 @@ def getOneVideoInfo(template):
 
 # 获取关注用户列表
 def getUserList(token, next=None):
-  url = '/cgi-bin/user/get?access_token=' + token.token
-  if next is not None:
-    url += ('&next_openid=' + next)
   host = 'api.weixin.qq.com'
-  path = url
+  path = '/cgi-bin/user/get'
   method = 'GET'
- 
-  res = wechooser.utils.send_request(host, path, method)
-  if not res[0]:
-    return False
-  if res[1].get('errcode'):
-    return False
-  print res
+  params = {'access_token' : token.token}
+  if next is not None:
+    params['next_openid'] = next
+  res = wechooser.utils.send_request(host, path, method, port=443, params=params)
+  if res[0]:
+    print res[1]
+    return res[1]
+  return None
 
