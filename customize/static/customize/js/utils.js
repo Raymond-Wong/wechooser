@@ -61,7 +61,7 @@ var post = function(url, data, callback) {
 // 把字符串中的表情转换成图片
 var str2face = function(str) {
   if (str == undefined || str.length == 0) {
-    return str;
+    return '';
   }
   var faceImg = '<img class="insertedFace" src="{0}" name="{1}" />';
   var start = str.indexOf('[', 0);
