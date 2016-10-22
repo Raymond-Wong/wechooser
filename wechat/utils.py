@@ -209,6 +209,8 @@ def getUserList(token, next=None):
   if res[0]:
     if res[1].has_key('next_openid') or res[1]['next_openid'] != '':
       return res[1]['data']['openid'].extend(getUserList(token, res[1]['next_openid']))
+    if res[1]['count'] == 0:
+      return []
     return res[1]['data']['openid']
   return None
 
