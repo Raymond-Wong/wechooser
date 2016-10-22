@@ -207,7 +207,7 @@ def getUserList(token, next=None):
     params['next_openid'] = next
   res = wechooser.utils.send_request(host, path, method, port=443, params=params)
   if res[0]:
-    if res[1].has_key('next_openid') or res[1]['next_openid'] != '':
+    if res[1].has_key('next_openid') and res[1]['next_openid'] != '':
       return res[1]['data']['openid'].extend(getUserList(token, res[1]['next_openid']))
     if res[1]['count'] == 0:
       return []
