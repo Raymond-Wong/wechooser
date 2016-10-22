@@ -70,6 +70,7 @@ def editMenu(request, token):
             if slBtn['type'] == 'click':
               slBtn['mid'] = slBtn['key']
               slBtn['reply'] = getMenuReplyTemplate(slBtn["mid"])
+    print menu
     return render_to_response('customize/menu.html', {'active' : 'menu', 'menu' : json.dumps(menu)})
   else:
     # 如果是post请求则保存菜单
