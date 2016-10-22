@@ -19,7 +19,7 @@ from wechooser.decorator import *
 
 @has_token
 def test(request, token):
-  wechat.utils.getUserList(token)
+  print wechat.utils.getUserList(token)
   return render_to_response('customize/test.html')
 
 @is_logined
