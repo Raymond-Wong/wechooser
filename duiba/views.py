@@ -12,7 +12,7 @@ from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http
 from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 
-from wechooser.utils import Response
+from wechooser.utils import Response, send_request
 import utils
 
 def getLoginUrl(request):
@@ -23,4 +23,5 @@ def getLoginUrl(request):
   params['timestamp'] = str(long(time.time() * 10))
   params['redirect'] = request.GET.get('dbredirect', None)
   params['sign'] = utils.getSignStr(params, '4PHcHe2h6myutohuwqywuMHNGYMp')
-  return HttpResponse(Response(c=0, s="success", m=params).toJson(), content_type='application/json')
+  res = send_request('www.duiba.com.cn', '/autoLogin/autologin', 'GET', port=80, params=params)
+  return HttpResponse(Response(c=0, s="success", m=res).toJson(), content_type='application/json')
