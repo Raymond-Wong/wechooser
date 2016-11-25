@@ -20,7 +20,7 @@ def getLoginUrl(request):
   params['uid'] = 'test001'
   params['credits'] = '100'
   params['appKey'] = 'xQQjsycj8jSvNCorMkMkCFSZnqK'
-  params['timestamp'] = str(long(time.time() * 10))
+  params['timestamp'] = str(long(time.time() * 1000))
   params['redirect'] = request.GET.get('dbredirect', None)
   params = utils.filterParam(params)
   params['sign'] = utils.getSignStr(params, '4PHcHe2h6myutohuwqywuMHNGYMp')
