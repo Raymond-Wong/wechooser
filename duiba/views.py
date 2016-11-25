@@ -22,6 +22,7 @@ def getLoginUrl(request):
   params['appKey'] = 'xQQjsycj8jSvNCorMkMkCFSZnqK'
   params['timestamp'] = str(long(time.time() * 10))
   params['redirect'] = request.GET.get('dbredirect', None)
+  params = utils.filterParam(params)
   params['sign'] = utils.getSignStr(params, '4PHcHe2h6myutohuwqywuMHNGYMp')
   res = send_request('www.duiba.com.cn', '/autoLogin/autologin', 'GET', port=80, params=params, toLoad=False)
   return HttpResponse(res)
