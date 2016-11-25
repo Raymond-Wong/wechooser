@@ -25,5 +25,4 @@ def getLoginUrl(request):
   params = utils.filterParam(params)
   params['sign'] = utils.getSignStr(params, '4PHcHe2h6myutohuwqywuMHNGYMp')
   res = send_request('www.duiba.com.cn', '/autoLogin/autologin', 'GET', port=80, params=params, toLoad=False)
-  return HttpResponse(res)
-  # return HttpResponse(Response(c=0, s="success", m=res).toJson(), content_type='application/json')
+  return HttpResponse(Response(c=0, s="success", m=res).toJson(), content_type='application/json')
