@@ -18,9 +18,9 @@ import utils
 def getLoginUrl(request):
   params = {}
   params['uid'] = 'raymond'
-  params['credits'] = 100
+  params['credits'] = '100'
   params['appKey'] = 'xQQjsycj8jSvNCorMkMkCFSZnqK'
-  params['timestamp'] = int(time.time() * 10)
+  params['timestamp'] = str(long(time.time() * 10))
   params['redirect'] = request.GET.get('dbredirect', None)
   params['sign'] = utils.getSignStr(params, '4PHcHe2h6myutohuwqywuMHNGYMp')
   return HttpResponse(Response(c=0, s="success", m=params).toJson(), content_type='application/json')
