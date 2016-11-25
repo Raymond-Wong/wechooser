@@ -4,10 +4,11 @@ import os
 import hashlib
 
 # 获取duiba的签名规则
-def getSignStr(params, appSecret):
-  paramsList = params.values()
-  paramsList.append(appSecret)
-  paramsList = sorted(paramsList)
+def getSignStr(p, appSecret):
+  params = p.copy()
+  params['appSecret'] = appSecret
+  params = sorted(params.iteritems(), key=lambda x:x[0], reverse=False)
+  paramsList = map(lambda x:x[1], params)
   sortedParamsStr = ''.join(paramsList)
   print sortedParamsStr
   encoder = hashlib.md5()
