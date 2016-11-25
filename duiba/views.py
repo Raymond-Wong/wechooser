@@ -22,6 +22,7 @@ def getLoginUrl(request):
   # params['credits'] = '100'
   params['appKey'] = 'testappkey'
   # params['appKey'] = 'xQQjsycj8jSvNCorMkMkCFSZnqK'
+  params['timestamp'] = '1415250311646'
   # params['timestamp'] = str(long(time.time() * 10))
   # params['redirect'] = request.GET.get('dbredirect', None)
   params = utils.filterParam(params)
