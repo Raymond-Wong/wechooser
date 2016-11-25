@@ -16,7 +16,7 @@ from wechooser.utils import Response, send_request
 import utils
 
 def getLoginUrl(request):
-  http://www.duiba.com.cn/autoLogin/autologin?uid=test001&credits=100&appKey=jlg88loSQobWDMmGrPLqtmr&sign=fbce303d7ba7ca7b0fe14d576b494769&timestamp=1418625055000
+  # http://www.duiba.com.cn/autoLogin/autologin?uid=test001&credits=100&appKey=jlg88loSQobWDMmGrPLqtmr&sign=fbce303d7ba7ca7b0fe14d576b494769&timestamp=1418625055000
   params = {}
   params['uid'] = 'test001'
   params['credits'] = '100'
