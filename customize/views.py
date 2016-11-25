@@ -19,7 +19,6 @@ from wechooser.decorator import *
 
 @has_token
 def test(request, token):
-  print '*' * 10, 'user_list'
   print wechat.utils.getUserList(token)
   return render_to_response('customize/test.html')
 
