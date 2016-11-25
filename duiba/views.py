@@ -7,6 +7,7 @@ sys.setdefaultencoding('utf-8')
 import hashlib
 import time
 import json
+import urllib
 
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, redirect
@@ -24,5 +25,4 @@ def getLoginUrl(request):
   params['redirect'] = request.GET.get('dbredirect', None)
   params = utils.filterParam(params)
   params['sign'] = utils.getSignStr(params, '4PHcHe2h6myutohuwqywuMHNGYMp')
-  res = send_request('www.duiba.com.cn', '/autoLogin/autologin', 'GET', port=80, params=params, toLoad=False)
-  return HttpResponse(Response(c=0, s="success", m=res).toJson(), content_type='application/json')
+  return redirect('http://www.duiba.com.cn/autoLogin/autologin?%s' % urllib.urlencode(params))
