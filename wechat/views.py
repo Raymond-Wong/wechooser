@@ -132,6 +132,7 @@ def loginHandler(request, view):
   params['secret'] = APPSECRET
   params['code'] = code
   params['grant_type'] = 'authorization_code'
+  print params
   res = wechooser.utils.send_request('api.weixin.qq.com', '/sns/oauth2/access_token', 'GET', params=params)
   if not res[0]:
     return HttpResponse(Response(c=1, m="login failed: get access token failed").toJson(), content_type='application/json')
