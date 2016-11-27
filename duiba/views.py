@@ -98,4 +98,4 @@ def notify(request):
     user.credits = user.credits + order.credits
     user.save()
   order.save()
-  return HttpResponse(order.get_status_display())
+  return HttpResponse('ok')
