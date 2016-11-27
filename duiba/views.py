@@ -14,8 +14,10 @@ from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from wechooser.utils import Response, send_request
+from holicLab.decorator import wx_logined
 import utils
 
+@wx_logined
 def autoLogin(request):
   params = {}
   params['uid'] = 'test001'

@@ -13,8 +13,9 @@ except ImportError:
   import xml.etree.ElementTree as ET
 
 from datetime import datetime, timedelta
-from django.utils.encoding import smart_str
+from urllib import quote
 
+from django.utils.encoding import smart_str
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -28,6 +29,7 @@ import wechooser.utils
 import utils
 
 from models import Reply
+from duiba.models import User
 
 TOKEN = WX_TOKEN
 APPID = WX_APPID
@@ -112,3 +114,53 @@ def updateTokenHandler(request):
     return HttpResponse(Response(m='更新成功').toJson(), content_type='application/json')
   except Exception, e:
     return HttpResponse(Response(c=-2, m='未知错误: %s' % e).toJson(), content_type='application/json')
+
+def login(request, view):
+  # 如果session中已经保存了用户信息，则不用重复获取用户信息
+  if request.session.has_key('user'):
+    return view(request)
+  # 获取code
+  code = request.GET.get('code', None)
+  if code is None and request.method == 'GET':
+    url = 'http://' + request.get_host() + request.get_full_path()
+    url = quote(url, safe='')
+    url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + APPID + '&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
+    return redirect(url)
+  # 用code换取access token
+  params = {}
+  params['appid'] = APPID
+  params['secret'] = APPSECRET
+  params['code'] = code
+  params['grant_type'] = 'authorization_code'
+  res = send_request('api.weixin.qq.com', '/sns/oauth2/access_token', 'GET', params=params)
+  if not res[0]:
+    return HttpResponse(Response(c=1, m="login failed: get access token failed").toJson(), content_type='application/json')
+  access_token = res[1]['access_token']
+  openid = res[1]['openid']
+  # 获取用户
+  user = None
+  try:
+    # 用户存在数据库中
+    user = User.objects.get(wx_openid=str(openid))
+  except:
+    # 用户不存在数据库中
+    params = {}
+    params['access_token'] = access_token
+    params['openid'] = openid
+    params['lang'] = 'zh_CN'
+    res = send_request('api.weixin.qq.com', '/sns/userinfo', 'GET', params=params)
+    if not res[0]:
+      return HttpResponse(Response(c=2, m="login failed: get user from wechat info failed").toJson(), content_type='application/json')
+    userInfo = res[1]
+    user = User()
+    user.wx_openid = openid
+    user.nickname = userInfo['nickname']
+    user.sex = userInfo['sex']
+    user.province = userInfo['province']
+    user.city = userInfo['city']
+    user.country = userInfo['country']
+    user.headimgurl = userInfo['hedimgurl']
+    user.save()
+    print 'openid: %s, nickname: %s, id: %s, invite_code: %s' % (openid, userInfo['nickname'], user.id, user.invite_code)
+  request.session['user'] = user.invite_code
+  return view(request)

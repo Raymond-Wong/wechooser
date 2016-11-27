@@ -46,3 +46,8 @@ def is_logined(view):
     else:
       return HttpResponseRedirect('/login')
   return logined
+
+def wx_logined(view):
+  def verified(request, *args, **kwargs):
+    return views.loginHandler(request, view, *args, **kwargs)
+  return verified
