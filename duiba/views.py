@@ -33,21 +33,38 @@ def autoLogin(request):
   return redirect('http://www.duiba.com.cn/autoLogin/autologin?%s' % urllib.urlencode(params))
 
 def debuctCredit(request):
-  uid = request.GET.get('uid', None)
-  credits = request.GET.get('credits', None)
-  appKey = request.GET.get('appKey', None)
-  timestamp = request.GET.get('timestamp', None)
-  description = request.GET.get('description', None)
-  orderNum = request.GET.get('orderNum', None)
-  otype = request.GET.get('type', None)
-  facePrice = request.GET.get('facePrice', None)
-  actualPrice = request.GET.get('actualPrice', None)
-  ip = request.GET.get('ip', None)
-  waitAudit = request.GET.get('waitAudit', None)
-  params = request.GET.get('params', None)
+  user = None
+  # 判断用户是否存在
+  try:
+    user = User.objects.get(wx_openid=request.GET.get('uid', None))
+  except:
+    return HttpResponse(json.dumps(dict(status='fail', errorMessage='用户不存在', credits=0)), content_type="application/json")
+  # 判断签名是否正确
   sign = request.GET.get('sign', None)
-  print uid, credits, appKey, timestamp, description, orderNum, otype, facePrice, actualPrice, ip, waitAudit, params, sign
-  params = dict(status='ok', errorMessage='兑换成功', credits=99, bizId=timestamp)
+  params = utils.request2dict(request.GET, ['appKey', 'uid', 'credits', 'timestamp', 'description', 'orderNum', \
+    'type', 'facePrice', 'actualPrice', 'ip', 'waitAudit', 'params'])
+  t_sign = utils.getSignStr(params, DB_APPSECRET)
+  print sign, t_sign
+  if sign != t_sign:
+    return HttpResponse(json.dumps(dict(status='fail', errorMessage='签名错误', credits=0)), content_type="application/json")
+  # appKey = request.GET.get('appKey', None)
+  # # 创建一个新订单
+  # order = Order(user=user)
+  # order.credits = request.GET.get('credits', None)
+  # order.timestamp = request.GET.get('timestamp', None)
+  # order.description = request.GET.get('description', None)
+  # order.orderNum = request.GET.get('orderNum', None)
+  # order.otype = request.GET.get('type', None)
+  # order.facePrice = request.GET.get('facePrice', None)
+  # order.actualPrice = request.GET.get('actualPrice', None)
+  # order.ip = request.GET.get('ip', None)
+  # order.waitAudit = request.GET.get('waitAudit', None)
+  # order.params = request.GET.get('params', None)
+  # order.save()
+  # # 更新用户积分
+  # user.credits = user.credits - order.credits
+  # user.save()
+  params = dict(status='ok', errorMessage='兑换成功', credits=0, bizId=request.GET.get('orderNum'))
   return HttpResponse(json.dumps(params), content_type="application/json")
 
 def notify(request):

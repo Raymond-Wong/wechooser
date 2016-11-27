@@ -9,7 +9,7 @@ class User(models.Model):
   province = models.CharField(max_length=50, default='')
   country = models.CharField(max_length=50, default='')
   headimgurl = models.TextField(null=True)
-  credits = models.PositiveIntegerField(default=0)
+  credits = models.PositiveIntegerField(default=100)
 
 ORDER_STATUS = ((1, u'processing'), (2, u'ok'), (3, u'fail'))
 class Order(models.Model):

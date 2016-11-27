@@ -20,3 +20,11 @@ def filterParam(params):
     if not params[k]:
       params.pop(k)
   return params
+
+# 将请求中的参数变成字典
+def request2dict(request, keys):
+  ret = {}
+  for k in keys:
+    if request.get(k, None):
+      ret[k] = request.get(k, None)
+  return ret
