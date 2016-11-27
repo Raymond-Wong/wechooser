@@ -9,7 +9,7 @@ def getSignStr(p, appSecret):
   params['appSecret'] = appSecret
   params = sorted(params.iteritems(), key=lambda x:x[0], reverse=False)
   paramsList = map(lambda x:x[1], params)
-  sortedParamsStr = ''.join(paramsList)
+  sortedParamsStr = ''.join(map(lambda x:str(x), paramsList))
   encoder = hashlib.md5()
   encoder.update(sortedParamsStr)
   return encoder.hexdigest()
