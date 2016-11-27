@@ -15,18 +15,21 @@ from django.views.decorators.csrf import csrf_exempt
 
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined
+from models import User, Order
+from wechooser.settings import DB_APPID, DB_ADDSECRET
 import utils
 
 @wx_logined
 def autoLogin(request):
+  user = User.objects.get(wx_openid=request.session['user'])
   params = {}
-  params['uid'] = 'test001'
-  params['credits'] = '100'
-  params['appKey'] = 'xQQjsycj8jSvNCorMkMkCFSZnqK'
+  params['uid'] = user.wx_openid
+  params['credits'] = user.credits
+  params['appKey'] = DB_APPID
   params['timestamp'] = str(long(time.time() * 1000))
   params['redirect'] = request.GET.get('dbredirect', None)
   params = utils.filterParam(params)
-  params['sign'] = utils.getSignStr(params, '4PHcHe2h6myutohuwqywuMHNGYMp')
+  params['sign'] = utils.getSignStr(params, DB_ADDSECRET)
   return redirect('http://www.duiba.com.cn/autoLogin/autologin?%s' % urllib.urlencode(params))
 
 def debuctCredit(request):

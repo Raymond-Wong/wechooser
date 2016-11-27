@@ -6,6 +6,8 @@ from os import environ
 WX_APPID = 'wx466a0c7c6871bc8e'
 WX_SECRET = 'f8e89f8e1f52cf8d8eecf3cef012ee81'
 WX_TOKEN = 'wechooser'
+DB_APPID = 'xQQjsycj8jSvNCorMkMkCFSZnqK'
+DB_APPSECRET = '4PHcHe2h6myutohuwqywuMHNGYMp'
 
 
 REMOTE = not environ.get("APP_NAME", "")
