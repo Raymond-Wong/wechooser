@@ -115,7 +115,7 @@ def updateTokenHandler(request):
   except Exception, e:
     return HttpResponse(Response(c=-2, m='未知错误: %s' % e).toJson(), content_type='application/json')
 
-def login(request, view):
+def loginHandler(request, view):
   # 如果session中已经保存了用户信息，则不用重复获取用户信息
   if request.session.has_key('user'):
     return view(request)
