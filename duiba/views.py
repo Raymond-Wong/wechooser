@@ -16,7 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 from wechooser.utils import Response, send_request
 import utils
 
-def getLoginUrl(request):
+def autoLogin(request):
   params = {}
   params['uid'] = 'test001'
   params['credits'] = '100'
@@ -44,3 +44,14 @@ def debuctCredit(request):
   print uid, credits, appKey, timestamp, description, orderNum, otype, facePrice, actualPrice, ip, waitAudit, params, sign
   params = dict(status='fail', errorMessage='测试接口', credits=100)
   return HttpResponse(json.dumps(params), content_type="application/json")
+
+def notify(request):
+  appKey = request.GET.get('appKey', None)
+  timestamp = request.GET.get('timestamp', None)
+  success = request.GET.get('success', False)
+  errorMessage = request.GET.get('errorMessage', None)
+  orderNum = request.GET.get('orderNum', None)
+  bizId = request.GET.get('bizId', None)
+  sign = request.GET.get('sign', None)
+  print appKey, timestamp, success, errorMessage, orderNum, bizId, sign
+  return HttpResponse('ok')

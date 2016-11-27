@@ -6,6 +6,7 @@ import views
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-  url(r'getLoginUrl', views.getLoginUrl, name='getLoginUrl'),
+  url(r'autoLogin', views.autoLogin, name='autoLogin'),
   url(r'debuctCredit', views.debuctCredit, name='debuctCredit'),
+  url(r'notify', views.notify, name='notify'),
 )
