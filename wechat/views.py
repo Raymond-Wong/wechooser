@@ -162,5 +162,5 @@ def loginHandler(request, view):
     user.headimgurl = userInfo['headimgurl']
     user.save()
     print 'openid: %s, nickname: %s, id: %s, invite_code: %s' % (openid, userInfo['nickname'], user.id, user.invite_code)
-  request.session['user'] = user.invite_code
+  request.session['user'] = user.wx_openid
   return view(request)
