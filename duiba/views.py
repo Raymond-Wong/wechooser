@@ -29,7 +29,7 @@ def autoLogin(request):
   params['timestamp'] = str(long(time.time() * 1000))
   params['redirect'] = request.GET.get('dbredirect', None)
   params = utils.filterParam(params)
-  params['sign'] = utils.getSignStr(params, DB_ADDSECRET)
+  params['sign'] = utils.getSignStr(params, DB_APPSECRET)
   return redirect('http://www.duiba.com.cn/autoLogin/autologin?%s' % urllib.urlencode(params))
 
 def debuctCredit(request):
