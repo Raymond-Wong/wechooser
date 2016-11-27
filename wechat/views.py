@@ -132,7 +132,6 @@ def loginHandler(request, view):
   params['secret'] = APPSECRET
   params['code'] = code
   params['grant_type'] = 'authorization_code'
-  print params
   res = wechooser.utils.send_request('api.weixin.qq.com', '/sns/oauth2/access_token', 'GET', params=params)
   if not res[0]:
     return HttpResponse(Response(c=1, m="login failed: get access token failed").toJson(), content_type='application/json')
@@ -162,6 +161,6 @@ def loginHandler(request, view):
     user.country = userInfo['country']
     user.headimgurl = userInfo['headimgurl']
     user.save()
-    print 'openid: %s, nickname: %s, id: %s, invite_code: %s' % (openid, userInfo['nickname'], user.id, user.invite_code)
+    print 'openid: %s, nickname: %s, id: %s' % (openid, userInfo['nickname'], user.id)
   request.session['user'] = user.wx_openid
   return view(request)
