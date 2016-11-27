@@ -63,7 +63,7 @@ def debuctCredit(request):
   order.params = request.GET.get('params', None)
   order.save()
   # 更新用户积分
-  user.credits = user.credits - order.credits
+  user.credits = user.credits - int(order.credits)
   user.save()
   params = dict(status='ok', errorMessage='兑换成功', credits=user.credits, bizId=order.orderNum)
   return HttpResponse(json.dumps(params), content_type="application/json")
