@@ -14,6 +14,7 @@ from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, Http404
 from utils import *
 from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
 import wechat.utils
+import wechat.views
 
 APPID = WX_APPID
 APPSECRET = WX_SECRET
@@ -49,5 +50,5 @@ def is_logined(view):
 
 def wx_logined(view):
   def verified(request, *args, **kwargs):
-    return views.loginHandler(request, view, *args, **kwargs)
+    return wechat.views.loginHandler(request, view, *args, **kwargs)
   return verified
