@@ -42,5 +42,5 @@ def debuctCredit(request):
   params = request.GET.get('params', None)
   sign = request.GET.get('sign', None)
   print uid, credits, appKey, timestamp, description, orderNum, otype, facePrice, actualPrice, ip, waitAudit, params, sign
-  params = dict(status=fail, errorMessage='测试接口', credits=100)
+  params = dict(status='fail', errorMessage='测试接口', credits=100)
   return HttpResponse(json.dumps(params), content_type="application/json")
