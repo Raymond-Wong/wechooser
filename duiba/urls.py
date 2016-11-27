@@ -7,4 +7,5 @@ import views
 
 urlpatterns = patterns('',
   url(r'getLoginUrl', views.getLoginUrl, name='getLoginUrl'),
+  url(r'debuctCredit', views.debuctCredit, name='debuctCredit'),
 )
