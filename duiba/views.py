@@ -42,7 +42,7 @@ def debuctCredit(request):
   params = request.GET.get('params', None)
   sign = request.GET.get('sign', None)
   print uid, credits, appKey, timestamp, description, orderNum, otype, facePrice, actualPrice, ip, waitAudit, params, sign
-  params = dict(status='success', errorMessage='测试接口', credits=100, bizId=timestamp)
+  params = dict(status='ok', errorMessage='兑换成功', credits=99, bizId=timestamp)
   return HttpResponse(json.dumps(params), content_type="application/json")
 
 def notify(request):
