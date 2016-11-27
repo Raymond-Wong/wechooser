@@ -159,7 +159,7 @@ def loginHandler(request, view):
     user.province = userInfo['province']
     user.city = userInfo['city']
     user.country = userInfo['country']
-    user.headimgurl = userInfo['hedimgurl']
+    user.headimgurl = userInfo['headimgurl']
     user.save()
     print 'openid: %s, nickname: %s, id: %s, invite_code: %s' % (openid, userInfo['nickname'], user.id, user.invite_code)
   request.session['user'] = user.invite_code
