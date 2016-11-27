@@ -70,27 +70,26 @@ def debuctCredit(request):
 
 # 兑换成功后的通知处理
 def notify(request):
-  success = True if request.GET.get('success', 'false') == 'true' else False
-  print '74', success
-  # 检查签名
-  sign = request.GET.get('sign', None)
-  params = utils.request2dict(request.GET, \
-    ['appKey', 'timestamp', 'success', 'errorMessage', 'orderNum', 'bizId'])
-  t_sign = utils.getSignStr(params, DB_APPSECRET)
-  if sign != t_sign:
-    success = False
-  print '82', success
-  # 检查appKey
-  appKey = request.GET.get('appKey', None)
-  if appKey != DB_APPID:
-    success = False
-  print '87', success
   order = None
   try:
     order = Order.objects.get(orderNum=request.GET.get('orderNum', None))
   except:
+    return HttpResponse('fail')
+  # 如果订单已经处理过了就返回ok
+  if order.status != 1:
+    return HttpResponse('ok')
+  success = True if request.GET.get('success', 'false') == 'true' else False
+  # 检查签名
+  # sign = request.GET.get('sign', None)
+  # params = utils.request2dict(request.GET, \
+  #   ['appKey', 'timestamp', 'success', 'errorMessage', 'orderNum', 'bizId'])
+  # t_sign = utils.getSignStr(params, DB_APPSECRET)
+  # if sign != t_sign:
+  #   success = False
+  # 检查appKey
+  appKey = request.GET.get('appKey', None)
+  if appKey != DB_APPID:
     success = False
-  print '93', success
   if success:
     order.status = 2
   else:
