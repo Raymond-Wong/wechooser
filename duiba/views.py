@@ -16,7 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined
 from models import User, Order
-from wechooser.settings import DB_APPID, DB_ADDSECRET
+from wechooser.settings import DB_APPID, DB_APPSECRET
 import utils
 
 @wx_logined
