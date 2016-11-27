@@ -132,7 +132,7 @@ def loginHandler(request, view):
   params['secret'] = APPSECRET
   params['code'] = code
   params['grant_type'] = 'authorization_code'
-  res = send_request('api.weixin.qq.com', '/sns/oauth2/access_token', 'GET', params=params)
+  res = wechooser.utils.send_request('api.weixin.qq.com', '/sns/oauth2/access_token', 'GET', params=params)
   if not res[0]:
     return HttpResponse(Response(c=1, m="login failed: get access token failed").toJson(), content_type='application/json')
   access_token = res[1]['access_token']
@@ -148,7 +148,7 @@ def loginHandler(request, view):
     params['access_token'] = access_token
     params['openid'] = openid
     params['lang'] = 'zh_CN'
-    res = send_request('api.weixin.qq.com', '/sns/userinfo', 'GET', params=params)
+    res = wechooser.utils.send_request('api.weixin.qq.com', '/sns/userinfo', 'GET', params=params)
     if not res[0]:
       return HttpResponse(Response(c=2, m="login failed: get user from wechat info failed").toJson(), content_type='application/json')
     userInfo = res[1]
