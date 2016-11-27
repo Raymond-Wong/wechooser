@@ -68,13 +68,31 @@ def debuctCredit(request):
   params = dict(status='ok', errorMessage='兑换成功', credits=user.credits, bizId=order.orderNum)
   return HttpResponse(json.dumps(params), content_type="application/json")
 
+# 兑换成功后的通知处理
 def notify(request):
-  appKey = request.GET.get('appKey', None)
-  timestamp = request.GET.get('timestamp', None)
-  success = request.GET.get('success', False)
-  errorMessage = request.GET.get('errorMessage', None)
-  orderNum = request.GET.get('orderNum', None)
-  bizId = request.GET.get('bizId', None)
+  success = True if request.GET.get('success', 'false') == 'true' else False
+  # 检查签名
   sign = request.GET.get('sign', None)
-  print appKey, timestamp, success, errorMessage, orderNum, bizId, sign
-  return HttpResponse('ok')
+  params = utils.request2dict(request.GET, \
+    ['appKey', 'timestamp', 'success', 'errorMessage', 'orderNum', 'bizId'])
+  t_sign = utils.getSignStr(params, DB_APPSECRET)
+  if sign != t_sign:
+    success = False
+  # 检查appKey
+  appKey = request.GET.get('appKey', None)
+  if appKey != DB_APPID:
+    success = False
+  order = None
+  try:
+    order = Order.objects.get(orderNum=request.GET.get('orderNum', None))
+  except:
+    success = False
+  if success:
+    order.status = 2
+  else:
+    order.status = 3
+    user = order.user
+    user.credits = user.credits + order.credits
+    user.save()
+  order.save()
+  return HttpResponse(order.get_status_display())
