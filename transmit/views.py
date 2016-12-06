@@ -4,6 +4,7 @@ sys.path.append('..')
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import urllib
+from PIL import Image, ImageDraw, ImageFont
 import qrcode
 
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
