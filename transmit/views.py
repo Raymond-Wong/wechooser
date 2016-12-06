@@ -33,7 +33,7 @@ def getNameCard(request):
   # 将用户头像和背景图片结合
   bg = processer.combine(bg, headimg, (80, 80), (184, 202))
   # 在上面得到的背景图片的某个垂直位置放置一个水平居中的用户昵称
-  font_path = '%s/static/transmit/fonts/Deng.ttf' % sys.path[0]
+  font_path = '%s/static/transmit/fonts/deng.ttf' % sys.path[0]
   print user.nickname, type(user.nickname), type(u'用户')
   bg = processer.center_text(bg, u'用户昵称', 290, (20, 20), font_size=24, font_color="white", font=font_path)
   # 根据用户id生成一个二维码
