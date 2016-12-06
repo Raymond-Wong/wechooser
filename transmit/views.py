@@ -45,4 +45,4 @@ def getNameCard(request):
   print utils.get_head_image(user.headimgurl)
   img = headimg
   img = utils.image_to_base64(utils.get_head_image(user.headimgurl))
-  return render_to_response('transmit/showImage.html', {'image' : headimg})
+  return render_to_response('transmit/showImage.html', {'image' : img})
