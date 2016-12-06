@@ -3,7 +3,6 @@ import urllib2
 import cookielib
 import base64
 import random
-import qrcode
 import StringIO
 from PIL import Image, ImageDraw, ImageFont
 
