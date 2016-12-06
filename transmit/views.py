@@ -24,5 +24,5 @@ import utils
 def getNameCard(request):
   user = User.objects.get(wx_openid=request.session['user'])
   # 获取用户头像
-  headimg = utils.image_to_base64(get_head_image(user.headimgurl))
+  headimg = utils.image_to_base64(utils.get_head_image(user.headimgurl))
   return HttpResponse(headimg)
