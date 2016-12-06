@@ -30,7 +30,7 @@ def getNameCard(request):
   bg_path = '%s/static/transmit/images/bg.jpg' % sys.path[0]
   bg = Image.open(bg_path).convert('RGBA')
   # 将用户头像和背景图片结合
-  bg = processer.combine(bg, img, (80, 80), (184, 202))
+  bg = processer.combine(bg, headimg, (80, 80), (184, 202))
   # 在上面得到的背景图片的某个垂直位置放置一个水平居中的用户昵称
   bg = processer.center_text(bg, user.nickname, 290, (20, 20), font_size=24, font_color="white")
   # 根据用户id生成一个二维码
