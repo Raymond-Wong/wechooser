@@ -118,6 +118,7 @@ def updateTokenHandler(request):
 def loginHandler(request, view):
   # 如果session中已经保存了用户信息，则不用重复获取用户信息
   if request.session.has_key('user'):
+    print request.session['user']
     return view(request)
   # 获取code
   code = request.GET.get('code', None)
@@ -125,7 +126,6 @@ def loginHandler(request, view):
     url = 'http://' + request.get_host() + request.get_full_path()
     url = quote(url, safe='')
     url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + APPID + '&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
-    print '*' * 20, url
     return redirect(url)
   # 用code换取access token
   params = {}
