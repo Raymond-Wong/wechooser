@@ -15,7 +15,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined
-from models import Order
 from wechat.models import User
 from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
 import utils
