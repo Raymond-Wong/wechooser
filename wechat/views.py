@@ -118,7 +118,6 @@ def updateTokenHandler(request):
 def loginHandler(request, view):
   # 如果session中已经保存了用户信息，则不用重复获取用户信息
   if request.session.has_key('user'):
-    print request.session['user']
     return view(request)
   # 获取code
   code = request.GET.get('code', None)
