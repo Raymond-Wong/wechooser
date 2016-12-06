@@ -22,7 +22,7 @@ import utils
 def getNameCard(request):
   user = User.objects.get(wx_openid=request.session['user'])
   # 获取用户头像
-  headimg = utils.string_to_image(utils.get_head_image(user.headimgurl, 64))
+  headimg = utils.string_to_image(utils.get_head_image(user.headimgurl, 96))
   # 申明一个图像处理对象
   processer = utils.PyImageProcesser()
   # 将用户头像转换成圆形
