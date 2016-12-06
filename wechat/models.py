@@ -35,3 +35,14 @@ class MenuReply(models.Model):
   mid = models.TextField()
   # 回复
   template = models.TextField(blank=False)
+
+GENDER = ((1, u'male'), (2, u'female'))
+class User(models.Model):
+  wx_openid = models.CharField(max_length=50, unique=True)
+  nickname = models.CharField(max_length=50, default='')
+  sex = models.PositiveIntegerField(choices=GENDER, default=1)
+  city = models.CharField(max_length=50, default='')
+  province = models.CharField(max_length=50, default='')
+  country = models.CharField(max_length=50, default='')
+  headimgurl = models.TextField(null=True)
+  credits = models.PositiveIntegerField(default=100)
