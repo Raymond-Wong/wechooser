@@ -1,8 +1,8 @@
 Metadata-Version: 2.0
 Name: Pillow
-Version: 2.3.2
+Version: 2.5.2
 Summary: Python Imaging Library (Fork)
-Home-page: http://python-imaging.github.io/
+Home-page: http://python-pillow.github.io/
 Author: Alex Clark (fork author)
 Author-email: aclark@aclark.net
 License: Standard PIL License
@@ -21,16 +21,18 @@ Classifier: Programming Language :: Python :: 2.7
 Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.2
 Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
 
 Pillow
 ======
 
 *Python Imaging Library (Fork)*
 
-Pillow is the "friendly" PIL fork by Alex Clark and Contributors. PIL is the Python Imaging Library by Fredrik Lundh and Contributors.
+Pillow is the "friendly" PIL fork by Alex Clark and Contributors. PIL is the Python Imaging Library by Fredrik Lundh and Contributors. For more information, please `read the documentation <http://pillow.readthedocs.org/>`_.
 
-.. image:: https://travis-ci.org/python-imaging/Pillow.png
-   :target: https://travis-ci.org/python-imaging/Pillow
+.. image:: https://travis-ci.org/python-pillow/Pillow.svg?branch=master
+   :target: https://travis-ci.org/python-pillow/Pillow
+   :alt: Travis CI build status
 
 .. image:: https://pypip.in/v/Pillow/badge.png
     :target: https://pypi.python.org/pypi/Pillow/
@@ -40,19 +42,250 @@ Pillow is the "friendly" PIL fork by Alex Clark and Contributors. PIL is the Pyt
     :target: https://pypi.python.org/pypi/Pillow/
     :alt: Number of PyPI downloads
 
-The documentation is hosted at http://pillow.readthedocs.org/. It contains installation instructions, tutorials, reference, compatibility details, and more.
+.. image:: https://coveralls.io/repos/python-pillow/Pillow/badge.png?branch=master
+  :target: https://coveralls.io/r/python-pillow/Pillow?branch=master
+
 
 Changelog (Pillow)
 ==================
 
-2.3.2 (2014-08-13)
+2.5.2 (2014-08-13)
 ------------------
 
 - Fixed CVE-2014-3589, a DOS in the IcnsImagePlugin
   [Andrew Drake]
 
+2.5.1 (2014-07-10)
+------------------
+
+- Fixed install issue if Multiprocessing.Pool is not available
+  [wiredfool]
+
+- 32bit mult overflow fix #782
+  [wiredfool]
+
+2.5.0 (2014-07-01)
+------------------
+
+- Imagedraw rewrite
+  [terseus, wiredfool]
+
+- Add support for multithreaded test execution
+  [wiredfool]
+
+- Prevent shell injection #748
+  [mbrown1413, wiredfool]
+
+- Support for Resolution in BMP files #734
+  [gcq]
+
+- Fix error in setup.py for Python 3
+  [matthew-brett]
+
+- Pyroma fix and add Python 3.4 to setup metadata #742
+  [wirefool]
+
+- Top level flake8 fixes #741
+  [aclark]
+
+- Remove obsolete Animated Raster Graphics (ARG) support
+  [hugovk]
+
+- Fix test_imagedraw failures #727
+  [cgohlke]
+
+- Fix AttributeError: class Image has no attribute 'DEBUG' #726
+  [cgohlke]
+
+- Fix msvc warning: 'inline' : macro redefinition #725
+  [cgohlke]
+
+- Cleanup #654
+  [dvska, hugovk, wiredfool]
+
+- 16-bit monochrome support for JPEG2000
+  [videan42]
+
+- Fixed ImagePalette.save
+  [brightpisces]
+
+- Support JPEG qtables
+  [csinchok]
+
+- Add binary morphology addon
+  [dov, wiredfool]
+
+- Decompression bomb protection
+  [hugovk]
+
+- Put images in a single directory
+  [hugovk]
+
+- Support OpenJpeg 2.1
+  [al45tair]
+
+- Remove unistd.h #include for all platforms
+  [wiredfool]
+
+- Use unittest for tests
+  [hugovk]
+
+- ImageCms fixes
+  [hugovk]
+
+- Added more ImageDraw tests
+  [hugovk]
+
+- Added tests for Spider files
+  [hugovk]
+
+- Use libtiff to write any compressed tiff files
+  [wiredfool]
+
+- Support for pickling Image objects
+  [hugovk]
+
+- Fixed resolution handling for EPS thumbnails
+  [eliempje]
+
+- Fixed rendering of some binary EPS files (Issue #302)
+  [eliempje]
+
+- Rename variables not to use built-in function names
+  [hugovk]
+
+- Ignore junk JPEG markers
+  [hugovk]
+
+- Change default interpolation for Image.thumbnail to Image.ANTIALIAS
+  [hugovk]
+
+- Add tests and fixes for saving PDFs
+  [hugovk]
+
+- Remove transparency resource after P->RGBA conversion
+  [hugovk]
+
+- Clean up preprocessor cruft for Windows
+  [CounterPillow]
+
+- Adjust Homebrew freetype detection logic
+  [jacknagel]
+
+- Added Image.close, context manager support.
+  [wiredfool]
+
+- Added support for 16 bit PGM files.
+  [wiredfool]
+
+- Updated OleFileIO to version 0.30 from upstream
+  [hugovk]
+
+- Added support for additional TIFF floating point format
+  [Hijackal]
+
+- Have the tempfile use a suffix with a dot
+  [wiredfool]
+
+- Fix variable name used for transparency manipulations
+  [nijel]
+
+2.4.0 (2014-04-01)
+------------------
+
+- Indexed Transparency handled for conversions between L, RGB, and P modes. Fixes #510
+  [wiredfool]
+
+- Conversions enabled from RGBA->P, Fixes #544
+  [wiredfool]
+
+- Improved icns support
+  [al45tair]
+
+- Fix libtiff leaking open files, fixes #580
+  [wiredfool]
+
+- Fixes for Jpeg encoding in Python 3, fixes #577
+  [wiredfool]
+
+- Added support for JPEG 2000
+  [al45tair]
+
+- Add more detailed error messages to Image.py
+  [larsmans]
+
+- Avoid conflicting _expand functions in PIL & MINGW, fixes #538
+  [aclark]
+
+- Merge from Philippe Lagadec’s OleFileIO_PL fork
+  [vadmium]
+
+- Fix ImageColor.getcolor
+  [homm]
+
+- Make ICO files work with the ImageFile.Parser interface, fixes #522
+  [wiredfool]
+
+- Handle 32bit compiled python on 64bit architecture
+  [choppsv1]
+
+- Fix support for characters >128 using .pcf or .pil fonts in Py3k. Fixes #505
+  [wiredfool]
+
+- Skip CFFI test earlier if it's not installed
+  [wiredfool]
+
+- Fixed opening and saving odd sized .pcx files, fixes #523
+  [wiredfool]
+
+- Fixed palette handling when converting from mode P->RGB->P
+  [d_schmidt]
+
+- Fixed saving mode P image as a PNG with transparency = palette color 0
+  [d-schmidt]
+
+- Improve heuristic used when saving progressive and optimized JPEGs with high quality values
+  [e98cuenc]
+
+- Fixed DOS with invalid palette size or invalid image size in BMP file
+  [wiredfool]
+
+- Added support for BMP version 4 and 5
+  [eddwardo, wiredfool]
+
+- Fix segfault in getfont when passed a memory resident font
+  [wiredfool]
+
+- Fix crash on Saving a PNG when icc-profile is None
+  [brutasse]
+
+- Cffi+Python implementation of the PixelAccess object
+  [wiredfool]
+
+- PixelAccess returns unsigned ints for I16 mode
+  [wiredfool]
+
+- Minor patch on booleans + Travis
+  [sciunto]
+
+- Look in multiarch paths in GNU platforms
+  [pinotree]
+
+- Add arch support for pcc64, s390, s390x, armv7l, aarch64
+  [manisandro]
+
+- Add arch support for ppc
+  [wiredfool]
+
+- Correctly quote file names for WindowsViewer command
+  [cgohlke]
+
+- Prefer homebrew freetype over X11 freetype (but still allow both)
+  [dmckeone]
+
 2.3.1 (2014-03-14)
 ------------------
+
 - Fix insecure use of tempfile.mktemp (CVE-2014-1932 CVE-2014-1933)
   [wiredfool]
 
@@ -174,7 +407,7 @@ Changelog (Pillow)
   [nikmolnar]
 
 - Fix for encoding of b_whitespace, similar to closed issue #272
-  [mhogg] 
+  [mhogg]
 
 - Fix #273: Add numpy array interface support for 16 and 32 bit integer modes
   [cgohlke]
@@ -331,10 +564,14 @@ Changelog (Pillow)
 2.0.0 (2013-03-15)
 ------------------
 
+.. Note:: Special thanks to Christoph Gohlke and Eric Soroos for assisting with a pre-PyCon 2013 release!
+
+- Many other bug fixes and enhancements by many other people. 
+
 - Add Python 3 support. (Pillow >= 2.0.0 supports Python 2.6, 2.7, 3.2, 3.3. Pillow < 2.0.0 supports Python 2.4, 2.5, 2.6, 2.7.)
   [fluggo]
 
-- Add PyPy support (experimental, please see: https://github.com/python-imaging/Pillow/issues/67)
+- Add PyPy support (experimental, please see: https://github.com/python-pillow/Pillow/issues/67)
 
 - Add WebP support.
   [lqs]
@@ -353,10 +590,6 @@ Changelog (Pillow)
 
 - Added support for PNG images with transparency palette.
   [d-schmidt]
-
-- Many other bug fixes and enhancements by many other people (see commit log and/or docs/CONTRIBUTORS.txt).
-
-- Special thanks to Christoph Gohlke and Eric Soroos for rallying around the effort to get a release out for PyCon 2013.
 
 1.7.8 (2012-11-01)
 ------------------
@@ -430,44 +663,55 @@ Changelog (Pillow)
   [elro]
 
 - Doc fixes
+  [aclark]
 
 1.5 (11/28/2010)
 ----------------
 
 - Module and package fixes
+  [aclark]
 
 1.4 (11/28/2010)
 ----------------
 
 - Doc fixes
+  [aclark]
 
 1.3 (11/28/2010)
 ----------------
 
 - Add support for /lib64 and /usr/lib64 library directories on Linux
+  [aclark]
+
 - Doc fixes
+  [aclark]
 
 1.2 (08/02/2010)
 ----------------
 
-- On OS X also check for freetype2 in the X11 path [jezdez]
-- Doc fixes [aclark]
+- On OS X also check for freetype2 in the X11 path
+  [jezdez]
+
+- Doc fixes
+  [aclark]
 
 1.1 (07/31/2010)
 ----------------
 
 - Removed setuptools_hg requirement
+  [aclark]
+
 - Doc fixes
+  [aclark]
 
 1.0 (07/30/2010)
 ----------------
 
-- Forked PIL based on Hanno Schlichting's re-packaging
-  (http://dist.plone.org/thirdparty/PIL-1.1.7.tar.gz)
+- Remove support for ``import Image``, etc. from the standard namespace. ``from PIL import Image`` etc. now required.
+- Forked PIL based on `Hanno Schlichting's re-packaging <http://dist.plone.org/thirdparty/PIL-1.1.7.tar.gz>`_
+  [aclark]
 
-- Remove support for importing from the standard namespace
-
-.. Note:: What follows is the original PIL 1.1.7 CHANGES file contents
+.. Note:: What follows is the original PIL 1.1.7 CHANGES
 
 ::
 
