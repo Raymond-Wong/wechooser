@@ -1,3 +1,6 @@
+name: wechooser
+version: 1
+
 libraries:
 - name: "django"
   version: "1.5"
