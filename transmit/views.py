@@ -23,10 +23,10 @@ def getNameCard(request):
   user = User.objects.get(wx_openid=request.session['user'])
   # 获取用户头像
   headimg = utils.string_to_image(utils.get_head_image(user.headimgurl))
-  # 申明一个图像处理对象
-  processer = utils.PyImageProcesser()
-  # 将用户头像转换成圆形
-  headimg = processer.to_circle(headimg)
+  # # 申明一个图像处理对象
+  # processer = utils.PyImageProcesser()
+  # # 将用户头像转换成圆形
+  # headimg = processer.to_circle(headimg)
   # # 打开背景图片
   # bg_path = '%s/static/transmit/images/bg.jpg' % sys.path[0]
   # bg = Image.open(bg_path).convert('RGBA')
