@@ -42,6 +42,7 @@ def getNameCard(request):
   # qr_img = coder.make_image()
   # # 将二维码和背景图片合并
   # bg = processer.combine(bg, qr_img, resize=(120, 120), pos=(165, 495), alpha=False)
+  print utils.get_head_image(user.headimgurl)
   img = headimg
   img = utils.image_to_base64(utils.get_head_image(user.headimgurl))
   return render_to_response('transmit/showImage.html', {'image' : headimg})
