@@ -8,6 +8,7 @@ import views
 urlpatterns = patterns('',
   url(r'^wechat', include('wechat.urls')),
   url(r'^duiba', include('duiba.urls')),
+  url(r'^transmit', include('transmit.urls')),
   url(r'', include('customize.urls')),
   url(r'(.+).txt', views.verify),
 )
