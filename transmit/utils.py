@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import urllib2
 import cookielib
+import base64
 
 # 根据url获取用户头像
 def get_head_image(url):
