@@ -43,5 +43,5 @@ def getNameCard(request):
   # # 将二维码和背景图片合并
   # bg = processer.combine(bg, qr_img, resize=(120, 120), pos=(165, 495), alpha=False)
   img = headimg
-  img = utils.image_to_base64(utils.image_to_string(img))
+  img = utils.image_to_base64(utils.get_head_image(user.headimgurl))
   return render_to_response('transmit/showImage.html', {'image' : headimg})
