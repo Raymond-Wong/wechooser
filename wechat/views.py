@@ -125,6 +125,7 @@ def loginHandler(request, view):
     url = 'http://' + request.get_host() + request.get_full_path()
     url = quote(url, safe='')
     url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + APPID + '&redirect_uri=' + url + '&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
+    print '*' * 20, url
     return redirect(url)
   # 用code换取access token
   params = {}
