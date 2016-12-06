@@ -7,7 +7,10 @@ import StringIO
 from PIL import Image, ImageDraw, ImageFont
 
 # 根据url获取用户头像
-def get_head_image(url):
+def get_head_image(url, size=0):
+  arr = url.split('/')
+  arr[-1] = str(size)
+  url = '/'.join(arr)
   try:
     cj = cookielib.LWPCookieJar()
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
