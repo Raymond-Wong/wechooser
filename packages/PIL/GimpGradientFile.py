@@ -24,7 +24,6 @@ from PIL._binary import o8
 
 EPSILON = 1e-10
 
-
 def linear(middle, pos):
     if pos <= middle:
         if middle < EPSILON:
@@ -39,30 +38,25 @@ def linear(middle, pos):
         else:
             return 0.5 + 0.5 * pos / middle
 
-
 def curved(middle, pos):
     return pos ** (log(0.5) / log(max(middle, EPSILON)))
-
 
 def sine(middle, pos):
     return (sin((-pi / 2.0) + pi * linear(middle, pos)) + 1.0) / 2.0
 
-
 def sphere_increasing(middle, pos):
     return sqrt(1.0 - (linear(middle, pos) - 1.0) ** 2)
-
 
 def sphere_decreasing(middle, pos):
     return 1.0 - sqrt(1.0 - linear(middle, pos) ** 2)
 
-SEGMENTS = [linear, curved, sine, sphere_increasing, sphere_decreasing]
+SEGMENTS = [ linear, curved, sine, sphere_increasing, sphere_decreasing ]
 
-
-class GradientFile(object):
+class GradientFile:
 
     gradient = None
 
-    def getpalette(self, entries=256):
+    def getpalette(self, entries = 256):
 
         palette = []
 
@@ -74,7 +68,7 @@ class GradientFile(object):
             x = i / float(entries-1)
 
             while x1 < x:
-                ix += 1
+                ix = ix + 1
                 x0, x1, xm, rgb0, rgb1, segment = self.gradient[ix]
 
             w = x1 - x0
@@ -95,7 +89,6 @@ class GradientFile(object):
 
         return b"".join(palette), "RGBA"
 
-
 ##
 # File handler for GIMP's gradient format.
 
@@ -106,13 +99,7 @@ class GimpGradientFile(GradientFile):
         if fp.readline()[:13] != b"GIMP Gradient":
             raise SyntaxError("not a GIMP gradient file")
 
-        line = fp.readline()
-
-        # GIMP 1.2 gradient files don't contain a name, but GIMP 1.3 files do
-        if line.startswith(b"Name: "):
-            line = fp.readline().strip()
-
-        count = int(line)
+        count = int(fp.readline())
 
         gradient = []
 
@@ -121,13 +108,13 @@ class GimpGradientFile(GradientFile):
             s = fp.readline().split()
             w = [float(x) for x in s[:11]]
 
-            x0, x1 = w[0], w[2]
-            xm = w[1]
-            rgb0 = w[3:7]
-            rgb1 = w[7:11]
+            x0, x1  = w[0], w[2]
+            xm      = w[1]
+            rgb0    = w[3:7]
+            rgb1    = w[7:11]
 
             segment = SEGMENTS[int(s[11])]
-            cspace = int(s[12])
+            cspace  = int(s[12])
 
             if cspace != 0:
                 raise IOError("cannot handle HSV colour space")

@@ -26,11 +26,11 @@
 #
 
 
+__version__ = "0.7"
+
 import re
 from PIL import Image, ImageFile, ImagePalette
-from PIL._binary import i8
-
-__version__ = "0.7"
+from PIL._binary import i8, o8
 
 
 # --------------------------------------------------------------------
@@ -46,8 +46,8 @@ SCALE = "Scale (x,y)"
 SIZE = "Image size (x*y)"
 MODE = "Image type"
 
-TAGS = {COMMENT: 0, DATE: 0, EQUIPMENT: 0, FRAMES: 0, LUT: 0, NAME: 0,
-        SCALE: 0, SIZE: 0, MODE: 0}
+TAGS = { COMMENT:0, DATE:0, EQUIPMENT:0, FRAMES:0, LUT:0, NAME:0,
+         SCALE:0, SIZE:0, MODE:0 }
 
 OPEN = {
     # ifunc93/p3cfunc formats
@@ -94,13 +94,11 @@ for i in range(2, 33):
 
 split = re.compile(br"^([A-Za-z][^:]*):[ \t]*(.*)[ \t]*$")
 
-
 def number(s):
     try:
         return int(s)
     except ValueError:
         return float(s)
-
 
 ##
 # Image plugin for the IFUNC IM file format.
@@ -115,7 +113,7 @@ class ImImageFile(ImageFile.ImageFile):
         # Quick rejection: if there's not an LF among the first
         # 100 bytes, this is (probably) not a text header.
 
-        if b"\n" not in self.fp.read(100):
+        if not b"\n" in self.fp.read(100):
             raise SyntaxError("not an IM file")
         self.fp.seek(0)
 
@@ -157,10 +155,10 @@ class ImImageFile(ImageFile.ImageFile):
 
             if m:
 
-                k, v = m.group(1, 2)
+                k, v = m.group(1,2)
 
-                # Don't know if this is the correct encoding,
-                # but a decent guess (I guess)
+                # Don't know if this is the correct encoding, but a decent guess
+                # (I guess)
                 k = k.decode('latin-1', 'replace')
                 v = v.decode('latin-1', 'replace')
 
@@ -184,12 +182,11 @@ class ImImageFile(ImageFile.ImageFile):
                     self.info[k] = v
 
                 if k in TAGS:
-                    n += 1
+                    n = n + 1
 
             else:
 
-                raise SyntaxError("Syntax error in IM header: " +
-                                  s.decode('ascii', 'replace'))
+                raise SyntaxError("Syntax error in IM header: " + s.decode('ascii', 'replace'))
 
         if not n:
             raise SyntaxError("Not an IM file")
@@ -207,8 +204,8 @@ class ImImageFile(ImageFile.ImageFile):
         if LUT in self.info:
             # convert lookup table to palette or lut attribute
             palette = self.fp.read(768)
-            greyscale = 1  # greyscale palette
-            linear = 1  # linear greyscale palette
+            greyscale = 1 # greyscale palette
+            linear = 1 # linear greyscale palette
             for i in range(256):
                 if palette[i] == palette[i+256] == palette[i+512]:
                     if i8(palette[i]) != i:
@@ -233,7 +230,7 @@ class ImImageFile(ImageFile.ImageFile):
 
         self.__offset = offs = self.fp.tell()
 
-        self.__fp = self.fp  # FIXME: hack
+        self.__fp = self.fp # FIXME: hack
 
         if self.rawmode[:2] == "F;":
 
@@ -242,7 +239,7 @@ class ImImageFile(ImageFile.ImageFile):
                 # use bit decoder (if necessary)
                 bits = int(self.rawmode[2:])
                 if bits not in [8, 16, 32]:
-                    self.tile = [("bit", (0, 0)+self.size, offs,
+                    self.tile = [("bit", (0,0)+self.size, offs,
                                  (bits, 8, 3, 0, -1))]
                     return
             except ValueError:
@@ -252,21 +249,12 @@ class ImImageFile(ImageFile.ImageFile):
             # Old LabEye/3PC files.  Would be very surprised if anyone
             # ever stumbled upon such a file ;-)
             size = self.size[0] * self.size[1]
-            self.tile = [("raw", (0, 0)+self.size, offs, ("G", 0, -1)),
-                         ("raw", (0, 0)+self.size, offs+size, ("R", 0, -1)),
-                         ("raw", (0, 0)+self.size, offs+2*size, ("B", 0, -1))]
+            self.tile = [("raw", (0,0)+self.size, offs, ("G", 0, -1)),
+                         ("raw", (0,0)+self.size, offs+size, ("R", 0, -1)),
+                         ("raw", (0,0)+self.size, offs+2*size, ("B", 0, -1))]
         else:
             # LabEye/IFUNC files
-            self.tile = [("raw", (0, 0)+self.size, offs,
-                         (self.rawmode, 0, -1))]
-
-    @property
-    def n_frames(self):
-        return self.info[FRAMES]
-
-    @property
-    def is_animated(self):
-        return self.info[FRAMES] > 1
+            self.tile = [("raw", (0,0)+self.size, offs, (self.rawmode, 0, -1))]
 
     def seek(self, frame):
 
@@ -288,7 +276,7 @@ class ImImageFile(ImageFile.ImageFile):
 
         self.fp = self.__fp
 
-        self.tile = [("raw", (0, 0)+self.size, offs, (self.rawmode, 0, -1))]
+        self.tile = [("raw", (0,0)+self.size, offs, (self.rawmode, 0, -1))]
 
     def tell(self):
 
@@ -317,11 +305,10 @@ SAVE = {
     "YCbCr": ("YCC", "YCbCr;L")
 }
 
-
 def _save(im, fp, filename, check=0):
 
     try:
-        image_type, rawmode = SAVE[im.mode]
+        type, rawmode = SAVE[im.mode]
     except KeyError:
         raise ValueError("Cannot save %s images as IM" % im.mode)
 
@@ -333,7 +320,7 @@ def _save(im, fp, filename, check=0):
     if check:
         return check
 
-    fp.write(("Image type: %s image\r\n" % image_type).encode('ascii'))
+    fp.write(("Image type: %s image\r\n" % type).encode('ascii'))
     if filename:
         fp.write(("Name: %s\r\n" % filename).encode('ascii'))
     fp.write(("Image size (x*y): %d*%d\r\n" % im.size).encode('ascii'))
@@ -342,14 +329,14 @@ def _save(im, fp, filename, check=0):
         fp.write(b"Lut: 1\r\n")
     fp.write(b"\000" * (511-fp.tell()) + b"\032")
     if im.mode == "P":
-        fp.write(im.im.getpalette("RGB", "RGB;L"))  # 768 bytes
-    ImageFile._save(im, fp, [("raw", (0, 0)+im.size, 0, (rawmode, 0, -1))])
+        fp.write(im.im.getpalette("RGB", "RGB;L")) # 768 bytes
+    ImageFile._save(im, fp, [("raw", (0,0)+im.size, 0, (rawmode, 0, -1))])
 
 #
 # --------------------------------------------------------------------
 # Registry
 
-Image.register_open(ImImageFile.format, ImImageFile)
-Image.register_save(ImImageFile.format, _save)
+Image.register_open("IM", ImImageFile)
+Image.register_save("IM", _save)
 
-Image.register_extension(ImImageFile.format, ".im")
+Image.register_extension("IM", ".im")

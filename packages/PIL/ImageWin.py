@@ -17,36 +17,34 @@
 # See the README file for information on usage and redistribution.
 #
 
+import warnings
 from PIL import Image
 
 
-class HDC(object):
+class HDC:
     """
-    Wraps an HDC integer. The resulting object can be passed to the
+    Wraps a HDC integer. The resulting object can be passed to the
     :py:meth:`~PIL.ImageWin.Dib.draw` and :py:meth:`~PIL.ImageWin.Dib.expose`
     methods.
     """
     def __init__(self, dc):
         self.dc = dc
-
     def __int__(self):
         return self.dc
 
-
-class HWND(object):
+class HWND:
     """
-    Wraps an HWND integer. The resulting object can be passed to the
+    Wraps a HWND integer. The resulting object can be passed to the
     :py:meth:`~PIL.ImageWin.Dib.draw` and :py:meth:`~PIL.ImageWin.Dib.expose`
     methods, instead of a DC.
     """
     def __init__(self, wnd):
         self.wnd = wnd
-
     def __int__(self):
         return self.wnd
 
 
-class Dib(object):
+class Dib:
     """
     A Windows bitmap with the given mode and size.  The mode can be one of "1",
     "L", "P", or "RGB".
@@ -81,12 +79,13 @@ class Dib(object):
         if image:
             self.paste(image)
 
+
     def expose(self, handle):
         """
         Copy the bitmap contents to a device context.
 
-        :param handle: Device context (HDC), cast to a Python integer, or an
-                       HDC or HWND instance.  In PythonWin, you can use the
+        :param handle: Device context (HDC), cast to a Python integer, or a HDC
+                       or HWND instance.  In PythonWin, you can use the
                        :py:meth:`CDC.GetHandleAttrib` to get a suitable handle.
         """
         if isinstance(handle, HWND):
@@ -110,7 +109,7 @@ class Dib(object):
         necessary.
         """
         if not src:
-            src = (0, 0) + self.size
+            src = (0,0) + self.size
         if isinstance(handle, HWND):
             dc = self.image.getdc(handle)
             try:
@@ -120,6 +119,7 @@ class Dib(object):
         else:
             result = self.image.draw(handle, dst, src)
         return result
+
 
     def query_palette(self, handle):
         """
@@ -146,6 +146,7 @@ class Dib(object):
             result = self.image.query_palette(handle)
         return result
 
+
     def paste(self, im, box=None):
         """
         Paste a PIL image into the bitmap image.
@@ -165,6 +166,7 @@ class Dib(object):
         else:
             self.image.paste(im.im)
 
+
     def frombytes(self, buffer):
         """
         Load display memory contents from byte data.
@@ -174,6 +176,7 @@ class Dib(object):
         """
         return self.image.frombytes(buffer)
 
+
     def tobytes(self):
         """
         Copy display memory contents to bytes object.
@@ -182,17 +185,29 @@ class Dib(object):
         """
         return self.image.tobytes()
 
+    ##
+    # Deprecated aliases to frombytes & tobytes.
+
     def fromstring(self, *args, **kw):
-        raise NotImplementedError("fromstring() has been removed. " +
-                                  "Please use frombytes() instead.")
+        warnings.warn(
+            'fromstring() is deprecated. Please call frombytes() instead.',
+            DeprecationWarning,
+            stacklevel=2
+        )
+        return self.frombytes(*args, **kw)
 
-    def tostring(self, *args, **kw):
-        raise NotImplementedError("tostring() has been removed. " +
-                                  "Please use tobytes() instead.")
+    def tostring(self):
+        warnings.warn(
+            'tostring() is deprecated. Please call tobytes() instead.',
+            DeprecationWarning,
+            stacklevel=2
+        )
+        return self.tobytes()
 
+##
+# Create a Window with the given title size.
 
-class Window(object):
-    """Create a Window with the given title size."""
+class Window:
 
     def __init__(self, title="PIL", width=None, height=None):
         self.hwnd = Image.core.createwindow(
@@ -220,9 +235,10 @@ class Window(object):
     def mainloop(self):
         Image.core.eventloop()
 
+##
+# Create an image window which displays the given image.
 
 class ImageWindow(Window):
-    """Create an image window which displays the given image."""
 
     def __init__(self, image, title="PIL"):
         if not isinstance(image, Dib):

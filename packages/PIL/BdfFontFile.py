@@ -26,12 +26,12 @@ from PIL import FontFile
 # --------------------------------------------------------------------
 
 bdf_slant = {
-    "R": "Roman",
-    "I": "Italic",
-    "O": "Oblique",
-    "RI": "Reverse Italic",
-    "RO": "Reverse Oblique",
-    "OT": "Other"
+   "R": "Roman",
+   "I": "Italic",
+   "O": "Oblique",
+   "RI": "Reverse Italic",
+   "RO": "Reverse Oblique",
+   "OT": "Other"
 }
 
 bdf_spacing = {
@@ -40,8 +40,8 @@ bdf_spacing = {
     "C": "Cell"
 }
 
-
 def bdf_char(f):
+
     # skip to STARTCHAR
     while True:
         s = f.readline()
@@ -69,8 +69,8 @@ def bdf_char(f):
         bitmap.append(s[:-1])
     bitmap = b"".join(bitmap)
 
-    [x, y, l, d] = [int(p) for p in props["BBX"].split()]
-    [dx, dy] = [int(p) for p in props["DWIDTH"].split()]
+    [x, y, l, d] = [int(s) for s in props["BBX"].split()]
+    [dx, dy] = [int(s) for s in props["DWIDTH"].split()]
 
     bbox = (dx, dy), (l, -d-y, x+l, -d), (0, 0, x, y)
 
@@ -81,7 +81,6 @@ def bdf_char(f):
         im = Image.new("1", (x, y))
 
     return id, int(props["ENCODING"]), bbox, im
-
 
 ##
 # Font file plugin for the X11 BDF format.
@@ -109,24 +108,25 @@ class BdfFontFile(FontFile.FontFile):
                 if s.find(b"LogicalFontDescription") < 0:
                     comments.append(s[i+1:-1].decode('ascii'))
 
-        # font = props["FONT"].split("-")
+        font = props["FONT"].split("-")
 
-        # font[4] = bdf_slant[font[4].upper()]
-        # font[11] = bdf_spacing[font[11].upper()]
+        font[4] = bdf_slant[font[4].upper()]
+        font[11] = bdf_spacing[font[11].upper()]
 
-        # ascent = int(props["FONT_ASCENT"])
-        # descent = int(props["FONT_DESCENT"])
+        ascent = int(props["FONT_ASCENT"])
+        descent = int(props["FONT_DESCENT"])
 
-        # fontname = ";".join(font[1:])
+        fontname = ";".join(font[1:])
 
         # print "#", fontname
         # for i in comments:
         #       print "#", i
 
+        font = []
         while True:
             c = bdf_char(fp)
             if not c:
                 break
             id, ch, (xy, dst, src), im = c
-            if 0 <= ch < len(self.glyph):
+            if ch >= 0 and ch < len(self.glyph):
                 self.glyph[ch] = xy, dst, src, im

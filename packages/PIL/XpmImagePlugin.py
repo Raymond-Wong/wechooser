@@ -15,11 +15,12 @@
 #
 
 
+__version__ = "0.2"
+
+
 import re
 from PIL import Image, ImageFile, ImagePalette
 from PIL._binary import i8, o8
-
-__version__ = "0.2"
 
 # XPM header
 xpm_head = re.compile(b"\"([0-9]*) ([0-9]*) ([0-9]*) ([0-9]*)")
@@ -27,7 +28,6 @@ xpm_head = re.compile(b"\"([0-9]*) ([0-9]*) ([0-9]*) ([0-9]*)")
 
 def _accept(prefix):
     return prefix[:9] == b"/* XPM */"
-
 
 ##
 # Image plugin for X11 pixel maps.
@@ -86,9 +86,9 @@ class XpmImageFile(ImageFile.ImageFile):
                     elif rgb[0:1] == b"#":
                         # FIXME: handle colour names (see ImagePalette.py)
                         rgb = int(rgb[1:], 16)
-                        palette[c] = (o8((rgb >> 16) & 255) +
-                                      o8((rgb >> 8) & 255) +
-                                      o8(rgb & 255))
+                        palette[c] = o8((rgb >> 16) & 255) +\
+                                     o8((rgb >> 8) & 255) +\
+                                     o8(rgb & 255)
                     else:
                         # unknown colour
                         raise ValueError("cannot read this XPM file")
@@ -123,8 +123,8 @@ class XpmImageFile(ImageFile.ImageFile):
 #
 # Registry
 
-Image.register_open(XpmImageFile.format, XpmImageFile, _accept)
+Image.register_open("XPM", XpmImageFile, _accept)
 
-Image.register_extension(XpmImageFile.format, ".xpm")
+Image.register_extension("XPM", ".xpm")
 
-Image.register_mime(XpmImageFile.format, "image/xpm")
+Image.register_mime("XPM", "image/xpm")

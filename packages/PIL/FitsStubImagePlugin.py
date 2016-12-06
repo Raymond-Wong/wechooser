@@ -13,23 +13,20 @@ from PIL import Image, ImageFile
 
 _handler = None
 
+##
+# Install application-specific FITS image handler.
+#
+# @param handler Handler object.
 
 def register_handler(handler):
-    """
-    Install application-specific FITS image handler.
-
-    :param handler: Handler object.
-    """
     global _handler
     _handler = handler
 
 # --------------------------------------------------------------------
 # Image adapter
 
-
 def _accept(prefix):
     return prefix[:6] == b"SIMPLE"
-
 
 class FITSStubImageFile(ImageFile.StubImageFile):
 

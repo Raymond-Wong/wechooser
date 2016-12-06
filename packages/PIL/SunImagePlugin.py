@@ -17,16 +17,17 @@
 #
 
 
-from PIL import Image, ImageFile, ImagePalette, _binary
-
 __version__ = "0.3"
 
+
+from PIL import Image, ImageFile, ImagePalette, _binary
+
+i16 = _binary.i16be
 i32 = _binary.i32be
 
 
 def _accept(prefix):
-    return len(prefix) >= 4 and i32(prefix) == 0x59a66a95
-
+    return i32(prefix) == 0x59a66a95
 
 ##
 # Image plugin for Sun raster files.
@@ -69,13 +70,13 @@ class SunImageFile(ImageFile.ImageFile):
         stride = (((self.size[0] * depth + 7) // 8) + 3) & (~3)
 
         if compression == 1:
-            self.tile = [("raw", (0, 0)+self.size, offset, (rawmode, stride))]
+            self.tile = [("raw", (0,0)+self.size, offset, (rawmode, stride))]
         elif compression == 2:
-            self.tile = [("sun_rle", (0, 0)+self.size, offset, rawmode)]
+            self.tile = [("sun_rle", (0,0)+self.size, offset, rawmode)]
 
 #
 # registry
 
-Image.register_open(SunImageFile.format, SunImageFile, _accept)
+Image.register_open("SUN", SunImageFile, _accept)
 
-Image.register_extension(SunImageFile.format, ".ras")
+Image.register_extension("SUN", ".ras")

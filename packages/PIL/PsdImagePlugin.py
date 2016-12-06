@@ -28,8 +28,8 @@ MODES = {
     (2, 8): ("P", 1),
     (3, 8): ("RGB", 3),
     (4, 8): ("CMYK", 4),
-    (7, 8): ("L", 1),  # FIXME: multilayer
-    (8, 8): ("L", 1),  # duotone
+    (7, 8): ("L", 1), # FIXME: multilayer
+    (8, 8): ("L", 1), # duotone
     (9, 8): ("LAB", 3)
 }
 
@@ -40,13 +40,11 @@ i8 = _binary.i8
 i16 = _binary.i16be
 i32 = _binary.i32be
 
-
 # --------------------------------------------------------------------.
 # read PSD images
 
 def _accept(prefix):
     return prefix[:4] == b"8BPS"
-
 
 ##
 # Image plugin for Photoshop images.
@@ -102,12 +100,12 @@ class PsdImageFile(ImageFile.ImageFile):
                 id = i16(read(2))
                 name = read(i8(read(1)))
                 if not (len(name) & 1):
-                    read(1)  # padding
+                    read(1) # padding
                 data = read(i32(read(4)))
                 if (len(data) & 1):
-                    read(1)  # padding
+                    read(1) # padding
                 self.resources.append((id, name, data))
-                if id == 1039:  # ICC profile
+                if id == 1039: # ICC profile
                     self.info["icc_profile"] = data
 
         #
@@ -131,14 +129,6 @@ class PsdImageFile(ImageFile.ImageFile):
         # keep the file open
         self._fp = self.fp
         self.frame = 0
-
-    @property
-    def n_frames(self):
-        return len(self.layers)
-
-    @property
-    def is_animated(self):
-        return len(self.layers) > 1
 
     def seek(self, layer):
         # seek to given layer (1..max)
@@ -169,7 +159,6 @@ class PsdImageFile(ImageFile.ImageFile):
         if self.mode == "P":
             Image.Image.load(self)
 
-
 def _layerinfo(file):
     # read layerinfo block
     layers = []
@@ -177,10 +166,8 @@ def _layerinfo(file):
     for i in range(abs(i16(read(2)))):
 
         # bounding box
-        y0 = i32(read(4))
-        x0 = i32(read(4))
-        y1 = i32(read(4))
-        x1 = i32(read(4))
+        y0 = i32(read(4)); x0 = i32(read(4))
+        y1 = i32(read(4)); x1 = i32(read(4))
 
         # image info
         info = []
@@ -210,7 +197,7 @@ def _layerinfo(file):
         elif mode == ["A", "B", "G", "R"]:
             mode = "RGBA"
         else:
-            mode = None  # unknown
+            mode = None # unknown
 
         # skip over blend flags and extra information
         filler = read(12)
@@ -220,10 +207,8 @@ def _layerinfo(file):
         if size:
             length = i32(read(4))
             if length:
-                mask_y = i32(read(4))
-                mask_x = i32(read(4))
-                mask_h = i32(read(4)) - mask_y
-                mask_w = i32(read(4)) - mask_x
+                mask_y = i32(read(4)); mask_x = i32(read(4))
+                mask_h = i32(read(4)) - mask_y; mask_w = i32(read(4)) - mask_x
                 file.seek(length - 16, 1)
             combined += length + 4
 
@@ -234,8 +219,7 @@ def _layerinfo(file):
 
             length = i8(read(1))
             if length:
-                # Don't know the proper encoding,
-                # Latin-1 should be a good guess
+                # Don't know the proper encoding, Latin-1 should be a good guess
                 name = read(length).decode('latin-1', 'replace')
             combined += length + 1
 
@@ -251,10 +235,9 @@ def _layerinfo(file):
             if t:
                 tile.extend(t)
         layers[i] = name, mode, bbox, tile
-        i += 1
+        i = i + 1
 
     return layers
-
 
 def _maketile(file, mode, bbox, channels):
 
@@ -275,7 +258,7 @@ def _maketile(file, mode, bbox, channels):
         for channel in range(channels):
             layer = mode[channel]
             if mode == "CMYK":
-                layer += ";I"
+                layer = layer + ";I"
             tile.append(("raw", bbox, offset, layer))
             offset = offset + xsize*ysize
 
@@ -289,24 +272,24 @@ def _maketile(file, mode, bbox, channels):
         for channel in range(channels):
             layer = mode[channel]
             if mode == "CMYK":
-                layer += ";I"
+                layer = layer + ";I"
             tile.append(
                 ("packbits", bbox, offset, layer)
                 )
             for y in range(ysize):
                 offset = offset + i16(bytecount[i:i+2])
-                i += 2
+                i = i + 2
 
     file.seek(offset)
 
     if offset & 1:
-        read(1)  # padding
+        read(1) # padding
 
     return tile
 
 # --------------------------------------------------------------------
 # registry
 
-Image.register_open(PsdImageFile.format, PsdImageFile, _accept)
+Image.register_open("PSD", PsdImageFile, _accept)
 
-Image.register_extension(PsdImageFile.format, ".psd")
+Image.register_extension("PSD", ".psd")

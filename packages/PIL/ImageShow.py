@@ -15,46 +15,44 @@
 from __future__ import print_function
 
 from PIL import Image
-import os
-import sys
+import os, sys
 
-if sys.version_info >= (3, 3):
+if(sys.version_info >= (3, 3)):
     from shlex import quote
 else:
     from pipes import quote
 
 _viewers = []
 
-
 def register(viewer, order=1):
     try:
         if issubclass(viewer, Viewer):
             viewer = viewer()
     except TypeError:
-        pass  # raised if viewer wasn't a class
+        pass # raised if viewer wasn't a class
     if order > 0:
         _viewers.append(viewer)
     elif order < 0:
         _viewers.insert(0, viewer)
 
+##
+# Displays a given image.
+#
+# @param image An image object.
+# @param title Optional title.  Not all viewers can display the title.
+# @param **options Additional viewer options.
+# @return True if a suitable viewer was found, false otherwise.
 
 def show(image, title=None, **options):
-    r"""
-    Display a given image.
-
-    :param image: An image object.
-    :param title: Optional title.  Not all viewers can display the title.
-    :param \**options: Additional viewer options.
-    :returns: True if a suitable viewer was found, false otherwise.
-    """
     for viewer in _viewers:
         if viewer.show(image, title=title, **options):
             return 1
     return 0
 
+##
+# Base class for viewers.
 
-class Viewer(object):
-    """Base class for viewers."""
+class Viewer:
 
     # main api
 
@@ -79,22 +77,22 @@ class Viewer(object):
     format = None
 
     def get_format(self, image):
-        """Return format name, or None to save as PGM/PPM"""
+        # return format name, or None to save as PGM/PPM
         return self.format
 
     def get_command(self, file, **options):
         raise NotImplementedError
 
     def save_image(self, image):
-        """Save to temporary file, and return filename"""
+        # save to temporary file, and return filename
         return image._dump(format=self.get_format(image))
 
     def show_image(self, image, **options):
-        """Display given image"""
+        # display given image
         return self.show_file(self.save_image(image), **options)
 
     def show_file(self, file, **options):
-        """Display given file"""
+        # display given file
         os.system(self.get_command(file, **options))
         return 1
 
@@ -104,11 +102,9 @@ if sys.platform == "win32":
 
     class WindowsViewer(Viewer):
         format = "BMP"
-
         def get_command(self, file, **options):
-            return ('start "Pillow" /WAIT "%s" '
-                    '&& ping -n 2 127.0.0.1 >NUL '
-                    '&& del /f "%s"' % (file, file))
+            return ("start /wait %s && ping -n 2 127.0.0.1 >NUL "
+                    "&& del /f %s" % (quote(file), quote(file)))
 
     register(WindowsViewer)
 
@@ -116,13 +112,11 @@ elif sys.platform == "darwin":
 
     class MacViewer(Viewer):
         format = "BMP"
-
         def get_command(self, file, **options):
             # on darwin open returns immediately resulting in the temp
             # file removal while app is opening
             command = "open -a /Applications/Preview.app"
-            command = "(%s %s; sleep 20; rm -f %s)&" % (command, quote(file),
-                                                        quote(file))
+            command = "(%s %s; sleep 20; rm -f %s)&" % (command, quote(file), quote(file))
             return command
 
     register(MacViewer)
@@ -137,15 +131,15 @@ else:
             return None
         for dirname in path.split(os.pathsep):
             filename = os.path.join(dirname, executable)
-            if os.path.isfile(filename) and os.access(filename, os.X_OK):
+            if os.path.isfile(filename):
+                # FIXME: make sure it's executable
                 return filename
         return None
 
     class UnixViewer(Viewer):
         def show_file(self, file, **options):
             command, executable = self.get_command_ex(file, **options)
-            command = "(%s %s; rm -f %s)&" % (command, quote(file),
-                                              quote(file))
+            command = "(%s %s; rm -f %s)&" % (command, quote(file), quote(file))
             os.system(command)
             return 1
 
@@ -165,7 +159,7 @@ else:
             # imagemagick's display command instead.
             command = executable = "xv"
             if title:
-                command += " -name %s" % quote(title)
+                command = command + " -name %s" % quote(title)
             return command, executable
 
     if which("xv"):

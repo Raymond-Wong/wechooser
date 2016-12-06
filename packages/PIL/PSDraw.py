@@ -15,14 +15,14 @@
 # See the README file for information on usage and redistribution.
 #
 
+from __future__ import print_function
+
 from PIL import EpsImagePlugin
-import sys
 
 ##
 # Simple Postscript graphics interface.
 
-
-class PSDraw(object):
+class PSDraw:
     """
     Sets up printing to the given file. If **file** is omitted,
     :py:attr:`sys.stdout` is assumed.
@@ -30,34 +30,29 @@ class PSDraw(object):
 
     def __init__(self, fp=None):
         if not fp:
+            import sys
             fp = sys.stdout
         self.fp = fp
 
-    def _fp_write(self, to_write):
-        if bytes is str or self.fp == sys.stdout:
-            self.fp.write(to_write)
-        else:
-            self.fp.write(bytes(to_write, 'UTF-8'))
-
-    def begin_document(self, id=None):
+    def begin_document(self, id = None):
         """Set up printing of a document. (Write Postscript DSC header.)"""
         # FIXME: incomplete
-        self._fp_write("%!PS-Adobe-3.0\n"
-                       "save\n"
-                       "/showpage { } def\n"
-                       "%%EndComments\n"
-                       "%%BeginDocument\n")
-        # self._fp_write(ERROR_PS)  # debugging!
-        self._fp_write(EDROFF_PS)
-        self._fp_write(VDI_PS)
-        self._fp_write("%%EndProlog\n")
+        self.fp.write("%!PS-Adobe-3.0\n"
+                      "save\n"
+                      "/showpage { } def\n"
+                      "%%EndComments\n"
+                      "%%BeginDocument\n")
+        #self.fp.write(ERROR_PS) # debugging!
+        self.fp.write(EDROFF_PS)
+        self.fp.write(VDI_PS)
+        self.fp.write("%%EndProlog\n")
         self.isofont = {}
 
     def end_document(self):
         """Ends printing. (Write Postscript DSC footer.)"""
-        self._fp_write("%%EndDocument\n"
-                       "restore showpage\n"
-                       "%%End\n")
+        self.fp.write("%%EndDocument\n"
+                      "restore showpage\n"
+                      "%%End\n")
         if hasattr(self.fp, "flush"):
             self.fp.flush()
 
@@ -70,11 +65,19 @@ class PSDraw(object):
         """
         if font not in self.isofont:
             # reencode font
-            self._fp_write("/PSDraw-%s ISOLatin1Encoding /%s E\n" %
-                           (font, font))
+            self.fp.write("/PSDraw-%s ISOLatin1Encoding /%s E\n" %\
+                          (font, font))
             self.isofont[font] = 1
         # rough
-        self._fp_write("/F0 %d /PSDraw-%s F\n" % (size, font))
+        self.fp.write("/F0 %d /PSDraw-%s F\n" % (size, font))
+
+    def setink(self, ink):
+        """
+        .. warning::
+
+            This has been in the PIL API for ages but was never implemented.
+        """
+        print("*** NOT YET IMPLEMENTED ***")
 
     def line(self, xy0, xy1):
         """
@@ -83,7 +86,7 @@ class PSDraw(object):
         left corner of the page).
         """
         xy = xy0 + xy1
-        self._fp_write("%d %d %d %d Vl\n" % xy)
+        self.fp.write("%d %d %d %d Vl\n" % xy)
 
     def rectangle(self, box):
         """
@@ -98,7 +101,7 @@ class PSDraw(object):
 
                         %d %d M %d %d 0 Vr\n
         """
-        self._fp_write("%d %d M %d %d 0 Vr\n" % box)
+        self.fp.write("%d %d M %d %d 0 Vr\n" % box)
 
     def text(self, xy, text):
         """
@@ -108,16 +111,16 @@ class PSDraw(object):
         text = "\\(".join(text.split("("))
         text = "\\)".join(text.split(")"))
         xy = xy + (text,)
-        self._fp_write("%d %d M (%s) S\n" % xy)
+        self.fp.write("%d %d M (%s) S\n" % xy)
 
-    def image(self, box, im, dpi=None):
+    def image(self, box, im, dpi = None):
         """Draw a PIL image, centered in the given box."""
         # default resolution depends on mode
         if not dpi:
             if im.mode == "1":
-                dpi = 200  # fax
+                dpi = 200 # fax
             else:
-                dpi = 100  # greyscale
+                dpi = 100 # greyscale
         # image size (on paper)
         x = float(im.size[0] * 72) / dpi
         y = float(im.size[1] * 72) / dpi
@@ -125,21 +128,19 @@ class PSDraw(object):
         xmax = float(box[2] - box[0])
         ymax = float(box[3] - box[1])
         if x > xmax:
-            y = y * xmax / x
-            x = xmax
+            y = y * xmax / x; x = xmax
         if y > ymax:
-            x = x * ymax / y
-            y = ymax
+            x = x * ymax / y; y = ymax
         dx = (xmax - x) / 2 + box[0]
         dy = (ymax - y) / 2 + box[1]
-        self._fp_write("gsave\n%f %f translate\n" % (dx, dy))
+        self.fp.write("gsave\n%f %f translate\n" % (dx, dy))
         if (x, y) != im.size:
             # EpsImagePlugin._save prints the image at (0,0,xsize,ysize)
             sx = x / im.size[0]
             sy = y / im.size[1]
-            self._fp_write("%f %f scale\n" % (sx, sy))
+            self.fp.write("%f %f scale\n" % (sx, sy))
         EpsImagePlugin._save(im, self.fp, None, 0)
-        self._fp_write("\ngrestore\n")
+        self.fp.write("\ngrestore\n")
 
 # --------------------------------------------------------------------
 # Postscript driver

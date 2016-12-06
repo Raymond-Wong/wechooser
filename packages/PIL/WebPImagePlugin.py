@@ -12,7 +12,7 @@ _VALID_WEBP_MODES = {
 _VP8_MODES_BY_IDENTIFIER = {
     b"VP8 ": "RGB",
     b"VP8X": "RGBA",
-    b"VP8L": "RGBA",  # lossless
+    b"VP8L": "RGBA", # lossless
     }
 
 
@@ -30,13 +30,10 @@ class WebPImageFile(ImageFile.ImageFile):
     format_description = "WebP image"
 
     def _open(self):
-        data, width, height, self.mode, icc_profile, exif = \
-            _webp.WebPDecode(self.fp.read())
+        data, width, height, self.mode, icc_profile, exif = _webp.WebPDecode(self.fp.read())
 
-        if icc_profile:
-            self.info["icc_profile"] = icc_profile
-        if exif:
-            self.info["exif"] = exif
+        self.info["icc_profile"] = icc_profile
+        self.info["exif"] = exif
 
         self.size = width, height
         self.fp = BytesIO(data)
@@ -73,8 +70,8 @@ def _save(im, fp, filename):
     fp.write(data)
 
 
-Image.register_open(WebPImageFile.format, WebPImageFile, _accept)
-Image.register_save(WebPImageFile.format, _save)
+Image.register_open("WEBP", WebPImageFile, _accept)
+Image.register_save("WEBP", _save)
 
-Image.register_extension(WebPImageFile.format, ".webp")
-Image.register_mime(WebPImageFile.format, "image/webp")
+Image.register_extension("WEBP", ".webp")
+Image.register_mime("WEBP", "image/webp")

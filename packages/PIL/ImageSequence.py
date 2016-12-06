@@ -15,8 +15,7 @@
 
 ##
 
-
-class Iterator(object):
+class Iterator:
     """
     This class implements an iterator object that can be used to loop
     over an image sequence.
@@ -32,25 +31,11 @@ class Iterator(object):
         if not hasattr(im, "seek"):
             raise AttributeError("im must have seek method")
         self.im = im
-        self.position = 0
 
     def __getitem__(self, ix):
         try:
-            self.im.seek(ix)
+            if ix:
+                self.im.seek(ix)
             return self.im
         except EOFError:
-            raise IndexError  # end of sequence
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        try:
-            self.im.seek(self.position)
-            self.position += 1
-            return self.im
-        except EOFError:
-            raise StopIteration
-
-    def next(self):
-        return self.__next__()
+            raise IndexError # end of sequence

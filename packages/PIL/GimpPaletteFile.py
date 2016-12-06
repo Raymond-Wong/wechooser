@@ -17,11 +17,10 @@
 import re
 from PIL._binary import o8
 
-
 ##
 # File handler for GIMP's palette format.
 
-class GimpPaletteFile(object):
+class GimpPaletteFile:
 
     rawmode = "RGB"
 
@@ -53,9 +52,10 @@ class GimpPaletteFile(object):
             if 0 <= i <= 255:
                 self.palette[i] = o8(v[0]) + o8(v[1]) + o8(v[2])
 
-            i += 1
+            i = i + 1
 
         self.palette = b"".join(self.palette)
+
 
     def getpalette(self):
 

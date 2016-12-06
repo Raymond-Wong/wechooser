@@ -1,4 +1,4 @@
-# encoding: utf-8
+# -*- coding: iso-8859-1 -*-
 #
 # The Python Imaging Library.
 # $Id$
@@ -14,11 +14,11 @@
 #
 
 # NOTE: This format cannot be automatically recognized, so the reader
-# is not registered for use with Image.open().  To open a WAL file, use
+# is not registered for use with Image.open().  To open a WEL file, use
 # the WalImageFile.open() function instead.
 
 # This reader is based on the specification available from:
-#    http://www.flipcode.com/archives/Quake_2_BSP_File_Format.shtml
+#    http://www.flipcode.com/tutorials/tut_q2levels.shtml
 # and has been tested with a few sample files found using google.
 
 from __future__ import print_function
@@ -33,17 +33,16 @@ except ImportError:
 
 i32 = _binary.i32le
 
+##
+# Load texture from a Quake2 WAL texture file.
+# <p>
+# By default, a Quake2 standard palette is attached to the texture.
+# To override the palette, use the <b>putpalette</b> method.
+#
+# @param filename WAL file name, or an opened file handle.
+# @return An image instance.
 
 def open(filename):
-    """
-    Load texture from a Quake2 WAL texture file.
-
-    By default, a Quake2 standard palette is attached to the texture.
-    To override the palette, use the <b>putpalette</b> method.
-
-    :param filename: WAL file name, or an opened file handle.
-    :returns: An image instance.
-    """
     # FIXME: modify to return a WalImageFile instance instead of
     # plain Image object ?
 
@@ -76,7 +75,7 @@ def open(filename):
 
 
 quake2palette = (
-    # default palette taken from piffo 0.93 by Hans HÃ¤ggstrÃ¶m
+    # default palette taken from piffo 0.93 by Hans Häggström
     b"\x01\x01\x01\x0b\x0b\x0b\x12\x12\x12\x17\x17\x17\x1b\x1b\x1b\x1e"
     b"\x1e\x1e\x22\x22\x22\x26\x26\x26\x29\x29\x29\x2c\x2c\x2c\x2f\x2f"
     b"\x2f\x32\x32\x32\x35\x35\x35\x37\x37\x37\x3a\x3a\x3a\x3c\x3c\x3c"
@@ -126,3 +125,8 @@ quake2palette = (
     b"\x10\x0f\x0d\x0d\x0b\x3c\x2e\x2a\x36\x27\x20\x30\x21\x18\x29\x1b"
     b"\x10\x3c\x39\x37\x37\x32\x2f\x31\x2c\x28\x2b\x26\x21\x30\x22\x20"
 )
+
+if __name__ == "__main__":
+    im = open("../hacks/sample.wal")
+    print(im.info, im.mode, im.size)
+    im.save("../out.png")

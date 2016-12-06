@@ -16,20 +16,20 @@
 
 from PIL import ContainerIO
 
-
 ##
 # A file object that provides read access to a given member of a TAR
 # file.
 
 class TarIO(ContainerIO.ContainerIO):
 
-    def __init__(self, tarfile, file):
-        """
-        Create file object.
+    ##
+    # Create file object.
+    #
+    # @param tarfile Name of TAR file.
+    # @param file Name of member file.
 
-        :param tarfile: Name of TAR file.
-        :param file: Name of member file.
-        """
+    def __init__(self, tarfile, file):
+
         fh = open(tarfile, "rb")
 
         while True:

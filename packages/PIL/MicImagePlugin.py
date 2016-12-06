@@ -17,10 +17,11 @@
 #
 
 
-from PIL import Image, TiffImagePlugin
-from PIL.OleFileIO import MAGIC, OleFileIO
-
 __version__ = "0.1"
+
+
+from PIL import Image, TiffImagePlugin
+from PIL.OleFileIO import *
 
 
 #
@@ -29,7 +30,6 @@ __version__ = "0.1"
 
 def _accept(prefix):
     return prefix[:8] == MAGIC
-
 
 ##
 # Image plugin for Microsoft's Image Composer file format.
@@ -53,9 +53,9 @@ class MicImageFile(TiffImagePlugin.TiffImageFile):
         # best way to identify MIC files, but what the... ;-)
 
         self.images = []
-        for path in self.ole.listdir():
-            if path[1:] and path[0][-4:] == ".ACI" and path[1] == "Image":
-                self.images.append(path)
+        for file in self.ole.listdir():
+            if file[1:] and file[0][-4:] == ".ACI" and file[1] == "Image":
+                self.images.append(file)
 
         # if we didn't find any images, this is probably not
         # an MIC file.
@@ -69,14 +69,6 @@ class MicImageFile(TiffImagePlugin.TiffImageFile):
             self.category = Image.CONTAINER
 
         self.seek(0)
-
-    @property
-    def n_frames(self):
-        return len(self.images)
-
-    @property
-    def is_animated(self):
-        return len(self.images) > 1
 
     def seek(self, frame):
 
@@ -98,6 +90,6 @@ class MicImageFile(TiffImagePlugin.TiffImageFile):
 #
 # --------------------------------------------------------------------
 
-Image.register_open(MicImageFile.format, MicImageFile, _accept)
+Image.register_open("MIC", MicImageFile, _accept)
 
-Image.register_extension(MicImageFile.format, ".mic")
+Image.register_extension("MIC", ".mic")

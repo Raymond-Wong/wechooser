@@ -19,19 +19,15 @@
 # See the README file for information on usage and redistribution.
 #
 
-from PIL import Image, ImageFile, _binary
-
 __version__ = "0.1"
+
+from PIL import Image, ImageFile, _binary
 
 #
 # helpers
 
 i16 = _binary.i16le
-
-
-def _accept(prefix):
-    return prefix[:4] == b"\200\350\000\000"
-
+i32 = _binary.i32le
 
 ##
 # Image plugin for PIXAR raster images.
@@ -43,7 +39,7 @@ class PixarImageFile(ImageFile.ImageFile):
 
     def _open(self):
 
-        # assuming a 4-byte magic label
+        # assuming a 4-byte magic label (FIXME: add "_accept" hook)
         s = self.fp.read(4)
         if s != b"\200\350\000\000":
             raise SyntaxError("not a PIXAR file")
@@ -61,11 +57,12 @@ class PixarImageFile(ImageFile.ImageFile):
         # FIXME: to be continued...
 
         # create tile descriptor (assuming "dumped")
-        self.tile = [("raw", (0, 0)+self.size, 1024, (self.mode, 0, 1))]
+        self.tile = [("raw", (0,0)+self.size, 1024, (self.mode, 0, 1))]
 
 #
 # --------------------------------------------------------------------
 
-Image.register_open(PixarImageFile.format, PixarImageFile, _accept)
+Image.register_open("PIXAR", PixarImageFile)
 
-Image.register_extension(PixarImageFile.format, ".pxr")
+#
+# FIXME: what's the standard extension?

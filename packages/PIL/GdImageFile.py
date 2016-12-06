@@ -23,10 +23,10 @@
 # purposes only.
 
 
+__version__ = "0.1"
+
 from PIL import ImageFile, ImagePalette, _binary
 from PIL._util import isPath
-
-__version__ = "0.1"
 
 try:
     import builtins
@@ -35,7 +35,6 @@ except ImportError:
     builtins = __builtin__
 
 i16 = _binary.i16be
-
 
 ##
 # Image plugin for the GD uncompressed format.  Note that this format
@@ -53,7 +52,7 @@ class GdImageFile(ImageFile.ImageFile):
         # Header
         s = self.fp.read(775)
 
-        self.mode = "L"  # FIXME: "P"
+        self.mode = "L" # FIXME: "P"
         self.size = i16(s[0:2]), i16(s[2:4])
 
         # transparency index
@@ -63,19 +62,19 @@ class GdImageFile(ImageFile.ImageFile):
 
         self.palette = ImagePalette.raw("RGB", s[7:])
 
-        self.tile = [("raw", (0, 0)+self.size, 775, ("L", 0, -1))]
+        self.tile = [("raw", (0,0)+self.size, 775, ("L", 0, -1))]
 
+##
+# Load texture from a GD image file.
+#
+# @param filename GD file name, or an opened file handle.
+# @param mode Optional mode.  In this version, if the mode argument
+#     is given, it must be "r".
+# @return An image instance.
+# @exception IOError If the image could not be read.
 
-def open(fp, mode="r"):
-    """
-    Load texture from a GD image file.
+def open(fp, mode = "r"):
 
-    :param filename: GD file name, or an opened file handle.
-    :param mode: Optional mode.  In this version, if the mode argument
-        is given, it must be "r".
-    :returns: An image instance.
-    :raises IOError: If the image could not be read.
-    """
     if mode != "r":
         raise ValueError("bad mode")
 

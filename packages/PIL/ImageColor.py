@@ -21,6 +21,14 @@ from PIL import Image
 import re
 
 
+##
+# Convert color string to RGB tuple.
+#
+# @param color A CSS3-style colour string.
+# @return An RGB-tuple.
+# @exception ValueError If the color string could not be interpreted
+#    as an RGB value.
+
 def getrgb(color):
     """
      Convert a color string to an RGB tuple. If the string cannot be parsed,
@@ -29,65 +37,52 @@ def getrgb(color):
     .. versionadded:: 1.1.4
 
     :param color: A color string
-    :return: ``(red, green, blue[, alpha])``
+    :return: ``(red, green, blue)``
     """
-    color = color.lower()
-
-    rgb = colormap.get(color, None)
+    try:
+        rgb = colormap[color]
+    except KeyError:
+        try:
+            # fall back on case-insensitive lookup
+            rgb = colormap[color.lower()]
+        except KeyError:
+            rgb = None
+    # found color in cache
     if rgb:
         if isinstance(rgb, tuple):
             return rgb
         colormap[color] = rgb = getrgb(rgb)
         return rgb
-
     # check for known string formats
-    if re.match('#[a-f0-9]{3}$', color):
+    m = re.match("#\w\w\w$", color)
+    if m:
         return (
             int(color[1]*2, 16),
             int(color[2]*2, 16),
-            int(color[3]*2, 16),
+            int(color[3]*2, 16)
             )
-
-    if re.match('#[a-f0-9]{4}$', color):
-        return (
-            int(color[1]*2, 16),
-            int(color[2]*2, 16),
-            int(color[3]*2, 16),
-            int(color[4]*2, 16),
-            )
-
-    if re.match('#[a-f0-9]{6}$', color):
+    m = re.match("#\w\w\w\w\w\w$", color)
+    if m:
         return (
             int(color[1:3], 16),
             int(color[3:5], 16),
-            int(color[5:7], 16),
+            int(color[5:7], 16)
             )
-
-    if re.match('#[a-f0-9]{8}$', color):
-        return (
-            int(color[1:3], 16),
-            int(color[3:5], 16),
-            int(color[5:7], 16),
-            int(color[7:9], 16),
-            )
-
-    m = re.match(r"rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$", color)
+    m = re.match("rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$", color)
     if m:
         return (
             int(m.group(1)),
             int(m.group(2)),
             int(m.group(3))
             )
-
-    m = re.match(r"rgb\(\s*(\d+)%\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)$", color)
+    m = re.match("rgb\(\s*(\d+)%\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)$", color)
     if m:
         return (
             int((int(m.group(1)) * 255) / 100.0 + 0.5),
             int((int(m.group(2)) * 255) / 100.0 + 0.5),
             int((int(m.group(3)) * 255) / 100.0 + 0.5)
             )
-
-    m = re.match(r"hsl\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)$", color)
+    m = re.match("hsl\(\s*(\d+)\s*,\s*(\d+)%\s*,\s*(\d+)%\s*\)$", color)
     if m:
         from colorsys import hls_to_rgb
         rgb = hls_to_rgb(
@@ -100,9 +95,7 @@ def getrgb(color):
             int(rgb[1] * 255 + 0.5),
             int(rgb[2] * 255 + 0.5)
             )
-
-    m = re.match(r"rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$",
-                 color)
+    m = re.match("rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$", color)
     if m:
         return (
             int(m.group(1)),
@@ -111,7 +104,6 @@ def getrgb(color):
             int(m.group(4))
             )
     raise ValueError("unknown color specifier: %r" % color)
-
 
 def getcolor(color, mode):
     """
@@ -122,25 +114,24 @@ def getcolor(color, mode):
     .. versionadded:: 1.1.4
 
     :param color: A color string
-    :return: ``(graylevel [, alpha]) or (red, green, blue[, alpha])``
+    :return: ``(red, green, blue)``
     """
     # same as getrgb, but converts the result to the given mode
-    color, alpha = getrgb(color), 255
-    if len(color) == 4:
-        color, alpha = color[0:3], color[3]
-
+    color = getrgb(color)
+    if mode == "RGB":
+        return color
+    if mode == "RGBA":
+        if len(color) == 3:
+          color = (color + (255,))
+        r, g, b, a = color
+        return r, g, b, a
     if Image.getmodebase(mode) == "L":
         r, g, b = color
-        color = (r*299 + g*587 + b*114)//1000
-        if mode[-1] == 'A':
-            return (color, alpha)
-    else:
-        if mode[-1] == 'A':
-            return color + (alpha,)
+        return (r*299 + g*587 + b*114)//1000
     return color
 
 colormap = {
-    # X11 colour table from https://drafts.csswg.org/css-color-4/, with
+    # X11 colour table (from "CSS3 module: Color working draft"), with
     # gray/grey spelling issues fixed.  This is a superset of HTML 4.0
     # colour names used in CSS 1.
     "aliceblue": "#f0f8ff",
@@ -262,7 +253,6 @@ colormap = {
     "plum": "#dda0dd",
     "powderblue": "#b0e0e6",
     "purple": "#800080",
-    "rebeccapurple": "#663399",
     "red": "#ff0000",
     "rosybrown": "#bc8f8f",
     "royalblue": "#4169e1",

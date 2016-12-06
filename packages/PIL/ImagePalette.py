@@ -17,48 +17,20 @@
 #
 
 import array
-from PIL import ImageColor
-from PIL import GimpPaletteFile
-from PIL import GimpGradientFile
-from PIL import PaletteFile
+from PIL import Image, ImageColor
 
 
-class ImagePalette(object):
-    """
-    Color palette for palette mapped images
+class ImagePalette:
+    "Color palette for palette mapped images"
 
-    :param mode: The mode to use for the Palette. See:
-        :ref:`concept-modes`. Defaults to "RGB"
-    :param palette: An optional palette. If given, it must be a bytearray,
-        an array or a list of ints between 0-255 and of length ``size``
-        times the number of colors in ``mode``. The list must be aligned
-        by channel (All R values must be contiguous in the list before G
-        and B values.) Defaults to 0 through 255 per channel.
-    :param size: An optional palette size. If given, it cannot be equal to
-        or greater than 256. Defaults to 0.
-    """
-
-    def __init__(self, mode="RGB", palette=None, size=0):
+    def __init__(self, mode = "RGB", palette = None):
         self.mode = mode
-        self.rawmode = None  # if set, palette contains raw data
-        self.palette = palette or bytearray(range(256))*len(self.mode)
+        self.rawmode = None # if set, palette contains raw data
+        self.palette = palette or list(range(256))*len(self.mode)
         self.colors = {}
         self.dirty = None
-        if ((size == 0 and len(self.mode)*256 != len(self.palette)) or
-                (size != 0 and size != len(self.palette))):
+        if len(self.mode)*256 != len(self.palette):
             raise ValueError("wrong palette size")
-
-    def copy(self):
-        new = ImagePalette()
-
-        new.mode = self.mode
-        new.rawmode = self.rawmode
-        if self.palette is not None:
-            new.palette = self.palette[:]
-        new.colors = self.colors.copy()
-        new.dirty = self.dirty
-
-        return new
 
     def getdata(self):
         """
@@ -82,6 +54,7 @@ class ImagePalette(object):
             return self.palette
         arr = array.array("B", self.palette)
         if hasattr(arr, 'tobytes'):
+            #py3k has a tobytes, tostring is deprecated.
             return arr.tobytes()
         return arr.tostring()
 
@@ -101,7 +74,7 @@ class ImagePalette(object):
             except KeyError:
                 # allocate new color slot
                 if isinstance(self.palette, bytes):
-                    self.palette = bytearray(self.palette)
+                    self.palette = [int(x) for x in self.palette]
                 index = len(self.colors)
                 if index >= 256:
                     raise ValueError("cannot allocate more than 256 colors")
@@ -127,14 +100,10 @@ class ImagePalette(object):
         fp.write("# Mode: %s\n" % self.mode)
         for i in range(256):
             fp.write("%d" % i)
-            for j in range(i*len(self.mode), (i+1)*len(self.mode)):
-                try:
-                    fp.write(" %d" % self.palette[j])
-                except IndexError:
-                    fp.write(" 0")
+            for j in range(i, len(self.palette), 256):
+                fp.write(" %d" % self.palette[j])
             fp.write("\n")
         fp.close()
-
 
 # --------------------------------------------------------------------
 # Internal
@@ -146,32 +115,31 @@ def raw(rawmode, data):
     palette.dirty = 1
     return palette
 
-
 # --------------------------------------------------------------------
 # Factories
 
-def make_linear_lut(black, white):
+def _make_linear_lut(black, white):
     lut = []
     if black == 0:
         for i in range(256):
             lut.append(white*i//255)
     else:
-        raise NotImplementedError  # FIXME
+        raise NotImplementedError # FIXME
     return lut
 
-
-def make_gamma_lut(exp):
+def _make_gamma_lut(exp, mode="RGB"):
     lut = []
     for i in range(256):
         lut.append(int(((i / 255.0) ** exp) * 255.0 + 0.5))
     return lut
 
+def new(mode, data):
+    return Image.core.new_palette(mode, data)
 
 def negative(mode="RGB"):
     palette = list(range(256))
     palette.reverse()
     return ImagePalette(mode, palette * len(mode))
-
 
 def random(mode="RGB"):
     from random import randint
@@ -180,18 +148,15 @@ def random(mode="RGB"):
         palette.append(randint(0, 255))
     return ImagePalette(mode, palette)
 
-
 def sepia(white="#fff0c0"):
     r, g, b = ImageColor.getrgb(white)
-    r = make_linear_lut(0, r)
-    g = make_linear_lut(0, g)
-    b = make_linear_lut(0, b)
+    r = _make_linear_lut(0, r)
+    g = _make_linear_lut(0, g)
+    b = _make_linear_lut(0, b)
     return ImagePalette("RGB", r + g + b)
-
 
 def wedge(mode="RGB"):
     return ImagePalette(mode, list(range(256)) * len(mode))
-
 
 def load(filename):
 
@@ -199,21 +164,42 @@ def load(filename):
 
     fp = open(filename, "rb")
 
-    for paletteHandler in [
-        GimpPaletteFile.GimpPaletteFile,
-        GimpGradientFile.GimpGradientFile,
-        PaletteFile.PaletteFile
-    ]:
+    lut = None
+
+    if not lut:
         try:
+            from PIL import GimpPaletteFile
             fp.seek(0)
-            lut = paletteHandler(fp).getpalette()
-            if lut:
-                break
+            p = GimpPaletteFile.GimpPaletteFile(fp)
+            lut = p.getpalette()
         except (SyntaxError, ValueError):
-            # import traceback
-            # traceback.print_exc()
+            #import traceback
+            #traceback.print_exc()
             pass
-    else:
+
+    if not lut:
+        try:
+            from PIL import GimpGradientFile
+            fp.seek(0)
+            p = GimpGradientFile.GimpGradientFile(fp)
+            lut = p.getpalette()
+        except (SyntaxError, ValueError):
+            #import traceback
+            #traceback.print_exc()
+            pass
+
+    if not lut:
+        try:
+            from PIL import PaletteFile
+            fp.seek(0)
+            p = PaletteFile.PaletteFile(fp)
+            lut = p.getpalette()
+        except (SyntaxError, ValueError):
+            import traceback
+            traceback.print_exc()
+            pass
+
+    if not lut:
         raise IOError("cannot load palette")
 
-    return lut  # data, rawmode
+    return lut # data, rawmode
