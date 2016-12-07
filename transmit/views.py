@@ -16,11 +16,17 @@ from wechooser.decorator import wx_logined
 from wechat.models import User
 from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
 import utils
+import wechat.utils
 
 # 获取名片卡
 @wx_logined
 def getNameCard(request):
   user = User.objects.get(wx_openid=request.session['user'])
+  img = get_name_card(user)
+  img = utils.image_to_base64(img)
+  return render_to_response('transmit/showImage.html', {'image' : img})
+
+def get_name_card(user):
   # 获取用户头像
   headimg = utils.string_to_image(utils.get_head_image(user.headimgurl, 96))
   # 申明一个图像处理对象
@@ -42,6 +48,4 @@ def getNameCard(request):
   qr_img = coder.make_image()
   # 将二维码和背景图片合并
   bg = processer.combine(bg, qr_img, resize=(120, 120), pos=(165, 495), alpha=False)
-  img = bg
-  img = utils.image_to_base64(utils.image_to_string(img))
-  return render_to_response('transmit/showImage.html', {'image' : img})
+  return utils.image_to_string(bg)

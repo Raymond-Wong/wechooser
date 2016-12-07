@@ -66,7 +66,8 @@ def message(dictionary, token, retried=False):
     # 测试获取名片
     if dictionary['Content'] == 'card':
       state, user = utils.get_user(dictionary['FromUserName'], token)
-      # mediaId = getNameCard(user)
+      mediaId = getNameCard(user)
+      print mediaId
       errTemplate = TextTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], Content=user.nickname)
       return HttpResponse(errTemplate.toReply())
     # 如果信息类型不是文字，图片或者事件的话，则用默认处理类进行处理
