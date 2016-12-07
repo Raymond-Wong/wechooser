@@ -225,7 +225,21 @@ def get_user(openid, token):
     user = User.objects.get(wx_openid=openid)
     return True, user
   except:
+    # 获取用户基本信息
     state, user = update_user(openid, token)
+    # 创建用户二维码
+    host = 'api.weixin.qq.com'
+    path = '/cgi-bin/qrcode/create?access_token='
+    method = 'POST'
+    params = {}
+    params['action_name'] = 'QR_LIMIT_SCENE'
+    params['action_info'] = {"scene": {"scene_str": user.wx_openid}}}
+    res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=True)
+    if not res[0]:
+      return False, None
+    res = res[1]
+    user.qrcode_url = res['url']
+    user.save()
     return state, user
 
 # 更新数据库中user的信息

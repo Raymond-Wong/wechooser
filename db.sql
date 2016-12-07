@@ -323,6 +323,7 @@ CREATE TABLE `wechat_user` (
   `country` varchar(50) NOT NULL,
   `headimgurl` longtext,
   `credits` int(10) unsigned NOT NULL,
+  `qrcode_url` longtext NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `wx_openid` (`wx_openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -337,4 +338,4 @@ CREATE TABLE `wechat_user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-06 22:18:12
+-- Dump completed on 2016-12-07 22:38:11

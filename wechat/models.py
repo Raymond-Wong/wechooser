@@ -46,3 +46,4 @@ class User(models.Model):
   country = models.CharField(max_length=50, default='')
   headimgurl = models.TextField(null=True)
   credits = models.PositiveIntegerField(default=100)
+  qrcode_url = models.TextField(default='')
