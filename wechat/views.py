@@ -66,6 +66,7 @@ def message(dictionary, token, retried=False):
     # 测试获取名片
     if dictionary['Content'] == 'card':
       user = utils.get_user(dictionary['FromUserName'], token)
+      print user
       # mediaId = getNameCard(user)
       errTemplate = TextTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], Content=user.nickname)
       return HttpResponse(errTemplate.toReply())
