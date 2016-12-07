@@ -232,7 +232,8 @@ def get_user(openid, token):
     path = '/cgi-bin/qrcode/create?access_token='
     method = 'POST'
     params = {}
-    params['action_name'] = 'QR_LIMIT_SCENE'
+    params['expire_seconds'] = 7200
+    params['action_name'] = 'QR_SCENE'
     params['action_info'] = {"scene": {"scene_id": user.id}}
     print params
     res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=True)
