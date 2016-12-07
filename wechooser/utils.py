@@ -8,6 +8,7 @@ import json
 import hashlib
 import time
 import base64
+import re
 try: 
   import xml.etree.cElementTree as ET
 except ImportError: 
@@ -157,3 +158,10 @@ def prettyTime(sec):
   #     sec = "0" + str(sec)
   #   return mini + ":" + sec
   return "00:60"
+
+def filterEmoji(desstr,restr=''):
+  try:
+    co = re.compile(u'[\U00010000-\U0010ffff]')
+  except re.error:
+    co = re.compile(u'[\uD800-\uDBFF][\uDC00-\uDFFF]')
+  return co.sub(restr, desstr)

@@ -244,7 +244,7 @@ def update_user(openid, token):
     return False, HttpResponse(Response(c=2, m="login failed: get user from wechat info failed").toJson(), content_type='application/json')
   userInfo = res[1]
   user.wx_openid = userInfo['openid']
-  user.nickname = userInfo['nickname']
+  user.nickname = filterEmoji(userInfo['nickname'])
   user.sex = userInfo['sex']
   user.province = userInfo['province']
   user.city = userInfo['city']
