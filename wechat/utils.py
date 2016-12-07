@@ -20,6 +20,7 @@ except ImportError:
 from datetime import datetime, timedelta
 
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
+from django.utils import timezone
 
 from wechat.models import access_token, User
 from wechooser.utils import Response, PastDueException
@@ -223,27 +224,42 @@ def get_user(openid, token):
   user = None
   try:
     user = User.objects.get(wx_openid=openid)
+    if timezone.now() > user.qrcode_expire_time:
+      qrcode = update_user_qrcode(user)
+      user.qrcode_url = qrcode[0]
+      user.qrcode_ticket = qrcode[1]
+      user.qrcode_expire_time = qrcode[2]
+      user.save()
     return True, user
   except:
     # 获取用户基本信息
     state, user = update_user(openid, token)
-    # 创建用户二维码
-    host = 'api.weixin.qq.com'
-    path = '/cgi-bin/qrcode/create?access_token='
-    method = 'POST'
-    params = {}
-    params['expire_seconds'] = 7200
-    params['action_name'] = 'QR_SCENE'
-    params['action_info'] = {"scene": {"scene_id": user.id}}
-    print params
-    res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=True)
-    if not res[0]:
+    if not state:
       return False, None
-    res = res[1]
-    user.qrcode_url = res['url']
-    user.qrcode_ticket = res['ticket']
+    # 创建用户二维码
+    qrcode = update_user_qrcode(user)
+    user.qrcode_url = qrcode[0]
+    user.qrcode_ticket = qrcode[1]
+    user.qrcode_expire_time = qrcode[2]
     user.save()
     return state, user
+
+def update_user_qrcode(user):
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/qrcode/create?access_token='
+  method = 'POST'
+  params = {}
+  params['expire_seconds'] = 2592000
+  params['action_name'] = 'QR_SCENE'
+  params['action_info'] = {"scene": {"scene_id": user.id}}
+  expire_time = timezone.now() + timedelta(seconds=2592000)
+  res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=True)
+  if not res[0]:
+    return False, None
+  res = res[1]
+  url = res['url']
+  ticket = res['ticket']
+  return True, (url, ticket, expire_time)
 
 # 更新数据库中user的信息
 def update_user(openid, token):

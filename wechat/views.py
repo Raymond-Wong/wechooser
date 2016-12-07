@@ -64,6 +64,7 @@ HANDLERS = {
 def message(dictionary, token, retried=False):
   try:
     state, user = utils.get_user(dictionary['FromUserName'], token)
+    print user.qrcode_expire_time
     # 测试获取名片
     if dictionary['MsgType'] == 'text' and dictionary['Content'] == 'card':
       mediaId = get_name_card_mediaid(user, token)

@@ -48,4 +48,5 @@ class User(models.Model):
   credits = models.PositiveIntegerField(default=100)
   qrcode_url = models.TextField(default='')
   qrcode_ticket = models.TextField(default='')
+  qrcode_expire_time = models.DateTimeField(null=True)
   invited_by = models.ForeignKey('self', null=True)
