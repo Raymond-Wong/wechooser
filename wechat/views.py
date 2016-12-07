@@ -78,7 +78,6 @@ def message(dictionary, token, retried=False):
     wechooser.utils.logger('INFO', 'return following msg: %s' % ret)
     return HttpResponse(ret)
   except Exception, e:
-    print e
     # 尝试更新token后重新发送消息
     if not retried:
       token = utils.update_token()
