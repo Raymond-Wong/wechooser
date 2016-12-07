@@ -47,3 +47,5 @@ class User(models.Model):
   headimgurl = models.TextField(null=True)
   credits = models.PositiveIntegerField(default=100)
   qrcode_url = models.TextField(default='')
+  qrcode_ticket = models.TextField(default='')
+  invited_by = models.ForeignKey('self', null=True)

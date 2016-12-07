@@ -25,7 +25,7 @@ from wechooser.utils import Response, PastDueException
 from ReplyTemplates import TextTemplate
 from ReplyHandlers import *
 from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
-from transmit.views import get_name_card_mediaid
+from transmit.views import get_name_card_mediaid, invited_by
 import wechooser.utils
 import utils
 
@@ -63,13 +63,18 @@ HANDLERS = {
 }
 def message(dictionary, token, retried=False):
   try:
+    state, user = utils.get_user(dictionary['FromUserName'], token)
     # 测试获取名片
     if dictionary['MsgType'] == 'text' and dictionary['Content'] == 'card':
-      state, user = utils.get_user(dictionary['FromUserName'], token)
       mediaId = get_name_card_mediaid(user, token)
-      print mediaId
       imgTemplate = ImageTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], MediaId=mediaId)
       return HttpResponse(imgTemplate.toReply())
+    # 如果是扫描了邀请链接进来的则执行转发事件
+    if dictionary['MsgType'] == 'event' and dictionary['Event'] == 'SCAN':
+      state, invite_user = invited_by(user, dictionary, token)
+      if state:
+        ret = TextTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], Content='成功接受%s的邀请' % invite_user.nickname)
+        return HttpResponse(ret.toReply())
     # 如果信息类型不是文字，图片或者事件的话，则用默认处理类进行处理
     handler = DefaultReplyHandler
     if dictionary['MsgType'] in HANDLERS.keys():

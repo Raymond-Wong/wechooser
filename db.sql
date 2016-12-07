@@ -324,8 +324,12 @@ CREATE TABLE `wechat_user` (
   `headimgurl` longtext,
   `credits` int(10) unsigned NOT NULL,
   `qrcode_url` longtext NOT NULL,
+  `qrcode_ticket` longtext NOT NULL,
+  `invited_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `wx_openid` (`wx_openid`)
+  UNIQUE KEY `wx_openid` (`wx_openid`),
+  KEY `wechat_user_b8f8d6fa` (`invited_by_id`),
+  CONSTRAINT `invited_by_id_refs_id_025a5da5` FOREIGN KEY (`invited_by_id`) REFERENCES `wechat_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -338,4 +342,4 @@ CREATE TABLE `wechat_user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-07 22:38:11
+-- Dump completed on 2016-12-07 23:19:37

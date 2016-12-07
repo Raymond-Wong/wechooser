@@ -239,6 +239,7 @@ def get_user(openid, token):
       return False, None
     res = res[1]
     user.qrcode_url = res['url']
+    user.qrcode_ticket = res['ticket']
     user.save()
     return state, user
 

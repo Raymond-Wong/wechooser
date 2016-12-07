@@ -61,3 +61,17 @@ def get_name_card_mediaid(user, token):
   filename = '%s_%s.jpg' % (user.wx_openid, timestamp)
   resp = wechat.utils.upload_tmp_material(filename, StringIO.StringIO(namecard), 'image', token)
   return resp['media_id']
+
+# 用户被其他用户邀请的事件
+def invited_by(user, dictionary):
+  # 如果用户已经被邀请过了
+  if user.invited_by:
+    return False, None
+  invite_user = User.objects.get(qrcode_ticket=dictionary['Ticket'])
+  # 如果邀请人和被邀请人是同一个人则返回错误
+  if user.wx_openid == invite_user.wx_openid:
+    return False, None
+  user.invited_by = invite_user
+  user.save()
+  return True, invite_user
+
