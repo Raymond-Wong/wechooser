@@ -64,7 +64,7 @@ HANDLERS = {
 def message(dictionary, token, retried=False):
   try:
     # 测试获取名片
-    if dictionary['Content'] == 'card':
+    if dictionary['MsgType'] == 'text' and dictionary['Content'] == 'card':
       state, user = utils.get_user(dictionary['FromUserName'], token)
       mediaId = get_name_card_mediaid(user, token)
       print mediaId
