@@ -19,7 +19,7 @@ from datetime import datetime, timedelta
 
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 
-from wechat.models import access_token
+from wechat.models import access_token, User
 from wechooser.utils import Response, PastDueException
 from wechooser.settings import WX_APPID, WX_SECRET
 import wechooser.utils
@@ -215,4 +215,39 @@ def getUserList(token, next=None):
       return []
     return res[1]['data']['openid']
   return None
+
+# 获取用户对象
+def get_user(openid, token):
+  user = None
+  try:
+    user = User.objects.get(wx_openid=openid)
+    return True, user
+  except:
+    state, user = update_user(openid, token)
+    return state, user
+
+# 更新数据库中user的信息
+def update_user(openid, token):
+  user = None
+  try:
+    user = User.objects.get(wx_openid=openid)
+  except:
+    user = User()
+  params = {}
+  params['access_token'] = token.token
+  params['openid'] = openid
+  params['lang'] = 'zh_CN'
+  res = wechooser.utils.send_request('api.weixin.qq.com', '/sns/userinfo', 'GET', params=params)
+  if not res[0]:
+    return False, HttpResponse(Response(c=2, m="login failed: get user from wechat info failed").toJson(), content_type='application/json')
+  userInfo = res[1]
+  user.nickname = userInfo['nickname']
+  user.sex = userInfo['sex']
+  user.province = userInfo['province']
+  user.city = userInfo['city']
+  user.country = userInfo['country']
+  user.headimgurl = userInfo['headimgurl']
+  user.save()
+  print 'openid: %s, nickname: %s, id: %s' % (openid, userInfo['nickname'], user.id)
+  return True, user
 
