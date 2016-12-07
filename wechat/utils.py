@@ -237,7 +237,7 @@ def update_user(openid, token):
   params['access_token'] = token.token
   params['openid'] = openid
   params['lang'] = 'zh_CN'
-  res = wechooser.utils.send_request('api.weixin.qq.com', '/sns/userinfo', 'GET', params=params)
+  res = wechooser.utils.send_request('api.weixin.qq.com', '/cgi-bin/user/info', 'GET', params=params)
   if not res[0]:
     return False, HttpResponse(Response(c=2, m="login failed: get user from wechat info failed").toJson(), content_type='application/json')
   userInfo = res[1]
