@@ -62,6 +62,9 @@ HANDLERS = {
   'event' : EventReplyHandler,
 }
 def message(dictionary, token, retried=False):
+  if dictionary['Content'] == 'card':
+    errTemplate = TextTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], Content='get card')
+    return HttpResponse(errTemplate.toReply())
   try:
     # 如果信息类型不是文字，图片或者事件的话，则用默认处理类进行处理
     handler = DefaultReplyHandler
