@@ -256,7 +256,6 @@ def update_user(openid, token):
 # 上传临时素材
 def upload_tmp_material(filename, data, mtype, token):
   files = {'media' : (filename, data, 'multipart/form-data')}
-  print files
   params = {}
   params['access_token'] = token.token
   params['type'] = mtype
