@@ -68,8 +68,8 @@ def message(dictionary, token, retried=False):
       state, user = utils.get_user(dictionary['FromUserName'], token)
       mediaId = get_name_card_mediaid(user, token)
       print mediaId
-      errTemplate = TextTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], Content=user.nickname)
-      return HttpResponse(errTemplate.toReply())
+      imgTemplate = ImageTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], MediaId=mediaId)
+      return HttpResponse(imgTemplate.toReply())
     # 如果信息类型不是文字，图片或者事件的话，则用默认处理类进行处理
     handler = DefaultReplyHandler
     if dictionary['MsgType'] in HANDLERS.keys():

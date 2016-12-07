@@ -262,5 +262,4 @@ def upload_tmp_material(filename, data, mtype, token):
   url = '?'.join([url, urllib.urlencode(params)])
   files = {'media' : (filename, data, 'multipart/form-data')}
   resp = requests.post(url, files=files)
-  print resp.json()
-  return ''
+  return resp.json()

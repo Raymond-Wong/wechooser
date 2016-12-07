@@ -59,5 +59,5 @@ def get_name_card_mediaid(user, token):
   # 上传临时素材获取mediaid
   timestamp = str(int(time.time() * 1000))
   filename = '%s_%s.jpg' % (user.wx_openid, timestamp)
-  mediaId = wechat.utils.upload_tmp_material(filename, StringIO.StringIO(namecard), 'image', token)
-  return mediaId
+  resp = wechat.utils.upload_tmp_material(filename, StringIO.StringIO(namecard), 'image', token)
+  return resp['media_id']
