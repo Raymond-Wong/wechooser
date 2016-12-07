@@ -7,6 +7,7 @@ import urllib
 from PIL import Image, ImageDraw, ImageFont
 import qrcode
 import time
+import StringIO
 
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, redirect
@@ -57,8 +58,6 @@ def get_name_card_mediaid(user, token):
   namecard = get_name_card(user)
   # 上传临时素材获取mediaid
   timestamp = str(int(time.time() * 1000))
-  print timestamp
   filename = '%s_%s.jpg' % (user.wx_openid, timestamp)
-  print filename
   mediaId = wechat.utils.upload_tmp_material(filename, StringIO.StringIO(namecard), 'image', token)
   return mediaId
