@@ -261,7 +261,6 @@ def upload_tmp_material(filename, data, mtype, token):
   url = 'https://api.weixin.qq.com/cgi-bin/media/upload'
   url = '?'.join([url, urllib.urlencode(params)])
   files = {'media' : (filename, data, 'multipart/form-data')}
-  print files
   resp = requests.post(url, files=files)
-  print resp
+  print resp.json()
   return ''
