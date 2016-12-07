@@ -233,7 +233,7 @@ def get_user(openid, token):
     method = 'POST'
     params = {}
     params['action_name'] = 'QR_LIMIT_SCENE'
-    params['action_info'] = {"scene": {"scene_str": user.wx_openid}}}
+    params['action_info'] = {"scene": {"scene_str": user.wx_openid}}
     res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=True)
     if not res[0]:
       return False, None
