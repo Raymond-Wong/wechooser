@@ -225,7 +225,7 @@ def get_user(openid, token):
   try:
     user = User.objects.get(wx_openid=openid)
     if timezone.now() > user.qrcode_expire_time:
-      qrcode = update_user_qrcode(user, token)
+      state, qrcode = update_user_qrcode(user, token)
       user.qrcode_url = qrcode[0]
       user.qrcode_ticket = qrcode[1]
       user.qrcode_expire_time = qrcode[2]
@@ -237,8 +237,7 @@ def get_user(openid, token):
     if not state:
       return False, None
     # 创建用户二维码
-    qrcode = update_user_qrcode(user, token)
-    print qrcode
+    state, qrcode = update_user_qrcode(user, token)
     user.qrcode_url = qrcode[0]
     user.qrcode_ticket = qrcode[1]
     user.qrcode_expire_time = qrcode[2]
