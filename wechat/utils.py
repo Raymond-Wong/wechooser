@@ -11,6 +11,8 @@ import time
 import base64
 import eyed3
 import os
+import StringIO
+import requests
 try: 
   import xml.etree.cElementTree as ET
 except ImportError: 
@@ -251,3 +253,14 @@ def update_user(openid, token):
   print 'openid: %s, nickname: %s, id: %s' % (openid, userInfo['nickname'], user.id)
   return True, user
 
+# 上传临时素材
+def upload_tmp_material(filename, data, mtype, token):
+  files = {'media' : (filename, data, 'multipart/form-data')}
+  params = {}
+  params['access_token'] = token.token
+  params['type'] = mtype
+  url = 'https://api.weixin.qq.com/cgi-bin/media/upload'
+  url = '?'.join([url, urllib.urlencode(params)])
+  resp = requests.post(url, files=files)
+  print resp
+  return ''

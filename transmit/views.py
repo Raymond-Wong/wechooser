@@ -6,6 +6,7 @@ sys.setdefaultencoding('utf-8')
 import urllib
 from PIL import Image, ImageDraw, ImageFont
 import qrcode
+import time
 
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, redirect
@@ -49,3 +50,13 @@ def get_name_card(user):
   # 将二维码和背景图片合并
   bg = processer.combine(bg, qr_img, resize=(120, 120), pos=(165, 495), alpha=False)
   return utils.image_to_string(bg)
+
+# 获取名片的mediaid
+def get_name_card_mediaid(user, token):
+  # 获取namecard图片对象
+  namecard = get_name_card(user)
+  # 上传临时素材获取mediaid
+  timestamp = str(int(time.time() * 1000))
+  filename = '%s_%s.jpg' % (user.wx_openid, timestamp)
+  mediaId = wechat.utils.upload_tmp_material(filename, StringIO.StringIO(namecard), 'image', token)
+  return mediaId

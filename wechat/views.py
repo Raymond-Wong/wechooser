@@ -25,7 +25,7 @@ from wechooser.utils import Response, PastDueException
 from ReplyTemplates import TextTemplate
 from ReplyHandlers import *
 from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
-from transmit.views import getNameCard
+from transmit.views import get_name_card_mediaid
 import wechooser.utils
 import utils
 
@@ -66,7 +66,7 @@ def message(dictionary, token, retried=False):
     # 测试获取名片
     if dictionary['Content'] == 'card':
       state, user = utils.get_user(dictionary['FromUserName'], token)
-      mediaId = getNameCard(user)
+      mediaId = get_name_card_mediaid(user, token)
       print mediaId
       errTemplate = TextTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], Content=user.nickname)
       return HttpResponse(errTemplate.toReply())
