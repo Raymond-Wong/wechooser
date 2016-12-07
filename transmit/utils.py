@@ -101,10 +101,6 @@ class PyImageProcesser:
     img = self.draw_text(img, text, (x, y), font, font_size, font_color)
     return img
 
-# 获取用户的邀请链接
-def get_user_url(user):
-  return 'www.baidu.com'
-
 if __name__ == '__main__':
   # 假装用户头像已经获取到了
   img = Image.open('./faces.png')

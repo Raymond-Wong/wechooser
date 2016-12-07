@@ -45,7 +45,7 @@ def get_name_card(user):
   bg = processer.center_text(bg, user.nickname, 290, (20, 20), font_size=24, font_color="white", font=font_path)
   # 根据用户id生成一个二维码
   coder = qrcode.QRCode(version=5, border=1)
-  coder.add_data(utils.get_user_url(user))
+  coder.add_data(user.qrcode_url)
   coder.make(fit=True)
   qr_img = coder.make_image()
   # 将二维码和背景图片合并
