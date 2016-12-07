@@ -242,8 +242,8 @@ def update_user(openid, token):
   res = wechooser.utils.send_request('api.weixin.qq.com', '/cgi-bin/user/info', 'GET', params=params)
   if not res[0]:
     return False, HttpResponse(Response(c=2, m="login failed: get user from wechat info failed").toJson(), content_type='application/json')
-  print res
   userInfo = res[1]
+  user.wx_openid = userInfo['openid']
   user.nickname = userInfo['nickname']
   user.sex = userInfo['sex']
   user.province = userInfo['province']
