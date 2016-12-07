@@ -66,7 +66,7 @@ def message(dictionary, token, retried=False):
     # 测试获取名片
     if dictionary['Content'] == 'card':
       state, user = utils.get_user(dictionary['FromUserName'], token)
-      print user.nickname
+      print state, user
       mediaId = get_name_card_mediaid(user, token)
       print mediaId
       imgTemplate = ImageTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], MediaId=mediaId)
