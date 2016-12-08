@@ -224,14 +224,13 @@ CREATE TABLE `transmit_name_card` (
   `head_x` int(10) unsigned NOT NULL,
   `head_y` int(10) unsigned NOT NULL,
   `name_fontsize` int(10) unsigned NOT NULL,
-  `name_size` int(10) unsigned NOT NULL,
-  `name_x` int(10) unsigned NOT NULL,
+  `name_padding` int(10) unsigned NOT NULL,
   `name_y` int(10) unsigned NOT NULL,
   `qrcode_size` int(10) unsigned NOT NULL,
   `qrcode_x` int(10) unsigned NOT NULL,
   `qrcode_y` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -247,7 +246,7 @@ CREATE TABLE `wechat_access_token` (
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,7 +370,7 @@ CREATE TABLE `wechooser_image` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `url` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -383,4 +382,4 @@ CREATE TABLE `wechooser_image` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-09  0:42:27
+-- Dump completed on 2016-12-09  0:54:48

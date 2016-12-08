@@ -38,8 +38,6 @@ var getParams = function() {
   params['head_x'] = $('input[name="head_x"]').val();
   params['head_y'] = $('input[name="head_y"]').val();
   params['name_fontsize'] = $('input[name="name_fontsize"]').val();
-  params['name_size'] = $('input[name="name_len"]').val();
-  params['name_x'] = $('input[name="name_x"]').val();
   params['name_y'] = $('input[name="name_y"]').val();
   params['qrcode_size'] = $('input[name="qrcode_size"]').val();
   params['qrcode_x'] = $('input[name="qrcode_x"]').val();
@@ -48,7 +46,7 @@ var getParams = function() {
     return [false, '未提供背景图片'];
   }
   if (params['head_diameter'] == undefined || params['head_x'] == undefined || params['head_y'] == undefined ||
-     params['name_fontsize'] == undefined || params['name_size'] == undefined || params['name_x'] == undefined || params['name_y'] == undefined ||
+     params['name_fontsize'] == undefined || params['name_y'] == undefined ||
      params['qrcode_size'] == undefined || params['qrcode_x'] == undefined || params['qrcode_y'] == undefined) {
     return [false, '为提供足够参数'];
   }

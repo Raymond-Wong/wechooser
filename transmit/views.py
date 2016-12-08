@@ -35,10 +35,6 @@ def getNameCard(request):
   card.head_y = head_y if head_y is not None else card.head_y
   name_fontsize = request.POST.get('name_fontsize', None)
   card.name_fontsize = name_fontsize if name_fontsize is not None else card.name_fontsize
-  name_size = request.POST.get('name_size', None)
-  card.name_size = name_size if name_size is not None else card.name_size
-  name_x = request.POST.get('name_x', None)
-  card.name_x = name_x if name_x is not None else card.name_x
   name_y = request.POST.get('name_y', None)
   card.name_y = name_y if name_y is not None else card.name_y
   qrcode_x = request.POST.get('qrcode_x', None)
@@ -77,10 +73,6 @@ def save(request):
   card.head_y = head_y if head_y is not None else card.head_y
   name_fontsize = request.POST.get('name_fontsize', None)
   card.name_fontsize = name_fontsize if name_fontsize is not None else card.name_fontsize
-  name_size = request.POST.get('name_size', None)
-  card.name_size = name_size if name_size is not None else card.name_size
-  name_x = request.POST.get('name_x', None)
-  card.name_x = name_x if name_x is not None else card.name_x
   name_y = request.POST.get('name_y', None)
   card.name_y = name_y if name_y is not None else card.name_y
   qrcode_x = request.POST.get('qrcode_x', None)
@@ -123,10 +115,10 @@ def get_name_card(user, template=None):
   bg = processer.combine(bg, headimg, size, pos)
   # 在上面得到的背景图片的某个垂直位置放置一个水平居中的用户昵称
   font_path = '%s/static/transmit/fonts/deng.ttf' % sys.path[0]
-  size = int(template.name_size)
-  pos = (int(template.name_x), int(template.name_y))
+  y = int(template.name_y)
+  pos = (int(template.name_padding), int(template.name_padding))
   font_size = int(template.name_fontsize)
-  bg = processer.center_text(bg, user.nickname, size, pos, font_size=font_size, font_color="white", font=font_path)
+  bg = processer.center_text(bg, user.nickname, y, pos, font_size=font_size, font_color="white", font=font_path)
   # 根据用户id生成一个二维码
   coder = qrcode.QRCode(version=5, border=1)
   coder.add_data(user.qrcode_url)
