@@ -6,11 +6,8 @@ import random
 import StringIO
 from PIL import Image, ImageDraw, ImageFont
 
-# 根据url获取用户头像
-def get_head_image(url, size=0):
-  arr = url.split('/')
-  arr[-1] = str(size)
-  url = '/'.join(arr)
+# 从url中下载图片
+def download_image(url):
   try:
     cj = cookielib.LWPCookieJar()
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
@@ -22,6 +19,13 @@ def get_head_image(url, size=0):
   except Exception, e:
     print e
     return None
+
+# 根据url获取用户头像
+def get_head_image(url, size=0):
+  arr = url.split('/')
+  arr[-1] = str(size)
+  url = '/'.join(arr)
+  return download_image(url)
 
 # 将图片文件转换成base64字符串
 def image_to_base64(image):

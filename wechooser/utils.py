@@ -165,3 +165,17 @@ def filterEmoji(desstr,restr=''):
   except re.error:
     co = re.compile(u'[\uD800-\uDBFF][\uDC00-\uDFFF]')
   return co.sub(restr, desstr)
+
+# 获得图片的完整链接
+def appendImageUrl(x):
+  from os import environ
+  remote = environ.get("APP_NAME", "")
+  remote_media_path = "http://wechooser-images.stor.sinaapp.com/"
+  IMAGE_BASE_URL = remote_media_path if remote else "/media/"
+  if type(x) == dict:
+    x["image"] = IMAGE_BASE_URL + x.get("image", "")
+  elif type(x) == str or type(x) == unicode:
+    x = IMAGE_BASE_URL + x
+  else:
+    x = "/static/pc/icon/logo.png"
+  return x

@@ -6,5 +6,7 @@ import views
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+  url(r'^$', views.index, name="index"),
   url(r'getNameCard', views.getNameCard, name='getNameCard'),
+  url(r'save', views.save, name='save'),
 )

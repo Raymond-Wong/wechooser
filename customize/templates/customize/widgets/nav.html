@@ -26,6 +26,11 @@
   	{% else %}
   	  <li><a href="/menu">自定义菜单</a></li>
   	{% endifequal %}
+    {% ifequal active "transmit" %}
+      <li class="active"><a href="#">设置用户名片</a></li>
+    {% else %}
+      <li><a href="/transmit">设置用户名片</a></li>
+    {% endifequal %}
     <li><a href="javascript:void(0)" id="updateTokenBtn">更新token</a></li>
   </ul>
 </div>

@@ -66,9 +66,10 @@ def message(dictionary, token, retried=False):
     state, user = utils.get_user(dictionary['FromUserName'], token)
     # 测试获取名片
     if dictionary['MsgType'] == 'text' and dictionary['Content'] == 'card':
-      mediaId = get_name_card_mediaid(user, token)
-      imgTemplate = ImageTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], MediaId=mediaId)
-      return HttpResponse(imgTemplate.toReply())
+      state, mediaId = get_name_card_mediaid(user, token)
+      if state:
+        imgTemplate = ImageTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], MediaId=mediaId)
+        return HttpResponse(imgTemplate.toReply())
     # 如果是扫描了邀请链接进来的则执行转发事件
     if dictionary['MsgType'] == 'event' and dictionary['Event'] == 'SCAN':
       state, invite_user = invited_by(user, dictionary)

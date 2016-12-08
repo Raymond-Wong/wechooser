@@ -41,14 +41,15 @@ body {
   clear: both;
 }
 
-.btn {
+.btn, .btn:visited, .btn:active, .btn:focus {
   background-color: #09bb07;
   border-radius: 5px;
   color: white;
   cursor: pointer;
+  outline: none;
 }
 
-.btn.wait {
+.btn.wait, .btn.wait:visited, .btn.wait:active, .btn.wait:focus {
   background-color: white;
   color: #5b5b5b;
   border: 1px solid #d9d9d9;

@@ -1,0 +1,75 @@
+#replyHead {
+  padding: 21px 0px 16px 6px;
+  font-size: 16px;
+  font-weight: normal;
+  color: #5b5b5b;
+}
+
+.pageWrapper {
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 2em;
+  color: #5b5b5b;
+}
+
+.stepBoxTitle {
+  font-size: 14px;
+}
+
+.line {
+  margin: 1em 0;
+}
+
+.lineLabel {
+  width: 6em;
+  height: 1.9em;
+  line-height: 1.9em;
+}
+
+#btnWrapper {
+  padding: 27px 0px 0px 21px;
+}
+
+#btnWrapper .btn {
+  width: 107px;
+  height: 34px;
+  /*line-height: 34px;*/
+  text-align: center;
+  display: inline-block;
+  margin: 0 12px;
+}
+
+.nameCardStyleBox {
+  width: 100%;
+}
+
+.settingArea {
+  width: 70%;
+}
+
+.previewArea {
+  width: 30%;
+  border: 1px solid #ccc;
+  padding: 1em;
+}
+
+.previewBox {
+  width: 100%;
+}
+
+.previewBox img {
+  width: 100%;
+  height: 177px;
+  background-color: #eee;
+}
+
+.previewTitle {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.refreshPreviewBtn {
+  margin-top: 1em;
+  width: 100%;
+  font-size: 12px;
+}
