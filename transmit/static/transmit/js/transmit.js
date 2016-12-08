@@ -26,7 +26,7 @@ var submitAction = function() {
       return false;
     }
     post('/transmit/save', res[1], function(msg) {
-      console.log(msg);
+      topAlert(msg['msg']);
     });
   });
 }
