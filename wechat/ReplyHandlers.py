@@ -63,7 +63,7 @@ class ScanReplyHandler(ReplyHandler):
       except:
         ret.Content = namecard.invited_msg
     else:
-      ret.Content = '接受邀请失败'
+      ret.Content = invite_user
     return ret.toReply()
 
 # 事件自动回复
