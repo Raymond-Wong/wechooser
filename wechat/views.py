@@ -64,18 +64,13 @@ HANDLERS = {
 def message(dictionary, token, retried=False):
   try:
     state, user = utils.get_user(dictionary['FromUserName'], token)
+    dictionary['user'] = user
     # 测试获取名片
     if dictionary['MsgType'] == 'text' and dictionary['Content'] == 'card':
       state, mediaId = get_name_card_mediaid(user, token)
       if state:
         imgTemplate = ImageTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], MediaId=mediaId)
         return HttpResponse(imgTemplate.toReply())
-    # 如果是扫描了邀请链接进来的则执行转发事件
-    if dictionary['MsgType'] == 'event' and dictionary['Event'] == 'SCAN':
-      state, invite_user = invited_by(user, dictionary)
-      if state:
-        ret = TextTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], Content='成功接受%s的邀请' % invite_user.nickname)
-        return HttpResponse(ret.toReply())
     # 如果信息类型不是文字，图片或者事件的话，则用默认处理类进行处理
     handler = DefaultReplyHandler
     if dictionary['MsgType'] in HANDLERS.keys():

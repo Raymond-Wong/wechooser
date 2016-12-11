@@ -54,8 +54,8 @@ class SubscribeReplyHandler(ReplyHandler):
 # 扫描自定义二维码回复事件
 class ScanReplyHandler(ReplyHandler):
   def getReply(self):
-    state, invite_user = invited_by(user, dictionary)
-    ret = TextTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'])
+    state, invite_user = invited_by(self.params['user'], self.params)
+    ret = TextTemplate(ToUserName=self.params['FromUserName'], FromUserName=self.params['ToUserName'])
     if state:
       ret.Content = '成功接受%s的邀请' % invite_user.nickname
     else:
