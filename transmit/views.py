@@ -53,6 +53,18 @@ def getNameCard(request):
   img = utils.image_to_base64(img)
   return HttpResponse(Response(m=img).toJson(), content_type='application/json')
 
+# 获取达到邀请人数后的人数目标
+def getGoalMsg(request):
+  user = request.GET.get('id', None)
+  try:
+    user = User.objects.get(wx_openid=user)
+  except:
+    raise Http404
+  state, namecard = get_template()
+  if not user.user_set.count() >= namecard.target:
+    raise Http404
+  return render_to_response('transmit/getGoalMsg.html', {'msg' : namecard.goal_msg})
+
 def index(request):
   templates = Name_Card.objects.order_by('-create_time')
   template = None
