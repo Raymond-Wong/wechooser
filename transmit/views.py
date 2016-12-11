@@ -43,6 +43,8 @@ def getNameCard(request):
   card.qrcode_y = qrcode_y if qrcode_y is not None else card.qrcode_y
   qrcode_size = request.POST.get('qrcode_size', None)
   card.qrcode_size = qrcode_size if qrcode_size is not None else card.qrcode_size
+  target = request.POST.get('target', None)
+  card.target = target if target is not None else card.target
   user = User()
   user.headimg = '%s/static/transmit/images/headimg.jpg' % sys.path[0]
   user.qrcode_url = '用户名片效果预览二维码'
@@ -81,6 +83,10 @@ def save(request):
   card.qrcode_y = qrcode_y if qrcode_y is not None else card.qrcode_y
   qrcode_size = request.POST.get('qrcode_size', None)
   card.qrcode_size = qrcode_size if qrcode_size is not None else card.qrcode_size
+  target = request.POST.get('target', None)
+  card.target = target if target is not None else card.target
+  card.invited_msg = request.POST.get('invited_msg', '')
+  card.goal_msg = request.POST.get('goal_msg', '')
   card.save()
   return HttpResponse(Response(m="保存成功").toJson(), content_type="application/json")
 

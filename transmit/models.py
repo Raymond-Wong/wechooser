@@ -16,3 +16,6 @@ class Name_Card(models.Model):
   qrcode_size = models.PositiveIntegerField(default=120)
   qrcode_x = models.PositiveIntegerField(default=165)
   qrcode_y = models.PositiveIntegerField(default=495)
+  target = models.PositiveIntegerField(default=1)
+  invited_msg = models.TextField(default='')
+  goal_msg = models.TextField(default='')

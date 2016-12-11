@@ -1,3 +1,7 @@
+#pageBox {
+  height: auto;
+}
+
 #replyHead {
   padding: 21px 0px 16px 6px;
   font-size: 16px;
@@ -8,12 +12,14 @@
 .pageWrapper {
   width: 100%;
   border: 1px solid #ccc;
-  padding: 2em;
+  padding: 0 2em 2em 2em;
   color: #5b5b5b;
+  margin-bottom: 20px;
 }
 
 .stepBoxTitle {
   font-size: 14px;
+  margin-top: 2em;
 }
 
 .line {
@@ -72,4 +78,43 @@
   margin-top: 1em;
   width: 100%;
   font-size: 12px;
+}
+
+.msgBox {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  margin-top: 1em;
+}
+
+.msgOptionBox {
+  width: 100%;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.msgOption {
+  padding: 0.5em 1em;
+  border-right: 1px solid #d9d9d9;
+  color: #576477;
+  cursor: pointer;
+}
+
+.msgOption.active, .msgOption:hover {
+  background-color: #576477;
+  color: white;
+}
+
+.msgContent {
+  width: 100%;
+}
+
+#materialWrapper {
+  border: 0;
+}
+
+#materialNav {
+  display: none;
+}
+
+#materialRemain {
+  display: none;
 }

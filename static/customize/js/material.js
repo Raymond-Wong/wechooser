@@ -49,7 +49,9 @@ var chooseFaceAction = function() {
 var listenInput = function() {
   var materialText = $('#materialText')[0];
   $('#materialText').keydown(function(evt) {
-    if ($(materialText).text() == '') {
+    var textImage = $(materialText).text().length;
+    textImage += $(materialText).find('img').length;
+    if (textImage <= 0) {
       $(materialText).html('');
     }
     if (evt.keyCode == '13') {
@@ -82,8 +84,13 @@ var updateRemainChar = function() {
 var textHandler = function() {
   var tmpDiv = $('#materialText').clone();
   // 在每个div前面加一个换行符
+  var counter = 0;
   tmpDiv.find('div').each(function() {
-    $(this).prepend('\n');
+    var brOrTextOrImg = $(this).text().length;
+    brOrTextOrImg += $(this).find('br').length;
+    brOrTextOrImg += $(this).find('img').length;
+    if (counter++ > 0 && brOrTextOrImg > 0)
+      $(this).prepend('\n');
   })
   tmpDiv.find('img').each(function() {
     var face = $(this).attr('name');

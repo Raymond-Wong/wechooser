@@ -1,6 +1,7 @@
 {% extends 'customize/widgets/base.html' %}
 
 {% block style %}
+<link type="text/css" rel="stylesheet" href="/static/customize/css/material.css">
 <link type="text/css" rel="stylesheet" href="/static/transmit/css/transmit.css">
 {% endblock %}
 
@@ -41,17 +42,37 @@
         <input type="number" min="0" placeholder="二维码x坐标" name="qrcode_x" value="{{ template.qrcode_x }}" />
         <input type="number" min="0" placeholder="二维码y坐标" name="qrcode_y" value="{{ template.qrcode_y }}" />
       </div>
-      <div id="btnWrapper">
-        <div class="btn left" id="submit">保存</div>
-        <div class="btn wait left" onclick="window.location.href=window.location.href;">取消</div>
-        <div class="clear"></div>
-      </div>
     </div>
     <div class="previewArea left">
       <!-- <div class="previewTitle"><b>效果预览</b></div> -->
       <div class="previewBox"><img src="" /></div>
       <button class="refreshPreviewBtn btn" id="refreshPreviewBtn">刷新预览图</button>
     </div>
+    <div class="clear"></div>
+  </div>
+  <div class="stepBox">
+    <div class="stepBoxTitle">第二步：设置名片分享的达标数量</div>
+    <div class="line">
+      <div class="lineLabel left">达标数量</div>
+      <input type="number" min="0" name="target" value="{{ template.target }}" placeholder="名片分享的达标数量" />
+    </div>
+  </div>
+  <div class="stepBox">
+    <div class="stepBoxTitle">第三步：设置回复内容</div>
+    <div class="msgBox">
+      <div class="msgOptionBox">
+        <div class="msgOption left" name="invited_msg" value="{{ template.invited_msg }}">被邀请者收到的内容</div>
+        <div class="msgOption left" name="goal_msg" value="{{ template.goal_msg }}">达标后收到的内容</div>
+        <div class="clear"></div>
+      </div>
+      <div class="msgContent">
+        {% include 'customize/widgets/material.html' %}
+      </div>
+    </div>
+  </div>
+  <div id="btnWrapper">
+    <div class="btn left" id="submit">保存</div>
+    <div class="btn wait left" onclick="window.location.href=window.location.href;">取消</div>
     <div class="clear"></div>
   </div>
 </div>
@@ -61,5 +82,6 @@
 <script type="text/javascript" src="/static/plugin/fileUpload/js/vendor/jquery.ui.widget.js"></script>
 <script type="text/javascript" src="/static/plugin/fileUpload/js/jquery.iframe-transport.js"></script>
 <script type="text/javascript" src="/static/plugin/fileUpload/js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="/static/customize/js/material.js"></script>
 <script type="text/javascript" src="/static/transmit/js/transmit.js"></script>
 {% endblock %}

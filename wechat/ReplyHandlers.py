@@ -50,6 +50,17 @@ class SubscribeReplyHandler(ReplyHandler):
     ReplyHandler.__init__(self, params)
     self.reply_type = 'subscribe'
 
+# 扫描自定义二维码回复事件
+class ScanReplyHandler(ReplyHandler):
+  def getReply(self):
+    state, invite_user = invited_by(user, dictionary)
+    ret = TextTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'])
+    if state:
+      ret.Content = '成功接受%s的邀请' % invite_user.nickname
+    else:
+      ret.Content = '接受邀请失败'
+    return ret.toReply()
+
 # 事件自动回复
 class EventReplyHandler(ReplyHandler):
   def __init__(self, params):
@@ -57,6 +68,8 @@ class EventReplyHandler(ReplyHandler):
   def getReply(self):
     if self.params['Event'] == 'subscribe':
       return SubscribeReplyHandler(self.params).getReply()
+    elif self.params['Event'] == 'SCAN':
+      return ScanReplyHandler(self.params).getReply()
     eventKey = self.params['EventKey']
     try:
       reply = MenuReply.objects.get(mid=eventKey)
