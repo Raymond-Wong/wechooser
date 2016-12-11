@@ -232,8 +232,11 @@ CREATE TABLE `transmit_name_card` (
   `target` int(10) unsigned NOT NULL,
   `invited_msg` longtext NOT NULL,
   `goal_msg` longtext NOT NULL,
+  `gain_card_method` int(10) unsigned NOT NULL,
+  `keyword` longtext NOT NULL,
+  `mid` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -385,4 +388,4 @@ CREATE TABLE `wechooser_image` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-11 14:43:21
+-- Dump completed on 2016-12-12  0:38:22

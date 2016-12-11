@@ -3,7 +3,25 @@ $(document).ready(function() {
   previewAction();
   submitAction();
   msgOptionAction();
+  initGainCardMethod();
 });
+
+var initGainCardMethod = function() {
+  var gcmBox = $('.gainCardMethodBox');
+  var type = gcmBox.attr('type');
+  var kw = gcmBox.attr('keyword');
+  var mid = gcmBox.attr('mid');
+  console.log(type, kw, mid);
+  gcmBox.removeAttr('type').removeAttr('keyword').removeAttr('mid');
+  if (type == '1' || type == '0') {
+    $('input[name="gainCardMethod"][value="' + type + '"]').trigger('click');
+  } else if (type == '2') {
+    $('input[name="gainCardMethod"][value="2"][mid="' + mid + '"]').trigger('click');
+  } else {
+    $('input[name="gainCardMethod"][value="3"]').trigger('click');
+    $('input[name="gainCardKw"]').val(kw);
+  }
+}
 
 var msgOptionAction = function() {
   $('.msgOption').click(function() {
@@ -55,6 +73,16 @@ var submitAction = function() {
     $('.msgOption.active').attr('value', content);
     params['invited_msg'] = html2text($('.msgOption[name="invited_msg"]').attr('value'));
     params['goal_msg'] = html2text($('.msgOption[name="goal_msg"]').attr('value'));
+    params['gain_card_method'] = $('input[name="gainCardMethod"]:checked').val();
+    if (params['gain_card_method'] == '2') {
+      params['mid'] = $('input[name="gainCardMethod"]:checked').attr('mid');
+    } else if (params['gain_card_method'] == '3') {
+      params['keyword'] = $('input[name="gainCardKw"]').val();
+      if (params['keyword'] == '') {
+        topAlert('请输入获取名片的关键词', 'error');
+        return false;
+      }
+    }
     topAlert('正在保存中...');
     post('/transmit/save', params, function(msg) {
       if (msg['code'] == 0) {

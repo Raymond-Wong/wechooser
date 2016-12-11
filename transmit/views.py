@@ -14,7 +14,7 @@ from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from wechooser.utils import Response, send_request
-from wechooser.decorator import wx_logined
+from wechooser.decorator import wx_logined, has_token
 from wechat.models import User
 from models import Name_Card
 from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
@@ -65,14 +65,30 @@ def getGoalMsg(request):
     raise Http404
   return render_to_response('transmit/getGoalMsg.html', {'msg' : namecard.goal_msg})
 
-def index(request):
+@has_token
+def index(request, token):
+  # 获取图片模板
   templates = Name_Card.objects.order_by('-create_time')
   template = None
   if len(templates) <= 0:
     template = Name_Card()
   else:
     template = templates[0]
-  return render_to_response('transmit/transmit.html', {'active' : 'transmit', 'template' : template})
+  # 获取菜单
+  clickbtns = []
+  menuParent = wechat.utils.getMenu(token)
+  if menuParent is not None:
+    menu = menuParent['menu']['button']
+    print '*' * 20, '\n', menu, '\n', '*' * 20
+    for flBtn in menu:
+      if flBtn.has_key('type') and flBtn['type'] == 'click':
+        clickbtns.append({'name' : flBtn['name'], 'mid' : flBtn['key']})
+      else:
+        if len(flBtn['sub_button']) > 0:
+          for slBtn in flBtn['sub_button']:
+            if slBtn['type'] == 'click':
+              clickbtns.append({'name' : slBtn['name'], 'mid' : slBtn['key']})
+  return render_to_response('transmit/transmit.html', {'active' : 'transmit', 'template' : template, 'menu' : clickbtns})
 
 @csrf_exempt
 def save(request):
@@ -99,6 +115,9 @@ def save(request):
   card.target = target if target is not None else card.target
   card.invited_msg = request.POST.get('invited_msg', '')
   card.goal_msg = request.POST.get('goal_msg', '')
+  card.gain_card_method = request.POST.get('gain_card_method', 'text')
+  card.mid = request.POST.get('mid', '')
+  card.keyword = request.POST.get('keyword', '')
   card.save()
   return HttpResponse(Response(m="保存成功").toJson(), content_type="application/json")
 
@@ -165,7 +184,11 @@ def invited_by(user, dictionary):
   # 如果用户已经被邀请过了
   if user.invited_by:
     return False, '已接受过邀请'
-  invite_user = User.objects.get(qrcode_ticket=dictionary['Ticket'])
+  invite_user = None
+  try:
+    invite_user = User.objects.get(qrcode_ticket=dictionary['Ticket'])
+  except:
+    return False, '邀请用户不存在'
   # 如果邀请人和被邀请人是同一个人则返回错误
   if user.wx_openid == invite_user.wx_openid:
     return False, '只能邀请其他用户'
@@ -184,3 +207,16 @@ def get_template():
     return True, card[0]
   return False, Name_Card()
 
+# 判断当前的消息是否复合获取图片的要求
+def is_getting_card(dictionary):
+  card = get_template()
+  # 如果获取图片的要求是1
+  if card.gain_card_method == 1 and dictionary['MsgType'] == 'image':
+    return True
+  elif card.gain_card_method == 2 and dictionary['MsgType'] == 'event' and dictionary['EventKey'] == card.mid:
+    return True
+  elif card.gain_card_method == 3 and dictionary['MsgType'] == 'text' and dictionary['Content'] == card.keyword:
+    return True
+  elif card.gain_card_method == 0 and dictionary['MsgType'] == 'text' and not wechat.utils.is_hit_rules(dictionary['Content']):
+    return True
+  return False

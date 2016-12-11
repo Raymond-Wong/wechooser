@@ -51,14 +51,32 @@
     <div class="clear"></div>
   </div>
   <div class="stepBox">
-    <div class="stepBoxTitle">第二步：设置名片分享的达标数量</div>
+    <div class="stepBoxTitle">第二步：设置获取名片方式</div>
+    <div class="gainCardMethodBox" type="{{ template.gain_card_method }}" keyword="{{ template.keyword }}" mid="{{ template.mid }}">
+      <div class="line">
+        <span><input type="radio" name="gainCardMethod" value="0" />文字信息</span>
+        <span><input type="radio" name="gainCardMethod" value="1" />图片信息</span>
+      </div>
+      <div class="line">
+        {% for btn in menu %}
+        <span><input type="radio" name="gainCardMethod" value="2" mid="{{ btn.mid }}" />菜单按钮-{{ btn.name }}</span>
+        {% endfor %}
+      </div>
+      <div class="line">
+        <input type="radio" name="gainCardMethod" value="3" />关键词
+        <input type="text" name="gainCardKw" />
+      </div>
+    </div>
+  </div>
+  <div class="stepBox">
+    <div class="stepBoxTitle">第三步：设置名片分享的达标数量</div>
     <div class="line">
       <div class="lineLabel left">达标数量</div>
       <input type="number" min="0" name="target" value="{{ template.target }}" placeholder="名片分享的达标数量" />
     </div>
   </div>
   <div class="stepBox">
-    <div class="stepBoxTitle">第三步：设置回复内容</div>
+    <div class="stepBoxTitle">第四步：设置回复内容</div>
     <div class="msgBox">
       <div class="msgOptionBox">
         <div class="msgOption left" name="invited_msg" value="{{ template.invited_msg }}">被邀请者收到的内容</div>

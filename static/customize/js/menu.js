@@ -36,6 +36,10 @@ var bindSaveAction = function() {
         topAlert('菜单: ' + flBtn['name'] + ' 未填入内容', 'error');
         return false;
       }
+      // 如果btn是click类型的，就要保证有key关键词且其值为mid
+      if (flBtn['type'] == 'click' && flBtn['sub_button'].length <= 0) {
+        flBtn['key'] = flBtn['mid'];
+      }
       if (flBtn['sub_button'].length > 0) {
         flBtn['sub_button'] = flBtn['sub_button'].reverse()
         for (var j = 0; j < flBtn['sub_button'].length; j++) {
@@ -46,10 +50,14 @@ var bindSaveAction = function() {
             topAlert('子菜单: ' + slBtn['name'] + ' 未填入内容', 'error');
             return false;
           }
+          if (slBtn['type'] == 'click') {
+            slBtn['key'] = slBtn['mid'];
+          }
         }
       }
     }
     topAlert('正在保存中...');
+    console.log(MENU);
     post('/menu', {'menu' : JSON.stringify(MENU)}, function(res) {
       if (res['code'] == 0) {
         topAlert('保存成功');

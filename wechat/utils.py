@@ -22,7 +22,7 @@ from datetime import datetime, timedelta
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 from django.utils import timezone
 
-from wechat.models import access_token, User
+from wechat.models import access_token, User, KeywordReply
 from wechooser.utils import Response, PastDueException
 from wechooser.settings import WX_APPID, WX_SECRET
 import wechooser.utils
@@ -309,3 +309,15 @@ def send_template_msg(touser, template_id, url, data):
   res = wechooser.utils.send_request(host, path, method, port=443, params=params)
   print res
   return res[0]
+
+# 判断是否有击中任何关键词规则
+def is_hit_rules(text):
+  keywordReplys = KeywordReply.objects.all()
+  rules = []
+  for keywordReply in keywordReplys:
+    if not keywordReply.is_fully_match and keywordReply.keyword in text:
+      rules += keywordReply.rule_set.all()
+    elif keywordReply.is_fully_match and keywordReply.keyword == text:
+      rules += keywordReply.rule_set.all()
+  # 如果没有匹配到任意关键词，则返回默认自动回复
+  return len(rules) > 0

@@ -25,7 +25,7 @@ from wechooser.utils import Response, PastDueException
 from ReplyTemplates import TextTemplate
 from ReplyHandlers import *
 from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
-from transmit.views import get_name_card_mediaid, invited_by
+from transmit.views import get_name_card_mediaid, invited_by, is_getting_card
 import wechooser.utils
 import utils
 
@@ -66,8 +66,8 @@ def message(dictionary, token, retried=False):
     # 获取当前交互的用户对象
     state, user = utils.get_user(dictionary['FromUserName'], token)
     dictionary['user'] = user
-    # 测试获取名片
-    if dictionary['MsgType'] == 'text' and dictionary['Content'] == 'card':
+    # 检测当前的信息是否复合获取名片的要求
+    if is_getting_card(dictionary):
       state, mediaId = get_name_card_mediaid(user, token)
       if state:
         imgTemplate = ImageTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], MediaId=mediaId)

@@ -118,3 +118,12 @@
 #materialRemain {
   display: none;
 }
+
+input[name="gainCardMethod"] {
+  position: relative;
+  top: 2px;
+}
+
+.gainCardMethodBox span {
+  margin-right: 1em;
+}

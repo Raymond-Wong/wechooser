@@ -3,6 +3,7 @@ from django.db import models
 
 # 名片模板
 HEAD_SHAPE = ((0, 'circle'), (1, 'square'))
+GCM = ((0, 'text'), (1, 'image'), (2, 'menu'), (3, 'keyword'))
 class Name_Card(models.Model):
   create_time = models.DateTimeField(auto_now_add=True)
   bg = models.TextField(default='/static/transmit/images/bg.jpg')
@@ -19,3 +20,6 @@ class Name_Card(models.Model):
   target = models.PositiveIntegerField(default=1)
   invited_msg = models.TextField(default='')
   goal_msg = models.TextField(default='')
+  gain_card_method = models.PositiveIntegerField(default=3, choices=GCM)
+  keyword = models.TextField(default='')
+  mid = models.TextField(default='')
