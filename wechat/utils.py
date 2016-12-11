@@ -299,5 +299,13 @@ def upload_tmp_material(filename, data, mtype, token):
   return resp.json()
 
 # 发送模板消息
-def send_template_msg():
-  pass
+def send_template_msg(touser):
+  token = get_access_token()
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/message/template/send?access_token=' + token.token
+  method = 'POST'
+  params = {'touser' : user.touser, 'template' : 'Fp7HTtkro57Zk6TXa176vb159uLsld0qEHYH3ro5pAI', 'url' : 'http://www.baidu.com'}
+  params['data'] = {'name' : {'value' : '成功到达邀请人数', 'color' : '#173177'}, 'remark' : {'value' : '点击以获取资料链接', 'color' : '#173177'}}
+  res = wechooser.utils.send_request(host, path, method, port=443, params=params)
+  print res
+  return res[0]

@@ -161,7 +161,6 @@ def invited_by(user, dictionary):
   user.save()
   # 检查邀请用户是否达到目标值
   state, namecard = get_template()
-  print invite_user.user_set.count()
   if invite_user.user_set.count() >= namecard.target:
     wechat.utils.send_template_msg()
   return True, invite_user
@@ -170,5 +169,5 @@ def get_template():
   card = Name_Card.objects.order_by('-create_time')
   if len(card) > 0:
     return True, card[0]
-  return False, None
+  return False, Name_Card()
 
