@@ -67,6 +67,7 @@ def message(dictionary, token, retried=False):
     # 测试获取名片
     if dictionary['MsgType'] == 'text' and dictionary['Content'] == 'card':
       state, mediaId = get_name_card_mediaid(user, token)
+      print state, mediaId
       if state:
         imgTemplate = ImageTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], MediaId=mediaId)
         return HttpResponse(imgTemplate.toReply())
