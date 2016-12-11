@@ -304,7 +304,7 @@ def send_template_msg(touser):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/message/template/send?access_token=' + token.token
   method = 'POST'
-  params = {'touser' : touser, 'template_id' : 'Fp7HTtkro57Zk6TXa176vb159uLsld0qEHYH3ro5pAI', 'url' : 'http://wechooser.applinzi.com/getGoalMsg?id=%s' % touser}
+  params = {'touser' : touser, 'template_id' : 'Fp7HTtkro57Zk6TXa176vb159uLsld0qEHYH3ro5pAI', 'url' : 'http://wechooser.applinzi.com/transmit/getGoalMsg?id=%s' % touser}
   params['data'] = {'name' : {'value' : '成功到达邀请人数', 'color' : '#173177'}, 'remark' : {'value' : '点击以获取资料链接', 'color' : '#173177'}}
   res = wechooser.utils.send_request(host, path, method, port=443, params=params)
   print res
