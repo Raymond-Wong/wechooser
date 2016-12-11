@@ -161,3 +161,9 @@ def invited_by(user, dictionary):
   user.save()
   return True, invite_user
 
+def get_template():
+  card = Name_Card.objects.order_by('-create_time')
+  if len(card) > 0:
+    return True, card
+  return False, None
+

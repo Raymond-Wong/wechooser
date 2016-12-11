@@ -11,7 +11,7 @@ from ReplyTemplates import *
 
 import wechooser.utils
 import wechat.utils
-from transmit.views import invited_by
+from transmit.views import invited_by, get_template
 
 class ReplyHandler:
   __metaclass__ = ABCMeta
@@ -57,7 +57,11 @@ class ScanReplyHandler(ReplyHandler):
     state, invite_user = invited_by(self.params['user'], self.params)
     ret = TextTemplate(ToUserName=self.params['FromUserName'], FromUserName=self.params['ToUserName'])
     if state:
-      ret.Content = '成功接受%s的邀请' % invite_user.nickname
+      namecard = get_template()
+      try:
+        ret.Content = namecard.invited_msg % invite_user.nickname
+      except:
+        ret.Content = namecard.invited_msg
     else:
       ret.Content = '接受邀请失败'
     return ret.toReply()
