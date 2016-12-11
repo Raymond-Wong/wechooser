@@ -140,7 +140,6 @@ def get_name_card(user, template=None):
 def get_name_card_mediaid(user, token):
   # 获取namecard图片对象
   state, namecard = get_name_card(user)
-  print '*' * 10, state
   if not state:
     return False, None
   # 上传临时素材获取mediaid

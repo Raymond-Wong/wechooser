@@ -11,6 +11,7 @@ from ReplyTemplates import *
 
 import wechooser.utils
 import wechat.utils
+from transmit.views import invited_by
 
 class ReplyHandler:
   __metaclass__ = ABCMeta
