@@ -162,7 +162,7 @@ def invited_by(user, dictionary):
   # 检查邀请用户是否达到目标值
   state, namecard = get_template()
   if invite_user.user_set.count() >= namecard.target:
-    wechat.utils.send_template_msg(user.wx_openid)
+    wechat.utils.send_template_msg(invite_user.wx_openid)
   return True, invite_user
 
 def get_template():
