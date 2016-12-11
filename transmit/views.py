@@ -209,7 +209,7 @@ def get_template():
 
 # 判断当前的消息是否复合获取图片的要求
 def is_getting_card(dictionary):
-  card = get_template()
+  state, card = get_template()
   # 如果获取图片的要求是1
   if card.gain_card_method == 1 and dictionary['MsgType'] == 'image':
     return True
