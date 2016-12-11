@@ -297,3 +297,7 @@ def upload_tmp_material(filename, data, mtype, token):
   files = {'media' : (filename, data, 'multipart/form-data')}
   resp = requests.post(url, files=files)
   return resp.json()
+
+# 发送模板消息
+def send_template_msg():
+  pass

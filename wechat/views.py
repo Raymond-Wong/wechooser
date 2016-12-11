@@ -63,8 +63,8 @@ HANDLERS = {
 }
 def message(dictionary, token, retried=False):
   try:
+    # 获取当前交互的用户对象
     state, user = utils.get_user(dictionary['FromUserName'], token)
-    print 'wechat-views: ', user.invited_by
     dictionary['user'] = user
     # 测试获取名片
     if dictionary['MsgType'] == 'text' and dictionary['Content'] == 'card':

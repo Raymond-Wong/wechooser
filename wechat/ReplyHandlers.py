@@ -54,7 +54,7 @@ class SubscribeReplyHandler(ReplyHandler):
 # 扫描自定义二维码回复事件
 class ScanReplyHandler(ReplyHandler):
   def getReply(self):
-    print 'ReplyHandlers: ', self.params['user'].invited_by
+    # 调用被邀请事件
     state, invite_user = invited_by(self.params['user'], self.params)
     ret = TextTemplate(ToUserName=self.params['FromUserName'], FromUserName=self.params['ToUserName'])
     if state:

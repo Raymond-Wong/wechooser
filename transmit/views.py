@@ -159,6 +159,11 @@ def invited_by(user, dictionary):
     return False, '只能邀请其他用户'
   user.invited_by = invite_user
   user.save()
+  # 检查邀请用户是否达到目标值
+  namecard = get_template()
+  print invite_user.user_set.count()
+  if invite_user.user_set.count() >= namecard.target:
+    wechat.utils.send_template_msg()
   return True, invite_user
 
 def get_template():
