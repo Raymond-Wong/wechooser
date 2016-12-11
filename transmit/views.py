@@ -151,7 +151,7 @@ def get_name_card_mediaid(user, token):
 # 用户被其他用户邀请的事件
 def invited_by(user, dictionary):
   # 如果用户已经被邀请过了
-  print user.nickname
+  print user.nickname, user.invited_by
   if user.invited_by:
     return False, '已接受过邀请'
   invite_user = User.objects.get(qrcode_ticket=dictionary['Ticket'])
