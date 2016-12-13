@@ -104,6 +104,7 @@ def notify(request):
 
 # 签到
 @wx_logined
+CREDITS_DIFF = 1
 def signin(request):
   user = User.objects.get(wx_openid=request.session['user'])
   # 判断当前用户当天是否已签到
@@ -120,6 +121,9 @@ def signin(request):
   # 将用户加入当天签到记录的用户集合中
   signin.users.add(user)
   signin.save()
+  # 增加用户积分
+  user.credits += CREDITS_DIFF
+  user.save()
   return render_to_response('duiba/signin.html', {'user' : user, 'msg' : '签到成功'})
 
 
