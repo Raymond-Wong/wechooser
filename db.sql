@@ -182,6 +182,25 @@ CREATE TABLE `django_site` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `duiba_credit_record`
+--
+
+DROP TABLE IF EXISTS `duiba_credit_record`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `duiba_credit_record` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `create_time` datetime NOT NULL,
+  `credit_type` int(10) unsigned NOT NULL,
+  `credit_diff` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `duiba_credit_record_6340c63c` (`user_id`),
+  CONSTRAINT `user_id_refs_id_f146eb64` FOREIGN KEY (`user_id`) REFERENCES `wechat_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `duiba_order`
 --
 
@@ -205,40 +224,6 @@ CREATE TABLE `duiba_order` (
   PRIMARY KEY (`id`),
   KEY `duiba_order_6340c63c` (`user_id`),
   CONSTRAINT `user_id_refs_id_d7259fbe` FOREIGN KEY (`user_id`) REFERENCES `wechat_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `duiba_sign_in`
---
-
-DROP TABLE IF EXISTS `duiba_sign_in`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `duiba_sign_in` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `duiba_sign_in_users`
---
-
-DROP TABLE IF EXISTS `duiba_sign_in_users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `duiba_sign_in_users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sign_in_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `sign_in_id` (`sign_in_id`,`user_id`),
-  KEY `duiba_sign_in_users_a725cd2a` (`sign_in_id`),
-  KEY `duiba_sign_in_users_6340c63c` (`user_id`),
-  CONSTRAINT `sign_in_id_refs_id_6346ded0` FOREIGN KEY (`sign_in_id`) REFERENCES `duiba_sign_in` (`id`),
-  CONSTRAINT `user_id_refs_id_bd1d444f` FOREIGN KEY (`user_id`) REFERENCES `wechat_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -423,4 +408,4 @@ CREATE TABLE `wechooser_image` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-13 14:05:37
+-- Dump completed on 2016-12-13 14:36:19

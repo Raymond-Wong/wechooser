@@ -18,6 +18,9 @@ class Order(models.Model):
   status = models.PositiveIntegerField(choices=ORDER_STATUS, default=1)
 
 # 签到记录
-class Sign_In(models.Model):
-  date = models.DateField(auto_now_add=True)
-  users = models.ManyToManyField(User)
+CREDIT_TYPE = ((1, u'transmit'), (2, u'signin'))
+class Credit_Record(models.Model):
+  user = models.ForeignKey(User)
+  create_time = models.DateTimeField(auto_now_add=True)
+  credit_type = models.PositiveIntegerField(default=1, choices=CREDIT_TYPE)
+  credit_diff = models.PositiveIntegerField(default=0)

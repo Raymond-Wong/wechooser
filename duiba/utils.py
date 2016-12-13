@@ -2,6 +2,8 @@
 import os
 import hashlib
 
+import datetime
+
 # 获取duiba的签名规则
 def getSignStr(p, appSecret):
   params = p.copy()
@@ -27,3 +29,7 @@ def request2dict(request, keys):
     if request.get(k, None):
       ret[k] = request.get(k, None)
   return ret
+
+# 获取一天的零点
+def first_time_of_day(day):
+  return datetime.datetime.strptime(str(day), '%Y-%m-%d')

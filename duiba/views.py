@@ -3,11 +3,11 @@ import sys
 sys.path.append('..')
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
 import hashlib
 import time
 import json
 import urllib
+import datetime
 
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, redirect
@@ -16,7 +16,7 @@ from django.utils import timezone
 
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined
-from models import Order, Sign_In
+from models import Order, Credit_Record
 from wechat.models import User
 from wechooser.settings import DB_APPID, DB_APPSECRET, CREDITS_DIFF
 import utils
@@ -107,18 +107,15 @@ def notify(request):
 def signin(request):
   user = User.objects.get(wx_openid=request.session['user'])
   # 判断当前用户当天是否已签到
-  today = timezone.now()
-  if user.sign_in_set.filter(date=today).count() > 0:
-    return render_to_response('duiba/signin.html', {'user' : user, 'msg' : '当天已签到'})
-  # 获取当天的签到记录
-  signin = Sign_In.objects.filter(date=today)
-  if signin.count() > 0:
-    signin = signin[0]
-  else:
-    signin = Sign_In()
-    signin.save()
-  # 将用户加入当天签到记录的用户集合中
-  signin.users.add(user)
+  begin = utils.first_time_of_day(timezone.now().date())
+  end = utils.first_time_of_day(today + datetime.timedelta(days=1))
+  signins = user.credit_record_set.filter(credit_type=2).filter(create_time__gte=begin).filter(create_time__lt=end)
+  if signins.count() > 0:
+    return render_to_response('duiba/signin.html', {'user' : user, 'msg' : '当天已签到, 签到时间为%s' % signins[0].create_time.strftime('%Y-%m-%d %H:%M:%S')})
+  # 创建签到记录
+  signin = Credit_Record(credit_type=2)
+  signin.user = user
+  signin.credit_diff = CREDITS_DIFF
   signin.save()
   # 增加用户积分
   user.credits += CREDITS_DIFF
