@@ -10,4 +10,5 @@ urlpatterns = patterns('',
   url(r'debuctCredit', views.debuctCredit, name='debuctCredit'),
   url(r'notify', views.notify, name='notify'),
   url(r'signin', views.signin, name='signin'),
+  url(r'credit', views.checkCredit, name='checkCredit'),
 )

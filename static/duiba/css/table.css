@@ -1,0 +1,17 @@
+#pageBox {
+  height: auto;
+}
+
+.loadingHint {
+  padding: 2em;
+}
+
+#toShowTable {
+  display: none;
+}
+
+#toShowTable {
+  padding: 1em;
+  border: 1px solid #edefed;
+  margin-top: 1em;
+}

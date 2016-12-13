@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 
 from wechooser.utils import Response, send_request
-from wechooser.decorator import wx_logined
+from wechooser.decorator import wx_logined, is_logined
 from models import Order, Credit_Record
 from wechat.models import User
 from wechooser.settings import DB_APPID, DB_APPSECRET, CREDITS_DIFF
@@ -122,4 +122,19 @@ def signin(request):
   user.save()
   return render_to_response('duiba/signin.html', {'user' : user, 'msg' : '签到成功'})
 
+@is_logined
+def checkCredit(request):
+  action = request.GET.get('action', 'records')
+  if action == 'records':
+    return checkCreditRecords(request)
+  elif action == 'orders':
+    return checkCreditOrder(request)
+  raise Http404
+
+def checkCreditRecords(request):
+  credit_records = Credit_Record.objects.order_by('-create_time')
+  return render_to_response('duiba/checkCreditRecords.html', {'records' : credit_records, 'type' : 'records'})
+
+def checkCreditOrder(request):
+  pass
 
