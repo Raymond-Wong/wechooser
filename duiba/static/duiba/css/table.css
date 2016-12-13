@@ -1,5 +1,6 @@
 #pageBox {
   height: auto;
+  min-height: 621px;
 }
 
 .loadingHint {

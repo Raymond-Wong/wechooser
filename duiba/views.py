@@ -133,7 +133,7 @@ def checkCredit(request):
 
 def checkCreditRecords(request):
   credit_records = Credit_Record.objects.order_by('-create_time')
-  return render_to_response('duiba/checkCreditRecords.html', {'records' : credit_records, 'type' : 'records'})
+  return render_to_response('duiba/checkCreditRecords.html', {'records' : credit_records, 'type' : 'records', 'active' : 'credits'})
 
 def checkCreditOrder(request):
   pass
