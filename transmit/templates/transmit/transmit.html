@@ -10,6 +10,13 @@
 <div class="pageWrapper">
   <div class="nameCardStyleBox stepBox">
     <div class="stepBoxTitle">第一步：设置名片样式</div>
+    <div class="hint">
+      头像尺寸为用户头像半径；头像位置为头像左上角点相对于整张图片左上角的坐标值(x, y)；<br>
+      昵称尺寸为昵称字体的大小；昵称位置为从图片顶端到字体的垂直距离；<br>
+      二维码尺寸为二维码图片的宽度（长度）；<br>
+      二维码位置为二维码图片左上角相对于图片左上角的坐标(x, y)；<br>
+      以上数值单位皆为像素（px）
+    </div>
     <div class="settingArea left">
       <div class="line">
         <div class="lineLabel left">背景图片</div>
@@ -44,8 +51,8 @@
       </div>
     </div>
     <div class="previewArea left">
-      <!-- <div class="previewTitle"><b>效果预览</b></div> -->
-      <div class="previewBox"><img src="" /></div>
+      <div class="previewLoad">刷新中...</div>
+      <div class="previewBox"><img title="右键，在新窗口打开图片以浏览大图" src="" /></div>
       <button class="refreshPreviewBtn btn" id="refreshPreviewBtn">刷新预览图</button>
     </div>
     <div class="clear"></div>

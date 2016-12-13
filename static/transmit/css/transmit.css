@@ -57,6 +57,7 @@
   width: 30%;
   border: 1px solid #ccc;
   padding: 1em;
+  position: relative;
 }
 
 .previewBox {
@@ -126,4 +127,21 @@ input[name="gainCardMethod"] {
 
 .gainCardMethodBox span {
   margin-right: 1em;
+}
+
+.previewLoad {
+  width: 100%;
+  height: 244px;
+  line-height: 244px;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  left: 0;
+  top: 0;
+  text-align: center;
+  color: white;
+  display: none;
+}
+
+.hint {
+  color: #aaa;
 }

@@ -43,14 +43,18 @@ var msgOptionAction = function() {
 }
 
 var previewAction = function() {
+  var loading = $('.previewLoad');
   $('#refreshPreviewBtn').click(function() {
+    loading.show();
     var res = getStyleParams();
     if (!res[0]) {
       topAlert(res[1], 'error');
+      loading.hide();
       return false;
     }
     post('/transmit/getNameCard', res[1], function(msg) {
       $('.previewBox img').attr('src', msg['msg']);
+      loading.hide();
     });
   });
   $('#refreshPreviewBtn').trigger('click');
