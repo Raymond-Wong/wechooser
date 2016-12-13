@@ -16,7 +16,7 @@ from django.utils import timezone
 
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined
-from models import Order
+from models import Order, Sign_In
 from wechat.models import User
 from wechooser.settings import DB_APPID, DB_APPSECRET, CREDITS_DIFF
 import utils
