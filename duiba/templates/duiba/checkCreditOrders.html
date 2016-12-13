@@ -20,10 +20,10 @@
     <tr>
       <td>日期</td>
       <td>订单号</td>
-      <td>积分</td>
+      <td>扣除积分</td>
       <td>描述</td>
-      <td>显示价格</td>
-      <td>实际价格</td>
+      <td>订单类型</td>
+      <td>参数</td>
       <td>状态</td>
     </tr>
   </thead>
@@ -34,8 +34,8 @@
       <td>{{ order.orderNum }}</td>
       <td>{{ order.credits }}</td>
       <td>{{ order.description }}</td>
-      <td>{{ order.facePrice }}</td>
-      <td>{{ order.actualPrice }}</td>
+      <td>{{ order.otype }}</td>
+      <td>{{ order.param }}</td>
       <td>{{ order.get_status_display }}</td>
     </tr>
     {% endfor %}
