@@ -1,5 +1,8 @@
 #pageBox {
   height: auto;
+}
+
+#contentWrapper {
   min-height: 621px;
 }
 
