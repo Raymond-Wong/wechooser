@@ -133,8 +133,11 @@ def checkCredit(request):
 
 def checkCreditRecords(request):
   credit_records = Credit_Record.objects.order_by('-create_time')
-  return render_to_response('duiba/checkCreditRecords.html', {'records' : credit_records, 'type' : 'records', 'active' : 'credits'})
+  return render_to_response('duiba/checkCreditRecords.html', {'records' : credit_records, 'active' : 'credits'})
 
 def checkCreditOrder(request):
-  pass
+  orders = Order.objects.order_by('-timestamp')
+  for i, order in enumerate(orders):
+    orders[i].create_time = datetime.datetime.fromtimestamp(order.timestamp)
+  return render_to_response('duiba/checkCreditOrders.html', {'orders' : orders, 'active' : 'credits'})
 
