@@ -108,7 +108,7 @@ def signin(request):
   user = User.objects.get(wx_openid=request.session['user'])
   # 判断当前用户当天是否已签到
   begin = utils.first_time_of_day(timezone.now().date())
-  end = utils.first_time_of_day(today + datetime.timedelta(days=1))
+  end = utils.first_time_of_day(timezone.now().date() + datetime.timedelta(days=1))
   signins = user.credit_record_set.filter(credit_type=2).filter(create_time__gte=begin).filter(create_time__lt=end)
   if signins.count() > 0:
     return render_to_response('duiba/signin.html', {'user' : user, 'msg' : '当天已签到, 签到时间为%s' % signins[0].create_time.strftime('%Y-%m-%d %H:%M:%S')})
