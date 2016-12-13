@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from wechat.models import User
 
@@ -15,3 +16,8 @@ class Order(models.Model):
   waitAudit = models.BooleanField(default=False)
   params = models.TextField(null=True)
   status = models.PositiveIntegerField(choices=ORDER_STATUS, default=1)
+
+# 签到记录
+class Sign_In(models.Model):
+  date = models.DateField(auto_now_add=True)
+  users = models.ManyToManyField(User)

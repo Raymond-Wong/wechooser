@@ -12,6 +12,7 @@ import urllib
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined
@@ -100,3 +101,25 @@ def notify(request):
     user.save()
   order.save()
   return HttpResponse('ok')
+
+# 签到
+@wx_logined
+def signin(request):
+  user = User.objects.get(wx_openid=request.session['user'])
+  # 判断当前用户当天是否已签到
+  today = timezone.now()
+  if user.sign_in_set.filter(date=today).count() > 0:
+    return render_to_response('duiba/signin.html', {'user' : user, 'msg' : '当天已签到'})
+  # 获取当天的签到记录
+  signin = Sign_In.objects.filter(date=today)
+  if signin.count() > 0:
+    signin = signin[0]
+  else:
+    signin = Sign_In()
+    signin.save()
+  # 将用户加入当天签到记录的用户集合中
+  signin.users.add(user)
+  signin.save()
+  return render_to_response('duiba/signin.html', {'user' : user, 'msg' : '签到成功'})
+
+

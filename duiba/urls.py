@@ -9,4 +9,5 @@ urlpatterns = patterns('',
   url(r'autoLogin', views.autoLogin, name='autoLogin'),
   url(r'debuctCredit', views.debuctCredit, name='debuctCredit'),
   url(r'notify', views.notify, name='notify'),
+  url(r'signin', views.signin, name='signin'),
 )
