@@ -66,7 +66,7 @@ CREATE TABLE `auth_permission` (
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   KEY `auth_permission_37ef4eb4` (`content_type_id`),
   CONSTRAINT `content_type_id_refs_id_d043b34a` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,7 +147,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -209,6 +209,40 @@ CREATE TABLE `duiba_order` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `duiba_sign_in`
+--
+
+DROP TABLE IF EXISTS `duiba_sign_in`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `duiba_sign_in` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `duiba_sign_in_users`
+--
+
+DROP TABLE IF EXISTS `duiba_sign_in_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `duiba_sign_in_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sign_in_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sign_in_id` (`sign_in_id`,`user_id`),
+  KEY `duiba_sign_in_users_a725cd2a` (`sign_in_id`),
+  KEY `duiba_sign_in_users_6340c63c` (`user_id`),
+  CONSTRAINT `sign_in_id_refs_id_6346ded0` FOREIGN KEY (`sign_in_id`) REFERENCES `duiba_sign_in` (`id`),
+  CONSTRAINT `user_id_refs_id_bd1d444f` FOREIGN KEY (`user_id`) REFERENCES `wechat_user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `transmit_name_card`
 --
 
@@ -236,7 +270,7 @@ CREATE TABLE `transmit_name_card` (
   `keyword` longtext NOT NULL,
   `mid` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,7 +286,7 @@ CREATE TABLE `wechat_access_token` (
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -346,6 +380,7 @@ DROP TABLE IF EXISTS `wechat_user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `wechat_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `create_time` datetime NOT NULL,
   `wx_openid` varchar(50) NOT NULL,
   `nickname` varchar(50) NOT NULL,
   `sex` int(10) unsigned NOT NULL,
@@ -388,4 +423,4 @@ CREATE TABLE `wechooser_image` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-12  0:38:22
+-- Dump completed on 2016-12-13 14:05:37

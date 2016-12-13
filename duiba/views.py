@@ -18,7 +18,7 @@ from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined
 from models import Order
 from wechat.models import User
-from wechooser.settings import DB_APPID, DB_APPSECRET
+from wechooser.settings import DB_APPID, DB_APPSECRET, CREDITS_DIFF
 import utils
 
 @wx_logined
@@ -104,7 +104,6 @@ def notify(request):
 
 # 签到
 @wx_logined
-CREDITS_DIFF = 1
 def signin(request):
   user = User.objects.get(wx_openid=request.session['user'])
   # 判断当前用户当天是否已签到

@@ -38,6 +38,7 @@ class MenuReply(models.Model):
 
 GENDER = ((1, u'male'), (2, u'female'))
 class User(models.Model):
+  create_time = models.DateTimeField(auto_now_add=True)
   wx_openid = models.CharField(max_length=50, unique=True)
   nickname = models.CharField(max_length=50, default='')
   sex = models.PositiveIntegerField(choices=GENDER, default=1)

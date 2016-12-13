@@ -8,6 +8,8 @@ WX_SECRET = 'f8e89f8e1f52cf8d8eecf3cef012ee81'
 WX_TOKEN = 'wechooser'
 DB_APPID = 'xQQjsycj8jSvNCorMkMkCFSZnqK'
 DB_APPSECRET = '4PHcHe2h6myutohuwqywuMHNGYMp'
+# 积分变动量
+CREDITS_DIFF = 1
 
 
 REMOTE = not environ.get("APP_NAME", "")
