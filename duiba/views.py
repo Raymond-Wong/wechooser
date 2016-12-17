@@ -162,7 +162,7 @@ def setAlarm(request):
   try:
     alarm = user.alarm
   except:
-    alarm = Alarm()
+    alarm = Alarm(user=user)
   alarm.hour = hour
   alarm.minute = minute
   alarm.save()
