@@ -14,6 +14,7 @@ var saveAction = function() {
       alert('分钟不合法');
       return false;
     }
+    alert('hour: ' + hour + '; minute: ' + minute);
     post('/duiba/setAlarm', {'hour' : hour, 'minute' : minute}, function(msg) {
       alert(msg['msg']);
     });
