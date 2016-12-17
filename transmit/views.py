@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined, has_token
+from duiba.models import Credit_Record
 from wechat.models import User
 from models import Name_Card
 from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
@@ -202,7 +203,6 @@ def invited_by(user, dictionary):
   # 给邀请用户加积分
   credit_diff = 10
   if invite_user.user_set.count() <= 50:
-    print '*' * 10, 'invite add credit'
     cr = Credit_Record(credit_type=1, user=invite_user, credit_diff=credit_diff)
     cr.save()
     invite_user.credits += credit_diff
