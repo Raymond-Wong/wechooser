@@ -205,6 +205,7 @@ def invited_by(user, dictionary):
   if invite_user.user_set.count() <= 50:
     cr = Credit_Record(credit_type=1, user=invite_user, credit_diff=credit_diff)
     cr.save()
+    print '*' * 20, u'通过邀请获得积分 %d' % credit_diff
     invite_user.credits += credit_diff
     invite_user.save()
   return True, invite_user
