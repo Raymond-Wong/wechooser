@@ -143,6 +143,6 @@ def checkCreditOrder(request):
 
 def alarm(request):
   now = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
-  print now
+  print 'duiba alarm at: %s' % now
   return HttpResponse("duiba alarm")
 
