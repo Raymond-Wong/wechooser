@@ -24,3 +24,9 @@ class Credit_Record(models.Model):
   create_time = models.DateTimeField(auto_now_add=True)
   credit_type = models.PositiveIntegerField(default=1, choices=CREDIT_TYPE)
   credit_diff = models.PositiveIntegerField(default=0)
+
+# 提醒闹钟
+class Alarm(models.Model):
+  user = models.OneToOneField(User)
+  hour = models.PositiveIntegerField(default=6)
+  minute = models.PositiveIntegerField(default=0)

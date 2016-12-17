@@ -146,3 +146,19 @@ def alarm(request):
   print 'duiba alarm at: %s' % now
   return HttpResponse("duiba alarm")
 
+@wx_logined
+def setAlarm(request):
+  if request.method == 'GET':
+    return render_to_response('duiba/setAlarm.html')
+  user = User.objects.get(wx_openid=request.session['user'])
+  hour = int(request.POST.get('hour', '6'))
+  minute = int(request.POST.get('minute', '0'))
+  if hour < 0 or hour >= 24:
+    return HttpResponse(Response(c=1, m='小时不合法').toJson(), content_type="application/json")
+  if minute < 0 or minute >= 60:
+    return HttpResponse(Response(c=2, m='分钟不合法').toJson(), content_type="application/json")
+  alarm = user.alarm
+  alarm.hour = hour
+  alarm.minute = minute
+  alarm.save()
+  return HttpResponse(Response(m='设置成功').toJson(), content_type="application/json")

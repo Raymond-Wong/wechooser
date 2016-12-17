@@ -12,4 +12,5 @@ urlpatterns = patterns('',
   url(r'signin', views.signin, name='signin'),
   url(r'credit', views.checkCredit, name='checkCredit'),
   url(r'alarm', views.alarm, name='alarm'),
+  url(r'setAlarm', views.setAlarm, name='setAlarm'),
 )

@@ -1,0 +1,21 @@
+$(document).ready(function() {
+  saveAction();
+});
+
+var saveAction = function() {
+  $('#saveBtn').bind('tap', function() {
+    var hour = parseInt($('input[name="hour"]').val());
+    var minute = parseInt($('input[name="minute"]').val());
+    if (hour < 0 || hour >= 24) {
+      alert('小时不合法');
+      return false;
+    }
+    if (minute < 0 || minute >= 60) {
+      alert('分钟不合法');
+      return false;
+    }
+    post('/duiba/setAlarm', {'hour' : hour, 'minute' : minute}, function(msg) {
+      alert(msg['msg']);
+    });
+  });
+}
