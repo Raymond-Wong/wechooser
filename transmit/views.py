@@ -202,6 +202,7 @@ def invited_by(user, dictionary):
   # 给邀请用户加积分
   credit_diff = 10
   if invite_user.user_set.count() <= 50:
+    print '*' * 10, 'invite add credit'
     cr = Credit_Record(credit_type=1, user=invite_user, credit_diff=credit_diff)
     cr.save()
     invite_user.credits += credit_diff
