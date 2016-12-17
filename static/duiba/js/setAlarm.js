@@ -3,7 +3,7 @@ $(document).ready(function() {
 });
 
 var saveAction = function() {
-  $('#saveBtn').bind('tap', function() {
+  $('#saveBtn').click(function() {
     var hour = parseInt($('input[name="hour"]').val());
     var minute = parseInt($('input[name="minute"]').val());
     if (hour < 0 || hour >= 24) {

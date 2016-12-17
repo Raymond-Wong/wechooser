@@ -146,6 +146,7 @@ def alarm(request):
   print 'duiba alarm at: %s' % now
   return HttpResponse("duiba alarm")
 
+@csrf_exempt
 @wx_logined
 def setAlarm(request):
   if request.method == 'GET':
