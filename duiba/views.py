@@ -114,12 +114,11 @@ def signin(request):
   if signins.count() > 0:
     return render_to_response('duiba/signin.html', {'user' : user, 'msg' : '当天已签到, 签到时间为%s' % signins[0].create_time.strftime('%Y-%m-%d %H:%M:%S')})
   # 创建签到记录
-  signin = Credit_Record(credit_type=2)
-  signin.user = user
-  signin.credit_diff = CREDITS_DIFF
+  credit_diff = 10 if user.credit_record_set.filter(credit_type=2).count() <= 21 else 100
+  signin = Credit_Record(credit_type=2, user=user, credit_diff=credit_diff)
   signin.save()
   # 增加用户积分
-  user.credits += CREDITS_DIFF
+  user.credits += credit_diff
   user.save()
   return render_to_response('duiba/signin.html', {'user' : user, 'msg' : '签到成功'})
 

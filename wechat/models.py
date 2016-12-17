@@ -46,7 +46,7 @@ class User(models.Model):
   province = models.CharField(max_length=50, default='')
   country = models.CharField(max_length=50, default='')
   headimgurl = models.TextField(null=True)
-  credits = models.PositiveIntegerField(default=100)
+  credits = models.PositiveIntegerField(default=0)
   qrcode_url = models.TextField(default='')
   qrcode_ticket = models.TextField(default='')
   qrcode_expire_time = models.DateTimeField(null=True)
