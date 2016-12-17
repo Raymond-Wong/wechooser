@@ -16,7 +16,7 @@ from django.utils import timezone
 
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined, is_logined
-from models import Order, Credit_Record
+from models import Order, Credit_Record, Alarm
 from wechat.models import User
 from wechooser.settings import DB_APPID, DB_APPSECRET, CREDITS_DIFF
 import utils
@@ -158,7 +158,11 @@ def setAlarm(request):
     return HttpResponse(Response(c=1, m='小时不合法').toJson(), content_type="application/json")
   if minute < 0 or minute >= 60:
     return HttpResponse(Response(c=2, m='分钟不合法').toJson(), content_type="application/json")
-  alarm = user.alarm
+  alarm = None
+  try:
+    alarm = user.alarm
+  except:
+    alarm = Alarm()
   alarm.hour = hour
   alarm.minute = minute
   alarm.save()
