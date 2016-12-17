@@ -20,6 +20,7 @@ from models import Order, Credit_Record, Alarm
 from wechat.models import User
 from wechooser.settings import DB_APPID, DB_APPSECRET, CREDITS_DIFF
 import utils
+import wechat.utils
 
 @wx_logined
 def autoLogin(request):
