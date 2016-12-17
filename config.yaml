@@ -10,6 +10,6 @@ handlers:
   static_dir: static
 
 cron:
-- description: cron_test
+- description: duiba_alarm
   url: /duiba/alarm
   schedule: "*/1 * * * *"

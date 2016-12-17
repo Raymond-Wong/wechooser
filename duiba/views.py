@@ -142,8 +142,14 @@ def checkCreditOrder(request):
   return render_to_response('duiba/checkCreditOrders.html', {'orders' : orders, 'active' : 'credits'})
 
 def alarm(request):
-  now = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
-  print 'duiba alarm at: %s' % now
+  now = timezone.now()
+  hour = now.strftime('%H')
+  minute = now.strftime('%M')
+  alarms = Alarm.objects.filter(hour=hour).filter(minute=minute)
+  for alarm in alarms:
+    data = {'name' : {'value' : '早起打卡提示', 'color' : '#173177'}, 'remark' : {'value' : '早起打卡提示', 'color' : '#173177'}}
+    wechat.utils.send_template_msg(alarm.user.wx_openid, 'Fp7HTtkro57Zk6TXa176vb159uLsld0qEHYH3ro5pAI', 'http://wechooser.applinzi.com/duiba/signin', data)
+  print 'alarms at: %s; amount of alarms: %d' % (now.strftime('%Y-%m-%d %H:%M'), len(alarms))
   return HttpResponse("duiba alarm")
 
 @csrf_exempt
