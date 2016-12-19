@@ -150,6 +150,7 @@ def getNewsInfo(token, materials):
       mediaId = newsItem['thumb_media_id']
       media = getMaterialContent(token, mediaId)
       materials['item'][i]['content']['news_item'][j]['img'] = 'data:image/' + imgType + ';base64,' + base64.b64encode(media)
+  print 'wechat.utils:153', materials
   return materials
 
 def getVoiceLen(token, materials):
