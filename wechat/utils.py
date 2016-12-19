@@ -143,6 +143,7 @@ def imgUrl2base64(token, materials):
   return materials
 
 def getNewsInfo(token, materials):
+  print 'wechat.utils:153'
   for i, item in enumerate(materials['item']):
     for j, newsItem in enumerate(item['content']['news_item']):
       imgTypeIndex = newsItem['thumb_url'].find('wx_fmt')
@@ -150,7 +151,7 @@ def getNewsInfo(token, materials):
       mediaId = newsItem['thumb_media_id']
       media = getMaterialContent(token, mediaId)
       materials['item'][i]['content']['news_item'][j]['img'] = 'data:image/' + imgType + ';base64,' + base64.b64encode(media)
-  print 'wechat.utils:153', materials
+      print newsItem['url']
   return materials
 
 def getVoiceLen(token, materials):
