@@ -10,6 +10,6 @@ handlers:
   static_dir: static
 
 cron:
-- description: duiba_alarm
-  url: /duiba/alarm
-  schedule: "*/1 * * * *"
+- description: schedule_task
+  url: /wechat/task
+  schedule: "*/15 * * * *"

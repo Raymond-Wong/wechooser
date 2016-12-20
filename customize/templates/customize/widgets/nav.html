@@ -36,6 +36,11 @@
     {% else %}
       <li><a href="/duiba/credit">积分管理</a></li>
     {% endifequal %}
+    {% ifequal active "task" %}
+      <li class="active"><a href="#">定时消息</a></li>
+    {% else %}
+      <li><a href="/task/add">定时消息</a></li>
+    {% endifequal %}
     <li><a href="javascript:void(0)" id="updateTokenBtn">更新token</a></li>
   </ul>
 </div>

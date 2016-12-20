@@ -4,10 +4,12 @@ sys.path.append('..')
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import json
+import re
 
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 
 import wechooser.utils
 import wechat.utils
@@ -15,6 +17,7 @@ import wechat.utils
 from wechooser.utils import Response
 from wechat.ReplyTemplates import *
 from wechat.models import *
+from models import Task
 from wechooser.decorator import *
 
 @has_token
@@ -320,3 +323,54 @@ def deleteReply(request):
         kw.delete()
     rule.delete()
   return HttpResponse(Response(m='').toJson(), content_type='application/json')
+
+@csrf_exempt
+@is_logined
+@has_token
+def addTaskHandler(request, token):
+  if request.method == 'GET':
+    templates = wechat.utils.get_template_msg_list(token)
+    for template in templates:
+      template['keywords'] = re.findall('{{.+\.DATA}}.*', template['content'])
+      template['keywords'] = map(lambda x:x.replace('{{', '').replace('.DATA}}', ''), template['keywords'])
+      template['keywords_json'] = json.dumps(template['keywords'])
+      # template['keywords'] = json.dumps(template['keywords'])
+    return render_to_response('customize/task_add.html', {'active' : 'task', 'templates' : templates})
+  action = request.POST.get('action', None)
+  if action not in ['add', 'cancel']:
+    return HttpResponse(Response(c=1, m="操作类型错误").toJson(), content_type="application/json")
+  if action == 'add':
+    return addTask(request)
+  return cancelTask(request)
+
+def addTask(request):
+  run_time = request.POST.get('run_time', None)
+  keywords = request.POST.get('keywords', None)
+  url = request.POST.get('url', None)
+  task_name = request.POST.get('task_name', None)
+  template_id = request.POST.get('template_id', None)
+  template_name = request.POST.get('template_name', None)
+  if run_time is None or keywords is None or template_name is None or url is None or task_name is None or template_id is None:
+    return HttpResponse(Response(c=2, m='参数不足').toJson(), content_type='application/json')
+  task = Task(template_name=template_name, task_name=task_name, run_time=run_time, keywords=keywords, url=url, template_id=template_id)
+  task.save()
+  return HttpResponse(Response(c=0, m="添加任务成功").toJson(), content_type='application/json')
+
+def cancelTask(request):
+  tid = request.POST.get('tid', None)
+  task = None
+  try:
+    task = Task.objects.get(id=tid)
+  except:
+    return HttpResponse(Response(c=1, m="待取消任务不存在").toJson(), content_type='application/json')
+  if task.run_time <= timezone.now() or task.status != 0:
+    return HttpResponse(Response(c=2, m="无法取消已执行的任务").toJson(), content_type='application/json')
+  task.status = 2
+  task.save()
+  return HttpResponse(Response(c=0, m='任务取消成功').toJson(), content_type='application/json')
+
+def taskHandler(request):
+  tasks = Task.objects.order_by('-create_time')
+  for index, task in enumerate(tasks):
+    tasks[index].keywords = json.loads(task.keywords)
+  return render_to_response('customize/task_list.html', {'active' : 'task', 'tasks' : tasks})

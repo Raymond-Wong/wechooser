@@ -1,0 +1,82 @@
+#taskPageHead {
+  padding: 21px 0px 16px 6px;
+  font-size: 16px;
+  font-weight: normal;
+  color: #5b5b5b;
+}
+
+#pageBox {
+  height: auto;
+}
+
+#contentWrapper {
+  min-height: 621px;
+}
+
+.borderBox {
+  padding: 2em;
+  border: 1px solid #ccc;
+  margin-top: 1em;
+}
+
+.line {
+  margin: 1em 0;
+}
+
+.line .lineLabel {
+  width: 7em;
+  height: 1.9em;
+  line-height: 1.9em;
+  margin-right: 1em;
+}
+
+.line .lineInput input {
+  width: 20em;
+  padding: 0 3px;
+  height: 1.9em;
+  line-height: 1.9em;
+}
+
+.line .lineInput input[name="run_time"] {
+  cursor: pointer;
+}
+
+.taskBtn {
+  border: 0;
+  outline: none;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+}
+
+.taskBtn:hover {
+  font-weight: bold;
+}
+
+#addBtn {
+  background-color: #09bb07;
+  color: white;
+  border: 1px solid #09bb07;
+}
+
+#reloadBtn {
+  background-color: white;
+  color: #5b5b5b;
+  border: 1px solid #d9d9d9;
+}
+
+#btnWrapper {
+  padding: 27px 0px 0px 21px;
+}
+
+#btnWrapper .btn {
+  width: 107px;
+  height: 34px;
+  /*line-height: 34px;*/
+  text-align: center;
+  display: inline-block;
+  margin: 0 12px;
+}
+
+#chooseNewsBtn {
+  margin-left: 1em;
+}

@@ -150,7 +150,6 @@ def getNewsInfo(token, materials):
       mediaId = newsItem['thumb_media_id']
       media = getMaterialContent(token, mediaId)
       materials['item'][i]['content']['news_item'][j]['img'] = 'data:image/' + imgType + ';base64,' + base64.b64encode(media)
-      print 'wechat.utils:154', newsItem['url']
   return materials
 
 def getVoiceLen(token, materials):
@@ -322,3 +321,17 @@ def is_hit_rules(text):
       rules += keywordReply.rule_set.all()
   # 如果没有匹配到任意关键词，则返回默认自动回复
   return len(rules) > 0
+
+# 获取模板消息列表
+def get_template_msg_list(token):
+  params = {
+    'access_token': token.token
+  }
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/template/get_all_private_template'
+  method = 'GET'
+ 
+  res = wechooser.utils.send_request(host, path, method, params=params)
+  if not res[0]:
+    return False
+  return res[1]['template_list']

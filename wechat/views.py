@@ -26,6 +26,7 @@ from ReplyTemplates import TextTemplate
 from ReplyHandlers import *
 from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
 from transmit.views import get_name_card_mediaid, invited_by, is_getting_card
+from customize.models import Task
 import wechooser.utils
 import utils
 
@@ -174,3 +175,13 @@ def loginHandler(request, view):
     print 'openid: %s, nickname: %s, id: %s' % (openid, userInfo['nickname'], user.id)
   request.session['user'] = user.wx_openid
   return view(request)
+
+def taskHandler(request):
+  users = User.objects.filter('nickname', 'Raymond')
+  now = datetime.strptime(timezone.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
+  print 'wechat.views:181', now
+  tasks = Task.objects.filter(status=0).filter(run_time=now)
+  for task in tasks:
+    for user in users:
+      utils.send_template_msg(user.wx_openid, task.template_id, task.url, task.keywords)
+  raise Http404

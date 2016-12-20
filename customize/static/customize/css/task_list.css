@@ -1,0 +1,45 @@
+.borderBox {
+  border: 1px solid #ccc;
+  margin-top: 1em;
+}
+
+.taskTableBox {
+  padding: 1em;
+}
+
+#taskTable {
+  width: 100%;
+}
+
+.cancelBtn {
+  cursor: pointer;
+}
+
+#pageBox {
+  height: auto;
+}
+
+#contentWrapper {
+  min-height: 621px;
+}
+
+#taskTable_filter {
+  display: none;
+}
+
+.optionBox {
+  width: 100%;
+  padding: 1em;
+  border-bottom: 1px solid #ccc;
+  background-color: #edefed;
+}
+
+.optionName {
+  padding: 0.5em;
+}
+
+#taskStatusChooser {
+  background-color: white;
+  outline: none;
+  border: 0;
+}

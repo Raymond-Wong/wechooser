@@ -193,3 +193,9 @@ var NEW_MENU_ITEM = '<div class="menuBtnBox">' +
                     '</div></div></div>';
 
 var MENU_SECOND_BTN = '<div class="editMenuBtn menuBtn">子菜单名称</div>'
+
+var KEYWORD_LINE = '<div class="line">' +
+      '<div class="lineLabel left"></div>' +
+      '<div class="lineInput left"><input type="text" name="" /></div>' +
+      '<div class="clear"></div>' +
+    '</div>';

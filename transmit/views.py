@@ -80,7 +80,6 @@ def index(request, token):
   menuParent = wechat.utils.getMenu(token)
   if menuParent is not None:
     menu = menuParent['menu']['button']
-    print '*' * 20, '\n', menu, '\n', '*' * 20
     for flBtn in menu:
       if flBtn.has_key('type') and flBtn['type'] == 'click':
         clickbtns.append({'name' : flBtn['name'], 'mid' : flBtn['key']})

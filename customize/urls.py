@@ -12,5 +12,7 @@ urlpatterns = patterns('',
   url(r'^reply$', views.setReplyHandler, name='setReplyHandler'),
   url(r'^reply/delete$', views.deleteReply, name='deleteReply'),
   url(r'^menu$', views.editMenuHandler, name='editMenuHandler'),
+  url(r'^task/add$', views.addTaskHandler, name='addTaskHandler'),
+  url(r'^task/list$', views.taskHandler, name='taskHandler'),
   url(r'^test$', views.test, name='test'),
 )

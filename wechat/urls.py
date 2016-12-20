@@ -8,5 +8,6 @@ import views
 urlpatterns = patterns('',
   url(r'^$', views.entrance, name='entrance'),
   url(r'update', views.updateTokenHandler, name='updateTokenHandler'),
+  url(r'task', views.taskHandler, name='taskHandler'),
   url(r'getMaterial', views.getMaterialHandler, name='getMaterialHandler'),
 )
