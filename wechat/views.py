@@ -180,11 +180,25 @@ def loginHandler(request, view):
 def taskHandler(request):
   users = User.objects.filter(nickname='Raymond')
   now = datetime.strptime(timezone.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
-  print '*'*10, 'wechat.views:183'
-  print users
   tasks = Task.objects.filter(status=0).filter(run_time=now)
-  print tasks
+  sc = 0
+  fc = 0
   for task in tasks:
-    for user in users:
-      utils.send_template_msg(user.wx_openid, task.template_id, task.url, task.keywords)
+    try:
+      for user in users:
+        utils.send_template_msg(user.wx_openid, task.template_id, task.url, task.keywords)
+      task.status = 1
+      sc += 1
+    except:
+      task.status = 3
+      fc += 1
+    task.save()
+  ac = 0
+  tasks = Task.objects.filter(run_time__lt=now)
+  for task in tasks:
+    if task.status == 0:
+      task.status = 3
+      task.save()
+      ac += 1
+  print 'task at', now, ':', '成功执行任务数: %d, 失败执行任务数: %d, 调整错过任务数: %d' % (sc, fc, ac)
   raise Http404
