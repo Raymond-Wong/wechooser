@@ -73,9 +73,10 @@ class EventReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
   def getReply(self):
-    if self.params['Event'] == 'subscribe':
+    # 如果是关注事件且没有ticket关键字，则回复关注事件的handler
+    if self.params['Event'] == 'subscribe' and not self.params.has_key('Ticket'):
       return SubscribeReplyHandler(self.params).getReply()
-    elif self.params['Event'] == 'SCAN':
+    elif self.params['Event'] == 'SCAN' or (self.params['Event'] == 'subscribe' and self.params.has_key('Ticket')):
       return ScanReplyHandler(self.params).getReply()
     eventKey = self.params['EventKey']
     try:
