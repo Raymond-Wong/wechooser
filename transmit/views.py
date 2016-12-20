@@ -197,8 +197,12 @@ def invited_by(user, dictionary):
   # 检查邀请用户是否达到目标值
   state, namecard = get_template()
   if invite_user.user_set.count() >= namecard.target:
-    data = {'name' : {'value' : '成功到达邀请人数', 'color' : '#173177'}, 'remark' : {'value' : '点击以获取资料链接', 'color' : '#173177'}}
-    wechat.utils.send_template_msg(invite_user.wx_openid, 'Fp7HTtkro57Zk6TXa176vb159uLsld0qEHYH3ro5pAI', 'http://wechooser.applinzi.com/transmit/getGoalMsg?id=%s' % invite_user.wx_openid, data)
+    data = {}
+    data['first'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
+    data['keyword1'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
+    data['keyword2'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
+    data['remark'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
+    wechat.utils.send_template_msg(invite_user.wx_openid, 'VY2vbUuf8GNCgUAdMIhP-LsuCpHv8MeFaSSYJDlSJLk', 'http://wechooser.applinzi.com/transmit/getGoalMsg?id=%s' % invite_user.wx_openid, data)
   # 给邀请用户加积分
   credit_diff = 10
   if invite_user.user_set.count() <= 50:
