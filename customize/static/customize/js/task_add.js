@@ -64,7 +64,7 @@ var saveTaskAction = function() {
 }
 
 var chooseTime = function() {
-  var diff = 15;
+  var diff = 1;
   var now = new Date();
   var minute = now.getMinutes();
   if (minute % diff == 0) {
@@ -73,7 +73,7 @@ var chooseTime = function() {
     now.setMinutes((parseInt(minute / diff) + 1) * diff);
   }
   $('input[name="run_time"').datetimepicker({
-    step: 15,
+    step: diff,
     format: "Y-m-d H:i",
     value: now,
   });
