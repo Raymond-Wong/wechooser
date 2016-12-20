@@ -19,6 +19,7 @@ from django.utils.encoding import smart_str
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 
 from wechooser.decorator import has_token, is_verified
 from wechooser.utils import Response, PastDueException
