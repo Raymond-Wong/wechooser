@@ -177,7 +177,7 @@ def loginHandler(request, view):
   return view(request)
 
 def taskHandler(request):
-  users = User.objects.filter('nickname', 'Raymond')
+  users = User.objects.filter(nickname='Raymond')
   now = datetime.strptime(timezone.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
   print 'wechat.views:181', now
   tasks = Task.objects.filter(status=0).filter(run_time=now)
