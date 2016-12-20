@@ -11,7 +11,6 @@ var initGainCardMethod = function() {
   var type = gcmBox.attr('type');
   var kw = gcmBox.attr('keyword');
   var mid = gcmBox.attr('mid');
-  console.log(type, kw, mid);
   gcmBox.removeAttr('type').removeAttr('keyword').removeAttr('mid');
   if (type == '1' || type == '0') {
     $('input[name="gainCardMethod"][value="' + type + '"]').trigger('click');
