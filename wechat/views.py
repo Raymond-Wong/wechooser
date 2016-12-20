@@ -186,7 +186,7 @@ def taskHandler(request):
   for task in tasks:
     try:
       for user in users:
-        utils.send_template_msg(user.wx_openid, task.template_id, task.url, task.keywords)
+        utils.send_template_msg(user.wx_openid, task.template_id, task.url, json.loads(task.keywords))
       task.status = 1
       sc += 1
     except:
