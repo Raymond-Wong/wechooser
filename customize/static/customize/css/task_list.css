@@ -23,9 +23,9 @@
   min-height: 621px;
 }
 
-/*#taskTable_filter {
+#taskTable_filter {
   display: none;
-}*/
+}
 
 .optionBox {
   width: 100%;
