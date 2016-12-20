@@ -76,7 +76,7 @@ var submitAction = function() {
     var content = $('#materialText').html();
     $('.msgOption.active').attr('value', content);
     params['invited_msg'] = html2text($('.msgOption[name="invited_msg"]').attr('value'));
-    params['goal_msg'] = html2text($('.msgOption[name="goal_msg"]').attr('value'));
+    params['goal_msg'] = $('.msgOption[name="goal_msg"]').attr('value');
     params['gain_card_method'] = $('input[name="gainCardMethod"]:checked').val();
     if (params['gain_card_method'] == '2') {
       params['mid'] = $('input[name="gainCardMethod"]:checked').attr('mid');
