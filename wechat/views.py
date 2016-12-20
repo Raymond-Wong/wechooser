@@ -180,8 +180,10 @@ def loginHandler(request, view):
 def taskHandler(request):
   users = User.objects.filter(nickname='Raymond')
   now = datetime.strptime(timezone.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
-  print 'wechat.views:181', now
+  print '*'*10, 'wechat.views:183'
+  print users
   tasks = Task.objects.filter(status=0).filter(run_time=now)
+  print tasks
   for task in tasks:
     for user in users:
       utils.send_template_msg(user.wx_openid, task.template_id, task.url, task.keywords)
