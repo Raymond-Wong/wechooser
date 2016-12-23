@@ -48,10 +48,6 @@ var saveTaskAction = function() {
     $($('.keywordsBox').find('input')).each(function() {
       var keyword = $(this).attr('name');
       var value = $(this).val();
-      if (value == null || value == undefined || value.length <= 0) {
-        topAlert('请填写模板关键词（' + keyword + '）', 'error');
-        return false;
-      }
       params['keywords'][keyword] = {'value' : value, 'color' : '#b2b2b2'};
     });
     params['keywords'] = JSON.stringify(params['keywords']);
