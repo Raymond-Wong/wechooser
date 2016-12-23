@@ -185,7 +185,7 @@ def taskHandler(request):
   sc = 0
   fc = 0
   for task in tasks:
-    if template_id and len(template_id) > 0 and template_id != 'none':
+    if task.template_id and len(task.template_id) > 0 and task.template_id != 'none':
       try:
         for user in users:
           utils.send_template_msg(user.wx_openid, task.template_id, task.url, json.loads(task.keywords))
