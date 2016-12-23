@@ -22,7 +22,7 @@ var initStatusChooser = function() {
   $.fn.dataTable.ext.search.push(
     function( settings, data, dataIndex ) {
       var a = sid[parseInt($('#taskStatusChooser').val())];
-      var b = data[5];
+      var b = data[4];
       console.log(a, b);
       if (a == "all" || a == b) {
         return true;
