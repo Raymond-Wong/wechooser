@@ -178,20 +178,24 @@ def loginHandler(request, view):
   return view(request)
 
 def taskHandler(request):
-  users = User.objects.filter(nickname='Raymond')
+  # users = User.objects.filter(nickname='Raymond')
+  users = User.objects.all()
   now = datetime.strptime(timezone.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
   tasks = Task.objects.filter(status=0).filter(run_time=now)
   sc = 0
   fc = 0
   for task in tasks:
-    try:
-      for user in users:
-        utils.send_template_msg(user.wx_openid, task.template_id, task.url, json.loads(task.keywords))
-      task.status = 1
-      sc += 1
-    except:
+    if template_id and len(template_id) > 0 and template_id != 'none':
+      try:
+        for user in users:
+          utils.send_template_msg(user.wx_openid, task.template_id, task.url, json.loads(task.keywords))
+        task.status = 1
+        sc += 1
+      except:
+        task.status = 3
+        fc += 1
+    else:
       task.status = 3
-      fc += 1
     task.save()
   ac = 0
   tasks = Task.objects.filter(run_time__lt=now)
