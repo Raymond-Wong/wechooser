@@ -33,7 +33,7 @@ var msgOptionAction = function() {
     $(this).addClass('active');
   });
   // 将数据库中的文字信息转换成可直接设置为html的文字信息
-  $('.msgOption').each(function() {
+  $('.msgOption[name="invited_msg"]').each(function() {
     var val = $(this).attr('value');
     val = text2html(val);
     $(this).attr('value', val);
