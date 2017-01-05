@@ -60,6 +60,11 @@ class PyImageProcesser:
       cropBox[3] = cropBox[1] + radius
       img = img.crop(tuple(cropBox))
     return img
+  # 将list中的所有数字变成整形数
+  def __list2int(self, l):
+    for index, item in enumerate(l):
+      l[index] = int(item)
+    return l
   # 将图像切割成圆形
   def to_circle(self, img):
     # 如果图像的色彩模式不为RGBA，则转换为RGBA
@@ -78,18 +83,18 @@ class PyImageProcesser:
   def combine(self, img1, img2, resize=None, pos=None, alpha=True):
     # 如果需要缩放
     if resize:
-      img2 = img2.resize(resize)
+      img2 = img2.resize(self.__list2int(resize))
     pos = (0, 0) if not pos else pos
     if alpha:
-      img1.paste(img2, pos, img2)
+      img1.paste(img2, self.__list2int(pos), img2)
     else:
-      img1.paste(img2, pos)
+      img1.paste(img2, self.__list2int(pos))
     return img1
   # 在图片上添加文字
   def draw_text(self, img, text, pos=(0, 0), font='./Deng.ttf', font_size=20, font_color=(0, 0, 0, 1)):
     font = ImageFont.truetype(font, font_size)
     draw = ImageDraw.Draw(img)
-    draw.text(pos, text, font=font, fill=font_color)
+    draw.text(self.__list2int(pos), text, font=font, fill=font_color)
     return img
   # 在图片的某个具体高度写入一行居中的字体
   def center_text(self, img, text, y, padding=(0, 0), font='./Deng.ttf', font_size=20, font_color=(0, 0, 0, 1)):
