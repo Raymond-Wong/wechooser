@@ -105,7 +105,7 @@ var saveTaskAction = function() {
 }
 
 var initTime = function(dom) {
-  var diff = 1;
+  var diff = 15;
   var now = new Date();
   var minute = now.getMinutes();
   if (minute % diff == 0) {

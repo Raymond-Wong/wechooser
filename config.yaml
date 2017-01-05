@@ -12,4 +12,4 @@ handlers:
 cron:
 - description: schedule_task
   url: /wechat/task
-  schedule: "*/1 * * * *"
+  schedule: "*/15 * * * *"
