@@ -151,7 +151,7 @@ CREATE TABLE `customize_task` (
   `template_id` longtext NOT NULL,
   `template_name` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -278,15 +278,15 @@ CREATE TABLE `transmit_name_card` (
   `create_time` datetime NOT NULL,
   `bg` longtext NOT NULL,
   `head_shape` int(10) unsigned NOT NULL,
-  `head_diameter` int(10) unsigned NOT NULL,
-  `head_x` int(10) unsigned NOT NULL,
-  `head_y` int(10) unsigned NOT NULL,
+  `head_diameter` double NOT NULL,
+  `head_x` double NOT NULL,
+  `head_y` double NOT NULL,
   `name_fontsize` int(10) unsigned NOT NULL,
   `name_padding` int(10) unsigned NOT NULL,
-  `name_y` int(10) unsigned NOT NULL,
-  `qrcode_size` int(10) unsigned NOT NULL,
-  `qrcode_x` int(10) unsigned NOT NULL,
-  `qrcode_y` int(10) unsigned NOT NULL,
+  `name_y` double NOT NULL,
+  `qrcode_size` double NOT NULL,
+  `qrcode_x` double NOT NULL,
+  `qrcode_y` double NOT NULL,
   `target` int(10) unsigned NOT NULL,
   `invited_msg` longtext NOT NULL,
   `goal_msg` longtext NOT NULL,
@@ -310,7 +310,7 @@ CREATE TABLE `wechat_access_token` (
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -447,4 +447,4 @@ CREATE TABLE `wechooser_image` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-20 23:07:22
+-- Dump completed on 2017-01-05 23:57:57

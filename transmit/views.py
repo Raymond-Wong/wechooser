@@ -147,12 +147,12 @@ def get_name_card(user, template=None):
     # 如果打开失败，则从网络上下载背景图片
     bg = utils.string_to_image(utils.download_image(template.bg))
   # 将用户头像和背景图片结合
-  size = (int(template.head_diameter), int(template.head_diameter))
-  pos = (int(template.head_x), int(template.head_y))
+  size = (bg.size[0] * float(template.head_diameter), bg.size[0] * float(template.head_diameter))
+  pos = (bg.size[0] * float(template.head_x), bg.size[1] * float(template.head_y))
   bg = processer.combine(bg, headimg, size, pos)
   # 在上面得到的背景图片的某个垂直位置放置一个水平居中的用户昵称
   font_path = '%s/static/transmit/fonts/deng.ttf' % sys.path[0]
-  y = int(template.name_y)
+  y = bg.size[1] * float(template.name_y)
   pos = (int(template.name_padding), int(template.name_padding))
   font_size = int(template.name_fontsize)
   bg = processer.center_text(bg, user.nickname, y, pos, font_size=font_size, font_color="white", font=font_path)
@@ -162,8 +162,8 @@ def get_name_card(user, template=None):
   coder.make(fit=True)
   qr_img = coder.make_image()
   # 将二维码和背景图片合并
-  size = (int(template.qrcode_size), int(template.qrcode_size))
-  pos = (int(template.qrcode_x), int(template.qrcode_y))
+  size = (bg.size[0] * float(template.qrcode_size), bg.size[0] * float(template.qrcode_size))
+  pos = (bg.size[0] * float(template.qrcode_x), bg.size[1] * float(template.qrcode_y))
   bg = processer.combine(bg, qr_img, resize=size, pos=pos, alpha=False)
   return True, utils.image_to_string(bg)
 
