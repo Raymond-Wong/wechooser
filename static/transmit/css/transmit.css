@@ -145,3 +145,7 @@ input[name="gainCardMethod"] {
 .hint {
   color: #aaa;
 }
+
+.cardUrl {
+  width: 25.2em;
+}
