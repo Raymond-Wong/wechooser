@@ -26,9 +26,8 @@ import wechat.utils
 @wx_logined
 def showNameCard(request):
   user = User.objects.get(wx_openid=request.session['user'])
-  card = get_name_card(user)
-  return render_to_response('transmit/showNameCard.html', {'image' : utils.image_to_base64(card)})
-
+  state, img = get_name_card(user)
+  return render_to_response('transmit/showNameCard.html', {'image' : utils.image_to_base64(img)})
 
 # 获取名片卡
 @csrf_exempt
