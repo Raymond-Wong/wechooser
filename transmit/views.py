@@ -82,6 +82,8 @@ def index(request, token):
     template = Name_Card()
   else:
     template = templates[0]
+  # 获取名片的url
+  url = 'http://' + request.get_host() + '/transmit/showNameCard'
   # 获取菜单
   # clickbtns = []
   # menuParent = wechat.utils.getMenu(token)
@@ -95,7 +97,7 @@ def index(request, token):
   #         for slBtn in flBtn['sub_button']:
   #           if slBtn['type'] == 'click':
   #             clickbtns.append({'name' : slBtn['name'], 'mid' : slBtn['key']})
-  return render_to_response('transmit/transmit.html', {'active' : 'transmit', 'template' : template})
+  return render_to_response('transmit/transmit.html', {'active' : 'transmit', 'template' : template, 'url' : url})
 
 @csrf_exempt
 def save(request):
