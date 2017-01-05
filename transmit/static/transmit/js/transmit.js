@@ -17,7 +17,7 @@ var initGainCardMethod = function() {
   } else if (type == '2') {
     $('input[name="gainCardMethod"][value="2"][mid="' + mid + '"]').trigger('click');
   } else {
-    $('input[name="gainCardMethod"][value="3"]').trigger('click');
+    // $('input[name="gainCardMethod"][value="3"]').trigger('click');
     $('input[name="gainCardKw"]').val(kw);
   }
 }
@@ -76,7 +76,7 @@ var submitAction = function() {
     $('.msgOption.active').attr('value', content);
     params['invited_msg'] = html2text($('.msgOption[name="invited_msg"]').attr('value'));
     params['goal_msg'] = $('.msgOption[name="goal_msg"]').attr('value');
-    params['gain_card_method'] = $('input[name="gainCardMethod"]:checked').val();
+    params['gain_card_method'] = 3;//$('input[name="gainCardMethod"]:checked').val();
     if (params['gain_card_method'] == '2') {
       params['mid'] = $('input[name="gainCardMethod"]:checked').attr('mid');
     } else if (params['gain_card_method'] == '3') {
