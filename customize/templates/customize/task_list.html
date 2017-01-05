@@ -42,7 +42,7 @@
     </thead>
     <tbody>
       {% for task in tasks %}
-      <tr tid="{{ task.id }}" onclick="open('{{ task.url }}', '_blank')" title="点击跳转到图文链接页">
+      <tr tid="{{ task.id }}" onclick="window.open('{{ task.url }}', '_blank')" title="点击打开待发送图文页面">
         <td>{{ task.create_time | date:"Y-m-d H:i:s" }}</td>
         <td>{{ task.task_name }}</td>
         <td>{{ task.run_time | date:"Y-m-d H:i:s" }}</td>
