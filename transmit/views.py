@@ -88,7 +88,7 @@ def index(request, token):
   #         for slBtn in flBtn['sub_button']:
   #           if slBtn['type'] == 'click':
   #             clickbtns.append({'name' : slBtn['name'], 'mid' : slBtn['key']})
-  return render_to_response('transmit/transmit.html', {'active' : 'transmit', 'template' : template, 'menu' : clickbtns})
+  return render_to_response('transmit/transmit.html', {'active' : 'transmit', 'template' : template})
 
 @csrf_exempt
 def save(request):
