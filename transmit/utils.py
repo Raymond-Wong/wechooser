@@ -62,9 +62,10 @@ class PyImageProcesser:
     return img
   # 将list中的所有数字变成整形数
   def __list2int(self, l):
+    l = list(l)
     for index, item in enumerate(l):
       l[index] = int(item)
-    return l
+    return tuple(l)
   # 将图像切割成圆形
   def to_circle(self, img):
     # 如果图像的色彩模式不为RGBA，则转换为RGBA
