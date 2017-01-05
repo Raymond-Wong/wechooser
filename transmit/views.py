@@ -76,18 +76,18 @@ def index(request, token):
   else:
     template = templates[0]
   # 获取菜单
-  clickbtns = []
-  menuParent = wechat.utils.getMenu(token)
-  if menuParent is not None:
-    menu = menuParent['menu']['button']
-    for flBtn in menu:
-      if flBtn.has_key('type') and flBtn['type'] == 'click':
-        clickbtns.append({'name' : flBtn['name'], 'mid' : flBtn['key']})
-      else:
-        if len(flBtn['sub_button']) > 0:
-          for slBtn in flBtn['sub_button']:
-            if slBtn['type'] == 'click':
-              clickbtns.append({'name' : slBtn['name'], 'mid' : slBtn['key']})
+  # clickbtns = []
+  # menuParent = wechat.utils.getMenu(token)
+  # if menuParent is not None:
+  #   menu = menuParent['menu']['button']
+  #   for flBtn in menu:
+  #     if flBtn.has_key('type') and flBtn['type'] == 'click':
+  #       clickbtns.append({'name' : flBtn['name'], 'mid' : flBtn['key']})
+  #     else:
+  #       if len(flBtn['sub_button']) > 0:
+  #         for slBtn in flBtn['sub_button']:
+  #           if slBtn['type'] == 'click':
+  #             clickbtns.append({'name' : slBtn['name'], 'mid' : slBtn['key']})
   return render_to_response('transmit/transmit.html', {'active' : 'transmit', 'template' : template, 'menu' : clickbtns})
 
 @csrf_exempt

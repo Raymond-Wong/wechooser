@@ -63,15 +63,6 @@
     <div class="stepBoxTitle">第二步：设置获取名片方式</div>
     <div class="gainCardMethodBox" type="{{ template.gain_card_method }}" keyword="{{ template.keyword }}" mid="{{ template.mid }}">
       <div class="line">
-        <span><input type="radio" name="gainCardMethod" value="0" />文字信息</span>
-        <span><input type="radio" name="gainCardMethod" value="1" />图片信息</span>
-      </div>
-      <div class="line">
-        {% for btn in menu %}
-        <span><input type="radio" name="gainCardMethod" value="2" mid="{{ btn.mid }}" />菜单按钮-{{ btn.name }}</span>
-        {% endfor %}
-      </div>
-      <div class="line">
         <input type="radio" name="gainCardMethod" value="3" />关键词
         <input type="text" name="gainCardKw" />
       </div>
