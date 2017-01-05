@@ -84,3 +84,7 @@
 .removeTaskBtn {
   margin-left: 1em;
 }
+
+.subTaskBox .lineLabel {
+  /*padding-left: 1em;*/
+}
