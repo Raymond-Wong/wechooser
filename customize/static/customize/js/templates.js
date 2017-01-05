@@ -199,3 +199,13 @@ var KEYWORD_LINE = '<div class="line">' +
       '<div class="lineInput left"><input type="text" name="" /></div>' +
       '<div class="clear"></div>' +
     '</div>';
+
+var SUB_TASK_BOX = ''+
+'<div class="line subTaskBox">' +
+  '<div class="lineLabel left"></div>' +
+  '<div class="lineInput left"><input type="text" name="task_name" placeholder="任务名称,不超过30字" /> - ' +
+  '<input type="text" name="run_time" placeholder="发送时间" />' +
+  '<button class="removeTaskBtn">×</button>' +
+  '</div>' +
+  '<div class="clear"></div>' +
+'</div>';

@@ -31,7 +31,7 @@
 }
 
 .line .lineInput input {
-  width: 20em;
+  width: 16em;
   padding: 0 3px;
   height: 1.9em;
   line-height: 1.9em;
@@ -78,5 +78,9 @@
 }
 
 #chooseNewsBtn {
+  margin-left: 1em;
+}
+
+.removeTaskBtn {
   margin-left: 1em;
 }

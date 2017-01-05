@@ -344,16 +344,17 @@ def addTaskHandler(request, token):
   return cancelTask(request)
 
 def addTask(request):
-  run_time = request.POST.get('run_time', None)
+  task_list = request.POST.get('task_list', None)
   keywords = request.POST.get('keywords', None)
   url = request.POST.get('url', None)
-  task_name = request.POST.get('task_name', None)
   template_id = request.POST.get('template_id', None)
   template_name = request.POST.get('template_name', None)
-  if run_time is None or keywords is None or template_name is None or url is None or task_name is None or template_id is None:
+  if task_list is None or keywords is None or template_name is None or url is None or template_id is None:
     return HttpResponse(Response(c=2, m='参数不足').toJson(), content_type='application/json')
-  task = Task(template_name=template_name, task_name=task_name, run_time=run_time, keywords=keywords, url=url, template_id=template_id)
-  task.save()
+  task_list = json.loads(task_list)
+  for (task_name, run_time) in task_list.iteritems():
+    task = Task(template_name=template_name, task_name=task_name, run_time=run_time, keywords=keywords, url=url, template_id=template_id)
+    task.save()
   return HttpResponse(Response(c=0, m="添加任务成功").toJson(), content_type='application/json')
 
 def cancelTask(request):

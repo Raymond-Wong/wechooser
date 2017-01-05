@@ -1,9 +1,32 @@
 $(document).ready(function() {
-  chooseTime();
   chooseNews();
   chooseTemplate();
   saveTaskAction();
+  addTaskAction();
+  removeTaskAction();
 });
+
+var removeTaskAction = function() {
+  $(document).delegate('.removeTaskBtn', 'click', function() {
+    $($(this).parents('.subTaskBox')[0]).remove();
+  });
+}
+
+var addTaskAction = function() {
+  initTime($('input[name="run_time"]'));
+  var btn = $('.addTaskBtn');
+  btn.click(function() {
+    if ($('.subTaskBox').length >= 10) {
+      topAlert('最多添加十个子任务！', 'error');
+      return false;
+    }
+    var that = $(this);
+    var taskList = $(that.parents('.borderBox')[0]).children('.taskList');
+    var newTaskBox = $(SUB_TASK_BOX);
+    taskList.append(newTaskBox);
+    initTime($(newTaskBox.find('input[name="run_time"]')[0]));
+  });
+}
 
 var chooseTemplate = function() {
   $('#template_list').change(function() {
@@ -29,18 +52,32 @@ var chooseTemplate = function() {
 var saveTaskAction = function() {
   $('#submit').click(function() {
     topAlert('正在提交任务...');
-    var task_name = $('input[name="task_name"]').val();
-    var run_time = $('input[name="run_time"]').datetimepicker('getValue');
+    var taskList = {};
+    var taskAmount = 0;
+    var taskValide = true;
+    $('.subTaskBox').each(function() {
+      var taskName = $($(this).find('input[name="task_name"]')[0]).val();
+      if (taskName.length == 0) {
+        taskValide = false;
+        return false;
+      }
+      var run_time = $($(this).find('input[name="run_time"]')[0]).datetimepicker('getValue').Format('yyyy-MM-dd hh:mm');
+      if (!(taskName in taskList)) {
+        taskAmount++;
+      }
+      taskList[taskName] = run_time;
+    });
     var url = $('input[name="url"]').val();
     var template_id = $('#template_list').val();
     var template_name = $('option[value="' + template_id + '"]').text();
     var params = {'action' : 'add'};
-    if (task_name != undefined && task_name.length > 0 && task_name.length < 30) {
-      params['task_name'] = task_name;
-    } else {topAlert('请填写任务名称', 'error'); return false}
-    if (run_time != undefined) {
-      params['run_time'] = run_time.Format("yyyy-MM-dd hh:mm");
-    } else {topAlert('请选择发送时间', 'error'); return false}
+    if (!taskValide) {
+      topAlert('所有子任务名称都必填！', 'error');
+      return false;
+    }
+    if (taskList != undefined && taskAmount > 0 && taskAmount <= 10) {
+      params['task_list'] = JSON.stringify(taskList);
+    } else {topAlert('请至少添加一个子任务，且子任务数量不得超过10', 'error'); return false}
     if (url != undefined && url.length > 0) {
       params['url'] = url;
     } else {topAlert('请选择图文消息', 'error'); return false}
@@ -67,8 +104,8 @@ var saveTaskAction = function() {
   });
 }
 
-var chooseTime = function() {
-  var diff = 15;
+var initTime = function(dom) {
+  var diff = 1;
   var now = new Date();
   var minute = now.getMinutes();
   if (minute % diff == 0) {
@@ -76,7 +113,7 @@ var chooseTime = function() {
   } else {
     now.setMinutes((parseInt(minute / diff) + 1) * diff);
   }
-  $('input[name="run_time"').datetimepicker({
+  dom.datetimepicker({
     step: diff,
     format: "Y-m-d H:i",
     value: now,
