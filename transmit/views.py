@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 import qrcode
 import time
 import StringIO
+import json
 
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, redirect
@@ -165,7 +166,11 @@ def save(request):
   card.save()
   activity.name_card = card
   activity.save()
-  return HttpResponse(Response(m="保存成功").toJson(), content_type="application/json")
+  # 返回活动id和url
+  ret = {}
+  ret['aid'] = activity.id
+  ret['url'] = 'http://wechooser.applinzi.com/transmit/showNameCard?aid=%d' % activity.id
+  return HttpResponse(Response(m=json.dumps(ret)).toJson(), content_type="application/json")
 
 def get_name_card(user, template=None):
   # 如果调用参数时未提供模板，则从数据库中查询最新保存的模板
