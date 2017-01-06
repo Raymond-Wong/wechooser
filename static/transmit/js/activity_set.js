@@ -100,7 +100,7 @@ var submitAction = function() {
       }
     }
     topAlert('正在保存中...');
-    url = '/transmit/activity/save' + (AID == undefined ? '' : ('?aid=' + AID))
+    url = '/transmit/activity/save' + ((AID == undefined || AID == '') ? '' : ('?aid=' + AID))
     post(url, params, function(msg) {
       if (msg['code'] == 0) {
         topAlert('保存成功！');
