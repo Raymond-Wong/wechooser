@@ -12,5 +12,6 @@ urlpatterns = patterns('',
   url(r'getGoalMsg', views.getGoalMsg, name='getGoalMsg'),
   url(r'activity/save', views.save, name='save'),
   url(r'activity/release', views.release, name='release'),
+  url(r'activity/delete', views.delete, name='delete'),
   url(r'activity/list', views.activity_list, name='activity_list'),
 )

@@ -103,10 +103,15 @@ var submitAction = function() {
     url = '/transmit/activity/save' + ((AID == undefined || AID == '') ? '' : ('?aid=' + AID))
     post(url, params, function(msg) {
       if (msg['code'] == 0) {
-        topAlert('保存成功，页面即将自动跳转');
-        setTimeout(function() {
-          window.location.href = "/transmit/activity/list"
-        }, 2000);
+        var resp = $.parseJSON(msg['msg']);
+        if (resp['action'] == 'add') {
+          topAlert('保存成功，页面即将自动跳转...');
+          setTimeout(function() {
+            window.location.href = "/transmit/activity/list"
+          }, 2000);
+        } else {
+          topAlert('保存成功!');
+        }
       } else {
         topAlert(msg['msg'], 'error');
       }

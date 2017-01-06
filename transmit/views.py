@@ -60,6 +60,16 @@ def release(request):
   activity.save()
   return HttpResponse(Response().toJson(), content_type='application/json')
 
+@csrf_exempt
+@is_logined
+def delete(request):
+  aid = request.POST.get('aid', None)
+  if aid is None or Activity.objects.filter(id=aid).count() <= 0:
+    return HttpResponse(Response(c=1, m='待删除活动不存在').toJson(), content_type='application/json')
+  activity = Activity.objects.get(id=aid)
+  activity.delete()
+  return HttpResponse(Response().toJson(), content_type='application/json')
+
 # 获取名片卡
 @csrf_exempt
 @is_logined
@@ -128,12 +138,15 @@ def save(request):
   aid = request.GET.get('aid', None)
   activity = None
   card = None
+  action = None
   if aid is None or Activity.objects.filter(id=aid).count() <= 0:
     card = Name_Card()
     activity = Activity()
+    action = 'add'
   else:
     activity = Activity.objects.get(id=aid)
     card = activity.name_card
+    action = 'update'
   # 创建卡片
   bg = request.POST.get('bg', None)
   card.bg = bg if bg is not None else card.bg
@@ -168,6 +181,7 @@ def save(request):
   activity.save()
   # 返回活动id和url
   ret = {}
+  ret['action'] = action
   ret['aid'] = activity.id
   ret['url'] = 'http://wechooser.applinzi.com/transmit/showNameCard?aid=%d' % activity.id
   return HttpResponse(Response(m=json.dumps(ret)).toJson(), content_type="application/json")

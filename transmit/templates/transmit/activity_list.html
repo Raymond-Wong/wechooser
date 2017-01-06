@@ -16,13 +16,14 @@
     <div class="activity_list_box">
       {% if released %}
       {% for activity in released %}
-      <div class="activity_box">
+      <div class="activity_box" aid="{{ activity.id }}">
         <div class="previewBox left thumbImg" style="background-image: url({{ activity.name_card_img }});"></div>
         <div class="infoBox left">
           <div class="name textEllipsis">{{ activity.name }}</div>
           <div class="keyword textEllipsis">关键词：{{ activity.name_card.keyword }}</div>
           <div class="update_time">更新日期：{{ activity.last_update_time | date:"Y年m月d日" }}</div>
           <a class="setActivityBtn" href="/transmit/activity/set?aid={{ activity.id }}">设置</a>
+          <a class="setActivityBtn delActivityBtn">删除</a>
         </div>
         <div class="clear"></div>
       </div>
@@ -37,13 +38,14 @@
     <div class="activity_list_box">
       {% if unreleased %}
       {% for activity in unreleased %}
-      <div class="activity_box">
+      <div class="activity_box" aid="{{ activity.id }}">
         <div class="previewBox left thumbImg" style="background-image: url({{ activity.name_card_img }});"></div>
         <div class="infoBox left">
           <div class="name textEllipsis">{{ activity.name }}</div>
           <div class="keyword textEllipsis">关键词：{{ activity.name_card.keyword }}</div>
           <div class="update_time">更新日期：{{ activity.last_update_time | date:"Y年m月j日" }}</div>
-          <a class="setActivityBtn releaseActivityBtn" aid="{{ activity.id }}">发布</a>
+          <a class="setActivityBtn releaseActivityBtn">发布</a>
+          <a class="setActivityBtn delActivityBtn">删除</a>
         </div>
         <div class="clear"></div>
       </div>
