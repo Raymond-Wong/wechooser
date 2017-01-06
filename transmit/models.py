@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from wechat.models import User
 
 # 名片模板
 HEAD_SHAPE = ((0, 'circle'), (1, 'square'))
@@ -23,3 +24,18 @@ class Name_Card(models.Model):
   gain_card_method = models.PositiveIntegerField(default=3, choices=GCM)
   keyword = models.TextField(default='')
   mid = models.TextField(default='')
+
+# 活动类
+RELEASE_STATE = ((0, 'unreleased'), (1, 'released'))
+class Activity(models.Model):
+  release_state = models.PositiveIntegerField(choices=RELEASE_STATE, default=0)
+  create_time = models.DateTimeField(auto_now_add=True)
+  last_update_time = models.DateTimeField(auto_now=True)
+  name = models.CharField(max_length=30, default='')
+  name_card = models.OneToOneField(Name_Card)
+
+# 用户和活动的关系
+class Participation(models.Model):
+  activity = models.ForeignKey(Activity)
+  user = models.ForeignKey(User, related_name='participate_activity')
+  invited_by = models.ForeignKey(User, null=True, related_name='invite_participate_activity')

@@ -1,10 +1,18 @@
+var AID = undefined;
 $(document).ready(function() {
+  getAid();
   uploadImage();
   previewAction();
   submitAction();
   msgOptionAction();
   initGainCardMethod();
 });
+
+var getAid = function() {
+  // 获取当前页面的活动
+  AID = $('.pageWrapper').attr('aid');
+  $('.pageWrapper').removeAttr('aid');
+}
 
 var initGainCardMethod = function() {
   var gcmBox = $('.gainCardMethodBox');
@@ -77,6 +85,11 @@ var submitAction = function() {
     params['invited_msg'] = html2text($('.msgOption[name="invited_msg"]').attr('value'));
     params['goal_msg'] = $('.msgOption[name="goal_msg"]').attr('value');
     params['gain_card_method'] = 3;//$('input[name="gainCardMethod"]:checked').val();
+    params['name'] = $('input[name="activity_name"]').val();
+    if (params['name'].length <= 0 || params['name'].length > 30) {
+      topAlert('活动名称不合法，名称长度需大于0小于等于30！', 'error');
+      return false;
+    }
     if (params['gain_card_method'] == '2') {
       params['mid'] = $('input[name="gainCardMethod"]:checked').attr('mid');
     } else if (params['gain_card_method'] == '3') {
@@ -87,7 +100,8 @@ var submitAction = function() {
       }
     }
     topAlert('正在保存中...');
-    post('/transmit/save', params, function(msg) {
+    url = '/transmit/activity/save' + (AID == undefined ? '' : ('?aid=' + AID))
+    post(url, params, function(msg) {
       if (msg['code'] == 0) {
         topAlert('保存成功！');
       } else {

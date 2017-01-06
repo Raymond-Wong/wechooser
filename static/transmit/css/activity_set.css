@@ -149,3 +149,8 @@ input[name="gainCardMethod"] {
 .cardUrl {
   width: 25.2em;
 }
+
+.checkTypeBox {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}

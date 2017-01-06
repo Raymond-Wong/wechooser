@@ -66,7 +66,7 @@ CREATE TABLE `auth_permission` (
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   KEY `auth_permission_37ef4eb4` (`content_type_id`),
   CONSTRAINT `content_type_id_refs_id_d043b34a` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,7 +168,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,6 +267,26 @@ CREATE TABLE `duiba_order` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `transmit_activity`
+--
+
+DROP TABLE IF EXISTS `transmit_activity`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `transmit_activity` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `release_state` int(10) unsigned NOT NULL,
+  `create_time` datetime NOT NULL,
+  `last_update_time` datetime NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `name_card_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_card_id` (`name_card_id`),
+  CONSTRAINT `name_card_id_refs_id_8a30a3e8` FOREIGN KEY (`name_card_id`) REFERENCES `transmit_name_card` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `transmit_name_card`
 --
 
@@ -294,6 +314,28 @@ CREATE TABLE `transmit_name_card` (
   `keyword` longtext NOT NULL,
   `mid` longtext NOT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `transmit_participation`
+--
+
+DROP TABLE IF EXISTS `transmit_participation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `transmit_participation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `activity_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `invited_by_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `transmit_participation_8005e431` (`activity_id`),
+  KEY `transmit_participation_6340c63c` (`user_id`),
+  KEY `transmit_participation_b8f8d6fa` (`invited_by_id`),
+  CONSTRAINT `activity_id_refs_id_7906c2c8` FOREIGN KEY (`activity_id`) REFERENCES `transmit_activity` (`id`),
+  CONSTRAINT `invited_by_id_refs_id_614fa641` FOREIGN KEY (`invited_by_id`) REFERENCES `wechat_user` (`id`),
+  CONSTRAINT `user_id_refs_id_614fa641` FOREIGN KEY (`user_id`) REFERENCES `wechat_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -416,11 +458,8 @@ CREATE TABLE `wechat_user` (
   `qrcode_url` longtext NOT NULL,
   `qrcode_ticket` longtext NOT NULL,
   `qrcode_expire_time` datetime DEFAULT NULL,
-  `invited_by_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `wx_openid` (`wx_openid`),
-  KEY `wechat_user_b8f8d6fa` (`invited_by_id`),
-  CONSTRAINT `invited_by_id_refs_id_025a5da5` FOREIGN KEY (`invited_by_id`) REFERENCES `wechat_user` (`id`)
+  UNIQUE KEY `wx_openid` (`wx_openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -447,4 +486,4 @@ CREATE TABLE `wechooser_image` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-05 23:57:57
+-- Dump completed on 2017-01-07  0:44:31

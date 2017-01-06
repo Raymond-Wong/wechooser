@@ -69,8 +69,9 @@ def message(dictionary, token, retried=False):
     state, user = utils.get_user(dictionary['FromUserName'], token)
     dictionary['user'] = user
     # 检测当前的信息是否复合获取名片的要求
-    if is_getting_card(dictionary):
-      state, mediaId = get_name_card_mediaid(user, token)
+    get_card_flag, aid = is_getting_card(dictionary)
+    if get_card_flag:
+      state, mediaId = get_name_card_mediaid(user, aid, token)
       if state:
         imgTemplate = ImageTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], MediaId=mediaId)
         return HttpResponse(imgTemplate.toReply())

@@ -50,4 +50,3 @@ class User(models.Model):
   qrcode_url = models.TextField(default='')
   qrcode_ticket = models.TextField(default='')
   qrcode_expire_time = models.DateTimeField(null=True)
-  invited_by = models.ForeignKey('self', null=True)

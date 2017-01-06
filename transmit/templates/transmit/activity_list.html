@@ -1,0 +1,61 @@
+{% extends 'customize/widgets/base.html' %}
+
+{% block style %}
+<link type="text/css" rel="stylesheet" href="/static/duiba/css/checkCreditRecords.css">
+<link type="text/css" rel="stylesheet" href="/static/transmit/css/activity_list.css">
+{% endblock %}
+
+{% block page %}
+<div class="activity_list_wrapper">
+  <div class="mainBtnBox">
+    <a class="addActivityBtn" href="/transmit/activity/set">添加活动</a>
+    <div class="clear"></div>
+  </div>
+  <div class="activity_list_container">
+    <div class="list_head">已发布</div>
+    <div class="activity_list_box">
+      {% if released %}
+      {% for activity in released %}
+      <div class="activity_box">
+        <div class="previewBox left thumbImg" style="background-image: url({{ activity.name_card_img }});"></div>
+        <div class="infoBox left">
+          <div class="name textEllipsis">{{ activity.name }}</div>
+          <div class="keyword textEllipsis">关键词：{{ activity.name_card.keyword }}</div>
+          <div class="update_time">更新日期：{{ activity.last_update_time | date:"Y年m月d日" }}</div>
+          <a class="setActivityBtn" href="/transmit/activity/set?aid={{ activity.id }}">设置</a>
+        </div>
+        <div class="clear"></div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <font class="noDataHint">暂无活动...</font>
+      {% endif %}
+    </div>
+  </div>
+  <div class="activity_list_container">
+    <div class="list_head">未发布</div>
+    <div class="activity_list_box">
+      {% if unreleased %}
+      {% for activity in unreleased %}
+      <div class="activity_box">
+        <div class="previewBox left thumbImg" style="background-image: url({{ activity.name_card_img }});"></div>
+        <div class="infoBox left">
+          <div class="name textEllipsis">{{ activity.name }}</div>
+          <div class="keyword textEllipsis">关键词：{{ activity.name_card.keyword }}</div>
+          <div class="update_time">更新日期：{{ activity.last_update_time | date:"Y年m月j日" }}</div>
+          <a class="setActivityBtn releaseActivityBtn" aid="{{ activity.id }}">发布</a>
+        </div>
+        <div class="clear"></div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <font class="noDataHint">暂无活动...</font>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="/static/transmit/js/activity_list.js"></script>
+{% endblock %}

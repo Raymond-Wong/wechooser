@@ -1,0 +1,121 @@
+#pageBox {
+  height: auto;
+}
+
+#contentWrapper {
+  min-height: 621px;
+}
+
+.activity_list_wrapper {
+  padding: 31px 0;
+}
+
+.checkTypeBox {
+  width: auto;
+  margin-right: 2em;
+}
+
+.addActivityBtn, .addActivityBtn:visited, .addActivityBtn:focus {
+  min-width: 10em;
+  padding: 0 0.5em;
+  height: 3em;
+  line-height: 3em;
+  background-color: #09bb07;
+  color: white;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 1.5em;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.addActivityBtn:hover {
+  text-decoration: none;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+.activity_list_container {
+  margin-top: 2em;
+  border: 1px solid #edefed;
+}
+
+.activity_list_container .list_head {
+  padding: 1em;
+  color: #3b495b;
+  background-color: #edefed;
+}
+
+.activity_list_container .activity_list_box {
+  padding: 1em;
+}
+
+.activity_list_container .activity_list_box .noDataHint {
+  color: #b6b6b6;
+}
+
+.activity_box {
+  margin-top: 1em;
+  padding-bottom: 1em;
+  border-bottom: 1px dashed #edefed;
+}
+
+.activity_box:first-child {
+  margin-top: 0;
+}
+
+.activity_box:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.previewBox {
+  width: 170px;
+  height: 140px;
+  font-size: 12px;
+  margin-right: 1em;
+}
+
+.name, .keyword, .update_time {
+  padding: 0 0 0.5em 0;
+}
+
+.name {
+  font-size: 16px;
+  color: #3b495b;
+}
+
+.keyword {
+  font-size: 14px;
+  color: #3b495b;
+}
+
+.update_time {
+  font-size: 12px;
+  color: #b6b6b6;
+}
+
+.setActivityBtn, .setActivityBtn:visited, .setActivityBtn:focus {
+  width: 7em;
+  height: 2.5em;
+  line-height: 2.5em;
+  border-radius: 10px;
+  border: 1px solid #09bb07;
+  color: #09bb07;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  padding: 0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.setActivityBtn:hover {
+  text-decoration: none;
+  font-weight: bold;
+  color: #09bb07;
+  cursor: pointer;
+}

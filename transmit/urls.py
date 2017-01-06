@@ -6,9 +6,11 @@ import views
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-  url(r'^$', views.index, name="index"),
+  url(r'activity/set$', views.activity_set, name="activity_set"),
   url(r'showNameCard', views.showNameCard, name='showNameCard'),
   url(r'getNameCard', views.getNameCard, name='getNameCard'),
   url(r'getGoalMsg', views.getGoalMsg, name='getGoalMsg'),
-  url(r'save', views.save, name='save'),
+  url(r'activity/save', views.save, name='save'),
+  url(r'activity/release', views.release, name='release'),
+  url(r'activity/list', views.activity_list, name='activity_list'),
 )

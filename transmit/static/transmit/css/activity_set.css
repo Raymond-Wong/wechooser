@@ -1,0 +1,156 @@
+#pageBox {
+  height: auto;
+}
+
+#replyHead {
+  padding: 21px 0px 16px 6px;
+  font-size: 16px;
+  font-weight: normal;
+  color: #5b5b5b;
+}
+
+.pageWrapper {
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 0 2em 2em 2em;
+  color: #5b5b5b;
+  margin-bottom: 20px;
+}
+
+.stepBoxTitle {
+  font-size: 14px;
+  margin-top: 2em;
+}
+
+.line {
+  margin: 1em 0;
+}
+
+.lineLabel {
+  width: 6em;
+  height: 1.9em;
+  line-height: 1.9em;
+}
+
+#btnWrapper {
+  padding: 27px 0px 0px 21px;
+}
+
+#btnWrapper .btn {
+  width: 107px;
+  height: 34px;
+  /*line-height: 34px;*/
+  text-align: center;
+  display: inline-block;
+  margin: 0 12px;
+}
+
+.nameCardStyleBox {
+  width: 100%;
+}
+
+.settingArea {
+  width: 70%;
+}
+
+.previewArea {
+  width: 30%;
+  border: 1px solid #ccc;
+  padding: 1em;
+  position: relative;
+}
+
+.previewBox {
+  width: 100%;
+}
+
+.previewBox img {
+  width: 100%;
+  height: 177px;
+  background-color: #eee;
+}
+
+.previewTitle {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.refreshPreviewBtn {
+  margin-top: 1em;
+  width: 100%;
+  font-size: 12px;
+}
+
+.msgBox {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  margin-top: 1em;
+}
+
+.msgOptionBox {
+  width: 100%;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.msgOption {
+  padding: 0.5em 1em;
+  border-right: 1px solid #d9d9d9;
+  color: #576477;
+  cursor: pointer;
+}
+
+.msgOption.active, .msgOption:hover {
+  background-color: #576477;
+  color: white;
+}
+
+.msgContent {
+  width: 100%;
+}
+
+#materialWrapper {
+  border: 0;
+}
+
+#materialNav {
+  display: none;
+}
+
+#materialRemain {
+  display: none;
+}
+
+input[name="gainCardMethod"] {
+  position: relative;
+  top: 2px;
+}
+
+.gainCardMethodBox span {
+  margin-right: 1em;
+}
+
+.previewLoad {
+  width: 100%;
+  height: 244px;
+  line-height: 244px;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  left: 0;
+  top: 0;
+  text-align: center;
+  color: white;
+  display: none;
+}
+
+.hint {
+  color: #aaa;
+}
+
+.cardUrl {
+  width: 25.2em;
+}
+
+.checkTypeBox {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}

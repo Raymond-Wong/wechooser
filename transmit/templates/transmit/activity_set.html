@@ -2,14 +2,31 @@
 
 {% block style %}
 <link type="text/css" rel="stylesheet" href="/static/customize/css/material.css">
-<link type="text/css" rel="stylesheet" href="/static/transmit/css/transmit.css">
+<link type="text/css" rel="stylesheet" href="/static/duiba/css/checkCreditRecords.css">
+<link type="text/css" rel="stylesheet" href="/static/transmit/css/activity_set.css">
 {% endblock %}
 
 {% block page %}
-<h1 id="replyHead">自定义用户名片</h1>
-<div class="pageWrapper">
+{% ifequal action 'update' %}
+<div class="checkTypeBox">
+  <a class="left checkType active" href="#">卡片设置</a>
+  <a class="left checkType" href="/transmit/task/list?aid={{ activity.id }}">定时任务</a>
+  <div class="clear"></div>
+</div>
+{% endifequal %}
+{% ifequal action 'add' %}
+<h1 id="replyHead">新建活动</h1>
+{% endifequal %}
+<div class="pageWrapper" aid="{{ activity.id }}">
+  <div class="stepBox">
+    <div class="stepBoxTitle">第一步：设置活动名称</div>
+    <div class="line">
+      <div class="lineLabel left">活动名称</div>
+      <input type="text" name="activity_name" placeholder="活动名称长度不超过30字" value="{{ activity.name }}" />
+    </div>
+  </div>
   <div class="nameCardStyleBox stepBox">
-    <div class="stepBoxTitle">第一步：设置名片样式</div>
+    <div class="stepBoxTitle">第二步：设置卡片样式</div>
     <div class="hint">
       头像尺寸为用户头像半径；头像位置为头像左上角点相对于整张图片左上角的坐标值(x, y)；<br>
       昵称尺寸为昵称字体的大小；昵称位置为从图片顶端到字体的垂直距离；<br>
@@ -60,27 +77,27 @@
     <div class="clear"></div>
   </div>
   <div class="stepBox">
-    <div class="stepBoxTitle">第二步：设置获取名片方式</div>
+    <div class="stepBoxTitle">第三步：设置获取卡片方式</div>
     <div class="gainCardMethodBox" type="{{ template.gain_card_method }}" keyword="{{ template.keyword }}" mid="{{ template.mid }}">
       <div class="line">
         <div class="lineLabel left">关键词</div>
         <input type="text" name="gainCardKw" />
       </div>
       <div class="line">
-        <div class="lineLabel left">名片链接</div>
+        <div class="lineLabel left">卡片链接</div>
         <input type="text" readonly value="{{ url }}" class="cardUrl" width="350" />
       </div>
     </div>
   </div>
   <div class="stepBox">
-    <div class="stepBoxTitle">第三步：设置名片分享的达标数量</div>
+    <div class="stepBoxTitle">第四步：设置卡片分享的达标数量</div>
     <div class="line">
       <div class="lineLabel left">达标数量</div>
-      <input type="number" min="0" name="target" value="{{ template.target }}" placeholder="名片分享的达标数量" />
+      <input type="number" min="0" name="target" value="{{ template.target }}" placeholder="卡片分享的达标数量" />
     </div>
   </div>
   <div class="stepBox">
-    <div class="stepBoxTitle">第四步：设置回复内容</div>
+    <div class="stepBoxTitle">第五步：设置回复内容</div>
     <div class="msgBox">
       <div class="msgOptionBox">
         <div class="msgOption left" name="invited_msg" value="{{ template.invited_msg }}">被邀请者收到的内容</div>
@@ -105,5 +122,5 @@
 <script type="text/javascript" src="/static/plugin/fileUpload/js/jquery.iframe-transport.js"></script>
 <script type="text/javascript" src="/static/plugin/fileUpload/js/jquery.fileupload.js"></script>
 <script type="text/javascript" src="/static/customize/js/material.js"></script>
-<script type="text/javascript" src="/static/transmit/js/transmit.js"></script>
+<script type="text/javascript" src="/static/transmit/js/activity_set.js"></script>
 {% endblock %}
