@@ -13,6 +13,7 @@ import json
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined, has_token, is_logined
@@ -125,7 +126,7 @@ def getGoalMsg(request):
   except:
     raise Http404
   state, namecard = get_template(aid=activity.id)
-  if Participation.objects.filter(user=user).filter(activity=activity).count() >= namecard.target:
+  if Participation.objects.filter(invited_by=user).filter(activity=activity).count() >= namecard.target:
     raise Http404
   return render_to_response('transmit/getGoalMsg.html', {'msg' : namecard.goal_msg})
 
@@ -284,7 +285,7 @@ def invited_by(user, dictionary):
     return False, '邀请链接已失效'
   participate = participate[0]
   # 如果用户已经被邀请过了
-  if Participation.objects.filter(user=user).filter(activity=participate.activity).count() > 0:
+  if Participation.objects.filter(user=user).filter(activity=participate.activity).filter(~Q(invited_by=None)).count() > 0:
     return False, '当前用户已接受过邀请'
   new_participate = Participation(user=user, activity=participate.activity)
   state, qrcode = wechat.utils.update_user_qrcode(user, activity, token)
