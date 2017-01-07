@@ -122,7 +122,7 @@ def getGoalMsg(request):
   activity = request.GET.get('aid', None)
   try:
     user = User.objects.get(wx_openid=user)
-    activity = Activity.objects.get(id=aid)
+    activity = Activity.objects.get(id=activity)
   except:
     raise Http404
   state, namecard = get_template(aid=activity.id)
