@@ -28,6 +28,7 @@ from ReplyHandlers import *
 from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
 from transmit.views import get_name_card_mediaid, invited_by, is_getting_card
 from customize.models import Task
+from transmit.models import Activity, Participation
 import wechooser.utils
 import utils
 
