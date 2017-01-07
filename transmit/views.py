@@ -295,7 +295,7 @@ def invited_by(user, dictionary):
       return False, '当前用户已接受过邀请'
   else:
     new_participate = Participation(user=user, activity=participate.activity)
-    state, qrcode = wechat.utils.update_user_qrcode(user, participate.activity, token)
+    state, qrcode = wechat.utils.update_user_qrcode(user, participate.activity, wechat.utils.get_access_token())
     if not state:
       return False, '参与活动失败'
     new_participate.qrcode_url = qrcode[0]
