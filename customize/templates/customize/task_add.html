@@ -7,12 +7,21 @@
 {% endblock %}
 
 {% block page %}
-<div class="pageWrapper">
+<div class="pageWrapper" aid="{{ aid }}">
+{% if aid %}
+<div class="checkTypeBox">
+  <a class="left checkType" href="/transmit/activity/set?aid={{ aid }}">卡片设置</a>
+  <a class="left checkType active" href="#">定时任务</a>
+  <a class="left checkType" href="/task/list?aid={{ aid }}">定时任务</a>
+  <div class="clear"></div>
+</div>
+{% else %}
 <div class="checkTypeBox">
   <a class="left checkType active" href="#">添加任务</a>
   <a class="left checkType" href="/task/list">查看任务</a>
   <div class="clear"></div>
 </div>
+{% endif %}
 <div class="borderBox settingArea">
   <div class="line">
     <div class="lineLabel left">添加子任务</div>

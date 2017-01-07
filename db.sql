@@ -150,6 +150,8 @@ CREATE TABLE `customize_task` (
   `status` int(10) unsigned NOT NULL,
   `template_id` longtext NOT NULL,
   `template_name` longtext NOT NULL,
+  `target_type` int(10) unsigned NOT NULL,
+  `target` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -485,4 +487,4 @@ CREATE TABLE `wechooser_image` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-07 22:00:48
+-- Dump completed on 2017-01-08  0:13:05

@@ -1,10 +1,18 @@
+AID = null;
 $(document).ready(function() {
+  getAid();
   chooseNews();
   chooseTemplate();
   saveTaskAction();
   addTaskAction();
   removeTaskAction();
 });
+
+var getAid = function() {
+  AID = $('.pageWrapper').attr('aid');
+  $('.pageWrapper').removeAttr('aid');
+  AID = (AID == '' ? null : AID);
+}
 
 var removeTaskAction = function() {
   $(document).delegate('.removeTaskBtn', 'click', function() {
@@ -94,6 +102,7 @@ var saveTaskAction = function() {
       return false;
     }
     params['template_name'] = template_name;
+    if (AID != null) params['aid'] = AID;
     post('/task/add', params, function(resp) {
       if (resp['code'] == 0) {
         topAlert(resp['msg']);
@@ -105,7 +114,7 @@ var saveTaskAction = function() {
 }
 
 var initTime = function(dom) {
-  var diff = 15;
+  var diff = 1;
   var now = new Date();
   var minute = now.getMinutes();
   if (minute % diff == 0) {

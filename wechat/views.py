@@ -179,8 +179,6 @@ def loginHandler(request, view):
   return view(request)
 
 def taskHandler(request):
-  users = User.objects.filter(nickname='Raymond')
-  # users = User.objects.all()
   now = datetime.strptime(timezone.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
   tasks = Task.objects.filter(status=0).filter(run_time=now)
   sc = 0
@@ -188,6 +186,15 @@ def taskHandler(request):
   for task in tasks:
     if task.template_id and len(task.template_id) > 0 and task.template_id != 'none':
       try:
+        # 根据任务目标类型寻找目标人群
+        if task.target_type == 0:
+          users = User.objects.all()
+        elif task.target_type == 1:
+          activity = Activity.objects.get(id=task.target)
+          participates = Participation.objects.filter(activity=activity)
+          users = map(lambda x:x.user, participates)
+        elif task.target_type == 2:
+          users = [User.objects.get(id=task.target)]
         for user in users:
           utils.send_template_msg(user.wx_openid, task.template_id, task.url, json.loads(task.keywords))
         task.status = 1
@@ -198,6 +205,7 @@ def taskHandler(request):
     else:
       task.status = 3
     task.save()
+  # 调整错过的任务
   ac = 0
   tasks = Task.objects.filter(run_time__lt=now)
   for task in tasks:

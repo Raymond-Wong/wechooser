@@ -329,12 +329,15 @@ def deleteReply(request):
 @has_token
 def addTaskHandler(request, token):
   if request.method == 'GET':
+    aid = request.GET.get('aid', None)
     templates = wechat.utils.get_template_msg_list(token)
     for template in templates:
       template['keywords'] = re.findall('{{.+\.DATA}}.*', template['content'])
       template['keywords'] = map(lambda x:x.replace('{{', '').replace('.DATA}}', ''), template['keywords'])
       template['keywords_json'] = json.dumps(template['keywords'])
       # template['keywords'] = json.dumps(template['keywords'])
+    if aid:
+      return render_to_response('customize/task_add.html', {'active' : 'activity', 'aid' : aid, 'templates' : templates})
     return render_to_response('customize/task_add.html', {'active' : 'task', 'templates' : templates})
   action = request.POST.get('action', None)
   if action not in ['add', 'cancel']:
@@ -344,6 +347,11 @@ def addTaskHandler(request, token):
   return cancelTask(request)
 
 def addTask(request):
+  activity = Activity.objects.filter(id=request.POST.get('aid', 0))
+  if activity.count() > 0:
+    activity = activity[0]
+  else:
+    activity = None
   task_list = request.POST.get('task_list', None)
   keywords = request.POST.get('keywords', None)
   url = request.POST.get('url', None)
@@ -354,6 +362,9 @@ def addTask(request):
   task_list = json.loads(task_list)
   for (task_name, run_time) in task_list.iteritems():
     task = Task(template_name=template_name, task_name=task_name, run_time=run_time, keywords=keywords, url=url, template_id=template_id)
+    if activity != None:
+      task.target = activity.id
+      task.target_type = 1
     task.save()
   return HttpResponse(Response(c=0, m="添加任务成功").toJson(), content_type='application/json')
 
