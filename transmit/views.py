@@ -284,6 +284,9 @@ def invited_by(user, dictionary):
   if participate.count() <= 0:
     return False, '邀请链接已失效'
   participate = participate[0]
+  # 如果用户邀请自己
+  if participate.user == user:
+    return False, '不能邀请自己'
   # 如果用户已经被邀请过了
   new_participate = Participation.objects.filter(user=user).filter(activity=participate.activity)
   if new_participate.count() > 0:
