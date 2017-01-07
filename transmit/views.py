@@ -326,7 +326,7 @@ def get_template(aid=None, qrcode_ticket=None):
     activity = Activity.objects.filter(id=aid)
     if activity.count() <= 0:
       return False, '活动不存在'
-    activity = activity[0]
+      return True, activity[0].name_card
   elif qrcode_ticket is not None:
     participate = Participation.objects.filter(qrcode_ticket=qrcode_ticket)
     if participate.count() <= 0:
