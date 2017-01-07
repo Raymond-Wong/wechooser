@@ -393,4 +393,6 @@ def taskHandler(request):
     active = 'activity'
   for index, task in enumerate(tasks):
     tasks[index].keywords = json.loads(task.keywords)
-  return render_to_response('customize/task_list.html', {'active' : active, 'tasks' : tasks})
+  if active == 'task':
+    return render_to_response('customize/task_list.html', {'active' : active, 'tasks' : tasks})
+  return render_to_response('customize/task_list.html', {'active' : active, 'tasks' : tasks, 'aid' : aid})
