@@ -288,7 +288,7 @@ def invited_by(user, dictionary):
   if Participation.objects.filter(user=user).filter(activity=participate.activity).filter(~Q(invited_by=None)).count() > 0:
     return False, '当前用户已接受过邀请'
   new_participate = Participation(user=user, activity=participate.activity)
-  state, qrcode = wechat.utils.update_user_qrcode(user, activity, token)
+  state, qrcode = wechat.utils.update_user_qrcode(user, participate.activity, token)
   if not state:
     return False, '参与活动失败'
   new_participate.qrcode_url = qrcode[0]
@@ -298,7 +298,7 @@ def invited_by(user, dictionary):
   new_participate.save()
   # 检查邀请用户是否达到目标值
   state, namecard = get_template(aid=participate.activity.id)
-  if Participation.objects.filter(invited_by=invite_user).filter(activity=activity).count() >= namecard.target:
+  if Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count() >= namecard.target:
     data = {}
     data['first'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
     data['keyword1'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
@@ -307,7 +307,7 @@ def invited_by(user, dictionary):
     wechat.utils.send_template_msg(invite_user.wx_openid, 'VY2vbUuf8GNCgUAdMIhP-LsuCpHv8MeFaSSYJDlSJLk', 'http://wechooser.applinzi.com/transmit/getGoalMsg?id=%s&aid=%s' % (invite_user.wx_openid, participate.activity.id), data)
   # 给邀请用户加积分
   credit_diff = 10
-  if Participation.objects.filter(invited_by=invite_user).filter(activity=activity).count() <= 50:
+  if Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count() <= 50:
     cr = Credit_Record(credit_type=1, user=invite_user, credit_diff=credit_diff)
     cr.save()
     invite_user.credits += credit_diff
