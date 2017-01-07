@@ -120,10 +120,12 @@ def getNameCard(request):
 def getGoalMsg(request):
   user = request.GET.get('id', None)
   activity = request.GET.get('aid', None)
+  print user, activity
   try:
     user = User.objects.get(wx_openid=user)
     activity = Activity.objects.get(id=activity)
-  except:
+  except Exception, e:
+    print e
     raise Http404
   state, namecard = get_template(aid=activity.id)
   if Participation.objects.filter(invited_by=user).filter(activity=activity).count() >= namecard.target:
