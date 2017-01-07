@@ -44,6 +44,7 @@ var cancelTask = function() {
       } else {
         topAlert(resp['msg'], 'error');
       }
-    })
+    });
+    return false;
   })
 }
