@@ -305,7 +305,8 @@ def invited_by(user, dictionary):
   new_participate.save()
   # 检查邀请用户是否达到目标值
   state, namecard = get_template(aid=participate.activity.id)
-  print state, namecard
+  if not state:
+    return False, namecard
   if Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count() >= namecard.target:
     data = {}
     data['first'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
@@ -327,7 +328,7 @@ def get_template(aid=None, qrcode_ticket=None):
     activity = Activity.objects.filter(id=aid)
     if activity.count() <= 0:
       return False, '活动不存在'
-      return True, activity[0].name_card
+    return True, activity[0].name_card
   elif qrcode_ticket is not None:
     participate = Participation.objects.filter(qrcode_ticket=qrcode_ticket)
     if participate.count() <= 0:
