@@ -58,7 +58,7 @@ class ScanReplyHandler(ReplyHandler):
     state, invite_user = invited_by(self.params['user'], self.params)
     ret = TextTemplate(ToUserName=self.params['FromUserName'], FromUserName=self.params['ToUserName'])
     if state:
-      state, namecard = get_template()
+      state, namecard = get_template(qrcode_ticket=params['Ticket'])
       if state:
         try:
           ret.Content = namecard.invited_msg % invite_user.nickname

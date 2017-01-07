@@ -118,12 +118,14 @@ def getNameCard(request):
 # 获取达到邀请人数后的人数目标
 def getGoalMsg(request):
   user = request.GET.get('id', None)
+  activity = request.GET.get('aid', None)
   try:
     user = User.objects.get(wx_openid=user)
+    activity = Activity.objects.get(id=aid)
   except:
     raise Http404
-  state, namecard = get_template()
-  if not user.user_set.count() >= namecard.target:
+  state, namecard = get_template(aid=activity.id)
+  if Participation.objects.filter(user=user).filter(activity=activity).count() >= namecard.target:
     raise Http404
   return render_to_response('transmit/getGoalMsg.html', {'msg' : namecard.goal_msg})
 
@@ -276,42 +278,54 @@ def get_name_card_mediaid(user, aid, token):
 
 # 用户被其他用户邀请的事件
 def invited_by(user, dictionary):
+  # 获取participate
+  participate = Participation.objects.filter(qrcode_ticket=dictionary['Ticket'])
+  if participate.count() <= 0:
+    return False, '邀请链接已失效'
+  participate = participate[0]
   # 如果用户已经被邀请过了
-  if user.invited_by:
-    return False, '已接受过邀请'
-  invite_user = None
-  try:
-    invite_user = User.objects.get(qrcode_ticket=dictionary['Ticket'])
-  except:
-    return False, '邀请用户不存在'
-  # 如果邀请人和被邀请人是同一个人则返回错误
-  if user.wx_openid == invite_user.wx_openid:
-    return False, '只能邀请其他用户'
-  user.invited_by = invite_user
-  user.save()
+  if Participation.objects.filter(user=user).filter(activity=participate.activity).count() > 0:
+    return False, '当前用户已接受过邀请'
+  new_participate = Participation(user=user, activity=participate.activity)
+  state, qrcode = wechat.utils.update_user_qrcode(user, activity, token)
+  if not state:
+    return False, '参与活动失败'
+  new_participate.qrcode_url = qrcode[0]
+  new_participate.qrcode_ticket = qrcode[1]
+  invite_user = participate.user
+  new_participate.invited_by = invite_user
+  new_participate.save()
   # 检查邀请用户是否达到目标值
-  state, namecard = get_template()
-  if invite_user.user_set.count() >= namecard.target:
+  state, namecard = get_template(aid=participate.activity.id)
+  if Participation.objects.filter(invited_by=invite_user).filter(activity=activity).count() >= namecard.target:
     data = {}
     data['first'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
     data['keyword1'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
     data['keyword2'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
     data['remark'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
-    wechat.utils.send_template_msg(invite_user.wx_openid, 'VY2vbUuf8GNCgUAdMIhP-LsuCpHv8MeFaSSYJDlSJLk', 'http://wechooser.applinzi.com/transmit/getGoalMsg?id=%s' % invite_user.wx_openid, data)
+    wechat.utils.send_template_msg(invite_user.wx_openid, 'VY2vbUuf8GNCgUAdMIhP-LsuCpHv8MeFaSSYJDlSJLk', 'http://wechooser.applinzi.com/transmit/getGoalMsg?id=%s&aid=%s' % (invite_user.wx_openid, participate.activity.id), data)
   # 给邀请用户加积分
   credit_diff = 10
-  if invite_user.user_set.count() <= 50:
+  if Participation.objects.filter(invited_by=invite_user).filter(activity=activity).count() <= 50:
     cr = Credit_Record(credit_type=1, user=invite_user, credit_diff=credit_diff)
     cr.save()
     invite_user.credits += credit_diff
     invite_user.save()
   return True, invite_user
 
-def get_template():
-  card = Name_Card.objects.order_by('-create_time')
-  if len(card) > 0:
-    return True, card[0]
-  return False, Name_Card()
+def get_template(aid=None, qrcode_ticket=None):
+  if aid is not None:
+    activity = Activity.objects.filter(id=aid)
+    if activity.count() <= 0:
+      return False, '活动不存在'
+    activity = activity[0]
+  elif qrcode_ticket is not None:
+    participate = Participation.objects.filter(qrcode_ticket=qrcode_ticket)
+    if participate.count() <= 0:
+      return False, '邀请链接已失效'
+    activity = participate.activity
+    return True, activity.name_card
+  return False, '查找不到活动卡片'
 
 # 判断当前的消息是否复合获取图片的要求
 def is_getting_card(dictionary):
