@@ -224,42 +224,30 @@ def get_user(openid, token):
   user = None
   try:
     user = User.objects.get(wx_openid=openid)
-    if timezone.now() > user.qrcode_expire_time:
-      state, qrcode = update_user_qrcode(user, token)
-      user.qrcode_url = qrcode[0]
-      user.qrcode_ticket = qrcode[1]
-      user.qrcode_expire_time = qrcode[2]
-      user.save()
     return True, user
   except:
     # 获取用户基本信息
     state, user = update_user(openid, token)
     if not state:
       return False, None
-    # 创建用户二维码
-    state, qrcode = update_user_qrcode(user, token)
-    user.qrcode_url = qrcode[0]
-    user.qrcode_ticket = qrcode[1]
-    user.qrcode_expire_time = qrcode[2]
-    user.save()
     return state, user
 
-def update_user_qrcode(user, token):
+def update_user_qrcode(user, activity, token):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/qrcode/create?access_token='
   method = 'POST'
   params = {}
-  params['expire_seconds'] = 2592000
-  params['action_name'] = 'QR_SCENE'
-  params['action_info'] = {"scene": {"scene_id": user.id}}
-  expire_time = timezone.now() + timedelta(seconds=2592000)
+  # params['expire_seconds'] = 2592000
+  params['action_name'] = 'QR_LIMIT_STR_SCENE'
+  params['action_info'] = {"scene": {"scene_str": (user.id + "_" + activity.id)[:64]}}
+  # expire_time = timezone.now() + timedelta(seconds=2592000)
   res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=True)
   if not res[0]:
     return False, None
   res = res[1]
   url = res['url']
   ticket = res['ticket']
-  return True, (url, ticket, expire_time)
+  return True, (url, ticket)
 
 # 更新数据库中user的信息
 def update_user(openid, token):

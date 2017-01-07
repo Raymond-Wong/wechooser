@@ -30,7 +30,6 @@ def activity_list(request):
   # 设置一个假用户
   user = User()
   user.headimg = '%s/static/transmit/images/headimg.jpg' % sys.path[0]
-  user.qrcode_url = '用户名片效果预览二维码'
   user.nickname = u'用户昵称'
   for index, item in enumerate(released):
     state, img = get_name_card(user, item.name_card)
@@ -46,7 +45,21 @@ def activity_list(request):
 @wx_logined
 def showNameCard(request):
   user = User.objects.get(wx_openid=request.session['user'])
-  state, img = get_name_card(user)
+  if Activity.objects.filter(id=request.GET.get('aid', '0')).count() < 0:
+    return HttpResponse(Response(c=1, m="活动不存在").toJson(), content_type="application/json")
+  activity = Activity.objects.get(id=request.GET.get('aid'))
+  participate = Participation.objects.filter(user=user).filter(activity=activity)
+  if participate.count() > 0:
+    participate = participate[0]
+  else:
+    participate = Participation(user=user, activity=activity)
+    state, qrcode = wechat.utils.update_user_qrcode(user, activity, token)
+    if not state:
+      return HttpResponse(Response(c=1, m="生成邀请二维码失败").toJson(), content_type="application/json")
+    participate.qrcode_url = qrcode[0]
+    participate.qrcode_ticket = qrcode[1]
+    participate.save()
+  state, img = get_name_card(user, activity.name_card, participate)
   return render_to_response('transmit/showNameCard.html', {'image' : utils.image_to_base64(img)})
 
 @csrf_exempt
@@ -97,7 +110,6 @@ def getNameCard(request):
   card.target = target if target is not None else card.target
   user = User()
   user.headimg = '%s/static/transmit/images/headimg.jpg' % sys.path[0]
-  user.qrcode_url = '用户名片效果预览二维码'
   user.nickname = u'用户昵称'
   state, img = get_name_card(user, card)
   img = utils.image_to_base64(img)
@@ -186,7 +198,7 @@ def save(request):
   ret['url'] = 'http://wechooser.applinzi.com/transmit/showNameCard?aid=%d' % activity.id
   return HttpResponse(Response(m=json.dumps(ret)).toJson(), content_type="application/json")
 
-def get_name_card(user, template=None):
+def get_name_card(user, template=None, participate=None):
   # 如果调用参数时未提供模板，则从数据库中查询最新保存的模板
   if template == None:
     templates = Name_Card.objects.order_by('-create_time')
@@ -223,7 +235,9 @@ def get_name_card(user, template=None):
   bg = processer.center_text(bg, user.nickname, y, pos, font_size=font_size, font_color="white", font=font_path)
   # 根据用户id生成一个二维码
   coder = qrcode.QRCode(version=5, border=1)
-  coder.add_data(user.qrcode_url)
+  if participate == None:
+    participate = Participation(qrcode_url='用户名片效果预览二维码')
+  coder.add_data(participate.qrcode_url)
   coder.make(fit=True)
   qr_img = coder.make_image()
   # 将二维码和背景图片合并
@@ -238,7 +252,20 @@ def get_name_card_mediaid(user, aid, token):
   if Activity.objects.filter(id=aid).count() <= 0:
     return False, None
   activity = Activity.objects.get(id=aid)
-  state, namecard = get_name_card(user, template=activity.name_card)
+  # 获取用户和活动的关系
+  participate = Participation.objects.filter(activity=activity).filter(user=user)
+  # 如果用户没有还没有参加活动
+  if participate.count() <= 0:
+    participate = Participation(user=user, activity=activity)
+    state, qrcode = wechat.utils.update_user_qrcode(user, activity, token)
+    if not state:
+      return False, None
+    participate.qrcode_url = qrcode[0]
+    participate.qrcode_ticket = qrcode[1]
+    participate.save()
+  else:
+    participate = participate[0]
+  state, namecard = get_name_card(user, template=activity.name_card, participate=participate)
   if not state:
     return False, None
   # 上传临时素材获取mediaid

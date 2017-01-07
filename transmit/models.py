@@ -39,3 +39,5 @@ class Participation(models.Model):
   activity = models.ForeignKey(Activity)
   user = models.ForeignKey(User, related_name='participate_activity')
   invited_by = models.ForeignKey(User, null=True, related_name='invite_participate_activity')
+  qrcode_url = models.TextField(default='')
+  qrcode_ticket = models.TextField(default='')

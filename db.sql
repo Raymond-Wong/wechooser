@@ -329,6 +329,8 @@ CREATE TABLE `transmit_participation` (
   `activity_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `invited_by_id` int(11) DEFAULT NULL,
+  `qrcode_url` longtext NOT NULL,
+  `qrcode_ticket` longtext NOT NULL,
   PRIMARY KEY (`id`),
   KEY `transmit_participation_8005e431` (`activity_id`),
   KEY `transmit_participation_6340c63c` (`user_id`),
@@ -455,9 +457,6 @@ CREATE TABLE `wechat_user` (
   `country` varchar(50) NOT NULL,
   `headimgurl` longtext,
   `credits` int(10) unsigned NOT NULL,
-  `qrcode_url` longtext NOT NULL,
-  `qrcode_ticket` longtext NOT NULL,
-  `qrcode_expire_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `wx_openid` (`wx_openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -486,4 +485,4 @@ CREATE TABLE `wechooser_image` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-07  0:44:31
+-- Dump completed on 2017-01-07 22:00:48
