@@ -239,7 +239,7 @@ def update_user_qrcode(user, activity, token):
   params = {}
   # params['expire_seconds'] = 2592000
   params['action_name'] = 'QR_LIMIT_STR_SCENE'
-  params['action_info'] = {"scene": {"scene_str": (user.id + "_" + activity.id)[:64]}}
+  params['action_info'] = {"scene": {"scene_str": (str(user.id) + "_" + str(activity.id))[:64]}}
   # expire_time = timezone.now() + timedelta(seconds=2592000)
   res = wechooser.utils.send_request(host, path + token.token, method, port=443, params=params, toLoad=True)
   if not res[0]:
