@@ -284,13 +284,12 @@ def invited_by(user, dictionary):
   if participate.count() <= 0:
     return False, '邀请链接已失效'
   participate = participate[0]
-  print len(Participation.objects.filter(~Q(invited_by=None)))
   # 如果用户已经被邀请过了
-  if Participation.objects.filter(user=user).filter(activity=participate.activity).filter(~Q(invited_by=None)).count() > 0:
-    return False, '当前用户已接受过邀请'
   new_participate = Participation.objects.filter(user=user).filter(activity=participate.activity)
   if new_participate.count() > 0:
     new_participate = new_participate[0]
+    if new_participate.invited_by != None:
+      return False, '当前用户已接受过邀请'
   else:
     new_participate = Participation(user=user, activity=participate.activity)
     state, qrcode = wechat.utils.update_user_qrcode(user, participate.activity, token)
