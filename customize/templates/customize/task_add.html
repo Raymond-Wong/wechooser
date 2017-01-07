@@ -8,7 +8,7 @@
 
 {% block page %}
 <div class="pageWrapper" aid="{{ aid }}">
-{% if aid %}
+{% ifequal active "activity" %}
 <div class="checkTypeBox">
   <a class="left checkType" href="/transmit/activity/set?aid={{ aid }}">卡片设置</a>
   <a class="left checkType active" href="#">定时任务</a>
@@ -21,7 +21,7 @@
   <a class="left checkType" href="/task/list">查看任务</a>
   <div class="clear"></div>
 </div>
-{% endif %}
+{% endifequal %}
 <div class="borderBox settingArea">
   <div class="line">
     <div class="lineLabel left">添加子任务</div>

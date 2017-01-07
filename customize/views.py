@@ -383,7 +383,14 @@ def cancelTask(request):
   return HttpResponse(Response(c=0, m='任务取消成功').toJson(), content_type='application/json')
 
 def taskHandler(request):
-  tasks = Task.objects.order_by('-create_time')
+  aid = request.GET.get('aid', 0)
+  activity = Activity.objects.filter(id=aid)
+  if activity.count() <= 0:
+    tasks = Task.objects.filter(target_type=0).order_by('-create_time')
+    active = 'task'
+  else:
+    tasks = Task.objects.filter(target_type=1).filter(target=aid).order_by('-create_time')
+    active = 'activity'
   for index, task in enumerate(tasks):
     tasks[index].keywords = json.loads(task.keywords)
-  return render_to_response('customize/task_list.html', {'active' : 'task', 'tasks' : tasks})
+  return render_to_response('customize/task_list.html', {'active' : active, 'tasks' : tasks})

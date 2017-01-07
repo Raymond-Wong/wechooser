@@ -11,11 +11,20 @@
 
 {% block page %}
 <div class="pageWrapper">
+{% ifequal active "task" %}
 <div class="checkTypeBox">
   <a class="left checkType" href="/task/add">添加任务</a>
   <a class="left checkType active" href="#">查看任务</a>
   <div class="clear"></div>
 </div>
+{% else %}
+<div class="checkTypeBox">
+  <a class="left checkType" href="/transmit/activity/set?aid={{ aid }}">卡片设置</a>
+  <a class="left checkType active" href="#">定时任务</a>
+  <a class="left checkType" href="/task/list?aid={{ aid }}">任务列表</a>
+  <div class="clear"></div>
+</div>
+{% endifequal %}
 <div class="borderBox">
   <div class="optionBox">
     过滤条件：
