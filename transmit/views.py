@@ -333,7 +333,7 @@ def get_template(aid=None, qrcode_ticket=None):
     participate = Participation.objects.filter(qrcode_ticket=qrcode_ticket)
     if participate.count() <= 0:
       return False, '邀请链接已失效'
-    activity = participate.activity
+    activity = participate[0].activity
     return True, activity.name_card
   return False, '查找不到活动卡片'
 
