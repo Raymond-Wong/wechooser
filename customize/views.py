@@ -17,6 +17,7 @@ import wechat.utils
 from wechooser.utils import Response
 from wechat.ReplyTemplates import *
 from wechat.models import *
+from transmit.models import Activity, Participation
 from models import Task
 from wechooser.decorator import *
 
