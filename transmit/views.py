@@ -281,6 +281,7 @@ def get_name_card_mediaid(user, aid, token):
 def invited_by(user, dictionary):
   # 获取participate
   participate = Participation.objects.filter(qrcode_ticket=dictionary['Ticket'])
+  print Participation.objects.filter(user=user).filter(activity=participate.activity).invited_by.nickname
   if participate.count() <= 0:
     return False, '邀请链接已失效'
   participate = participate[0]
@@ -291,7 +292,7 @@ def invited_by(user, dictionary):
   new_participate = Participation.objects.filter(user=user).filter(activity=participate.activity)
   if new_participate.count() > 0:
     new_participate = new_participate[0]
-    print new_participate.invited_by
+    print new_participate.invited_by.nickname
     if new_participate.invited_by != None:
       return False, '当前用户已接受过邀请'
   else:
