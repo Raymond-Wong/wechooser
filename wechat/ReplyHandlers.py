@@ -78,8 +78,8 @@ class EventReplyHandler(ReplyHandler):
       return SubscribeReplyHandler(self.params).getReply()
     elif self.params['Event'] == 'SCAN' or (self.params['Event'] == 'subscribe' and self.params.has_key('Ticket')):
       return ScanReplyHandler(self.params).getReply()
-    eventKey = self.params['EventKey']
     try:
+      eventKey = self.params['EventKey']
       reply = MenuReply.objects.get(mid=eventKey)
       template = json.loads(reply.template, object_hook=wechooser.utils.loads)
       template.FromUserName = self.params['ToUserName']
