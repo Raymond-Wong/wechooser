@@ -350,8 +350,9 @@ def invited_by(user, dictionary):
   if not state:
     return False, namecard
   if Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count() >= namecard.target:
-    # 获取这个活动的所有延迟发送任务
     now = timezone.now()
+    print '用户%s的完成活动%s的时间为%s' % (invite_user.nickname, participate.activity.name, now.strftime("%Y-%m-%d %H:%M:%S"))
+    # 获取这个活动的所有延迟发送任务
     msg_list = Task.objects.filter(target_type=3).filter(target=participate.activity.id)
     for msg in msg_list:
       task = Task(keywords=msg.keywords, url=msg.url, task_name=msg.task_name, template_id=msg.template_id, template_name=msg.template_name, target_type=2)
