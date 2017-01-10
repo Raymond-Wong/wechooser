@@ -3,7 +3,7 @@ from django.db import models
 from transmit.models import Activity
 
 TASK_STATUS = ((0, u'待执行'), (1, u'成功'), (2, u'取消'), (3, u'失败'))
-TARGET_TYPE = ((0, u'所有'), (1, u'活动'), (2, u'个人'))
+TARGET_TYPE = ((0, u'所有'), (1, u'活动'), (2, u'个人'), (3, u'nosend'))
 class Task(models.Model):
   create_time = models.DateTimeField(auto_now_add=True)
   run_time = models.DateTimeField()

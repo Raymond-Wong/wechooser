@@ -153,7 +153,7 @@ CREATE TABLE `customize_task` (
   `target_type` int(10) unsigned NOT NULL,
   `target` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,7 +285,7 @@ CREATE TABLE `transmit_activity` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_card_id` (`name_card_id`),
   CONSTRAINT `name_card_id_refs_id_8a30a3e8` FOREIGN KEY (`name_card_id`) REFERENCES `transmit_name_card` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -311,12 +311,11 @@ CREATE TABLE `transmit_name_card` (
   `qrcode_y` double NOT NULL,
   `target` int(10) unsigned NOT NULL,
   `invited_msg` longtext NOT NULL,
-  `goal_msg` longtext NOT NULL,
   `gain_card_method` int(10) unsigned NOT NULL,
   `keyword` longtext NOT NULL,
   `mid` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -356,7 +355,7 @@ CREATE TABLE `wechat_access_token` (
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -487,4 +486,4 @@ CREATE TABLE `wechooser_image` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-08  0:13:05
+-- Dump completed on 2017-01-10 22:21:53

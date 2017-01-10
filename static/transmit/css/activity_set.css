@@ -154,3 +154,51 @@ input[name="gainCardMethod"] {
   margin-top: 2em;
   margin-bottom: 2em;
 }
+
+.achieveMsgWrapper {
+  margin-top: 1em;
+}
+
+.achieveMsgBox {
+  border: 1px solid #d9d9d9;
+  margin-bottom: 1em;
+  background-color: white;
+}
+
+.achieveMsgBox .line {
+  padding: 0 1em;
+}
+
+.achieveMsgBox .line .lineLabel {
+  width: 8em;
+  height: 1.9em;
+  line-height: 1.9em;
+}
+
+.achieveMsgBox .line .lineInput input {
+  width: 16em;
+  padding: 0 3px;
+  height: 1.9em;
+  line-height: 1.9em;
+}
+
+.chooseNewsBtn {
+  margin-left: 1em;
+}
+
+.achieveMsgHead {
+  padding: 0.5em 1em;
+  background-color: #576477;
+  color: white;
+  cursor: pointer;
+}
+
+.achieveMsgBtn {
+  margin-left: 1em;
+  cursor: pointer;
+}
+
+.achieveMsgBtn:hover {
+  font-size: 1.2em;
+  margin-left: 0.68em;
+}

@@ -20,7 +20,6 @@ class Name_Card(models.Model):
   qrcode_y = models.FloatField(default=0.6188)
   target = models.PositiveIntegerField(default=1)
   invited_msg = models.TextField(default='')
-  goal_msg = models.TextField(default='')
   gain_card_method = models.PositiveIntegerField(default=3, choices=GCM)
   keyword = models.TextField(default='')
   mid = models.TextField(default='')

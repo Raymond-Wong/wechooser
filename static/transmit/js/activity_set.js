@@ -6,6 +6,14 @@ $(document).ready(function() {
   submitAction();
   msgOptionAction();
   initGainCardMethod();
+  chooseNews();
+  chooseTemplate();
+  toggleAchieveMsgBox();
+  listenAchieveMsgHead();
+  removeAchieveMsg();
+  addAchieveMsg();
+  achieveMsgRemovable();
+  achieveMsgDraggable();
 });
 
 var getAid = function() {
@@ -83,7 +91,6 @@ var submitAction = function() {
     var content = $('#materialText').html();
     $('.msgOption.active').attr('value', content);
     params['invited_msg'] = html2text($('.msgOption[name="invited_msg"]').attr('value'));
-    params['goal_msg'] = $('.msgOption[name="goal_msg"]').attr('value');
     params['gain_card_method'] = 3;//$('input[name="gainCardMethod"]:checked').val();
     params['name'] = $('input[name="activity_name"]').val();
     if (params['name'].length <= 0 || params['name'].length > 30) {
@@ -98,6 +105,13 @@ var submitAction = function() {
         topAlert('请输入获取名片的关键词', 'error');
         return false;
       }
+    }
+    params['achieveMsg'] = getAchieveMsg();
+    if (!params['achieveMsg'][0]) {
+      topAlert(params['achieveMsg'][1], 'error');
+      return false;
+    } else {
+      params['achieveMsg'] = JSON.stringify(params['achieveMsg'][1])
     }
     topAlert('正在保存中...');
     url = '/transmit/activity/save' + ((AID == undefined || AID == '') ? '' : ('?aid=' + AID))
@@ -118,6 +132,58 @@ var submitAction = function() {
     });
   });
 }
+
+var getAchieveMsg = function() {
+  var ret = [];
+  var flag = true;
+  var err_msg = '';
+  $('.achieveMsgBox').each(function() {
+    if (!flag) return false;
+    var box = {};
+    box['id'] = $(this).attr('mid');
+    box['run_time'] = $($(this).find('input[name="run_time"]')[0]).val();
+    if (parseInt(box['run_time']) % 15 != 0) {
+      flag = false;
+      err_msg = '延迟发送时间必须为15分钟的整数倍！'
+    }
+    box['url'] = $($(this).find('input[name="url"]')[0]).val();
+    if (box['url'].length == 0) {
+      flag = false;
+      err_msg = '回复消息必须选择对应的图文链接！';
+    }
+    box['task_name'] = $($(this).find('input[name="task_name"]')[0]).val();
+    if (box['task_name'].length <= 0 || box['task_name'] > 30) {
+      flag = false;
+      err_msg = '消息名称不得超过30字且不能为空！'
+    }
+    box['template_id'] = $($(this).find('.template_list')[0]).val();
+    box['template_name'] = $($(this).find('option[value="' + box['template_id'] + '"]')[0]).text();
+    if (box['template_id'] == 'none' || box['template_name'] == '未选择') {
+      flag = false;
+      err_msg = '回复消息必须选择一个模板！';
+    }
+    box['keywords'] = {};
+    $($(this).find('.keywordsBox')[0]).find('input').each(function() {
+      if (!flag) return false;
+      var keyword = $(this).attr('name');
+      var value = $(this).val();
+      if (value.length == 0) {
+        flag = false;
+        err_msg = '关键词（' + keyword + '）的值不可为空！';
+      }
+      box['keywords'][keyword] = {'value' : value, 'color' : '#b2b2b2'};
+    });
+    ret.push(box);
+  });
+  if (ret.length == 0) {
+    flag = false;
+    err_msg = '至少要有一条达成目标后回复的模板消息！';
+  }
+  if (!flag) {
+    return [flag, err_msg]
+  }
+  return [flag, ret];
+};
 
 var getStyleParams = function() {
   var params = {}
@@ -217,4 +283,149 @@ var html2text = function(html) {
     $(this).remove();
   });
   return tmpDiv.text()
+}
+
+var chooseTemplate = function(dom) {
+  $(document).delegate('.template_list', 'change', function() {
+    var template_id = $(this).val();
+    var option = $(this).children('option[value="' + template_id + '"]');
+    var keywords = option.attr('keywords');
+    var keywordsBox = $($(this).parents('.achieveMsg')[0]).children('.keywordsBox');
+    keywordsBox.html("");
+    if (keywords == undefined || keywords.length <= 0) {
+      return false;
+    }
+    keywords = $.parseJSON(keywords);
+    for (var i = 0; i < keywords.length; i++) {
+      var keyword = keywords[i];
+      var kwDom = $(KEYWORD_LINE);
+      kwDom.children('.lineLabel').text(keyword);
+      kwDom.children('.lineInput').children('input').attr('name', keyword);
+      keywordsBox.append(kwDom);
+    }
+  });
+}
+
+var chooseNews = function() {
+  $(document).delegate('.chooseNewsBtn', 'click', function() {
+    var that = $(this);
+    showMaterialBox('News', function() {
+      var choosenNews = $('.newsItemWrapper.choosen').clone();
+      var url = choosenNews.children('.newsItemBox').attr('url');
+      that.parent().children('.lineInput').children('input').val(url);
+      $($('.newsItemWrapper.choosen').find('.choosenFlag')[0]).remove()
+      $('.newsItemWrapper.choosen').removeClass('choosen');
+      $(choosenNews.find('.choosenFlag')[0]).remove();
+      choosenNews.removeClass('choosen');
+      $('#materialBoxWrapper').fadeOut();
+    });
+  });
+}
+
+var toggleAchieveMsgBox = function() {
+  $(document).delegate('.achieveMsgHead', 'click', function() {
+    $(this).parent().children('.achieveMsg').slideToggle();
+  });
+}
+
+var listenAchieveMsgHead = function() {
+  $(document).delegate('input[name="task_name"]', 'change', function() {
+    var name = $(this).val();
+    if (name.length > 30) {
+      name = name.substring(0, 30);
+    }
+    $(this).val(name);
+    $($($(this).parents('.achieveMsgBox')[0]).find('.achieveMsgHeadText')[0]).text(name);
+  });
+}
+
+var removeAchieveMsg = function() {
+  $(document).delegate('.achieveMsgBtn.removeBtn', 'click', function() {
+    var msgBox = $($(this).parents('.achieveMsgBox')[0]);
+    var msgBoxName = $(msgBox.find('.achieveMsgHeadText')[0]).text();
+    if (!confirm('确定删除回复消息（' + msgBoxName + '）吗？')) return false;
+    msgBox.remove();
+    return false;
+  });
+}
+
+var addAchieveMsg = function() {
+  $(document).delegate('.achieveMsgBtn.addBtn', 'click', function() {
+    var msgBox = $($(this).parents('.achieveMsgBox')[0]);
+    var newMsgBox = msgBox.clone();
+    newMsgBox.removeAttr('mid');
+    $(newMsgBox.find('.achieveMsgHeadText')[0]).text('回复消息');
+    $(newMsgBox.find('input[name="task_name"]')[0]).val('');
+    $(newMsgBox.find('input[name="run_time"]')[0]).val('');
+    $(newMsgBox.find('input[name="url"]')[0]).val('');
+    $(newMsgBox.find('.template_list')[0]).val('none');
+    $(newMsgBox.find('.keywordsBox')[0]).html('');
+    $(newMsgBox.find('.template_list')[0]).val('none');
+    $(newMsgBox.find('.achieveMsg')[0]).show();
+    msgBox.after(newMsgBox);
+    achieveMsgDraggable(newMsgBox);
+    achieveMsgRemovable();
+    return false;
+  });
+};
+
+var achieveMsgRemovable = function() {
+  $('.removeBtn').show();
+  $($($('.achieveMsgBox')[0]).find('.removeBtn')[0]).hide();
+}
+
+var achieveMsgDraggable = function(dom) {
+  if (dom == undefined) {
+    dom = $('.achieveMsgBox');
+  }
+  var startTop = 0;
+  dom.draggable({
+    containment:'#achieveMsgWrapper',
+    scroll:true,
+    cursor:'move',
+    start: function() {
+      $(this).css('z-index', '100');
+      startTop = $(this).offset().top;
+    },
+    stop: function() {
+      var that = $(this);
+      var moveDomTop = that.offset().top;
+      var moveDomBottom = moveDomTop + that.height();
+      // 如果位移在10个像素点内则认为没有位移
+      if (Math.abs(moveDomTop - startTop) > 10) {
+        var flag = false;
+        var newThat = that.clone();
+        $(newThat.find('.template_list')[0]).val($(that.find('.template_list')[0]).val());
+        achieveMsgDraggable(newThat);
+        var achieveMsgBox = $('.achieveMsgBox');
+        var moveDomStandard = moveDomTop;
+        // 如果是向上位移
+        if (moveDomTop > startTop) {
+          achieveMsgBox = $.makeArray(achieveMsgBox);
+          achieveMsgBox.reverse();
+          achieveMsgBox = $(achieveMsgBox);
+          moveDomStandard = moveDomBottom;
+        } 
+        achieveMsgBox.each(function() {
+          if (flag) return false;
+          var domTop = $(this).offset().top;
+          var domHeight = $(this).height();
+          if (moveDomStandard < (domTop + domHeight / 2)) {
+            $(this).before(newThat);
+            that.remove();
+            flag = true;
+          } else if (moveDomStandard >= (domTop + domHeight / 2) && moveDomStandard < (domTop + domHeight)) {
+            $(this).after(newThat);
+            that.remove();
+            flag = true;
+          }
+        });
+      }
+      var target = (newThat == undefined ? that : newThat);
+      target.css('z-index', '1');
+      target.css('top', '0');
+      target.css('left', '0');
+      achieveMsgRemovable();
+    }
+  });
 }

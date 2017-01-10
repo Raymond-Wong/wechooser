@@ -98,7 +98,7 @@
     </div>
   </div>
   <div class="stepBox">
-    <div class="stepBoxTitle">第五步：设置回复内容</div>
+    <div class="stepBoxTitle">第五步：设置参加活动回复内容</div>
     <div class="msgBox">
       <div class="msgOptionBox">
         <div class="msgOption left" name="invited_msg" value="{{ template.invited_msg }}">被邀请者收到的内容</div>
@@ -110,6 +110,101 @@
       </div>
     </div>
   </div>
+  <div class="stepBox">
+    <div class="stepBoxTitle">第六步：设置达成活动目标回复内容</div>
+    <div class="achieveMsgWrapper" id="achieveMsgWrapper">
+      {% if achieve_msg_list %}
+      {% for msg in achieve_msg_list %}
+      <div class="achieveMsgBox" mid="{{ msg.id }}">
+        <div class="achieveMsgHead">
+          <font class="achieveMsgHeadText">{{ msg.task_name }}</font>
+          <span class="achieveMsgBtn addBtn right glyphicon glyphicon-plus" title="在该消息后添加新消息"></span>
+          <span class="achieveMsgBtn removeBtn right glyphicon glyphicon-minus" title="删除该消息"></span>
+        </div>
+        <div class="achieveMsg">
+          <div class="line">
+            <div class="lineLabel left">名称</div>
+            <div class="lineInput left"><input value="{{ msg.task_name }}" type="text" name="task_name" placeholder="消息名称" /></div>
+            <div class="clear"></div>
+          </div>
+          <div class="line">
+            <div class="lineLabel left">时间</div>
+            <div class="lineInput left"><input type="number" name="run_time" placeholder="达成目标后发送消息的延迟时间（分钟）" value="{{ msg.run_time }}" /></div>
+            <div class="clear"></div>
+          </div>
+          <div class="line">
+            <div class="lineLabel left">图文消息链接</div>
+            <div class="lineInput left"><input value="{{ msg.url }}" type="text" readonly name="url" placeholder="图文消息链接" /></div>
+            <button class="chooseNewsBtn">点击选择</button>
+            <div class="clear"></div>
+          </div>
+          <div class="line">
+            <div class="lineLabel left">选择模板</div>
+            <div class="lineInput left">
+              <select class="template_list">
+                <option value="none">未选择</option>
+                {% for template in templates %}
+                <option{% ifequal msg.template_id template.template_id %} selected{% endifequal %} value="{{ template.template_id }}" pi="{{ template.primary_industry }}" di="{{ template.deputy_industry }}" keywords="{{ template.keywords_json }}">{{ template.title }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="clear"></div>
+          </div>
+          <div class="keywordsBox">
+            {% for key, value_dict in msg.keywords.items %}
+            <div class="line">
+              <div class="lineLabel left">{{ key }}</div>
+              <div class="lineInput left"><input value="{{ value_dict.value }}" type="text" name="{{ key }}" /></div>
+              <div class="clear"></div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <div class="achieveMsgBox">
+        <div class="achieveMsgHead">
+          <font class="achieveMsgHeadText">回复消息</font>
+          <span class="achieveMsgBtn addBtn right glyphicon glyphicon-plus" title="在该消息后添加新消息"></span>
+          <span class="achieveMsgBtn removeBtn right glyphicon glyphicon-minus" title="删除该消息"></span>
+        </div>
+        <div class="achieveMsg">
+          <div class="line">
+            <div class="lineLabel left">名称</div>
+            <div class="lineInput left"><input type="text" name="task_name" placeholder="消息名称" /></div>
+            <div class="clear"></div>
+          </div>
+          <div class="line">
+            <div class="lineLabel left">时间</div>
+            <div class="lineInput left"><input type="number" name="run_time" placeholder="达成目标后发送消息的延迟时间（分钟）" /></div>
+            <div class="clear"></div>
+          </div>
+          <div class="line">
+            <div class="lineLabel left">图文消息链接</div>
+            <div class="lineInput left"><input type="text" readonly name="url" placeholder="图文消息链接" /></div>
+            <button class="chooseNewsBtn">点击选择</button>
+            <div class="clear"></div>
+          </div>
+          <div class="line">
+            <div class="lineLabel left">选择模板</div>
+            <div class="lineInput left">
+              <select class="template_list">
+                <option value="none">未选择</option>
+                {% for template in templates %}
+                <option value="{{ template.template_id }}" pi="{{ template.primary_industry }}" di="{{ template.deputy_industry }}" keywords="{{ template.keywords_json }}">{{ template.title }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="clear"></div>
+          </div>
+          <div class="keywordsBox">
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
   <div id="btnWrapper">
     <div class="btn left" id="submit">保存</div>
     <div class="btn wait left" onclick="window.location.href=window.location.href;">取消</div>
@@ -119,6 +214,7 @@
 {% endblock %}
 
 {% block script %}
+<script type="text/javascript" src="/static/common/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/static/plugin/fileUpload/js/vendor/jquery.ui.widget.js"></script>
 <script type="text/javascript" src="/static/plugin/fileUpload/js/jquery.iframe-transport.js"></script>
 <script type="text/javascript" src="/static/plugin/fileUpload/js/jquery.fileupload.js"></script>

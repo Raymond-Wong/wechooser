@@ -9,17 +9,21 @@ import qrcode
 import time
 import StringIO
 import json
+import re
+from datetime import timedelta
 
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+from django.utils import timezone
 
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined, has_token, is_logined
 from duiba.models import Credit_Record
 from wechat.models import User
 from models import Name_Card, Activity, Participation
+from customize.models import Task
 from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
 import utils
 import wechat.utils
@@ -144,8 +148,19 @@ def activity_set(request, token):
     template = Name_Card()
     url = '暂未生效'
     action = 'add'
-  # 获取名片的url
-  return render_to_response('transmit/activity_set.html', {'action' : action, 'active' : 'activity', 'template' : template, 'url' : url, 'activity' : activity})
+  templates = wechat.utils.get_template_msg_list(token)
+  for temp_msg in templates:
+    temp_msg['keywords'] = re.findall('{{.+\.DATA}}.*', temp_msg['content'])
+    temp_msg['keywords'] = map(lambda x:x.replace('{{', '').replace('.DATA}}', ''), temp_msg['keywords'])
+    temp_msg['keywords_json'] = json.dumps(temp_msg['keywords'])
+  # 处理达成目标后的回复消息
+  tasks = None
+  if activity:
+    tasks = Task.objects.filter(target_type=3).filter(target=activity.id)
+    for task in tasks:
+      task.run_time = (task.run_time - task.create_time).seconds / 60
+      task.keywords = json.loads(task.keywords)
+  return render_to_response('transmit/activity_set.html', {'achieve_msg_list' : tasks, 'templates' : templates, 'action' : action, 'active' : 'activity', 'template' : template, 'url' : url, 'activity' : activity})
 
 @csrf_exempt
 @is_logined
@@ -184,7 +199,6 @@ def save(request):
   target = request.POST.get('target', None)
   card.target = target if target is not None else card.target
   card.invited_msg = request.POST.get('invited_msg', '')
-  card.goal_msg = request.POST.get('goal_msg', '')
   card.gain_card_method = request.POST.get('gain_card_method', 'text')
   card.mid = request.POST.get('mid', '')
   card.keyword = request.POST.get('keyword', '')
@@ -194,6 +208,34 @@ def save(request):
   card.save()
   activity.name_card = card
   activity.save()
+  # 保存活动的达成目标消息
+  achieve_msg_list = request.POST.get('achieveMsg', [])
+  if len(achieve_msg_list) == 0:
+    return HttpResponse(Response(c=1, m="活动至少有一条达成目标回复消息").toJson(), content_type="application/json")
+  achieve_msg_list = json.loads(achieve_msg_list)
+  now = timezone.now()
+  used_tasks = []
+  for achieve_msg in achieve_msg_list:
+    task = None
+    if achieve_msg.has_key('id'):
+      task = Task.objects.get(id=achieve_msg['id'])
+    else:
+      task = Task(target=activity.id)
+    task.task_name = achieve_msg['task_name']
+    task.create_time = now
+    task.run_time = now + timedelta(minutes=int(achieve_msg['run_time']))
+    task.keywords = json.dumps(achieve_msg['keywords'])
+    task.url = achieve_msg['url']
+    task.template_id = achieve_msg['template_id']
+    task.template_name = achieve_msg['template_name']
+    task.target_type = '3'
+    task.target = activity.id
+    task.save()
+    used_tasks.append(task.id)
+  # 删除无用回复消息
+  for task in Task.objects.filter(target_type=3).filter(target=activity.id):
+    if task.id not in used_tasks:
+      task.delete()
   # 返回活动id和url
   ret = {}
   ret['action'] = action
