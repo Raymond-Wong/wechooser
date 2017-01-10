@@ -181,7 +181,7 @@ def loginHandler(request, view):
 
 def taskHandler(request):
   now = datetime.strptime(timezone.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
-  tasks = Task.objects.filter(status=0).filter(run_time=now)
+  tasks = Task.objects.filter(target_type__in=[0, 1, 2]).filter(status=0).filter(run_time=now)
   sc = 0
   fc = 0
   for task in tasks:
@@ -208,11 +208,8 @@ def taskHandler(request):
     task.save()
   # 调整错过的任务
   ac = 0
-  # tasks = Task.objects.filter(status=0).filter(run_time__lt=now)
-  tasks = Task.objects.filter(status=0)
-  print now
+  tasks = Task.objects.filter(target_type__in=[0, 1, 2]).filter(status=0).filter(run_time__lt=now)
   for task in tasks:
-    print task.run_time
     task.status = 3
     task.save()
     ac += 1
