@@ -84,7 +84,7 @@ class PyImageProcesser:
   def combine(self, img1, img2, resize=None, pos=None, alpha=True):
     # 如果需要缩放
     if resize:
-      img2 = img2.resize(self.__list2int(resize))
+      img2 = img2.resize(self.__list2int(resize), Image.ANTIALIAS)
     pos = (0, 0) if not pos else pos
     if alpha:
       img1.paste(img2, self.__list2int(pos), img2)
