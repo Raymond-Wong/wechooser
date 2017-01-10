@@ -350,12 +350,14 @@ def invited_by(user, dictionary):
   if not state:
     return False, namecard
   if Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count() >= namecard.target:
-    data = {}
-    data['first'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
-    data['keyword1'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
-    data['keyword2'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
-    data['remark'] = {'value' : '成功达到邀请人数', 'color' : '#b2b2b2'}
-    wechat.utils.send_template_msg(invite_user.wx_openid, 'VY2vbUuf8GNCgUAdMIhP-LsuCpHv8MeFaSSYJDlSJLk', 'http://wechooser.applinzi.com/transmit/getGoalMsg?id=%s&aid=%s' % (invite_user.wx_openid, participate.activity.id), data)
+    # 获取这个活动的所有延迟发送任务
+    now = timezone.now()
+    msg_list = Task.objects.filter(target_type=3).filter(target=participate.activity.id)
+    for msg in msg_list:
+      task = Task(keywords=msg.keywords, url=msg.url, task_name=msg.task_name, template_id=msg.template_id, template_name=msg.template_name, target_type=2)
+      task.run_time = now + (msg.run_time - msg.create_time)
+      task.target = invite_user.id
+      task.save()
   # 给邀请用户加积分
   credit_diff = 10
   if Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count() <= 50:
