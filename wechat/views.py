@@ -208,11 +208,10 @@ def taskHandler(request):
     task.save()
   # 调整错过的任务
   ac = 0
-  tasks = Task.objects.filter(run_time__lt=now)
+  tasks = Task.objects.filter(status=0).filter(run_time__lt=now)
   for task in tasks:
-    if task.status == 0:
-      task.status = 3
-      task.save()
-      ac += 1
+    task.status = 3
+    task.save()
+    ac += 1
   print 'task at', now, ':', '成功执行任务数: %d, 失败执行任务数: %d, 调整错过任务数: %d' % (sc, fc, ac)
   raise Http404
