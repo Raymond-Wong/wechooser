@@ -357,6 +357,7 @@ def invited_by(user, dictionary):
     for msg in msg_list:
       task = Task(keywords=msg.keywords, url=msg.url, task_name=msg.task_name, template_id=msg.template_id, template_name=msg.template_name, target_type=2)
       task.run_time = now + (msg.run_time - msg.create_time)
+      task.run_time = task.run_time.replace(second=0).replace(microsecond=0)
       task.target = invite_user.id
       task.save()
   # 给邀请用户加积分
