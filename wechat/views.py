@@ -209,7 +209,7 @@ def taskHandler(request):
   # 调整错过的任务
   ac = 0
   tasks = Task.objects.filter(status=0).filter(run_time__lt=now)
-  print tasks
+  print Task.objects.filter(status=0)
   for task in tasks:
     task.status = 3
     task.save()
