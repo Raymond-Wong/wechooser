@@ -163,15 +163,16 @@ def activity_set(request, token):
       task.run_time = (task.run_time - task.create_time).seconds / 60
       task.keywords = json.loads(task.keywords)
   # 处理接受邀请后的回复消息
-  invited_msg = json.loads(template.invited_msg)
-  if invited_msg['MsgType'] == 'image':
-    invited_msg['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=invited_msg['OriUrl'], mediaId=invited_msg['MediaId'])
-  elif invited_msg['MsgType'] == 'voice':
-    invited_msg['VoiceLen'] = wechat.utils.getOneVoiceLen(mediaId=invited_msg['MediaId'])
-  elif invited_msg['MsgType'] == 'news':
-    for news in invited_msg['Items']:
-      news['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=news['PicUrl'], mediaId=news['MediaId'])
-  template.invited_msg = json.dumps(invited_msg)
+  if template.invited_msg != '':
+    invited_msg = json.loads(template.invited_msg)
+    if invited_msg['MsgType'] == 'image':
+      invited_msg['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=invited_msg['OriUrl'], mediaId=invited_msg['MediaId'])
+    elif invited_msg['MsgType'] == 'voice':
+      invited_msg['VoiceLen'] = wechat.utils.getOneVoiceLen(mediaId=invited_msg['MediaId'])
+    elif invited_msg['MsgType'] == 'news':
+      for news in invited_msg['Items']:
+        news['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=news['PicUrl'], mediaId=news['MediaId'])
+    template.invited_msg = json.dumps(invited_msg)
   return render_to_response('transmit/activity_set.html', {'achieve_msg_list' : tasks, 'templates' : templates, 'action' : action, 'active' : 'activity', 'template' : template, 'url' : url, 'activity' : activity})
 
 @csrf_exempt
