@@ -87,6 +87,12 @@ def delete(request):
   if aid is None or Activity.objects.filter(id=aid).count() <= 0:
     return HttpResponse(Response(c=1, m='待删除活动不存在').toJson(), content_type='application/json')
   activity = Activity.objects.get(id=aid)
+  # 删除活动相关的名片
+  activity.name_card.delete()
+  # 删除活动相关的任务
+  tasks = Task.objects.filter(target_type__in=[1, 3]).filter(target=activity.id)
+  for task in tasks:
+    task.delete()
   activity.delete()
   return HttpResponse(Response().toJson(), content_type='application/json')
 
