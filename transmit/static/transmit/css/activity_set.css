@@ -107,18 +107,10 @@
 .msgContent {
   width: 100%;
 }
-
-#materialWrapper {
-  border: 0;
-}
-
-#materialNav {
-  display: none;
-}
-
+/*
 #materialRemain {
   display: none;
-}
+}*/
 
 input[name="gainCardMethod"] {
   position: relative;
@@ -201,4 +193,23 @@ input[name="gainCardMethod"] {
 .achieveMsgBtn:hover {
   font-size: 1.2em;
   margin-left: 0.68em;
+}
+
+#materialWrapper {
+  margin-top: 1em;
+}
+
+#materialNav li {
+  padding: 0 15px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 12px;
+}
+
+#materialNav {
+  height: 32px;
+}
+
+#materialNav li:last-child {
+  border-right: 1px solid #d9d9d9;
 }

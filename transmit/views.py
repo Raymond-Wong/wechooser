@@ -22,11 +22,13 @@ from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined, has_token, is_logined
 from duiba.models import Credit_Record
 from wechat.models import User
+from wechat.ReplyTemplates import *
 from models import Name_Card, Activity, Participation
 from customize.models import Task
 from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
 import utils
 import wechat.utils
+import wechooser.utils
 
 @is_logined
 def activity_list(request):
@@ -160,6 +162,16 @@ def activity_set(request, token):
     for task in tasks:
       task.run_time = (task.run_time - task.create_time).seconds / 60
       task.keywords = json.loads(task.keywords)
+  # 处理接受邀请后的回复消息
+  invited_msg = json.loads(template.invited_msg)
+  if invited_msg['MsgType'] == 'image':
+    invited_msg['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=invited_msg['OriUrl'], mediaId=invited_msg['MediaId'])
+  elif invited_msg['MsgType'] == 'voice':
+    invited_msg['VoiceLen'] = wechat.utils.getOneVoiceLen(mediaId=invited_msg['MediaId'])
+  elif invited_msg['MsgType'] == 'news':
+    for news in invited_msg['Items']:
+      news['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=news['PicUrl'], mediaId=news['MediaId'])
+  template.invited_msg = json.dumps(invited_msg)
   return render_to_response('transmit/activity_set.html', {'achieve_msg_list' : tasks, 'templates' : templates, 'action' : action, 'active' : 'activity', 'template' : template, 'url' : url, 'activity' : activity})
 
 @csrf_exempt
@@ -198,7 +210,23 @@ def save(request):
   card.qrcode_size = qrcode_size if qrcode_size is not None else card.qrcode_size
   target = request.POST.get('target', None)
   card.target = target if target is not None else card.target
-  card.invited_msg = request.POST.get('invited_msg', '')
+  # 处理回复模板
+  invited_msg = request.POST.get('invited_msg', '')
+  invited_msg = json.loads(invited_msg)
+  if invited_msg['MsgType'] == 'text':
+    invited_msg = TextTemplate(Content=invited_msg['Content'])
+  elif invited_msg['MsgType'] == 'image':
+    invited_msg = ImageTemplate(MediaId=invited_msg['MediaId'], OriUrl=invited_msg['OriUrl'])
+  elif invited_msg['MsgType'] == 'voice':
+    invited_msg = VoiceTemplate(MediaId=invited_msg['MediaId'], VoiceName=invited_msg['VoiceName'])
+  elif invited_msg['MsgType'] == 'video':
+    invited_msg = VideoTemplate(MediaId=invited_msg['MediaId'], Title=invited_msg['Title'], Description=invited_msg['Description'])
+  elif invited_msg['MsgType'] == 'news':
+    newsItems = []
+    for item in invited_msg['item']:
+      newsItems.append(NewsItem(MediaId=item['MediaId'], Title=item['Title'], Description=item['Description'], Url=item['Url'], PicUrl=item['PicUrl']))
+    invited_msg = NewsTemplate(MediaId=invited_msg['MediaId'], Items=newsItems)
+  card.invited_msg = json.dumps(invited_msg, default=wechooser.utils.dumps)
   card.gain_card_method = request.POST.get('gain_card_method', 'text')
   card.mid = request.POST.get('mid', '')
   card.keyword = request.POST.get('keyword', '')

@@ -2,27 +2,27 @@ var IMG_ITEM = '<div class="imageItem left" mediaId="">' +
   	  	       '  <div class="imageContentBox">' +
   	  	  	   '    <img src="" />' +
   	  	       '  </div>' +
-  	  	       '  <div class="imageName">图片1.jpg</div>' +
+  	  	       '  <div class="imageName textEllipsis">图片1.jpg</div>' +
   	  	       '</div>';
 
 var VOICE_ITEM = '<div class="voiceItem">' +
-          		 '	<span class="voiceSelect"><input type="radio" name="voiceSelect" /></span>' +
-          		 '	<span class="voiceName"></span>' +
-          		 '	<span class="voiceLen"></span>' +
+          		 '	<span class="voiceSelect textEllipsis"><input type="radio" name="voiceSelect" /></span>' +
+          		 '	<span class="voiceName textEllipsis"></span>' +
+          		 '	<span class="voiceLen textEllipsis"></span>' +
         		 '</div>';
 
 
 var VIDEO_ITEM = '<div class="videoItem">' +
-          		 '	<span class="videoSelect"><input type="radio" name="videoSelect" /></span>' +
-          		 '	<span class="videoName"></span>' +
-               '  <span class="videoTitle"></span>' +
-               '  <span class="videoDesc"></span>' +
+          		 '	<span class="videoSelect textEllipsis"><input type="radio" name="videoSelect" /></span>' +
+          		 '	<span class="videoName textEllipsis"></span>' +
+               '  <span class="videoTitle textEllipsis"></span>' +
+               '  <span class="videoDesc textEllipsis"></span>' +
         		   '</div>';
 
 var MPNEWS_ITEM = '<div class="mpNewsItem">' +
-                  '  <span class="mpNewsSelect"><input type="radio" name="mpNewsSelect" /></span>' +
-                  '  <span class="mpNewsName"></span>' +
-                  '  <span class="mpNewsCreateTime"></span>' +
+                  '  <span class="mpNewsSelect textEllipsis"><input type="radio" name="mpNewsSelect" /></span>' +
+                  '  <span class="mpNewsName textEllipsis"></span>' +
+                  '  <span class="mpNewsCreateTime textEllipsis"></span>' +
                   '</div>';
 
 

@@ -14,6 +14,7 @@ $(document).ready(function() {
   addAchieveMsg();
   achieveMsgRemovable();
   achieveMsgDraggable();
+  initInvitedReply()
 });
 
 var getAid = function() {
@@ -90,7 +91,6 @@ var submitAction = function() {
     }
     var content = $('#materialText').html();
     $('.msgOption.active').attr('value', content);
-    params['invited_msg'] = html2text($('.msgOption[name="invited_msg"]').attr('value'));
     params['gain_card_method'] = 3;//$('input[name="gainCardMethod"]:checked').val();
     params['name'] = $('input[name="activity_name"]').val();
     if (params['name'].length <= 0 || params['name'].length > 30) {
@@ -113,6 +113,17 @@ var submitAction = function() {
     } else {
       params['achieveMsg'] = JSON.stringify(params['achieveMsg'][1])
     }
+    params['invited_msg'] = getMaterialContent();
+    if (params['invited_msg']['MsgType'] == null) {
+      topAlert(params['Content'], 'error');
+      return false;
+    }
+    if ((params['invited_msg']['MsgType'] == 'text' && params['invited_msg']['Content'] == "") ||
+        (params['invited_msg']['MsgType'] != 'text' && (params['invited_msg']['MediaId'] == undefined || params['invited_msg']['MediaId'] == 'undefined'))) {
+      topAlert('参加活动回复消息不合法', 'error');
+      return false;
+    }
+    params['invited_msg'] = JSON.stringify(params['invited_msg']);
     topAlert('正在保存中...');
     url = '/transmit/activity/save' + ((AID == undefined || AID == '') ? '' : ('?aid=' + AID))
     post(url, params, function(msg) {
@@ -428,4 +439,82 @@ var achieveMsgDraggable = function(dom) {
       achieveMsgRemovable();
     }
   });
+}
+
+var initInvitedReply = function() {
+  var templateStr = $('#invited_msg').attr('template');
+  if (templateStr == '' || templateStr == 'None')
+    return false;
+  var template = $.parseJSON(templateStr);
+  $('#materialNav li[name="' + template['MsgType'] + '"]').trigger('click');
+  if (template['MsgType'] == 'text') {
+    var content = str2face(template['Content']);
+    var start = content.indexOf('\n');
+    var end = content.indexOf('\n', start + 1);
+    var lines = [];
+    if (start < 0) {
+      lines.push(content);
+    } else {
+      lines.push('<div>' + content.substring(0, start) + '</div>');
+      while (true) {
+        end = end > 0 ? end : content.length;
+        var lineContent = content.substring(start + 1, end);
+        lineContent = (lineContent == '' ? '<br>' : lineContent);
+        lines.push('<div>' + lineContent + '</div>');
+        start = content.indexOf('\n', end);
+        if (start < 0) break;
+        end = content.indexOf('\n', start + 1);
+      }
+      lines.push('<div>' + content.substring(end + 1, content.length) + '</div>');
+    }
+    $('#materialText').html(lines.join(''));
+    var textAmount = $('#materialText').text().length + $('#materialText').find('.insertedFace').length;
+    $('#materialRemain font').text(parseInt($('#materialRemain font').text()) - textAmount);
+  } else if (template['MsgType'] == 'image') {
+    $('#materialImage').append('<img src="' + template['ImageUrl'] + '" mediaId="' + template['MediaId'] + '" ori_url="' + template['OriUrl'] + '" />');
+    $('#materialImage').append('<a id="deleteImageMaterialBtn">删除</a>');
+    $('#chooseImageBtn').hide();
+    $('#materialImage').show();
+  } else if (template['MsgType'] == 'voice') {
+    var box = $('#materialVoice');
+    box.attr('mediaId', template['MediaId']);
+    box.children('.voiceName').text(template['VoiceName']);
+    box.children('.voiceLen').text(template['VoiceLen']);
+    $('#chooseVoiceBtn').hide();
+    box.show();
+  } else if (template['MsgType'] == 'video') {
+    var box = $('#materialVideo');
+    box.children('.videoName').text(template['Title']);
+    box.children('.videoTitle').text(template['Title']);
+    box.children('.videoDesc').text(template['Description']);
+    box.attr('mediaId', template['MediaId']);
+    $('#chooseVideoBtn').hide();
+    box.show();
+  } else if (template['MsgType'] == 'news') {
+    var box = $('#materialNews');
+    var mediaId = template['MediaId'];
+    var newsWrapper = $(NEWS_WRAPPER);
+    var newsItems = template['Items'];
+    newsWrapper.attr('mediaId', mediaId);
+    for (var j = 0; j < newsItems.length; j++) {
+      var newsItem = newsItems[j];
+      var title = newsItem['Title'];
+      var desc = newsItem['Description'];
+      var url = newsItem['Url'];
+      var thumbUrl = newsItem['PicUrl'];
+      var mediaId = newsItem['MediaId'];
+      var img = newsItem['ImageUrl']
+      var newsBox = $(NEWS_BOX);
+      newsBox.children('.newsItemTitle').text(title);
+      newsBox.children('.newsItemImg').css('backgroundImage', 'url(' + img + ')');
+      newsBox.attr('thumbUrl', thumbUrl);
+      newsBox.attr('description', desc);
+      newsBox.attr('url', url);
+      newsBox.attr('mediaId', mediaId);
+      newsWrapper.append(newsBox);
+    }
+    box.append(newsWrapper);
+    $('#chooseNewsBtn').hide();
+    box.show();
+  }
 }

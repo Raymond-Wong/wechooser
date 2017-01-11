@@ -98,16 +98,9 @@
     </div>
   </div>
   <div class="stepBox">
-    <div class="stepBoxTitle">第五步：设置参加活动回复内容</div>
-    <div class="msgBox">
-      <div class="msgOptionBox">
-        <div class="msgOption left" name="invited_msg" value="{{ template.invited_msg }}">被邀请者收到的内容</div>
-        <div class="msgOption left" name="goal_msg" value="{{ template.goal_msg }}">达标后收到的内容</div>
-        <div class="clear"></div>
-      </div>
-      <div class="msgContent">
-        {% include 'customize/widgets/material.html' %}
-      </div>
+    <div class="stepBoxTitle">第五步：设置接受邀请后回复内容</div>
+    <div class="msgContent" id="invited_msg" template="{{ template.invited_msg }}" >
+      {% include 'customize/widgets/material.html' %}
     </div>
   </div>
   <div class="stepBox">

@@ -110,6 +110,7 @@
 }
 
 #materialImageWrapper, #materialVoiceWrapper, #materialVideoWrapper, #materialNewsWrapper {
+  overflow-y: auto;
   width: 100%;
   height: 278px;
   padding: 20px 4%;
@@ -117,7 +118,7 @@
 
 .showMaterialBoxBtn {
   width: 100%;
-  height: 239px;
+  height: 238px;
   line-height: 239px;
   text-align: center;
   border: 1px dashed #d9d9d9;

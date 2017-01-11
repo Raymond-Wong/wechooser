@@ -55,18 +55,21 @@ class SubscribeReplyHandler(ReplyHandler):
 class ScanReplyHandler(ReplyHandler):
   def getReply(self):
     # 调用被邀请事件
-    state, invite_user = invited_by(self.params['user'], self.params)
-    ret = TextTemplate(ToUserName=self.params['FromUserName'], FromUserName=self.params['ToUserName'])
-    if state:
-      state, namecard = get_template(qrcode_ticket=self.params['Ticket'])
-      if state:
-        try:
-          ret.Content = namecard.invited_msg % invite_user.nickname
-        except:
-          ret.Content = namecard.invited_msg
-    else:
-      ret.Content = invite_user
-    return ret.toReply()
+    state0, invite_user = invited_by(self.params['user'], self.params)
+    state1, namecard = get_template(qrcode_ticket=self.params['Ticket'])
+    err_msg = '未知错误'
+    if not state0:
+      err_msg = invite_user
+    elif not state1:
+      err_msg = namecard
+    if not (state0 and state1):
+      ret = TextTemplate(ToUserName=self.params['FromUserName'], FromUserName=self.params['ToUserName'])
+      ret.Content = err_msg
+      return ret.toReply()
+    template = json.loads(namecard.invited_msg, object_hook=wechooser.utils.loads)
+    template.FromUserName = self.params['ToUserName']
+    template.ToUserName = self.params['FromUserName']
+    return template.toReply()
 
 # 事件自动回复
 class EventReplyHandler(ReplyHandler):
