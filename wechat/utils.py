@@ -23,6 +23,7 @@ from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http
 from django.utils import timezone
 
 from wechat.models import access_token, User, KeywordReply
+from customize.models import Statistic_Record
 from wechooser.utils import Response, PastDueException
 from wechooser.settings import WX_APPID, WX_SECRET
 import wechooser.utils
