@@ -345,6 +345,8 @@ def update_statistic(params, diff=1, aid=None):
   record = Subscribe_Record.objects.filter(date=today).filter(record_type=0)
   if record.count() <= 0:
     total_amount = User.objects.filter(source_type=0).count()
+    if diff > 0:
+      total_amount -= 1
     record = [Subscribe_Record(date=today, record_type=0, total_amount=total_amount)]
   record = record[0]
   if diff > 0:
