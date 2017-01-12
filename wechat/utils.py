@@ -265,14 +265,17 @@ def update_user(openid, token):
   if not res[0]:
     return False, HttpResponse(Response(c=2, m="login failed: get user from wechat info failed").toJson(), content_type='application/json')
   userInfo = res[1]
-  user.wx_openid = userInfo['openid']
-  user.nickname = wechooser.utils.filterEmoji(userInfo['nickname'])
-  user.sex = userInfo['sex']
-  user.province = userInfo['province']
-  user.city = userInfo['city']
-  user.country = userInfo['country']
-  user.headimgurl = userInfo['headimgurl']
-  user.save()
+  if userInfo['subscribe'] == 0:
+    user = User.objects.get(id=userInfo['openid'])
+  else:
+    user.wx_openid = userInfo['openid']
+    user.nickname = wechooser.utils.filterEmoji(userInfo['nickname'])
+    user.sex = userInfo['sex']
+    user.province = userInfo['province']
+    user.city = userInfo['city']
+    user.country = userInfo['country']
+    user.headimgurl = userInfo['headimgurl']
+    user.save()
   print 'openid: %s, nickname: %s, id: %s' % (openid, userInfo['nickname'], user.id)
   return True, user
 
