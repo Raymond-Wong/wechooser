@@ -405,4 +405,4 @@ def list_statistic(request):
     records = Subscribe_Record.objects.filter(record_type=0)
   for i, record in enumerate(records):
     records[i].jzz = record.subscribe_amount - record.unsubscribe_amount
-  return render_to_response('customize/statistic_list.html', {'active' : 'statistic', 'activity_list' : activity_list})
+  return render_to_response('customize/statistic_list.html', {'active' : 'statistic', 'activity_list' : activity_list, 'records' : records})
