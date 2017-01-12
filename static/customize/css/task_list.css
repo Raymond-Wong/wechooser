@@ -47,3 +47,7 @@
 tr {
   cursor: pointer;
 }
+
+.statistic td {
+  text-align: right;
+}
