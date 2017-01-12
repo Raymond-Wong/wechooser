@@ -20,10 +20,10 @@
   <div class="optionBox">
     过滤条件：
     <font class="optionName">渠道&nbsp;-</font>
-    <select>
+    <select id="taskStatusChooser">
       <option value="0">全部</option>
       {% for activity in activity_list %}
-      <option value="{{ activity.id }}"><a href="/statistic/list?aid={{ activity.id }}">{{ activity.name }}</a></option>
+      <option value="{{ activity.id }}">{{ activity.name }}</option>
       {% endfor %}
     </select>
   </div>
