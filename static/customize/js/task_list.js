@@ -2,6 +2,7 @@ $(document).ready(function() {
   initTable();
   initStatusChooser();
   cancelTask();
+  initSourceChooser();
 });
 
 TABLE = null;
@@ -48,3 +49,10 @@ var cancelTask = function() {
     return false;
   })
 }
+
+var initSourceChooser = function() {
+  $('#sourceChooser').change(function() {
+    var aid = $(this).val();
+    window.location.href = '/statistic/list?aid=' + aid;
+  });
+};
