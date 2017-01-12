@@ -15,5 +15,5 @@ urlpatterns = patterns('',
   url(r'^task/add$', views.addTaskHandler, name='addTaskHandler'),
   url(r'^task/list$', views.taskHandler, name='taskHandler'),
   url(r'^test$', views.test, name='test'),
-  url(r'^statisic/list$', views.list_statistic, name='list_statistic'),
+  url(r'^statistic/list$', views.list_statistic, name='list_statistic'),
 )
