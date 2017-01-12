@@ -38,7 +38,7 @@
   padding: 0.5em;
 }
 
-#taskStatusChooser {
+#taskStatusChooser, #sourceChooser {
   background-color: white;
   outline: none;
   border: 0;
