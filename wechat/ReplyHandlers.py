@@ -50,9 +50,25 @@ class SubscribeReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
     self.reply_type = 'subscribe'
+    wechat.utils.update_statistic(params)
+
+# 取消关注自动回复
+class UnsubscribeReplyHandler(ReplyHandler):
+  def __init__(self, params):
+    ReplyHandler.__init__(self, params)
+    self.reply_type = 'unsubscribe'
+    wechat.utils.update_statistic(params, diff=-1)
+  def getReply(self):
+    return ''
 
 # 扫描自定义二维码回复事件
 class ScanReplyHandler(ReplyHandler):
+  def __init__(self, params):
+    ReplyHandler.__init__(self, params)
+    self.reply_type = 'scan'
+    state, namecard = get_template(qrcode_ticket=params['Ticket'])
+    if state:
+      wechat.utils.update_statistic(params, aid=namecard.activity.id)
   def getReply(self):
     # 调用被邀请事件
     state0, invite_user = invited_by(self.params['user'], self.params)
@@ -81,6 +97,8 @@ class EventReplyHandler(ReplyHandler):
       return SubscribeReplyHandler(self.params).getReply()
     elif self.params['Event'] == 'SCAN' or (self.params['Event'] == 'subscribe' and self.params.has_key('Ticket')):
       return ScanReplyHandler(self.params).getReply()
+    elif self.params['Event'] == 'unsubscribe':
+      return UnsubscribeReplyHandler(self.params).getReply()
     try:
       eventKey = self.params['EventKey']
       reply = MenuReply.objects.get(mid=eventKey)

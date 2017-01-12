@@ -396,3 +396,7 @@ def taskHandler(request):
   if active == 'task':
     return render_to_response('customize/task_list.html', {'active' : active, 'tasks' : tasks})
   return render_to_response('customize/task_list.html', {'active' : active, 'tasks' : tasks, 'aid' : aid})
+
+def list_statistic(request):
+  activity_list = Activity.objects.order_by('-create_time')
+  return render_to_response('customize/statistic_list.html', {'active' : 'statistic', 'activity_list' : activity_list})

@@ -184,6 +184,11 @@ def taskHandler(request):
   tasks = Task.objects.filter(target_type__in=[0, 1, 2]).filter(status=0).filter(run_time=now)
   sc = 0
   fc = 0
+  # 把所有正在发送的任务状态改成处理中
+  # 避免其他线程重复调任务
+  for task in tasks:
+    task.status = 4
+    task.save()
   for task in tasks:
     if task.template_id and len(task.template_id) > 0 and task.template_id != 'none':
       try:

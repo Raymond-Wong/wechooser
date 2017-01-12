@@ -26,15 +26,15 @@
   	{% else %}
   	  <li><a href="/menu">自定义菜单</a></li>
   	{% endifequal %}
-    <!-- {% ifequal active "transmit" %}
-      <li class="active"><a href="#">设置用户名片</a></li>
-    {% else %}
-      <li><a href="/transmit">设置用户名片</a></li>
-    {% endifequal %} -->
     {% ifequal active "activity" %}
-      <li class="active"><a href="/transmit/activity/list">活动设置</a></li>
+      <li class="active"><a href="#">活动设置</a></li>
     {% else %}
       <li><a href="/transmit/activity/list">活动设置</a></li>
+    {% endifequal %}
+    {% ifequal active "statistic" %}
+      <li class="active"><a href="#">数据统计</a></li>
+    {% else %}
+      <li><a href="/statisic/list">数据统计</a></li>
     {% endifequal %}
     <!-- {% ifequal active "credits" %}
       <li class="active"><a href="#">积分管理</a></li>

@@ -1,0 +1,63 @@
+{% extends 'customize/widgets/base.html' %}
+
+{% block style %}
+<link type="text/css" rel="stylesheet" href="/static/plugin/DataTables/datatables/css/jquery.dataTables.min.css">
+<link type="text/css" rel="stylesheet" href="/static/plugin/DataTables/tabletools/css/dataTables.tableTools.min.css">
+<link rel="stylesheet" type="text/css" href="/static/plugin/datetimepicker/jquery.datetimepicker.css"/>
+<link rel="stylesheet" type="text/css" href="/static/plugin/datetimepicker/jquery.datetimepicker.css"/>
+<link type="text/css" rel="stylesheet" href="/static/duiba/css/checkCreditRecords.css">
+<link type="text/css" rel="stylesheet" href="/static/customize/css/task_list.css">
+{% endblock %}
+
+{% block page %}
+<div class="pageWrapper">
+<div class="checkTypeBox">
+  <a class="left checkType active" href="#">用户分析</a>
+  <a class="left checkType" href="#">各渠道点击率</a>
+  <div class="clear"></div>
+</div>
+<div class="borderBox">
+  <div class="optionBox">
+    过滤条件：
+    <font class="optionName">渠道&nbsp;-</font>
+    <select id="taskStatusChooser">
+      <option value="0">全部</option>
+      {% for activity in activity_list %}
+      <option value="{{ activity.id }}">{{ activity.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="taskTableBox">
+  <table id="taskTable" class="table table-striped" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <td>日期</td>
+        <td>新关注人数</td>
+        <td>取消关注人数</td>
+        <td>净增长关注人数</td>
+        <td>累计关注人数</td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in tasks %}
+      <tr>
+        <td>{{ task.create_time | date:"Y-m-d H:i:s" }}</td>
+        <td>{{ task.task_name }}</td>
+        <td>{{ task.run_time | date:"Y-m-d H:i:s" }}</td>
+        <td>{{ task.template_name }}</td>
+        <td>{{ task.get_status_display  }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="/static/plugin/DataTables/datatables/js/jquery.dataTables.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/plugin/DataTables/tabletools/js/dataTables.tableTools.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/plugin/datetimepicker/jquery.datetimepicker.full.js"></script>
+<script type="text/javascript" src="/static/customize/js/task_list.js"></script>
+{% endblock %}

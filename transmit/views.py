@@ -93,6 +93,10 @@ def delete(request):
   tasks = Task.objects.filter(target_type__in=[1, 3]).filter(target=activity.id)
   for task in tasks:
     task.delete()
+  # 删除和活动相关的用户关系
+  participates = activity.participation_set.all()
+  for p in participates:
+    p.delete()
   activity.delete()
   return HttpResponse(Response().toJson(), content_type='application/json')
 

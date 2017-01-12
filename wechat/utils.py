@@ -323,3 +323,37 @@ def get_template_msg_list(token):
   if not res[0]:
     return False
   return res[1]['template_list']
+
+# 更新数据库
+def update_statistic(params, diff=1, aid=None):
+  today = timezone.now().date()
+  if diff > 0:
+    # 设置用户的来源
+    params['user'].source_type = 0 if aid is None else 1
+    params['user'].source = 0 if aid is None else aid
+  else:
+    params['user'].source_type = 2
+    params['user'].source = 0
+  params['user'].save()
+  # 设置完整数据
+  record = Statistic_Record.objects.filter(date=today).filter(record_type=0)
+  if record.count() <= 0:
+    record = Statistic_Record(date=today, record_type=0)
+  if diff > 0:
+    record.subscribe_amount += 1
+  else:
+    record.unsubscribe_amount += 1
+  record.save()
+  if diff < 0 and params['user'].source_type == 1:
+    aid = params['user'].source
+  if aid is not None:
+    # 更新活动数据
+    record = Statistic_Record.objects.filter(today=today).filter(record_type=0).filter(record_type=1).filter(record_target=aid)
+    if record.count() <= 0:
+      record = Statistic_Record(date=today, record_type=1, record_target=aid)
+    if diff > 0:
+      record.subscribe_amount += 1
+    else:
+      record.unsubscribe_amount += 1
+    record.save()
+  return True

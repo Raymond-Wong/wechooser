@@ -66,7 +66,7 @@ CREATE TABLE `auth_permission` (
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   KEY `auth_permission_37ef4eb4` (`content_type_id`),
   CONSTRAINT `content_type_id_refs_id_d043b34a` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,6 +134,24 @@ CREATE TABLE `auth_user_user_permissions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `customize_subscribe_records`
+--
+
+DROP TABLE IF EXISTS `customize_subscribe_records`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `customize_subscribe_records` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `subscribe_amount` int(10) unsigned NOT NULL,
+  `unsubscribe_amount` int(10) unsigned NOT NULL,
+  `record_type` int(10) unsigned NOT NULL,
+  `record_target` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `customize_task`
 --
 
@@ -153,7 +171,7 @@ CREATE TABLE `customize_task` (
   `target_type` int(10) unsigned NOT NULL,
   `target` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,7 +188,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,7 +303,7 @@ CREATE TABLE `transmit_activity` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_card_id` (`name_card_id`),
   CONSTRAINT `name_card_id_refs_id_8a30a3e8` FOREIGN KEY (`name_card_id`) REFERENCES `transmit_name_card` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,7 +333,7 @@ CREATE TABLE `transmit_name_card` (
   `keyword` longtext NOT NULL,
   `mid` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -355,7 +373,7 @@ CREATE TABLE `wechat_access_token` (
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -458,6 +476,8 @@ CREATE TABLE `wechat_user` (
   `country` varchar(50) NOT NULL,
   `headimgurl` longtext,
   `credits` int(10) unsigned NOT NULL,
+  `source_type` int(10) unsigned NOT NULL,
+  `source` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `wx_openid` (`wx_openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -486,4 +506,4 @@ CREATE TABLE `wechooser_image` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-10 22:21:53
+-- Dump completed on 2017-01-12 20:55:15
