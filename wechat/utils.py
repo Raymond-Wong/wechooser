@@ -331,6 +331,8 @@ def get_template_msg_list(token):
 # 更新数据库
 def update_statistic(params, diff=1, aid=None):
   today = timezone.now().date()
+  if diff < 0 and params['user'].source_type == 1:
+    aid = params['user'].source
   if diff > 0:
     # 设置用户的来源
     params['user'].source_type = 0 if aid is None else 1
@@ -349,8 +351,6 @@ def update_statistic(params, diff=1, aid=None):
   else:
     record.unsubscribe_amount += 1
   record.save()
-  if diff < 0 and params['user'].source_type == 1:
-    aid = params['user'].source
   if aid is not None:
     # 更新活动数据
     record = Subscribe_Record.objects.filter(date=today).filter(record_type=0).filter(record_type=1).filter(record_target=aid)
