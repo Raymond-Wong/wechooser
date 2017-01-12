@@ -22,8 +22,8 @@
     <font class="optionName">渠道&nbsp;-</font>
     <select id="sourceChooser">
       <option value="0">全部</option>
-      {% for activity in activity_list %}
-      <option value="{{ activity.id }}">{{ activity.name }}</option>
+      {% for a in activity_list %}
+      <option value="{{ a.id }}"{% ifequal a.id activity.id %} selected{% endifequal %}>{{ a.name }}</option>
       {% endfor %}
     </select>
   </div>
