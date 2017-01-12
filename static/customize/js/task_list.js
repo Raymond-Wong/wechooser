@@ -53,6 +53,6 @@ var cancelTask = function() {
 var initSourceChooser = function() {
   $('#sourceChooser').change(function() {
     var aid = $(this).val();
-    window.location.href = '/statistic/list?aid=' + (aid == '0' ? '' : aid);
+    window.location.href = '/statistic/list' + (aid == '0' ? '' : ('?aid=' + aid));
   });
 };
