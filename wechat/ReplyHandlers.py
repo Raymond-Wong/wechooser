@@ -50,14 +50,14 @@ class SubscribeReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
     self.reply_type = 'subscribe'
-    wechooser.utils.update_statistic(params)
+    wechat.utils.update_statistic(params)
 
 # 取消关注自动回复
 class UnsubscribeReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
     self.reply_type = 'unsubscribe'
-    wechooser.utils.update_statistic(params, diff=-1)
+    wechat.utils.update_statistic(params, diff=-1)
   def getReply(self):
     return ''
 
@@ -68,7 +68,7 @@ class ScanReplyHandler(ReplyHandler):
     self.reply_type = 'scan'
     state, namecard = get_template(qrcode_ticket=params['Ticket'])
     if state:
-      wechooser.utils.update_statistic(params, aid=namecard.activity.id)
+      wechat.utils.update_statistic(params, aid=namecard.activity.id)
   def getReply(self):
     # 调用被邀请事件
     state0, invite_user = invited_by(self.params['user'], self.params)
