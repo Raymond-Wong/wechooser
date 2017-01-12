@@ -66,9 +66,6 @@ class ScanReplyHandler(ReplyHandler):
   def __init__(self, params):
     ReplyHandler.__init__(self, params)
     self.reply_type = 'scan'
-    state, namecard = get_template(qrcode_ticket=params['Ticket'])
-    if state:
-      wechat.utils.update_statistic(params, aid=namecard.activity.id)
   def getReply(self):
     # 调用被邀请事件
     state0, invite_user = invited_by(self.params['user'], self.params)
@@ -95,7 +92,12 @@ class EventReplyHandler(ReplyHandler):
     # 如果是关注事件且没有ticket关键字，则回复关注事件的handler
     if self.params['Event'] == 'subscribe' and not self.params.has_key('Ticket'):
       return SubscribeReplyHandler(self.params).getReply()
-    elif self.params['Event'] == 'SCAN' or (self.params['Event'] == 'subscribe' and self.params.has_key('Ticket')):
+    elif self.params['Event'] == 'SCAN':
+      return ScanReplyHandler(self.params).getReply()
+    elif self.params['Event'] == 'subscribe' and self.params.has_key('Ticket'):
+      state, namecard = get_template(qrcode_ticket=self.params['Ticket'])
+      if state:
+        wechat.utils.update_statistic(self.params, aid=namecard.activity.id)
       return ScanReplyHandler(self.params).getReply()
     elif self.params['Event'] == 'unsubscribe':
       return UnsubscribeReplyHandler(self.params).getReply()
