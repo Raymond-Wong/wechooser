@@ -23,7 +23,7 @@
     <select id="sourceChooser">
       <option value="0">全部</option>
       {% for activity in activity_list %}
-      <option value="{{ activity.id }}"{% ifequal activity.id aid %}{% endifequal %}>{{ activity.name }}</option>
+      <option value="{{ activity.id }}"{% ifequal activity.id aid %} selected{% endifequal %}>{{ activity.name }}</option>
       {% endfor %}
     </select>
   </div>
