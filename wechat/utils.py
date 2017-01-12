@@ -353,7 +353,7 @@ def update_statistic(params, diff=1, aid=None):
     aid = params['user'].source
   if aid is not None:
     # 更新活动数据
-    record = Subscribe_Record.objects.filter(today=today).filter(record_type=0).filter(record_type=1).filter(record_target=aid)
+    record = Subscribe_Record.objects.filter(date=today).filter(record_type=0).filter(record_type=1).filter(record_target=aid)
     if record.count() <= 0:
       record = [Subscribe_Record(date=today, record_type=1, record_target=aid)]
     record = record[0]
