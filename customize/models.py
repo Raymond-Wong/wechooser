@@ -17,7 +17,7 @@ class Task(models.Model):
   target = models.PositiveIntegerField(default=0)
 
 RECORD_TYPE = ((0, u'全部'), (1, u'活动'))
-class Subscribe_Records(models.Model):
+class Subscribe_Record(models.Model):
   date = models.DateField(auto_now_add=True)
   subscribe_amount = models.PositiveIntegerField(default=0)
   unsubscribe_amount = models.PositiveIntegerField(default=0)
