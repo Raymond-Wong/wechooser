@@ -353,6 +353,7 @@ def update_statistic(params, diff=1, aid=None):
   else:
     record.unsubscribe_amount += 1
     record.total_amount -= 1
+  record.total_amount = 0 if record.total_amount < 0 else record.total_amount
   record.save()
   if aid is not None:
     # 更新活动数据
@@ -367,5 +368,6 @@ def update_statistic(params, diff=1, aid=None):
     else:
       record.unsubscribe_amount += 1
       record.total_amount -= 1
+    record.total_amount = 0 if record.total_amount < 0 else record.total_amount
     record.save()
   return True
