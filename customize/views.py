@@ -402,7 +402,7 @@ def list_statistic(request):
   aid = int(request.GET.get('aid', '0'))
   records = None
   if aid != '0':
-    Subscribe_Record.objects.filter(record_type=1).filter(record_target=aid)
+    records = Subscribe_Record.objects.filter(record_type=1).filter(record_target=aid)
   else:
     records = Subscribe_Record.objects.filter(record_type=0)
   for i, record in enumerate(records):
