@@ -21,5 +21,6 @@ class Subscribe_Record(models.Model):
   date = models.DateField(auto_now_add=True)
   subscribe_amount = models.PositiveIntegerField(default=0)
   unsubscribe_amount = models.PositiveIntegerField(default=0)
+  total_amount = models.PositiveIntegerField(default=0)
   record_type = models.PositiveIntegerField(choices=RECORD_TYPE, default=0)
   record_target = models.PositiveIntegerField(default=0)

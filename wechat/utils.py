@@ -344,22 +344,28 @@ def update_statistic(params, diff=1, aid=None):
   # 设置完整数据
   record = Subscribe_Record.objects.filter(date=today).filter(record_type=0)
   if record.count() <= 0:
-    record = [Subscribe_Record(date=today, record_type=0)]
+    total_amount = User.objects.filter(source_type=0).count()
+    record = [Subscribe_Record(date=today, record_type=0, total_amount=total_amount)]
   record = record[0]
   if diff > 0:
     record.subscribe_amount += 1
+    record.total_amount += 1
   else:
     record.unsubscribe_amount += 1
+    record.total_amount -= 1
   record.save()
   if aid is not None:
     # 更新活动数据
     record = Subscribe_Record.objects.filter(date=today).filter(record_type=1).filter(record_target=aid)
     if record.count() <= 0:
-      record = [Subscribe_Record(date=today, record_type=1, record_target=aid)]
+      total_amount = User.objects.filter(source_type=1).filter(source=aid).count()
+      record = [Subscribe_Record(date=today, record_type=1, record_target=aid, total_amount=total_amount)]
     record = record[0]
     if diff > 0:
       record.subscribe_amount += 1
+      record.total_amount += 1
     else:
       record.unsubscribe_amount += 1
+      record.total_amount -= 1
     record.save()
   return True

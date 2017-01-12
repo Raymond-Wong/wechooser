@@ -399,4 +399,10 @@ def taskHandler(request):
 
 def list_statistic(request):
   activity_list = Activity.objects.order_by('-create_time')
+  aid = int(request.GET.get('aid', '0'))
+  records = Subscribe_Record.objects.filter(record_type=1).filter(record_target=aid)
+  if records.count() <= 0:
+    records = Subscribe_Record.objects.filter(record_type=0)
+  for i, record in enumerate(records):
+    records[i].jzz = record.subscribe_amount - record.unsubscribe_amount
   return render_to_response('customize/statistic_list.html', {'active' : 'statistic', 'activity_list' : activity_list})
