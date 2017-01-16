@@ -93,7 +93,11 @@ class EventReplyHandler(ReplyHandler):
     if self.params['Event'] == 'subscribe' and not self.params.has_key('Ticket'):
       return SubscribeReplyHandler(self.params).getReply()
     elif self.params['Event'] == 'SCAN':
-      return ScanReplyHandler(self.params).getReply()
+      reply = ScanReplyHandler(self.params).getReply()
+      if self.params['user'].source_type == 3:
+        self.params['user'].source_type = 0
+        self.params['user'].save()
+      return reply
     elif self.params['Event'] == 'subscribe' and self.params.has_key('Ticket'):
       reply = ScanReplyHandler(self.params).getReply()
       state, namecard = get_template(qrcode_ticket=self.params['Ticket'])
