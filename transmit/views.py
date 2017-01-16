@@ -370,7 +370,7 @@ def invited_by(user, dictionary):
     return False, '不能邀请自己'
   invite_user = participate.user
   if user.source_type != 3 and (invite_user.last_interact_time - timezone.now()).seconds <= 48 * 60 * 60:
-    warn = TextTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], Content="温馨提示，邀请新关注的用户才可以参加本次活动哦！")
+    warn = TextTemplate(ToUserName=invite_user.wx_openid, FromUserName=dictionary['ToUserName'], Content="温馨提示，邀请新关注的用户才可以参加本次活动哦！")
     wechat.utils.sendMsgTo(wechat.utils.get_access_token(), warn.toSend())
   # 如果用户已经被邀请过了
   new_participate = Participation.objects.filter(user=user).filter(activity=participate.activity)
