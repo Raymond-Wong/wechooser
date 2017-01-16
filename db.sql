@@ -479,6 +479,7 @@ CREATE TABLE `wechat_user` (
   `credits` int(10) unsigned NOT NULL,
   `source_type` int(10) unsigned NOT NULL,
   `source` int(10) unsigned NOT NULL,
+  `last_interact_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `wx_openid` (`wx_openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -507,4 +508,4 @@ CREATE TABLE `wechooser_image` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-12 21:57:07
+-- Dump completed on 2017-01-16 22:14:47

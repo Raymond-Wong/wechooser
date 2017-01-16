@@ -225,6 +225,8 @@ def get_user(openid, token):
   user = None
   try:
     user = User.objects.get(wx_openid=openid)
+    user.last_interact_time = timezone.now()
+    user.save()
     return True, user
   except:
     # 获取用户基本信息

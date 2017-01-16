@@ -95,10 +95,11 @@ class EventReplyHandler(ReplyHandler):
     elif self.params['Event'] == 'SCAN':
       return ScanReplyHandler(self.params).getReply()
     elif self.params['Event'] == 'subscribe' and self.params.has_key('Ticket'):
+      reply = ScanReplyHandler(self.params).getReply()
       state, namecard = get_template(qrcode_ticket=self.params['Ticket'])
       if state:
         wechat.utils.update_statistic(self.params, aid=namecard.activity.id)
-      return ScanReplyHandler(self.params).getReply()
+      return reply
     elif self.params['Event'] == 'unsubscribe':
       return UnsubscribeReplyHandler(self.params).getReply()
     try:

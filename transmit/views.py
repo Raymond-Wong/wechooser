@@ -360,10 +360,12 @@ def get_name_card_mediaid(user, aid, token):
 
 # 用户被其他用户邀请的事件
 def invited_by(user, dictionary):
-  if user.source_type in [0, 1]:
-    return False, '温馨提示，邀请新关注用户才可以参加本次活动哦！'
   # 获取participate
   participate = Participation.objects.filter(qrcode_ticket=dictionary['Ticket'])
+  invite_user = participate.user
+  if user.source_type != 3 and (invite_user.last_interact_time - timezone.now()).seconds <= 48 * 60 * 60:
+    warn = TextTemplate(ToUserName=dictionary['FromUserName'], FromUserName=dictionary['ToUserName'], Content="温馨提示，邀请新关注的用户才可以参加本次活动哦！")
+    wechat.utils.sendMsgTo(wechat.utils.get_access_token(), warn.toSend())
   if participate.count() <= 0:
     return False, '邀请链接已失效'
   participate = participate[0]
@@ -383,7 +385,6 @@ def invited_by(user, dictionary):
       return False, '参与活动失败'
     new_participate.qrcode_url = qrcode[0]
     new_participate.qrcode_ticket = qrcode[1]
-  invite_user = participate.user
   new_participate.invited_by = invite_user
   new_participate.save()
   # 检查邀请用户是否达到目标值

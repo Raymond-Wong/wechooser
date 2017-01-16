@@ -37,7 +37,7 @@ class MenuReply(models.Model):
   template = models.TextField(blank=False)
 
 GENDER = ((1, u'male'), (2, u'female'))
-SOURCE_TYPE = ((0, u'直接关注'), (1, u'扫码关注'), (2, u'取消关注'))
+SOURCE_TYPE = ((0, u'直接关注'), (1, u'扫码关注'), (2, u'取消关注'), (3, u'新关注'))
 class User(models.Model):
   create_time = models.DateTimeField(auto_now_add=True)
   wx_openid = models.CharField(max_length=50, unique=True)
@@ -48,5 +48,6 @@ class User(models.Model):
   country = models.CharField(max_length=50, default='')
   headimgurl = models.TextField(null=True)
   credits = models.PositiveIntegerField(default=0)
-  source_type = models.PositiveIntegerField(choices=SOURCE_TYPE, default=0)
+  source_type = models.PositiveIntegerField(choices=SOURCE_TYPE, default=3)
   source = models.PositiveIntegerField(default=0)
+  last_interact_time = models.DateTimeField(auto_now=True)
