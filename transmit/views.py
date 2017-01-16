@@ -410,6 +410,7 @@ def invited_by(user, dictionary):
   elif (invite_user.last_interact_time - timezone.now()).seconds <= 48 * 60 * 60:
     remain = namecard.target - Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count()
     msg = Template(namecard.invite_msg).render(Context(dict(username=user.nickname, remain=remain, activity=participate.activity.name)))
+    print msg
     msg = TextTemplate(ToUserName=invite_user.wx_openid, FromUserName=dictionary['ToUserName'], Content=msg)
     wechat.utils.sendMsgTo(wechat.utils.get_access_token(), msg.toSend())
   # 给邀请用户加积分
