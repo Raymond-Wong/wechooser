@@ -17,7 +17,6 @@ from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from django.utils import timezone
-from django.template import Context, Template
 
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined, has_token, is_logined
@@ -30,6 +29,7 @@ from wechooser.settings import WX_APPID, WX_SECRET, WX_TOKEN
 import utils
 import wechat.utils
 import wechooser.utils
+from django.template import Context, Template
 
 @is_logined
 def activity_list(request):
