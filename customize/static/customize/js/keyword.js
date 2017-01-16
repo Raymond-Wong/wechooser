@@ -246,7 +246,9 @@ var saveNews = function() {
   var choosenNews = $('.newsItemWrapper.choosen').clone();
   if (TO_INSERT_ROW != null && TO_INSERT_ROW.attr('role') == 'btnBox') {
     var newRow = $(NEWS_ROW);
-    newRow.children('.val').html(choosenNews);
+    // newRow.children('.val').append('<input type="text" name="news_title" />');
+    // newRow.children('.val').append('<input type="text" name="news_url" />');
+    newRow.children('.val').append(choosenNews);
     var box = TO_INSERT_ROW.parents('.content');
     box.append(newRow);
     // 在最下面的计数器中加一
