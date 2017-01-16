@@ -404,6 +404,11 @@ def invited_by(user, dictionary):
       task.run_time = task.run_time.replace(second=0).replace(microsecond=0)
       task.target = invite_user.id
       task.save()
+  elif (invite_user.last_interact_time - timezone.now()).seconds <= 48 * 60 * 60:
+    remain = namecard.target - Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count()
+    msg = '%s成功扫描您的二维码，只需要再有%d位好友帮您扫码，即可免费参加%s课程。把邀请卡转发微信群或者朋友圈，让更多的朋友帮助您报名吧！' % (user.nickname, remain, participate.activity.name)
+    msg = TextTemplate(ToUserName=invite_user.wx_openid, FromUserName=dictionary['ToUserName'], Content=msg)
+    wechat.utils.sendMsgTo(wechat.utils.get_access_token(), warn.toSend())
   # 给邀请用户加积分
   credit_diff = 10
   if Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count() <= 50:
