@@ -221,6 +221,7 @@ def save(request):
   card.qrcode_size = qrcode_size if qrcode_size is not None else card.qrcode_size
   target = request.POST.get('target', None)
   card.target = target if target is not None else card.target
+  card.invite_msg = request.POST.get('invite_msg', '')
   # 处理回复模板
   invited_msg = request.POST.get('invited_msg', '')
   invited_msg = json.loads(invited_msg)

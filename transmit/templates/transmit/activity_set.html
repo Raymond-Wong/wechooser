@@ -98,13 +98,17 @@
     </div>
   </div>
   <div class="stepBox">
-    <div class="stepBoxTitle">第五步：设置接受邀请后回复内容</div>
+    <div class="stepBoxTitle">第五步：设置成功邀请通知（接受邀请用户）</div>
     <div class="msgContent" id="invited_msg" template="{{ template.invited_msg }}" >
       {% include 'customize/widgets/material.html' %}
     </div>
   </div>
   <div class="stepBox">
-    <div class="stepBoxTitle">第六步：设置达成活动目标回复内容</div>
+    <div class="stepBoxTitle">第六步：设置成功邀请通知（发送邀请用户）</div>
+    <textarea id="invite_msg">{{ template.invite_msg }}</textarea>
+  </div>
+  <div class="stepBox">
+    <div class="stepBoxTitle">第七步：设置达成活动目标回复内容</div>
     <div class="achieveMsgWrapper" id="achieveMsgWrapper">
       {% if achieve_msg_list %}
       {% for msg in achieve_msg_list %}

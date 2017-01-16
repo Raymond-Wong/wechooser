@@ -213,3 +213,13 @@ input[name="gainCardMethod"] {
 #materialNav li:last-child {
   border-right: 1px solid #d9d9d9;
 }
+
+#invite_msg {
+  width: 100%;
+  height: 242px;
+  resize: none;
+  outline: none;
+  padding: 1em;
+  margin-top: 1em;
+  border: 1px solid #d9d9d9;
+}

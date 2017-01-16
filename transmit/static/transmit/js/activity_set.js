@@ -120,7 +120,12 @@ var submitAction = function() {
     }
     if ((params['invited_msg']['MsgType'] == 'text' && params['invited_msg']['Content'] == "") ||
         (params['invited_msg']['MsgType'] != 'text' && (params['invited_msg']['MediaId'] == undefined || params['invited_msg']['MediaId'] == 'undefined'))) {
-      topAlert('参加活动回复消息不合法', 'error');
+      topAlert('成功邀请通知（接受邀请用户）不合法', 'error');
+      return false;
+    }
+    params['invite_msg'] = $('#invite_msg').val();
+    if (params['invite_msg'] == '') {
+      topAlert('成功邀请通知（发送邀请用户）不合法', 'error');
       return false;
     }
     params['invited_msg'] = JSON.stringify(params['invited_msg']);
