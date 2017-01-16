@@ -17,7 +17,7 @@ from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from django.utils import timezone
-from django.template import Context, TextTemplate
+from django.template import Context, Template
 
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined, has_token, is_logined
