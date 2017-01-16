@@ -360,6 +360,8 @@ def get_name_card_mediaid(user, aid, token):
 
 # 用户被其他用户邀请的事件
 def invited_by(user, dictionary):
+  if user.source_type in [0, 1]:
+    return False, '温馨提示，邀请新关注用户才可以参加本次活动哦！'
   # 获取participate
   participate = Participation.objects.filter(qrcode_ticket=dictionary['Ticket'])
   if participate.count() <= 0:
