@@ -17,6 +17,7 @@ from django.shortcuts import render_to_response, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from django.utils import timezone
+from django.template import Context, TextTemplate
 
 from wechooser.utils import Response, send_request
 from wechooser.decorator import wx_logined, has_token, is_logined
@@ -408,7 +409,7 @@ def invited_by(user, dictionary):
       task.save()
   elif (invite_user.last_interact_time - timezone.now()).seconds <= 48 * 60 * 60:
     remain = namecard.target - Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count()
-    msg = '%s成功扫描您的二维码，只需要再有%d位好友帮您扫码，即可免费参加%s课程。把邀请卡转发微信群或者朋友圈，让更多的朋友帮助您报名吧！' % (user.nickname, remain, participate.activity.name)
+    msg = Template(namecard.invite_msg).render(Context(dict(username=user.nickname, remain=remain, activity=participate.activity.name)))
     msg = TextTemplate(ToUserName=invite_user.wx_openid, FromUserName=dictionary['ToUserName'], Content=msg)
     wechat.utils.sendMsgTo(wechat.utils.get_access_token(), msg.toSend())
   # 给邀请用户加积分
