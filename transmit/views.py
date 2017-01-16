@@ -392,7 +392,7 @@ def invited_by(user, dictionary):
   state, namecard = get_template(aid=participate.activity.id)
   if not state:
     return False, namecard
-  if Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count() >= namecard.target:
+  if Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count() == namecard.target:
     now = datetime.strptime(timezone.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
     print '用户%s的完成活动%s的时间为%s' % (invite_user.nickname, participate.activity.name, now.strftime("%Y-%m-%d %H:%M:%S"))
     now = now + timedelta(seconds=60)
