@@ -10,7 +10,7 @@ import time
 import StringIO
 import json
 import re
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from django.http import HttpResponse, HttpRequest, HttpResponseServerError, Http404
 from django.shortcuts import render_to_response, redirect
@@ -373,7 +373,6 @@ def invited_by(user, dictionary):
   if new_participate.count() > 0:
     new_participate = new_participate[0]
     if new_participate.invited_by != None:
-      print '接受够要求那个'
       return False, '当前用户已接受过邀请'
   else:
     new_participate = Participation(user=user, activity=participate.activity)
