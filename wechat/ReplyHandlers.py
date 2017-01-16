@@ -96,6 +96,10 @@ class EventReplyHandler(ReplyHandler):
       reply = ScanReplyHandler(self.params).getReply()
       if self.params['user'].source_type == 3:
         self.params['user'].source_type = 0
+        state, namecard = get_template(qrcode_ticket=self.params['Ticket'])
+        if state:
+          self.params['user'].source_type = 1
+          self.params['user'].source = namecard.activity.id
         self.params['user'].save()
       return reply
     elif self.params['Event'] == 'subscribe' and self.params.has_key('Ticket'):
