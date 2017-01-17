@@ -151,7 +151,7 @@
           <input type="text" name="news_url" value="{{ template.Items.0.Url }}" />
           <div class="newsItemWrapper left" mediaId="{{ template.MediaId }}">
             {% for news in template.Items %}
-            <div class="newsItemBox">
+            <div class="newsItemBox" thumburl="{{ news.PicUrl }}" description="{{ news.Description }}" url="{{ news.Url }}" mediaid="{{ news.MediaId }}">
               <div class="newsItemImg" style="background-image: url({{ news.ImageUrl }})"></div>
               <div class="newsItemTitle">{{ news.Title }}</div>
             </div>
