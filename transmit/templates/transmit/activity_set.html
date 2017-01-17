@@ -112,7 +112,7 @@
     <div class="achieveMsgWrapper" id="achieveMsgWrapper">
       {% if achieve_msg_list %}
       {% for msg in achieve_msg_list %}
-      <div class="achieveMsgBox" mid="{{ msg.id }}">
+      <div class="achieveMsgBox" mid="{{ msg.id }}" title="长按拖动以调整顺序">
         <div class="achieveMsgHead">
           <font class="achieveMsgHeadText">{{ msg.task_name }}</font>
           <span class="achieveMsgBtn addBtn right glyphicon glyphicon-plus" title="在该消息后添加新消息"></span>
@@ -160,7 +160,7 @@
       </div>
       {% endfor %}
       {% else %}
-      <div class="achieveMsgBox">
+      <div class="achieveMsgBox" title="长按拖动以调整顺序">
         <div class="achieveMsgHead">
           <font class="achieveMsgHeadText">回复消息</font>
           <span class="achieveMsgBtn addBtn right glyphicon glyphicon-plus" title="在该消息后添加新消息"></span>
