@@ -147,6 +147,8 @@
       <div class="ruleRow small reply" type="news" mediaId="{{ template.MediaId }}">
         <div class="left point">&nbsp;</div>
         <div class="left val">
+          <input type="text" name="news_title" value="{{ template.Items.0.Title }}" />
+          <input type="text" name="news_url" value="{{ template.Items.0.Url }}" />
           <div class="newsItemWrapper left" mediaId="{{ template.MediaId }}">
             {% for news in template.Items %}
             <div class="newsItemBox">

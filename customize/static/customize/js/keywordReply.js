@@ -56,13 +56,17 @@ var newsHandler = function(box) {
   box = $(box.find('.newsItemWrapper')[0]);
   params['MediaId'] = box.attr('mediaId');
   params['item'] = []
-  $(box.find('.newsItemBox')).each(function() {
+  $(box.find('.newsItemBox')).each(function(index, ele) {
     var item = {};
     item['Url'] = $(this).attr('url');
     item['Title'] = $(this).children('.newsItemTitle').text()
     item['Description'] = $(this).attr('description');
     item['PicUrl'] = $(this).attr('thumbUrl');
     item['MediaId'] = $(this).attr('mediaId');
+    if (index == 0) {
+      item['Title'] = box.parent().children('input[name="news_title"]').val();
+      item['Url'] = box.parent().children('input[name="news_url"]').val();
+    }
     params['item'].push(item);
   });
   return params;
