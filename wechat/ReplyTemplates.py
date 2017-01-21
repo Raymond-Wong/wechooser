@@ -151,4 +151,5 @@ class NewsTemplate(Template):
     dic['news']['articles'] = []
     for item in self.Items:
       dic['news']['articles'].append(item.toDic())
+    print dic
     return dic
