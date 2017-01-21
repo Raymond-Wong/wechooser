@@ -192,7 +192,6 @@ var getAchieveMsg = function() {
     box['news_item'] = {}
     box['news_item']['title'] = $($(this).find('input[name="news_title"]')[0]).val();
     box['news_item']['description'] = $($(this).find('.news_desc')[0]).val();
-    console.log(box['news_item']['description']);
     box['news_item']['picurl'] = $($(this).find('input[name="news_pic_url"]')[0]).val();
     if (box['news_item']['title'] == undefined || box['news_item']['title'].length <= 0) {
       flag = false;

@@ -79,7 +79,7 @@ var saveTaskAction = function() {
     var template_id = $('#template_list').val();
     var template_name = $('option[value="' + template_id + '"]').text();
     var news_title = $('input[name="news_title"]').val();
-    var news_desc = $('.news_desc').text();
+    var news_desc = $('.news_desc').val();
     var news_pic_url = $('input[name="news_pic_url"]').val();
     var params = {'action' : 'add'};
     if (!taskValide) {
