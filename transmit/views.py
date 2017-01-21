@@ -405,7 +405,7 @@ def invited_by(user, dictionary):
     # 获取这个活动的所有延迟发送任务
     msg_list = Task.objects.filter(target_type=3).filter(target=participate.activity.id)
     for msg in msg_list:
-      task = Task(keywords=msg.keywords, url=msg.url, task_name=msg.task_name, template_id=msg.template_id, template_name=msg.template_name, target_type=2)
+      task = Task(news_item=msg.news_item, keywords=msg.keywords, url=msg.url, task_name=msg.task_name, template_id=msg.template_id, template_name=msg.template_name, target_type=2)
       task.run_time = now + (msg.run_time - msg.create_time)
       task.run_time = task.run_time.replace(second=0).replace(microsecond=0)
       task.target = invite_user.id
@@ -413,7 +413,6 @@ def invited_by(user, dictionary):
   elif (invite_user.last_interact_time - timezone.now()).seconds <= 48 * 60 * 60:
     remain = namecard.target - Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count()
     msg = Template(namecard.invite_msg).render(Context(dict(username=user.nickname, remain=remain, activity=participate.activity.name)))
-    print msg
     msg = TextTemplate(ToUserName=invite_user.wx_openid, FromUserName=dictionary['ToUserName'], Content=msg)
     wechat.utils.sendMsgTo(wechat.utils.get_access_token(), msg.toSend())
   # 给邀请用户加积分
