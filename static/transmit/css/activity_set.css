@@ -229,4 +229,5 @@ input[name="gainCardMethod"] {
   width: 16em;
   height: 8em;
   overflow: auto;
+  padding: 0.5em;
 }
