@@ -141,8 +141,14 @@ class NewsTemplate(Template):
       dic['Articles'].append({'item' : item.toDic()})
     return ET.tostring(utils.dict2xml(ET.Element('xml'), dic), 'utf-8')
   def toSend(self):
-    ret = {}
-    ret['touser'] = self.ToUserName
-    ret['msgtype'] = 'mpnews'
-    ret['mpnews'] = {'media_id' : self.MediaId}
-    return ret
+    # ret = {}
+    # ret['touser'] = self.ToUserName
+    # ret['msgtype'] = 'mpnews'
+    # ret['mpnews'] = {'media_id' : self.MediaId}
+    # return ret
+    dic = self.toDic()
+    dic['news'] = {}
+    dic['news']['articles'] = []
+    for item in self.Items:
+      dic['articles'].append(item.toDic())
+    return dic
