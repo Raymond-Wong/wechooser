@@ -203,7 +203,6 @@ def taskHandler(request):
           users = [User.objects.get(id=task.target)]
         # 获取图文消息
         for user in users:
-          print user.nickname, user.last_interact_time, now, (now - user.last_interact_time).seconds
           if (now - user.last_interact_time).total_seconds() <= (48 * 60 * 60):
             utils.send_news_item_msg(utils.get_access_token(), user.wx_openid, json.loads(task.news_item))
             continue
