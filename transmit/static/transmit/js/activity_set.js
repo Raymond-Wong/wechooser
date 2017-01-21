@@ -189,6 +189,22 @@ var getAchieveMsg = function() {
       }
       box['keywords'][keyword] = {'value' : value, 'color' : '#b2b2b2'};
     });
+    box['news_item'] = {}
+    box['news_item']['title'] = $($(this).find('input[name="news_title"]')[0]).val();
+    box['news_item']['description'] = $($(this).find('.news_desc')[0]).text();
+    box['news_item']['picurl'] = $($(this).find('input[name="news_pic_url"]')[0]).val();
+    if (box['news_item']['title'] == undefined || box['news_item']['title'].length <= 0) {
+      flag = false;
+      err_msg = '图文消息标题不合法';
+    }
+    if (box['news_item']['description'] == undefined || box['news_item']['description'].length <= 0) {
+      flag = false;
+      err_msg = '图文消息描述不合法';
+    }
+    if (box['news_item']['picurl'] == undefined || box['news_item']['picurl'].length <= 0) {
+      flag = false;
+      err_msg = '图文消息封面不合法';
+    }
     ret.push(box);
   });
   if (ret.length == 0) {
@@ -328,7 +344,14 @@ var chooseNews = function() {
     showMaterialBox('News', function() {
       var choosenNews = $('.newsItemWrapper.choosen').clone();
       var url = choosenNews.children('.newsItemBox').attr('url');
+      var news_title = choosenNews.children('.newsItemBox').children('.newsItemTitle').text();
+      var news_desc = choosenNews.children('.newsItemBox').attr('description');
+      var news_pic_url = choosenNews.children('.newsItemBox').attr('thumburl');
       that.parent().children('.lineInput').children('input').val(url);
+      var achieveMsgBox = $(that.parents('.achieveMsgBox')[0]);
+      achieveMsgBox.find('input[name="news_title"]').val(news_title);
+      achieveMsgBox.find('.news_desc').text(news_desc);
+      achieveMsgBox.find('input[name="news_pic_url"]').val(news_pic_url);
       $($('.newsItemWrapper.choosen').find('.choosenFlag')[0]).remove()
       $('.newsItemWrapper.choosen').removeClass('choosen');
       $(choosenNews.find('.choosenFlag')[0]).remove();

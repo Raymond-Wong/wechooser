@@ -136,6 +136,23 @@
             <div class="clear"></div>
           </div>
           <div class="line">
+            <div class="lineLabel left">图文消息标题</div>
+            <div class="lineInput left"><input type="text" value="{{ msg.news_item.title }}" name="news_title" placeholder="图文消息标题" /></div>
+            <div class="clear"></div>
+          </div>
+          <div class="line">
+            <div class="lineLabel left">图文消息描述</div>
+            <div class="lineInput left">
+              <textarea class="news_desc" placeholder="图文消息描述">{{ msg.news_item.description }}</textarea>
+            </div>
+            <div class="clear"></div>
+          </div>
+          <div class="line">
+            <div class="lineLabel left">图文消息封面</div>
+            <div class="lineInput left"><input type="text" value="{{ msg.news_item.picurl }}" name="news_pic_url" placeholder="图文消息封面" /></div>
+            <div class="clear"></div>
+          </div>
+          <div class="line">
             <div class="lineLabel left">选择模板</div>
             <div class="lineInput left">
               <select class="template_list">
@@ -181,6 +198,23 @@
             <div class="lineLabel left">模板消息链接</div>
             <div class="lineInput left"><input type="text" name="url" placeholder="模板消息链接" /></div>
             <button class="chooseNewsBtn">点击选择</button>
+            <div class="clear"></div>
+          </div>
+          <div class="line">
+            <div class="lineLabel left">图文消息标题</div>
+            <div class="lineInput left"><input type="text" name="news_title" placeholder="图文消息标题" /></div>
+            <div class="clear"></div>
+          </div>
+          <div class="line">
+            <div class="lineLabel left">图文消息描述</div>
+            <div class="lineInput left">
+              <textarea class="news_desc" placeholder="图文消息描述"></textarea>
+            </div>
+            <div class="clear"></div>
+          </div>
+          <div class="line">
+            <div class="lineLabel left">图文消息封面</div>
+            <div class="lineInput left"><input type="text" name="news_pic_url" placeholder="图文消息封面" /></div>
             <div class="clear"></div>
           </div>
           <div class="line">

@@ -271,6 +271,9 @@ def save(request):
     task.template_name = achieve_msg['template_name']
     task.target_type = '3'
     task.target = activity.id
+    task.news_item = achieve_msg['news_item']
+    task.news_item['url'] = task.url
+    task.news_item = json.dumps(task.news_item)
     task.save()
     used_tasks.append(task.id)
   # 删除无用回复消息
