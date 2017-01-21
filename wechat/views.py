@@ -202,12 +202,12 @@ def taskHandler(request):
         elif task.target_type == 2:
           users = [User.objects.get(id=task.target)]
         # 获取图文消息
-        news_item = json.loads(task.news_item)
         for user in users:
-          if (user.last_interact_time - now).seconds <= 48 * 60 * 60:
-            utils.send_news_item_msg(utils.get_access_token(), user.wx_openid, news_item)
-          else:
-            utils.send_template_msg(user.wx_openid, task.template_id, task.url, json.loads(task.keywords))
+          # if (user.last_interact_time - now).seconds <= 48 * 60 * 60:
+          #   utils.send_news_item_msg(utils.get_access_token(), user.wx_openid, json.loads(task.news_item))
+          # else:
+          #   utils.send_template_msg(user.wx_openid, task.template_id, task.url, json.loads(task.keywords))
+          utils.send_template_msg(user.wx_openid, task.template_id, task.url, json.loads(task.keywords))
         task.status = 1
         sc += 1
       except Exception, e:
