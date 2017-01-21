@@ -173,6 +173,7 @@ def activity_set(request, token):
     for task in tasks:
       task.run_time = (task.run_time - task.create_time).seconds / 60
       task.keywords = json.loads(task.keywords)
+      task.news_item = json.loads(task.news_item)
   # 处理接受邀请后的回复消息
   if template.invited_msg != '':
     invited_msg = json.loads(template.invited_msg)
