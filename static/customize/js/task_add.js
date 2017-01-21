@@ -78,6 +78,9 @@ var saveTaskAction = function() {
     var url = $('input[name="url"]').val();
     var template_id = $('#template_list').val();
     var template_name = $('option[value="' + template_id + '"]').text();
+    var news_title = $('input[name="news_title"]').val();
+    var news_desc = $('.news_desc').text();
+    var news_pic_url = $('input[name="news_pic_url"]').val();
     var params = {'action' : 'add'};
     if (!taskValide) {
       topAlert('所有子任务名称都必填！', 'error');
@@ -88,7 +91,16 @@ var saveTaskAction = function() {
     } else {topAlert('请至少添加一个子任务，且子任务数量不得超过10', 'error'); return false}
     if (url != undefined && url.length > 0) {
       params['url'] = url;
-    } else {topAlert('请选择图文消息', 'error'); return false}
+    } else {topAlert('模板消息链接不可为空', 'error'); return false}
+    if (news_title != undefined && news_title.length > 0) {
+      params['news_title'] = news_title;
+    } else {topAlert('图文消息标题不合法', 'error'); return false}
+    if (news_desc != undefined && news_desc.length > 0) {
+      params['news_desc'] = news_desc;
+    } else {topAlert('图文消息描述不合法', 'error'); return false}
+    if (news_pic_url != undefined && news_pic_url.length > 0) {
+      params['news_pic_url'] = news_pic_url;
+    } else {topAlert('图文消息封面不合法', 'error'); return false}
     params['keywords'] = {}
     $($('.keywordsBox').find('input')).each(function() {
       var keyword = $(this).attr('name');
@@ -134,7 +146,13 @@ var chooseNews = function() {
     showMaterialBox('News', function() {
       var choosenNews = $('.newsItemWrapper.choosen').clone();
       var url = choosenNews.children('.newsItemBox').attr('url');
+      var news_title = choosenNews.children('.newsItemBox').children('.newsItemTitle').text();
+      var news_desc = choosenNews.children('.newsItemBox').attr('description');
+      var news_pic_url = choosenNews.children('.newsItemBox').attr('thumburl');
       $('input[name="url"]').val(url);
+      $('input[name="news_title"]').val(news_title);
+      $('.news_desc').text(news_desc);
+      $('input[name="news_pic_url"]').val(news_pic_url);
       $($('.newsItemWrapper.choosen').find('.choosenFlag')[0]).remove()
       $('.newsItemWrapper.choosen').removeClass('choosen');
       $(choosenNews.find('.choosenFlag')[0]).remove();

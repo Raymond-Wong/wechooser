@@ -170,9 +170,10 @@ CREATE TABLE `customize_task` (
   `template_id` longtext NOT NULL,
   `template_name` longtext NOT NULL,
   `target_type` int(10) unsigned NOT NULL,
+  `news_item` longtext NOT NULL,
   `target` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -509,4 +510,4 @@ CREATE TABLE `wechooser_image` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-01-16 23:37:11
+-- Dump completed on 2017-01-21 23:07:35

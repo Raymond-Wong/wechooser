@@ -358,11 +358,16 @@ def addTask(request):
   url = request.POST.get('url', None)
   template_id = request.POST.get('template_id', None)
   template_name = request.POST.get('template_name', None)
-  if task_list is None or keywords is None or template_name is None or url is None or template_id is None:
+  news_title = request.POST.get('news_title', None)
+  news_desc = request.POST.get('news_desc', None)
+  news_pic_url = request.POST.get('news_pic_url', None)
+  if news_title is None or news_desc is None or news_pic_url is None or task_list is None or keywords is None or template_name is None or url is None or template_id is None:
     return HttpResponse(Response(c=2, m='参数不足').toJson(), content_type='application/json')
   task_list = json.loads(task_list)
+  news_item = NewsItem(Title=news_title, Description=news_desc, PicUrl=news_pic_url, Url=url).toDic()
+  news_item = json.dumps(news_item)
   for (task_name, run_time) in task_list.iteritems():
-    task = Task(template_name=template_name, task_name=task_name, run_time=run_time, keywords=keywords, url=url, template_id=template_id)
+    task = Task(news_item=news_item, template_name=template_name, task_name=task_name, run_time=run_time, keywords=keywords, url=url, template_id=template_id)
     if activity != None:
       task.target = activity.id
       task.target_type = 1

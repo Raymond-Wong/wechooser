@@ -92,6 +92,17 @@ def sendMsgTo(token, params):
   res = wechooser.utils.send_request(host=host, path=path + token.token, method=method, port=443, params=params)
   return res
 
+# 发送图文链接
+def send_news_item_msg(token, to_user, news_item):
+  params = dict(touser=to_user, msgtype="news", news={})
+  params['news']["articles"] = []
+  params.append(news_item)
+  host = 'api.weixin.qq.com'
+  path = '/cgi-bin/message/custom/send?access_token='
+  method = 'POST'
+  res = wechooser.utils.send_request(host=host, path=path + token.token, method=method, port=443, params=params)
+  return res
+
 def getMaterial(token, tp, offset, count):
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/material/batchget_material?access_token='

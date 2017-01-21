@@ -88,3 +88,12 @@
 .subTaskBox .lineLabel {
   /*padding-left: 1em;*/
 }
+
+.news_desc {
+  resize: none;
+  width: 390px;
+  height: 125px;
+  overflow: auto;
+  outline: none;
+  padding: 0.5em;
+}

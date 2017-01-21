@@ -14,6 +14,7 @@ class Task(models.Model):
   template_id = models.TextField(default='')
   template_name = models.TextField(default='')
   target_type = models.PositiveIntegerField(default=0, choices=TARGET_TYPE)
+  news_item = models.TextField(default='')
   target = models.PositiveIntegerField(default=0)
 
 RECORD_TYPE = ((0, u'全部'), (1, u'活动'))
