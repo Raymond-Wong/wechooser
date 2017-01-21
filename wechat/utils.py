@@ -96,7 +96,7 @@ def sendMsgTo(token, params):
 def send_news_item_msg(token, to_user, news_item):
   params = dict(touser=to_user, msgtype="news", news={})
   params['news']["articles"] = []
-  params.append(news_item)
+  params['news']['articles'].append(news_item)
   host = 'api.weixin.qq.com'
   path = '/cgi-bin/message/custom/send?access_token='
   method = 'POST'
