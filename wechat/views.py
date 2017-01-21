@@ -205,7 +205,7 @@ def taskHandler(request):
         news_item = json.loads(task.news_item)
         for user in users:
           if (user.last_interact_time - now).seconds <= 48 * 60 * 60:
-            utils.send_news_item_msg(utils.get_access_token, user.wx_openid, news_item)
+            utils.send_news_item_msg(utils.get_access_token(), user.wx_openid, news_item)
           else:
             utils.send_template_msg(user.wx_openid, task.template_id, task.url, json.loads(task.keywords))
         task.status = 1
