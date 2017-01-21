@@ -146,6 +146,7 @@ class NewsTemplate(Template):
     # ret['msgtype'] = 'mpnews'
     # ret['mpnews'] = {'media_id' : self.MediaId}
     # return ret
+    dic = {}
     dic['msgtype'] = 'news'
     dic['touser'] = self.ToUserName
     dic['news'] = {}
