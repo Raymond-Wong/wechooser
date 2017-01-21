@@ -234,17 +234,17 @@ def getUserList(token, next=None):
 # 获取用户对象
 def get_user(openid, token):
   user = None
+  state = True
   try:
     user = User.objects.get(wx_openid=openid)
-    user.last_interact_time = timezone.now()
-    user.save()
-    return True, user
   except:
     # 获取用户基本信息
     state, user = update_user(openid, token)
     if not state:
       return False, None
-    return state, user
+  user.last_interact_time = timezone.now()
+  user.save()
+  return state, user
 
 def update_user_qrcode(user, activity, token):
   host = 'api.weixin.qq.com'
