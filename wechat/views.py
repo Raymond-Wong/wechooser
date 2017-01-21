@@ -210,7 +210,8 @@ def taskHandler(request):
             utils.send_template_msg(user.wx_openid, task.template_id, task.url, json.loads(task.keywords))
         task.status = 1
         sc += 1
-      except:
+      except Exception, e:
+        print e
         task.status = 3
         fc += 1
     else:
