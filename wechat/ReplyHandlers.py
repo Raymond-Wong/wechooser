@@ -86,6 +86,7 @@ class ScanReplyHandler(ReplyHandler):
     template = json.loads(namecard.invited_msg, object_hook=wechooser.utils.loads)
     template.FromUserName = self.params['ToUserName']
     template.ToUserName = self.params['FromUserName']
+    print invite_user.last_interact_time
     return template.toReply()
 
 # 事件自动回复
