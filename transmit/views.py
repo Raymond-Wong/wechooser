@@ -408,8 +408,8 @@ def invited_by(user, dictionary):
     for msg in msg_list:
       # 如果消息为立即发送，则直接发送
       if msg.run_time == msg.create_time:
-        print invite_user.nickname, invite_user.last_interact_time, (invite_user.last_interact_time - timezone.now()).total_seconds()
-        if (invite_user.last_interact_time - timezone.now()).total_seconds() <= 48 * 60 * 60:
+        print invite_user.nickname, invite_user.last_interact_time, (timezone.now() - invite_user.last_interact_time).total_seconds()
+        if (timezone.now() - invite_user.last_interact_time).total_seconds() <= 48 * 60 * 60:
           news_item = json.loads(msg.news_item)
           wechat.utils.send_news_item_msg(wechat.utils.get_access_token(), invite_user.wx_openid, news_item)
         else:
@@ -420,7 +420,7 @@ def invited_by(user, dictionary):
       task.run_time = task.run_time.replace(second=0).replace(microsecond=0)
       task.target = invite_user.id
       task.save()
-  elif (invite_user.last_interact_time - timezone.now()).total_seconds() <= 48 * 60 * 60:
+  elif (timezone.now() - invite_user.last_interact_time).total_seconds() <= 48 * 60 * 60:
     remain = namecard.target - Participation.objects.filter(invited_by=invite_user).filter(activity=participate.activity).count()
     msg = Template(namecard.invite_msg).render(Context(dict(username=user.nickname, remain=remain, activity=participate.activity.name)))
     msg = TextTemplate(ToUserName=invite_user.wx_openid, FromUserName=dictionary['ToUserName'], Content=msg)
