@@ -7,6 +7,8 @@ import random
 from abc import ABCMeta, abstractmethod
 from datetime import timedelta, datetime
 
+from django.utils import timezone
+
 from models import Reply, KeywordReply, MenuReply
 from customize.models import Task
 from ReplyTemplates import *
