@@ -408,7 +408,6 @@ def invited_by(user, dictionary):
     for msg in msg_list:
       # 如果消息为立即发送，则直接发送
       if msg.run_time == msg.create_time:
-        print invite_user.nickname, invite_user.last_interact_time, (timezone.now() - invite_user.last_interact_time).total_seconds()
         if (timezone.now() - invite_user.last_interact_time).total_seconds() <= 48 * 60 * 60:
           news_item = json.loads(msg.news_item)
           wechat.utils.send_news_item_msg(wechat.utils.get_access_token(), invite_user.wx_openid, news_item)
