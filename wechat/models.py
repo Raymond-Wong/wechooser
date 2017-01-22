@@ -50,4 +50,4 @@ class User(models.Model):
   credits = models.PositiveIntegerField(default=0)
   source_type = models.PositiveIntegerField(choices=SOURCE_TYPE, default=3)
   source = models.PositiveIntegerField(default=0)
-  last_interact_time = models.DateTimeField()
+  last_interact_time = models.DateTimeField(auto_now_add=True)
