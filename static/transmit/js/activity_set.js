@@ -400,9 +400,9 @@ var addAchieveMsg = function() {
     $(newMsgBox.find('.template_list')[0]).val('none');
     $(newMsgBox.find('.keywordsBox')[0]).html('');
     $(newMsgBox.find('.template_list')[0]).val('none');
-    $(newMsgBox.find('.news_title')[0]).val('');
+    $(newMsgBox.find('input[name="news_title"]')[0]).val('');
     $(newMsgBox.find('.news_desc')[0]).text('');
-    $(newMsgBox.find('.news_pic_url')[0]).val('');
+    $(newMsgBox.find('input[name="news_pic_url"]')[0]).val('');
     $(newMsgBox.find('.achieveMsg')[0]).show();
     msgBox.after(newMsgBox);
     achieveMsgDraggable(newMsgBox);
