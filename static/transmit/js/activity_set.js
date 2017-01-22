@@ -158,10 +158,10 @@ var getAchieveMsg = function() {
     var box = {};
     box['id'] = $(this).attr('mid');
     box['run_time'] = $($(this).find('input[name="run_time"]')[0]).val();
-    if (parseInt(box['run_time']) % 15 != 0) {
-      flag = false;
-      err_msg = '延迟发送时间必须为15分钟的整数倍！'
-    }
+    // if (parseInt(box['run_time']) % 15 != 0) {
+    //   flag = false;
+    //   err_msg = '延迟发送时间必须为15分钟的整数倍！'
+    // }
     box['url'] = $($(this).find('input[name="url"]')[0]).val();
     if (box['url'].length == 0) {
       flag = false;
@@ -400,6 +400,9 @@ var addAchieveMsg = function() {
     $(newMsgBox.find('.template_list')[0]).val('none');
     $(newMsgBox.find('.keywordsBox')[0]).html('');
     $(newMsgBox.find('.template_list')[0]).val('none');
+    $(newMsgBox.find('.news_title')[0]).val('');
+    $(newMsgBox.find('.news_desc')[0]).text('');
+    $(newMsgBox.find('.news_pic_url')[0]).val('');
     $(newMsgBox.find('.achieveMsg')[0]).show();
     msgBox.after(newMsgBox);
     achieveMsgDraggable(newMsgBox);
