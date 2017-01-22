@@ -250,6 +250,7 @@ var saveNews = function() {
     var title = $(choosenNews.children('.newsItemBox')[0]).children('.newsItemTitle').text();
     newRow.children('.val').append('<input type="text" name="news_title" value="' + title + '" />');
     newRow.children('.val').append('<input type="text" name="news_url" value="' + url + '" />');
+    newRow.children('.val').append('<input type="number" name="delay_mins" min="0" max="2880" value="0" />')
     newRow.children('.val').append(choosenNews);
     var box = TO_INSERT_ROW.parents('.content');
     box.append(newRow);

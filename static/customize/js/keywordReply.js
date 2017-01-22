@@ -55,6 +55,7 @@ var newsHandler = function(box) {
   var params = {'MsgType' : 'news'};
   box = $(box.find('.newsItemWrapper')[0]);
   params['MediaId'] = box.attr('mediaId');
+  params['DelayMins'] = box.parent().children('input[name="delay_mins"]').val();
   params['item'] = []
   $(box.find('.newsItemBox')).each(function(index, ele) {
     var item = {};

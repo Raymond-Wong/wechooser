@@ -210,7 +210,6 @@ def taskHandler(request):
         task.status = 1
         sc += 1
       except Exception, e:
-        print e
         task.status = 3
         fc += 1
     else:

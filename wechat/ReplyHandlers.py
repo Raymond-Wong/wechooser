@@ -5,8 +5,10 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import random
 from abc import ABCMeta, abstractmethod
+from datetime import timedelta
 
 from models import Reply, KeywordReply, MenuReply
+from customize.models import Task
 from ReplyTemplates import *
 
 import wechooser.utils
@@ -129,6 +131,7 @@ class TextReplyHandler(ReplyHandler):
   def getReply(self):
     keywordReplys = KeywordReply.objects.all()
     rules = []
+    now = datetime.strptime(timezone.now().strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')
     for keywordReply in keywordReplys:
       if not keywordReply.is_fully_match and keywordReply.keyword in self.params['Content']:
         rules += keywordReply.rule_set.all()
@@ -147,6 +150,16 @@ class TextReplyHandler(ReplyHandler):
       template = random.choice(templates)
       template.ToUserName = self.params['FromUserName']
       template.FromUserName = self.params['ToUserName']
+      # 如果要发送的信息的图文信息而且延迟时间大于0，则添加任务
+      if template.MsgType == 'news' and template.DelayMins > 0:
+        new_task = Task(target_type=2, template_id="keyword_reply_placeholder")
+        new_task.run_time = now + timedelta(minutes=template.DelayMins)
+        news_item = template.Items[0]
+        new_task.url = news_item.Url
+        new_task.news_item = json.dumps(news_item.toDic())
+        new_task.target = wechat.utils.get_user(self.params['FromUserName'], wechat.utils.get_access_token()).id
+        new_task.save()
+        return ''
       # wechat.utils.sendMsgTo(token, template.toSend())
       # return ''
       return template.toReply()
@@ -154,5 +167,15 @@ class TextReplyHandler(ReplyHandler):
     for template in templates:
       template.ToUserName = self.params['FromUserName']
       template.FromUserName = self.params['ToUserName']
-      wechat.utils.sendMsgTo(token, template.toSend())
+      # 如果是图文消息且延迟时间大于0，则延迟发送，否则直接发送
+      if template.MsgType == 'news' and template.DelayMins > 0:
+        new_task = Task(target_type=2, template_id="keyword_reply_placeholder")
+        new_task.run_time = now + timedelta(minutes=template.DelayMins)
+        news_item = template.Items[0]
+        new_task.url = news_item.Url
+        new_task.news_item = json.dumps(news_item.toDic())
+        new_task.target = wechat.utils.get_user(self.params['FromUserName'], wechat.utils.get_access_token()).id
+        new_task.save()
+      else:
+        wechat.utils.sendMsgTo(token, template.toSend())
     return ''

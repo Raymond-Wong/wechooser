@@ -253,8 +253,9 @@
   line-height: 5em;
 }
 
-input[name="news_title"], input[name="news_url"] {
+input[name="news_title"], input[name="news_url"], input[name="delay_mins"] {
   width: 100%;
   margin: 1%;
   margin-top: 0.5em;
+  line-height: auto !important;
 }

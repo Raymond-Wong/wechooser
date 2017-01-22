@@ -129,10 +129,11 @@ class NewsItem:
     return ret
 
 class NewsTemplate(Template):
-  def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='news', MediaId='', Items=None):
+  def __init__(self, ToUserName='', FromUserName='', CreateTime=time.time(), MsgType='news', MediaId='', Items=None, DelayMins=0):
     Template.__init__(self, ToUserName=ToUserName, FromUserName=FromUserName, MsgType=MsgType, CreateTime=CreateTime)
     self.Items = Items
     self.MediaId = MediaId
+    self.DelayMins = DelayMins
   def toReply(self):
     dic = self.toDic()
     dic['ArticleCount'] = len(self.Items)
