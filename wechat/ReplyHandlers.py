@@ -98,8 +98,6 @@ class EventReplyHandler(ReplyHandler):
       return SubscribeReplyHandler(self.params).getReply()
     elif self.params['Event'] == 'SCAN':
       reply = ScanReplyHandler(self.params).getReply()
-      invite_user = User.objects.get(id=1)
-      print invite_user.nickname, invite_user.last_interact_time
       if self.params['user'].source_type == 3:
         self.params['user'].source_type = 0
         state, namecard = get_template(qrcode_ticket=self.params['Ticket'])
@@ -107,7 +105,6 @@ class EventReplyHandler(ReplyHandler):
           self.params['user'].source_type = 1
           self.params['user'].source = namecard.activity.id
         self.params['user'].save()
-      print invite_user.nickname, invite_user.last_interact_time
       return reply
     elif self.params['Event'] == 'subscribe' and self.params.has_key('Ticket'):
       reply = ScanReplyHandler(self.params).getReply()
