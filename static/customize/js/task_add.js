@@ -126,14 +126,10 @@ var saveTaskAction = function() {
 }
 
 var initTime = function(dom) {
-  var diff = 15;
+  var diff = 1;
   var now = new Date();
   var minute = now.getMinutes();
-  if (minute % diff == 0) {
-    now.setMinutes(parseInt(minute / diff) * diff);
-  } else {
-    now.setMinutes((parseInt(minute / diff) + 1) * diff);
-  }
+  now.setMinutes((parseInt(minute / diff) + 1) * diff);
   dom.datetimepicker({
     step: diff,
     format: "Y-m-d H:i",
