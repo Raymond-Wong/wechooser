@@ -431,6 +431,7 @@ def invited_by(user, dictionary):
     cr.save()
     invite_user.credits += credit_diff
     invite_user.save()
+    print invite_user.last_interact_time
   return True, invite_user
 
 def get_template(aid=None, qrcode_ticket=None):
