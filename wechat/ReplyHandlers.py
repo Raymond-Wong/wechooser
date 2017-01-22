@@ -172,7 +172,7 @@ class TextReplyHandler(ReplyHandler):
       # 如果是图文消息且延迟时间大于0，则延迟发送，否则直接发送
       if template.MsgType == 'news' and template.DelayMins > 0:
         new_task = Task(target_type=2, template_id="keyword_reply_placeholder")
-        new_task.run_time = now + timedelta(minutes=template.DelayMins)
+        new_task.run_time = now + timedelta(minutes=int(template.DelayMins))
         news_item = template.Items[0]
         new_task.url = news_item.Url
         new_task.news_item = json.dumps(news_item.toDic())
