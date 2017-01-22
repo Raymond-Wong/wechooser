@@ -207,7 +207,11 @@ def taskHandler(request):
         # 获取图文消息
         for user in users:
           if (now - user.last_interact_time).total_seconds() <= (48 * 60 * 60):
-            utils.send_news_item_msg(utils.get_access_token(), user.wx_openid, json.loads(task.news_item))
+            news_item = json.loads(task.news_item)
+            if news_item.has_key('touser'):
+              utils.sendMsgTo(utils.get_access_token(), news_item)
+            else:
+              utils.send_news_item_msg(utils.get_access_token(), user.wx_openid, news_item)
             continue
           utils.send_template_msg(user.wx_openid, task.template_id, task.url, json.loads(task.keywords))
         task.status = 1
