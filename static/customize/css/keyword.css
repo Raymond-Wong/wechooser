@@ -157,7 +157,7 @@
 
 #rulesWrapper .ruleDetailWrapper .content .val input {
   height: 2.5em;
-  line-height: 2.5em;
+  /*line-height: 2.5em;*/
   padding-left: 0.5em;
 }
 
