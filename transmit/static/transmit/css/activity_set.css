@@ -189,7 +189,7 @@ input[name="gainCardMethod"] {
   display: none;
 }
 
-.achieveMsgBox:first-child .achieveMsg {
+.achieveMsgBox:last-child .achieveMsg {
   display: block;
 }
 
