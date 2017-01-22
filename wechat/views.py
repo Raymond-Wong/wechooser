@@ -3,7 +3,7 @@ import sys
 sys.path.append('..')
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
+import traceback
 import hashlib
 import time
 import json
@@ -84,7 +84,10 @@ def message(dictionary, token, retried=False):
     wechooser.utils.logger('INFO', 'return following msg: %s' % ret)
     return HttpResponse(ret)
   except Exception, e:
-    print e
+    errId = '%s.%s' % (str(time.time()), str(random.randint(0, 1000)))
+    print '*' * 10, 'errid:', errId, '*' * 10
+    traceback.print_exc()
+    print '*' * 10, 'endof:', errId, '*' * 10
     # 尝试更新token后重新发送消息
     if not retried:
       token = utils.update_token()
