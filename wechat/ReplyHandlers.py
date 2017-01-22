@@ -159,8 +159,10 @@ class TextReplyHandler(ReplyHandler):
         news_item = template.Items[0]
         new_task.url = news_item.Url
         new_task.news_item = json.dumps(news_item.toDic())
-        new_task.target = wechat.utils.get_user(self.params['FromUserName'], wechat.utils.get_access_token()).id
-        new_task.save()
+        state, user = wechat.utils.get_user(self.params['FromUserName'], wechat.utils.get_access_token())
+        if state:
+          new_task.target = user.id
+          new_task.save()
         return ''
       # wechat.utils.sendMsgTo(token, template.toSend())
       # return ''
