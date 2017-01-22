@@ -86,7 +86,6 @@ class ScanReplyHandler(ReplyHandler):
     template = json.loads(namecard.invited_msg, object_hook=wechooser.utils.loads)
     template.FromUserName = self.params['ToUserName']
     template.ToUserName = self.params['FromUserName']
-    print invite_user.last_interact_time
     return template.toReply()
 
 # 事件自动回复
@@ -106,6 +105,8 @@ class EventReplyHandler(ReplyHandler):
           self.params['user'].source_type = 1
           self.params['user'].source = namecard.activity.id
         self.params['user'].save()
+      invite_user = User.objects.get(id=1)
+      print invite_user.nickname, invite_user.last_interact_time
       return reply
     elif self.params['Event'] == 'subscribe' and self.params.has_key('Ticket'):
       reply = ScanReplyHandler(self.params).getReply()
