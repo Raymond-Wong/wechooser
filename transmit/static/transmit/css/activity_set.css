@@ -185,6 +185,14 @@ input[name="gainCardMethod"] {
   cursor: pointer;
 }
 
+.achieveMsg {
+  display: none;
+}
+
+.achieveMsgBox:first-child .achieveMsg {
+  display: block;
+}
+
 .achieveMsgBtn {
   margin-left: 1em;
   cursor: pointer;
@@ -220,7 +228,6 @@ input[name="gainCardMethod"] {
   resize: none;
   outline: none;
   padding: 1em;
-  margin-top: 1em;
   border: 1px solid #d9d9d9;
 }
 
@@ -230,4 +237,8 @@ input[name="gainCardMethod"] {
   height: 8em;
   overflow: auto;
   padding: 0.5em;
+}
+
+.step6hint {
+  margin-top: 0.5em;
 }
