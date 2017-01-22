@@ -5,7 +5,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import random
 from abc import ABCMeta, abstractmethod
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from models import Reply, KeywordReply, MenuReply
 from customize.models import Task
