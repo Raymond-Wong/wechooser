@@ -82,8 +82,6 @@ def message(dictionary, token, retried=False):
       handler = HANDLERS[dictionary['MsgType']]
     ret = handler(dictionary).getReply()
     wechooser.utils.logger('INFO', 'return following msg: %s' % ret)
-    invite_user = User.objects.get(id=1)
-    print invite_user.nickname, invite_user.last_interact_time
     return HttpResponse(ret)
   except Exception, e:
     errId = '%s.%s' % (str(time.time()), str(random.randint(0, 1000)))
