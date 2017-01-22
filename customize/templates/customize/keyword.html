@@ -151,6 +151,7 @@
         <div class="left val">
           <input type="text" name="news_title" value="{{ template.Items.0.Title }}" />
           <input type="text" name="news_url" value="{{ template.Items.0.Url }}" />
+          <input type="number" min="0" max="2880" name="delay_mins" value="{{ template.DelayMins }}" />
           <div class="newsItemWrapper left" mediaId="{{ template.MediaId }}">
             {% for news in template.Items %}
             <div class="newsItemBox" thumburl="{{ news.PicUrl }}" description="{{ news.Description }}" url="{{ news.Url }}" mediaid="{{ news.MediaId }}">

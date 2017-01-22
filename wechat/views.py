@@ -208,6 +208,7 @@ def taskHandler(request):
         for user in users:
           if (now - user.last_interact_time).total_seconds() <= (48 * 60 * 60):
             news_item = json.loads(task.news_item)
+            # 如果有touser字段说明是KeywordReplyTemplate，否则为单个NewsItem
             if news_item.has_key('touser'):
               utils.sendMsgTo(utils.get_access_token(), news_item)
             else:
