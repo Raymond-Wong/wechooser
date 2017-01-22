@@ -27,12 +27,12 @@
   	  <li><a href="/menu">自定义菜单</a></li>
   	{% endifequal %}
     {% ifequal active "activity" %}
-      <li class="active"><a href="#">活动设置</a></li>
+      <li class="active"><a href="/transmit/activity/list">活动设置</a></li>
     {% else %}
       <li><a href="/transmit/activity/list">活动设置</a></li>
     {% endifequal %}
     {% ifequal active "statistic" %}
-      <li class="active"><a href="#">数据统计</a></li>
+      <li class="active"><a href="/statistic/list">数据统计</a></li>
     {% else %}
       <li><a href="/statistic/list">数据统计</a></li>
     {% endifequal %}
@@ -42,7 +42,7 @@
       <li><a href="/duiba/credit">积分管理</a></li>
     {% endifequal %} -->
     {% ifequal active "task" %}
-      <li class="active"><a href="#">定时消息</a></li>
+      <li class="active"><a href="/task/add">定时消息</a></li>
     {% else %}
       <li><a href="/task/add">定时消息</a></li>
     {% endifequal %}
