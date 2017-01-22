@@ -158,7 +158,7 @@ class TextReplyHandler(ReplyHandler):
         new_task.run_time = now + timedelta(minutes=int(template.DelayMins))
         news_item = template.Items[0]
         new_task.url = news_item.Url
-        new_task.news_item = json.dumps(news_item.toDic())
+        new_task.news_item = json.dumps(dict(title=news_item.Title, picurl=news_item.PicUrl, url=news_item.Url, description=news_item.Description))
         state, user = wechat.utils.get_user(self.params['FromUserName'], wechat.utils.get_access_token())
         if state:
           new_task.target = user.id
@@ -177,7 +177,7 @@ class TextReplyHandler(ReplyHandler):
         new_task.run_time = now + timedelta(minutes=int(template.DelayMins))
         news_item = template.Items[0]
         new_task.url = news_item.Url
-        new_task.news_item = json.dumps(news_item.toDic())
+        new_task.news_item = json.dumps(dict(title=news_item.Title, picurl=news_item.PicUrl, url=news_item.Url, description=news_item.Description))
         state, user = wechat.utils.get_user(self.params['FromUserName'], wechat.utils.get_access_token())
         if state:
           new_task.target = user.id
