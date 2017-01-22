@@ -105,8 +105,6 @@ class EventReplyHandler(ReplyHandler):
           self.params['user'].source_type = 1
           self.params['user'].source = namecard.activity.id
         self.params['user'].save()
-      invite_user = User.objects.get(id=1)
-      print invite_user.nickname, invite_user.last_interact_time
       return reply
     elif self.params['Event'] == 'subscribe' and self.params.has_key('Ticket'):
       reply = ScanReplyHandler(self.params).getReply()

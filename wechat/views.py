@@ -66,6 +66,9 @@ HANDLERS = {
 }
 def message(dictionary, token, retried=False):
   try:
+    # 如果通知的是发送模板消息成功的通知，则不做处理
+    if dictionary.has_key('Event') and dictionary['Event'] == 'TEMPLATESENDJOBFINISH':
+      return ''
     # 获取当前交互的用户对象
     state, user = utils.get_user(dictionary['FromUserName'], token)
     dictionary['user'] = user
