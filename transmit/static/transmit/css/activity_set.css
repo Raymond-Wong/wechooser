@@ -242,3 +242,41 @@ input[name="gainCardMethod"] {
 .step6hint {
   margin-top: 0.5em;
 }
+
+.ruleRow .lineInput {
+  height: 1.9em;
+  line-height: 1.9em;
+}
+
+.replyAllBtn {
+  cursor: pointer;
+}
+
+.addContentBtn {
+  margin-right: 1em;
+  cursor: pointer;
+}
+
+#rulesWrapper .ruleDetailWrapper {
+  display: block;
+  border: none;
+  font-size: 12px;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .ruleRow:last-child {
+  border-bottom: 1px solid #d9d9d9;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .ruleRow:first-child {
+  padding: 0;
+  border-bottom: 0;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .ruleRow {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#rulesWrapper .ruleDetailWrapper .content .point {
+  display: none;
+}

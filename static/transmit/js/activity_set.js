@@ -14,7 +14,7 @@ $(document).ready(function() {
   addAchieveMsg();
   achieveMsgRemovable();
   achieveMsgDraggable();
-  initInvitedReply()
+  // initInvitedReply()
 });
 
 var getAid = function() {
@@ -113,22 +113,17 @@ var submitAction = function() {
     } else {
       params['achieveMsg'] = JSON.stringify(params['achieveMsg'][1])
     }
-    params['invited_msg'] = getMaterialContent();
-    if (params['invited_msg']['MsgType'] == null) {
-      topAlert(params['Content'], 'error');
+    params['invited_msg'] = get_invited_msg();
+    if (params['invited_msg'] == false) {
       return false;
-    }
-    if ((params['invited_msg']['MsgType'] == 'text' && params['invited_msg']['Content'] == "") ||
-        (params['invited_msg']['MsgType'] != 'text' && (params['invited_msg']['MediaId'] == undefined || params['invited_msg']['MediaId'] == 'undefined'))) {
-      topAlert('成功邀请通知（接受邀请用户）不合法', 'error');
-      return false;
+    } else {
+      params['invited_msg'] = JSON.stringify(params['invited_msg']);
     }
     params['invite_msg'] = $('#invite_msg').val();
     if (params['invite_msg'] == '') {
       topAlert('成功邀请通知（发送邀请用户）不合法', 'error');
       return false;
     }
-    params['invited_msg'] = JSON.stringify(params['invited_msg']);
     topAlert('正在保存中...');
     url = '/transmit/activity/save' + ((AID == undefined || AID == '') ? '' : ('?aid=' + AID))
     post(url, params, function(msg) {
@@ -548,4 +543,32 @@ var initInvitedReply = function() {
     $('#chooseNewsBtn').hide();
     box.show();
   }
+}
+
+var get_invited_msg = function() {
+  var rule = $('.ruleDetailWrapper');
+  // 获取所有回复
+  var handlers = {
+    'text' : textHandler,
+    'image' : imageHandler,
+    'voice' : voiceHandler,
+    'video' : videoHandler,
+    'news' : newsHandler,
+  }
+  var replys = [];
+  $(rule.find('.reply')).each(function() {
+    var type = $(this).attr('type');
+    replys.push(handlers[type]($(this)));
+  });
+  if (replys.length <= 0) {
+    topAlert('回复内容不可为空', 'error');
+    return false;
+  }
+  var replyAll = rule.attr('replyAll');
+  if (replyAll == '') {
+    replyAll = "True";
+  }
+  replyAll = replyAll == undefined ? 'False' : replyAll;
+  params = {'replys' : replys, 'replyAll' : replyAll}
+  return params
 }

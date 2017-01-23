@@ -176,16 +176,19 @@ def activity_set(request, token):
       task.news_item = json.loads(task.news_item)
   # 处理接受邀请后的回复消息
   if template.invited_msg != '':
+    invited_msg_list = json.loads(json.loads(template.invited_msg)['replys'])
+    for invited_msg in invited_msg_list:
+      if invited_msg['MsgType'] == 'image':
+        invited_msg['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=invited_msg['OriUrl'], mediaId=invited_msg['MediaId'])
+      elif invited_msg['MsgType'] == 'voice':
+        invited_msg['VoiceLen'] = wechat.utils.getOneVoiceLen(mediaId=invited_msg['MediaId'])
+      elif invited_msg['MsgType'] == 'news':
+        for news in invited_msg['Items']:
+          news['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=news['PicUrl'], mediaId=news['MediaId'])
     invited_msg = json.loads(template.invited_msg)
-    if invited_msg['MsgType'] == 'image':
-      invited_msg['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=invited_msg['OriUrl'], mediaId=invited_msg['MediaId'])
-    elif invited_msg['MsgType'] == 'voice':
-      invited_msg['VoiceLen'] = wechat.utils.getOneVoiceLen(mediaId=invited_msg['MediaId'])
-    elif invited_msg['MsgType'] == 'news':
-      for news in invited_msg['Items']:
-        news['ImageUrl'] = wechat.utils.getBase64Img(oriUrl=news['PicUrl'], mediaId=news['MediaId'])
-    template.invited_msg = json.dumps(invited_msg)
-  return render_to_response('transmit/activity_set.html', {'achieve_msg_list' : tasks, 'templates' : templates, 'action' : action, 'active' : 'activity', 'template' : template, 'url' : url, 'activity' : activity})
+    invited_msg['replys'] = invited_msg_list
+    template.invited_msg = invited_msg
+  return render_to_response('transmit/activity_set.html', {'rule' : template.invited_msg, 'achieve_msg_list' : tasks, 'templates' : templates, 'action' : action, 'active' : 'activity', 'template' : template, 'url' : url, 'activity' : activity})
 
 @csrf_exempt
 @is_logined
@@ -227,20 +230,27 @@ def save(request):
   # 处理回复模板
   invited_msg = request.POST.get('invited_msg', '')
   invited_msg = json.loads(invited_msg)
-  if invited_msg['MsgType'] == 'text':
-    invited_msg = TextTemplate(Content=invited_msg['Content'])
-  elif invited_msg['MsgType'] == 'image':
-    invited_msg = ImageTemplate(MediaId=invited_msg['MediaId'], OriUrl=invited_msg['OriUrl'])
-  elif invited_msg['MsgType'] == 'voice':
-    invited_msg = VoiceTemplate(MediaId=invited_msg['MediaId'], VoiceName=invited_msg['VoiceName'])
-  elif invited_msg['MsgType'] == 'video':
-    invited_msg = VideoTemplate(MediaId=invited_msg['MediaId'], Title=invited_msg['Title'], Description=invited_msg['Description'])
-  elif invited_msg['MsgType'] == 'news':
-    newsItems = []
-    for item in invited_msg['item']:
-      newsItems.append(NewsItem(MediaId=item['MediaId'], Title=item['Title'], Description=item['Description'], Url=item['Url'], PicUrl=item['PicUrl']))
-    invited_msg = NewsTemplate(MediaId=invited_msg['MediaId'], Items=newsItems)
-  card.invited_msg = json.dumps(invited_msg, default=wechooser.utils.dumps)
+   # 遍历所有返回模板
+  templates = []
+  for template in invited_msg['replys']:
+    if template['MsgType'] == 'text':
+      templates.append(TextTemplate(Content=template['Content']))
+    elif template['MsgType'] == 'image':
+      templates.append(ImageTemplate(MediaId=template['MediaId'], OriUrl=template['OriUrl']))
+    elif template['MsgType'] == 'voice':
+      templates.append(VoiceTemplate(MediaId=template['MediaId'], VoiceName=template['VoiceName']))
+    elif template['MsgType'] == 'video':
+      templates.append(VideoTemplate(MediaId=template['MediaId'], Title=template['Title'], Description=template['Description']))
+    elif template['MsgType'] == 'news':
+      mediaId = template['MediaId']
+      delayMins = template['DelayMins']
+      newsItems = []
+      for item in template['item']:
+        newsItems.append(NewsItem(MediaId=item['MediaId'], Title=item['Title'], Description=item['Description'], Url=item['Url'], PicUrl=item['PicUrl']))
+      templates.append(NewsTemplate(MediaId=mediaId, Items=newsItems, DelayMins=delayMins))
+  invited_msg['replys'] = json.dumps(templates, default=wechooser.utils.dumps)
+  invited_msg['replyAll'] = wechooser.utils.parseBool(invited_msg['replyAll'])
+  card.invited_msg = json.dumps(invited_msg)
   card.gain_card_method = request.POST.get('gain_card_method', 'text')
   card.mid = request.POST.get('mid', '')
   card.keyword = request.POST.get('keyword', '')
