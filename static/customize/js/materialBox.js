@@ -234,10 +234,7 @@ var showMaterialBox = function(type, handler) {
   var box = $('#material' + type + 'Box');
   var content = $(box.find('.materialBoxContent')[0]);
   if (content.find('*').length <= 0) {
-    if (type == 'Text') {
-      debugger;
-      $('#materialTextInputArea').focus();
-    } else if (type == 'Image') {
+    if (type == 'Image') {
       updateMaterialImageBox(0, 10);
     } else if (type == 'Voice') {
       updateMaterialVoiceBox(0, 5);
@@ -250,7 +247,12 @@ var showMaterialBox = function(type, handler) {
     }
   }
   box.addClass('active');
-  $('#materialBoxWrapper').fadeIn();
+  // 如果是显示文字输入框的化，则要在区域显示之后focus一下避免表情插入出错
+  $('#materialBoxWrapper').fadeIn(function() {
+    if (type == 'Text') {
+      $('#materialTextInputArea').focus();
+    }
+  });
 }
 
 // 隐藏素材框
