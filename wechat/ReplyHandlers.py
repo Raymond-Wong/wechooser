@@ -74,6 +74,7 @@ class ScanReplyHandler(ReplyHandler):
     # 调用被邀请事件
     state0, invite_user = invited_by(self.params['user'], self.params)
     state1, namecard = get_template(qrcode_ticket=self.params['Ticket'])
+    token = wechat.utils.get_access_token()
     err_msg = '未知错误'
     if not state0:
       err_msg = invite_user
