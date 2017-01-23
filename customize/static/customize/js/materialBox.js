@@ -235,7 +235,8 @@ var showMaterialBox = function(type, handler) {
   var content = $(box.find('.materialBoxContent')[0]);
   if (content.find('*').length <= 0) {
     if (type == 'Text') {
-      $('#materialTextInputArea').trigger('click');
+      debugger;
+      $('#materialTextInputArea').focus();
     } else if (type == 'Image') {
       updateMaterialImageBox(0, 10);
     } else if (type == 'Voice') {
