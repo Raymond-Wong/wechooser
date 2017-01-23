@@ -108,7 +108,7 @@ class ScanReplyHandler(ReplyHandler):
       template.FromUserName = self.params['ToUserName']
       # 如果是图文消息且延迟时间大于0，则延迟发送，否则直接发送
       if template.MsgType == 'news' and int(template.DelayMins) > 0:
-        new_task = Task(target_type=2, template_id="keyword_reply_placeholder")
+        new_task = Task(target_type=2, template_id="scan_reply_placeholder")
         new_task.run_time = now + timedelta(minutes=int(template.DelayMins))
         new_task.news_item = json.dumps(template.toSend())
         state, user = wechat.utils.get_user(self.params['FromUserName'], token)
